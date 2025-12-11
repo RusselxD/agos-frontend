@@ -5,11 +5,25 @@ import AlertLogs from "./pages/AlertLogs";
 import Calibration from "./pages/Calibration";
 import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
+import { WeatherProvider } from "./context/WeatherContext";
+import { WaterLevelProvider } from "./context/WaterLevelContext";
+import { BlockageProvider } from "./context/BlockageContext";
 
 export const router = createBrowserRouter([
     {
         path: "admin",
-        element: <MainLayout />,
+        element: (
+            // BlockageProvider = for blockage detection AI status
+            // WeatherProvider = for weather condition data
+            // WaterLevelProvider = for water level sensor data
+            <BlockageProvider>
+                <WeatherProvider>
+                    <WaterLevelProvider>
+                        <MainLayout />
+                    </WaterLevelProvider>
+                </WeatherProvider>
+            </BlockageProvider>
+        ),
         children: [
             {
                 index: true,
