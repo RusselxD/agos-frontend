@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CardHeaderText from "./ui/CardHeaderText";
-import Card from "./ui/Card";
+import CardHeaderText from "../ui/CardHeaderText";
+import Card from "../ui/Card";
 
 const Status = {
     CLEAR: "Clear",

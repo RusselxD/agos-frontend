@@ -11,8 +11,8 @@ const StatCard = ({ title, data, desc }: StatCardProps): React.JSX.Element => {
     return (
         <div className="border w-full rounded-md bg-gray-100/60 border-gray-300 px-4 py-3">
             <p className="text-sm font-medium text-gray-700">{title}</p>
-            <p className="text-xl font-medium">{data}</p>
-            <p className="text-xs text-gray-400">{desc}</p>
+            <p className="text-xl font-semibold">{data}</p>
+            <p className="text-xs text-gray-700">{desc}</p>
         </div>
     );
 };
@@ -49,11 +49,15 @@ export default function MetricCards({
 
     const titleAndDesc = getTitleAndDesc();
 
+    const changeRateData = sensorData?.waterLevel.change_rate_cm_per_min || 0;
+    const changeRateDisplay =
+        changeRateData > 0 ? `+${changeRateData}` : `${changeRateData}`;
+
     return (
         <div className="flex flex-col justify-between ml-10 gap-1 flex-1">
             <StatCard
                 title="Change Rate"
-                data={sensorData?.waterLevel.change_rate_cm_per_min || 0}
+                data={changeRateDisplay}
                 desc="cm/min"
             />
             <StatCard
