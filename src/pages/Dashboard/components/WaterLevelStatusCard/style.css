@@ -1,0 +1,125 @@
+.water-gauge {
+    position: relative;
+    width: 50px;
+    height: 144px;
+    background: linear-gradient(
+        to bottom,
+        #dc2626 0%,
+        #dc2626 15%,
+        #ef4444 18%,
+        #f59e0b 22%,
+        #f59e0b 60%,
+        #fbbf24 62%,
+        #10b981 65%,
+        #10b981 100%
+    );
+    border-radius: 40px;
+    border: 3px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.threshold-marker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 10;
+}
+
+.threshold-marker.warning {
+    background: #f59e0b;
+}
+
+.threshold-marker.critical {
+    background: #dc2626;
+}
+
+.threshold-marker::after {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+.threshold-marker.warning::after {
+    border-left-color: #f59e0b;
+}
+
+.threshold-marker.critical::after {
+    border-left-color: #dc2626;
+}
+
+.water-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, #2563eb, #3b82f6, #60a5fa);
+    transition: height 0.7s ease-out;
+    border-radius: 0 0 37px 37px;
+    overflow: visible;
+}
+
+.wave-container {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+}
+
+.wave path {
+    fill: rgba(96, 165, 250, 0.5);
+}
+
+.wave1 {
+    animation: wave-move 4s linear infinite;
+}
+
+.wave1 path {
+    fill: rgba(147, 197, 253, 0.6);
+}
+
+.wave2 {
+    animation: wave-move 6s linear infinite reverse;
+}
+
+.wave2 path {
+    fill: rgba(96, 165, 250, 0.4);
+}
+
+.wave3 {
+    animation: wave-move 5s linear infinite;
+    animation-delay: -2s;
+}
+
+.wave3 path {
+    fill: rgba(59, 130, 246, 0.3);
+}
+
+@keyframes wave-move {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(50%);
+    }
+}

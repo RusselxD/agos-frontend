@@ -1,5 +1,6 @@
 import React from "react";
-import type { SensorData } from "../../../../../lib/types/sensor";
+import "../style.css";
+import type { SensorData, Thresholds } from "../../../../../lib/types/sensor";
 
 import { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from "lucide-react";
 
@@ -75,21 +76,86 @@ const LevelInfo = ({ level }: { level: string }): React.JSX.Element => {
     );
 };
 
+interface GaugeDisplayProps {
+    sensorConfig: Thresholds | null;
+    sensorData: SensorData | null;
+}
+
+const GaugeDisplay = ({ sensorConfig, sensorData }: GaugeDisplayProps) => {
+    if (!sensorConfig || !sensorData) {
+        return <div className="water-gauge" />;
+    }
+
+    const warningPercentage =
+        (sensorConfig.warning_cm / sensorConfig.critical_cm) * 100;
+
+    return (
+        <div className="water-gauge">
+            <div
+                className="threshold-marker warning"
+                style={{ bottom: `${warningPercentage}%` }}
+            />
+
+            <div
+                className="threshold-marker critical"
+                style={{ bottom: "100%" }}
+            />
+
+            <div
+                className="water-fill"
+                style={{
+                    height: `${Math.min(
+                        sensorData.alert.percentage_of_critical,
+                        100
+                    )}%`,
+                }}
+            >
+                <div className="wave-container">
+                    <svg
+                        className="wave wave1"
+                        viewBox="0 0 100 20"
+                        preserveAspectRatio="none"
+                    >
+                        <path d="M0,10 Q12.5,5 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
+                    </svg>
+                    <svg
+                        className="wave wave2"
+                        viewBox="0 0 100 20"
+                        preserveAspectRatio="none"
+                    >
+                        <path d="M0,10 Q12.5,15 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
+                    </svg>
+                    <svg
+                        className="wave wave3"
+                        viewBox="0 0 100 20"
+                        preserveAspectRatio="none"
+                    >
+                        <path d="M0,10 Q12.5,8 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+interface Props {
+    sensorData: SensorData | null;
+    sensorConfig: Thresholds | null;
+}
+
 export default function MainDisplay({
     sensorData,
-}: {
-    sensorData: SensorData | null;
-}): React.JSX.Element {
+    sensorConfig,
+}: Props): React.JSX.Element {
     return (
         <div className="flex  items-center gap-2">
-            {/* Capsule */}
-            <div className="w-10 bg-gray-400 rounded-full h-3/4"></div>
+            <GaugeDisplay sensorConfig={sensorConfig} sensorData={sensorData} />
             <div className="space-y-2">
-                <span>
+                <span className="space-x-1">
                     <span className="text-3xl font-semibold">
                         {sensorData?.waterLevel.current_cm}
                     </span>
-                    <span> cm</span>
+                    <span>cm</span>
                 </span>
                 <AlertCapsule alert={sensorData?.alert.level || ""} />
                 <LevelInfo level={sensorData?.waterLevel.trend || ""} />

@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import VideoContainer from "./components/VideoContainer";
 import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
-import WaterLevelStatusCard from "./components/WaterLevelStatusCard/WaterLevelStatusCard";
+import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 
 export default function Dashboard(): React.JSX.Element {
     return (

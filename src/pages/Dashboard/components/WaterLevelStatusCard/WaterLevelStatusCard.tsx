@@ -70,7 +70,7 @@ export default function WaterLevelStatusCard(): React.JSX.Element {
         <Card className="!justify-start bg-white">
             <CardHeaderText label="WATER LEVEL STATUS" />
             <div className="flex h-full justify-between">
-                <MainDisplay sensorData={sensorData} />
+                <MainDisplay sensorConfig={sensorConfig} sensorData={sensorData} />
                 <MetricCards sensorData={sensorData} />
             </div>
         </Card>
