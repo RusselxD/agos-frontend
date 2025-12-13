@@ -53,4 +53,47 @@ body {
             transform: rotate(360deg);
         }
     }
+
+    .custom-input {
+        border-bottom: 2px solid rgb(183, 183, 183);
+        padding: 0.5rem 0.75rem 0.5rem 0;
+        outline: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .custom-input:focus {
+        border-bottom-color: #111827;
+    }
+
+    /* DaisyUI Skeleton Component - Pure CSS */
+
+    .skeleton {
+        position: relative;
+        overflow: hidden;
+        background-color: #e5e7eb;
+    }
+
+    .skeleton::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.2) 20%,
+            rgba(255, 255, 255, 0.5) 60%,
+            rgba(255, 255, 255, 0)
+        );
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
 }

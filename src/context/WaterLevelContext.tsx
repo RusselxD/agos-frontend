@@ -7,12 +7,12 @@ import {
     useState,
     type ReactNode,
 } from "react";
-import type { SensorData, Thresholds } from "../lib/types/sensor";
+import type { SensorData, SensorThresholds } from "../lib/types/sensor";
 import { sampleSensorAPI } from "../lib/api/sensor";
 
 interface WaterLevelContextValue {
     sensorData: SensorData | null;
-    sensorConfig: Thresholds | null;
+    sensorConfig: SensorThresholds | null;
 
     isFetchingData: boolean;
     isFetchingConfig: boolean;
@@ -30,7 +30,9 @@ export function WaterLevelProvider({
     children: ReactNode;
 }): React.JSX.Element {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
-    const [sensorConfig, setSensorConfig] = useState<Thresholds | null>(null);
+    const [sensorConfig, setSensorConfig] = useState<SensorThresholds | null>(
+        null
+    );
 
     const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
     const [isFetchingConfig, setIsFetchingConfig] = useState<boolean>(true);
@@ -47,6 +49,7 @@ export function WaterLevelProvider({
                 const config = await sampleSensorAPI.getSensorConfig();
                 setSensorConfig(config);
             } catch (error) {
+                setError("Failed to fetch sensor configuration");
             } finally {
                 setIsFetchingConfig(false);
             }
@@ -65,17 +68,16 @@ export function WaterLevelProvider({
 
                 const data = await sampleSensorAPI.getLatestSensorData();
 
-                if (data) {
-                    setSensorData(data);
-                }
+                setSensorData(data);
             } catch (error) {
+                setError("Failed to fetch sensor data");
             } finally {
                 setIsFetchingData(false);
             }
         };
         fetchSensorData();
 
-        const intervalId = setInterval(fetchSensorData, 60 * 1000); // every 60 seconds
+        const intervalId = setInterval(fetchSensorData, 10 * 1000); // every 60 seconds
         return () => clearInterval(intervalId);
     }, []);
 

@@ -1,12 +1,11 @@
+import { useWaterwayContext } from "../../../../../context/BlockageContext";
 import type { Status } from "../../../../../lib/types/blockage";
 import { barColors, getLevelCount } from "../BlockageStatusCard";
 
-export default function StatusText({
-    status,
-}: {
-    status: Status;
-}): React.JSX.Element {
-    const getStatusColor = (status: Status): string => {
+export default function StatusText(): React.JSX.Element {
+    const { status } = useWaterwayContext();
+
+    const getStatusColor = (status: Status | null): string => {
         switch (status) {
             case "Clear":
                 return "text-clear";
@@ -14,10 +13,12 @@ export default function StatusText({
                 return "text-partial";
             case "Blocked":
                 return "text-blocked";
+            default:
+                return "text-gray-400";
         }
     };
 
-    const levelCount: number = getLevelCount(status);
+    const levelCount: number = status ? getLevelCount(status) : 0;
 
     return (
         <div className="flex items-center gap-3 my-2">

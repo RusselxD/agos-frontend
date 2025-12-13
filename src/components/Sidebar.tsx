@@ -54,7 +54,7 @@ export default function Sidebar(): React.JSX.Element {
                                 to={tab.path}
                                 end
                                 className={({ isActive }) =>
-                                    `flex gap-3 rounded-xl py-3.5 px-4 ${
+                                    `flex transition-all duration-100 ease-in-out gap-3 rounded-xl py-3.5 px-4 ${
                                         isActive
                                             ? "border-l-[6px] bg-gray-200 border-primary font-semibold cursor-default"
                                             : "text-neutral hover:bg-gray-100 transition-colors"

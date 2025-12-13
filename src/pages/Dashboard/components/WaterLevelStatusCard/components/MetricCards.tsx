@@ -1,5 +1,5 @@
 import React from "react";
-import type { SensorData } from "../../../../../lib/types/sensor";
+import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 
 type StatCardProps = {
     title: string;
@@ -17,31 +17,37 @@ const StatCard = ({ title, data, desc }: StatCardProps): React.JSX.Element => {
     );
 };
 
-export default function MetricCards({
-    sensorData,
-}: {
-    sensorData: SensorData | null;
-}): React.JSX.Element {
-    const getTitleAndDesc = (): { title: string; desc: string } => {
+export default function MetricCards(): React.JSX.Element {
+    const { sensorData } = useWaterLevel();
+
+    const getTitleAndDesc = (): {
+        title: string;
+        data: number;
+        desc: string;
+    } => {
         switch (sensorData?.alert.level) {
             case "normal":
                 return {
                     title: "To Warning",
+                    data: sensorData?.alert.distance_to_warning_cm || 0,
                     desc: "cm remaining",
                 };
             case "warning":
                 return {
                     title: "To Critical",
+                    data: sensorData?.alert.distance_to_critical_cm || 0,
                     desc: "cm remaining",
                 };
             case "critical":
                 return {
                     title: "Above Critical",
+                    data: sensorData?.alert.distance_from_critical_cm || 0,
                     desc: "cm over",
                 };
             default:
                 return {
                     title: "To Warning",
+                    data: sensorData?.alert.distance_to_warning_cm || 0,
                     desc: "cm remaining",
                 };
         }
@@ -62,7 +68,7 @@ export default function MetricCards({
             />
             <StatCard
                 title={titleAndDesc.title}
-                data={sensorData?.waterLevel.change_rate_cm_per_min || 0}
+                data={titleAndDesc.data}
                 desc={titleAndDesc.desc}
             />
         </div>

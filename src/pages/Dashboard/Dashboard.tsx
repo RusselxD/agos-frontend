@@ -4,10 +4,11 @@ import VideoContainer from "./components/VideoContainer";
 import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
 import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
+import FusionAnalysis from "./components/FusionAnalysis";
 
 export default function Dashboard(): React.JSX.Element {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
             <Header />
             <div className="flex w-full gap-2">
                 <VideoContainer />
@@ -17,6 +18,7 @@ export default function Dashboard(): React.JSX.Element {
                     <WaterLevelStatusCard />
                 </div>
             </div>
+            <FusionAnalysis/>
         </div>
     );
 }

@@ -1,11 +1,10 @@
-import React from 'react'
-import type { Status } from '../../../../../lib/types/blockage';
-import { barColors, getLevelCount } from '../BlockageStatusCard';
+import React from "react";
+import { barColors, getLevelCount } from "../BlockageStatusCard";
+import { useWaterwayContext } from "../../../../../context/BlockageContext";
 
-
-
-export default function  ProgressBar  ({ status }: { status: Status }): React.JSX.Element {
-    const barCount: number = getLevelCount(status);
+export default function ProgressBar(): React.JSX.Element {
+    const { status } = useWaterwayContext();
+    const barCount = getLevelCount(status);
 
     return (
         <div className="relative flex gap-1 pb-7">
@@ -14,7 +13,9 @@ export default function  ProgressBar  ({ status }: { status: Status }): React.JS
                     <span
                         key={index}
                         className={`w-full rounded-md h-2 ${
-                            barCount >= index ? barColors[index] : "bg-gray-200"
+                            barCount >= index
+                                ? barColors[barCount]
+                                : "bg-gray-200"
                         }`}
                     ></span>
                 );
@@ -25,4 +26,4 @@ export default function  ProgressBar  ({ status }: { status: Status }): React.JS
             </div>
         </div>
     );
-};
+}
