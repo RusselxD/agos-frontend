@@ -8,20 +8,40 @@ import Responders from "./pages/Responders";
 import { WeatherProvider } from "./context/WeatherContext";
 import { WaterLevelProvider } from "./context/WaterLevelContext";
 import { BlockageProvider } from "./context/BlockageContext";
+import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
+import { VideoProvider } from "./context/VideoContext";
+import AuthLayout from "./layouts/AuthLayout";
+import Login from "./pages/Login";
 
 export const router = createBrowserRouter([
+    {
+        path: "login",
+        element: <AuthLayout />,
+        children: [
+            {
+                index: true,
+                element: <Login/>
+            },
+        ],
+    },
     {
         path: "admin",
         element: (
             // BlockageProvider = for blockage detection AI status
             // WeatherProvider = for weather condition data
             // WaterLevelProvider = for water level sensor data
+            //
+            // FusionAnalysisProvider = for fusion analysis data
             <BlockageProvider>
-                <WeatherProvider>
-                    <WaterLevelProvider>
-                        <MainLayout />
-                    </WaterLevelProvider>
-                </WeatherProvider>
+                <VideoProvider>
+                    <WeatherProvider>
+                        <WaterLevelProvider>
+                            <FusionAnalysisProvider>
+                                <MainLayout />
+                            </FusionAnalysisProvider>
+                        </WaterLevelProvider>
+                    </WeatherProvider>
+                </VideoProvider>
             </BlockageProvider>
         ),
         children: [

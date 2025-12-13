@@ -1,14 +1,17 @@
 import React from "react";
 import "../style.css";
-import type { SensorData, Thresholds } from "../../../../../lib/types/sensor";
 
 import { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from "lucide-react";
+import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 
 const capitalizeFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const AlertCapsule = ({ alert }: { alert: string }): React.JSX.Element => {
+const AlertCapsule = (): React.JSX.Element => {
+    const { sensorData } = useWaterLevel();
+    const alert = sensorData?.alert.level || "";
+
     const getAlertClasses = (alert: string) => {
         switch (alert) {
             case "normal":
@@ -52,7 +55,10 @@ const AlertCapsule = ({ alert }: { alert: string }): React.JSX.Element => {
     );
 };
 
-const LevelInfo = ({ level }: { level: string }): React.JSX.Element => {
+const LevelInfo = (): React.JSX.Element => {
+    const { sensorData } = useWaterLevel();
+    const level = sensorData?.waterLevel.trend || "stable";
+
     const getArrowDirection = (level: string): LucideIcon => {
         switch (level) {
             case "rising":
@@ -76,12 +82,9 @@ const LevelInfo = ({ level }: { level: string }): React.JSX.Element => {
     );
 };
 
-interface GaugeDisplayProps {
-    sensorConfig: Thresholds | null;
-    sensorData: SensorData | null;
-}
+const GaugeDisplay = () => {
+    const { sensorConfig, sensorData } = useWaterLevel();
 
-const GaugeDisplay = ({ sensorConfig, sensorData }: GaugeDisplayProps) => {
     if (!sensorConfig || !sensorData) {
         return <div className="water-gauge" />;
     }
@@ -126,11 +129,11 @@ const GaugeDisplay = ({ sensorConfig, sensorData }: GaugeDisplayProps) => {
                         <path d="M0,10 Q12.5,15 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
                     </svg>
                     <svg
-                        className="wave wave3"
+                        className="wave wave2"
                         viewBox="0 0 100 20"
                         preserveAspectRatio="none"
                     >
-                        <path d="M0,10 Q12.5,8 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
+                        <path d="M0,10 Q12.5,15 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
                     </svg>
                 </div>
             </div>
@@ -138,27 +141,21 @@ const GaugeDisplay = ({ sensorConfig, sensorData }: GaugeDisplayProps) => {
     );
 };
 
-interface Props {
-    sensorData: SensorData | null;
-    sensorConfig: Thresholds | null;
-}
+export default function MainDisplay(): React.JSX.Element {
+    const { sensorData } = useWaterLevel();
 
-export default function MainDisplay({
-    sensorData,
-    sensorConfig,
-}: Props): React.JSX.Element {
     return (
         <div className="flex  items-center gap-2">
-            <GaugeDisplay sensorConfig={sensorConfig} sensorData={sensorData} />
+            <GaugeDisplay />
             <div className="space-y-2">
-                <span className="space-x-1">
+                <p>
                     <span className="text-3xl font-semibold">
-                        {sensorData?.waterLevel.current_cm}
+                        {`${sensorData?.waterLevel.current_cm} `}
                     </span>
                     <span>cm</span>
-                </span>
-                <AlertCapsule alert={sensorData?.alert.level || ""} />
-                <LevelInfo level={sensorData?.waterLevel.trend || ""} />
+                </p>
+                <AlertCapsule />
+                <LevelInfo />
             </div>
         </div>
     );

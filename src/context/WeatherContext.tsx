@@ -35,7 +35,10 @@ export function WeatherProvider({
             try {
                 if (isFirstFetch.current) {
                     setIsFetching(true);
+                    isFirstFetch.current = false;
                 }
+
+                await new Promise((resolve) => setTimeout(resolve, 1000));
 
                 let latitude = 14.69;
                 let longitude = 121.97;
@@ -50,12 +53,9 @@ export function WeatherProvider({
                     longitude: longitude || 121.97,
                 });
 
-                // Update state if there is new data
-                if (weatherData) {
-                    setWeatherData(weatherData);
-                    isFirstFetch.current = false;
-                }
+                setWeatherData(weatherData);
             } catch (error) {
+                setError("Failed to fetch weather data");
             } finally {
                 setIsFetching(false);
             }
