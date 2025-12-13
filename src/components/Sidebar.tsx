@@ -1,5 +1,5 @@
 import React from "react";
-import { Settings, Users, FileCheck, Gauge, MonitorDot } from "lucide-react";
+import { Settings, Users, FileCheck, MonitorDot, Waves } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -21,28 +21,27 @@ const tabs = [
         icon: FileCheck,
     },
     {
-        name: "Calibration",
-        path: "/admin/calibration",
-        icon: Gauge,
-    },
-    {
-        name: "Settings",
-        path: "/admin/settings",
-        icon: Settings,
+        name: "Sensor",
+        path: "/admin/sensor",
+        icon: Waves,
     },
     {
         name: "Responders",
         path: "/admin/responders",
         icon: Users,
     },
+    {
+        name: "Settings",
+        path: "/admin/settings",
+        icon: Settings,
+    },
 ];
 
 export default function Sidebar(): React.JSX.Element {
     return (
         <div className="fixed border top-0 bottom-0 left-0 w-56 flex flex-col">
-
             <div className="w-full p-5 mb-3 h-20">
-                <img src="/agos-w-text.png" className="-ml-3"/>
+                <img src="/agos-w-text.png" className="-ml-3" />
             </div>
 
             {/* Tabs */}
@@ -56,7 +55,7 @@ export default function Sidebar(): React.JSX.Element {
                                 className={({ isActive }) =>
                                     `flex transition-all duration-100 ease-in-out gap-3 rounded-xl py-3.5 px-4 ${
                                         isActive
-                                            ? "border-l-[6px] bg-gray-200 border-primary font-semibold cursor-default"
+                                            ? "border-l-[6px] bg-gray-100 border-primary font-semibold cursor-default"
                                             : "text-neutral hover:bg-gray-100 transition-colors"
                                     }`
                                 }

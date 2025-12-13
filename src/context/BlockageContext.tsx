@@ -84,9 +84,7 @@ export function BlockageProvider({ children }: { children: ReactNode }) {
 export const useWaterwayContext = () => {
     const context = useContext(WaterwayContext);
     if (context === undefined) {
-        throw new Error(
-            "useWaterwayContext must be used within a WaterwayProvider"
-        );
+        throw new Error("useWaterwayContext must be used within a BlockageProvider");
     }
     return context;
 };
