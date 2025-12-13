@@ -35,7 +35,7 @@ export default function BlockageStatusCard(): React.JSX.Element {
 
     return (
         <Card>
-            <CardHeaderText label="CURRENT STATUS" />
+            <CardHeaderText label="BLOCKAGE STATUS" />
             <StatusText />
             <ProgressBar />
         </Card>

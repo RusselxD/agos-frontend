@@ -14,6 +14,17 @@ body {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     }
 
+    .custom-button {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        transition-property: color, background-color, border-color,
+            text-decoration-color, fill, stroke;
+        transition-timing-function: ease-in-out;
+        transition-duration: 150ms;
+    }
+
     .pulse-circle {
         position: relative;
     }

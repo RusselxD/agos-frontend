@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import AlertLogs from "./pages/AlertLogs";
-import Calibration from "./pages/Calibration";
+import Sensor from "./pages/Sensor";
 import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
 import { WeatherProvider } from "./context/WeatherContext";
@@ -58,8 +58,8 @@ export const router = createBrowserRouter([
                 element: <AlertLogs />,
             },
             {
-                path: "calibration",
-                element: <Calibration />,
+                path: "sensor",
+                element: <Sensor />,
             },
             {
                 path: "settings",
