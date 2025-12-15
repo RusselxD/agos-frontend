@@ -12,6 +12,7 @@ import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
 import { VideoProvider } from "./context/VideoContext";
 import AuthLayout from "./layouts/AuthLayout";
 import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Login/>
+                element: <Login />,
             },
         ],
     },
@@ -32,17 +33,19 @@ export const router = createBrowserRouter([
             // WaterLevelProvider = for water level sensor data
             //
             // FusionAnalysisProvider = for fusion analysis data
-            <BlockageProvider>
-                <VideoProvider>
-                    <WeatherProvider>
-                        <WaterLevelProvider>
-                            <FusionAnalysisProvider>
-                                <MainLayout />
-                            </FusionAnalysisProvider>
-                        </WaterLevelProvider>
-                    </WeatherProvider>
-                </VideoProvider>
-            </BlockageProvider>
+            <ProtectedRoute>
+                <BlockageProvider>
+                    <VideoProvider>
+                        <WeatherProvider>
+                            <WaterLevelProvider>
+                                <FusionAnalysisProvider>
+                                    <MainLayout />
+                                </FusionAnalysisProvider>
+                            </WaterLevelProvider>
+                        </WeatherProvider>
+                    </VideoProvider>
+                </BlockageProvider>
+            </ProtectedRoute>
         ),
         children: [
             {
