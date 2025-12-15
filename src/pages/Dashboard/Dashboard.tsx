@@ -5,8 +5,12 @@ import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
 import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 import FusionAnalysis from "./components/FusionAnalysis";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Dashboard(): React.JSX.Element {
+    const { user } = useAuth();
+    console.log(user);
+
     return (
         <div className="flex flex-col gap-3">
             <Header />
@@ -18,7 +22,7 @@ export default function Dashboard(): React.JSX.Element {
                     <WaterLevelStatusCard />
                 </div>
             </div>
-            <FusionAnalysis/>
+            <FusionAnalysis />
         </div>
     );
 }
