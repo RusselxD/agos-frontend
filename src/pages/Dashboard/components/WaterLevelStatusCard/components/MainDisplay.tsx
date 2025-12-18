@@ -1,6 +1,4 @@
-import React from "react";
 import "../style.css";
-
 import { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from "lucide-react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 
@@ -8,7 +6,7 @@ const capitalizeFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const AlertCapsule = (): React.JSX.Element => {
+const AlertCapsule = () => {
     const { sensorData } = useWaterLevel();
     const alert = sensorData?.alert.level || "";
 
@@ -55,7 +53,7 @@ const AlertCapsule = (): React.JSX.Element => {
     );
 };
 
-const LevelInfo = (): React.JSX.Element => {
+const LevelInfo = () => {
     const { sensorData } = useWaterLevel();
     const level = sensorData?.waterLevel.trend || "stable";
 
@@ -141,7 +139,7 @@ const GaugeDisplay = () => {
     );
 };
 
-export default function MainDisplay(): React.JSX.Element {
+export default function MainDisplay() {
     const { sensorData } = useWaterLevel();
 
     return (

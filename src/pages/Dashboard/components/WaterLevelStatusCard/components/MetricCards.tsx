@@ -1,4 +1,3 @@
-import React from "react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 
 type StatCardProps = {
@@ -7,7 +6,7 @@ type StatCardProps = {
     desc: string;
 };
 
-const StatCard = ({ title, data, desc }: StatCardProps): React.JSX.Element => {
+const StatCard = ({ title, data, desc }: StatCardProps) => {
     return (
         <div className="border w-full rounded-md bg-gray-100/60 border-gray-300 px-4 py-3">
             <p className="text-sm font-medium text-gray-700">{title}</p>
@@ -17,7 +16,7 @@ const StatCard = ({ title, data, desc }: StatCardProps): React.JSX.Element => {
     );
 };
 
-export default function MetricCards(): React.JSX.Element {
+export default function MetricCards() {
     const { sensorData } = useWaterLevel();
 
     const getTitleAndDesc = (): {

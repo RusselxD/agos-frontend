@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { authAPI } from "../lib/api/auth";
 import type { LoginCredentials, LoginResponse } from "../lib/api/auth";
 
@@ -19,49 +20,44 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export function AuthProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}): React.JSX.Element {
-    const decodeToken = (token: string): TokenClaims | null => {
-        try {
-            const payload = token.split(".")[1];
-            const decoded = JSON.parse(atob(payload));
-            return decoded as TokenClaims;
-        } catch (error) {
-            console.error("Failed to decode token:", error);
-            return null;
-        }
-    };
+const decodeToken = (token: string): TokenClaims | null => {
+    try {
+        const payload = token.split(".")[1];
+        const decoded = JSON.parse(atob(payload));
+        return decoded as TokenClaims;
+    } catch (error) {
+        console.error("Failed to decode token:", error);
+        return null;
+    }
+};
 
-    const isTokenValid = (token: string): boolean => {
-        const claims = decodeToken(token);
-        if (!claims) return false;
+const isTokenValid = (token: string): boolean => {
+    const claims = decodeToken(token);
+    if (!claims) return false;
 
-        const currentTime = Math.floor(Date.now() / 1000);
-        return claims.exp > currentTime;
-    };
+    const currentTime = Math.floor(Date.now() / 1000);
+    return claims.exp > currentTime;
+};
 
-    const initializeAuth = (): {
-        isAuth: boolean;
-        user: TokenClaims | null;
-    } => {
-        const token = localStorage.getItem("authToken");
-        if (!token || !isTokenValid(token)) {
-            localStorage.removeItem("authToken");
-            return { isAuth: false, user: null };
-        }
-        return { isAuth: true, user: decodeToken(token) };
-    };
+const initializeAuth = (): {
+    isAuth: boolean;
+    user: TokenClaims | null;
+} => {
+    const token = localStorage.getItem("authToken");
+    if (!token || !isTokenValid(token)) {
+        localStorage.removeItem("authToken");
+        return { isAuth: false, user: null };
+    }
+    return { isAuth: true, user: decodeToken(token) };
+};
 
+export function AuthProvider({ children }: { children: ReactNode }) {
     // Initialize auth state from localStorage
     // Runs only once on component mount
     const { isAuth, user: initialUser } = initializeAuth();
 
     const [user, setUser] = useState<TokenClaims | null>(initialUser);
-    const [isAuthenticated, setIsAuthenticated] =
-        React.useState<boolean>(isAuth);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(isAuth);
 
     const login = async (
         phoneNumber: string,

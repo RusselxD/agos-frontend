@@ -1,7 +1,7 @@
 import { Clock } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const MapPinFilled = ({ className }: { className?: string }): React.JSX.Element => (
+const MapPinFilled = ({ className }: { className?: string }) => (
     <svg
         width="24"
         height="24"
@@ -18,7 +18,7 @@ const MapPinFilled = ({ className }: { className?: string }): React.JSX.Element 
     </svg>
 );
 
-const Location = (): React.JSX.Element => {
+const Location = () => {
     return (
         <div className="bg-white custom-shadow rounded-lg w-fit flex items-start justify-center py-3 pl-4 pr-32 gap-1 font-medium">
             <MapPinFilled className="text-red-500" />
@@ -29,7 +29,7 @@ const Location = (): React.JSX.Element => {
     );
 };
 
-const SystemStatus = (): React.JSX.Element => {
+const SystemStatus = () => {
     return (
         <div className="flex items-center gap-2">
             <span className="rounded-full w-5 h-5 bg-emerald-500"></span>
@@ -38,7 +38,7 @@ const SystemStatus = (): React.JSX.Element => {
     );
 };
 
-const ClockDisplay = (): React.JSX.Element => {
+const ClockDisplay = () => {
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
@@ -68,7 +68,7 @@ const ClockDisplay = (): React.JSX.Element => {
     );
 };
 
-export default function Header(): React.JSX.Element {
+export default function Header() {
     return (
         <div>
             <div className="font-bold flex items-center justify-between mb-2">

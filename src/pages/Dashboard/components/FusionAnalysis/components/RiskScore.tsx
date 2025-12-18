@@ -1,4 +1,3 @@
-import React from "react";
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 
 const getData = () => {
@@ -28,7 +27,7 @@ const getData = () => {
     return { combined_risk_score, getBarColor, getTextColor };
 };
 
-const HeadLabels = (): React.JSX.Element => {
+const HeadLabels = () => {
     const { combined_risk_score, getTextColor } = getData();
 
     return (
@@ -45,7 +44,7 @@ const HeadLabels = (): React.JSX.Element => {
     );
 };
 
-const ProgressBarSegment = (): React.JSX.Element => {
+const ProgressBarSegment = () => {
     const { combined_risk_score, getBarColor } = getData();
 
     return (
@@ -60,7 +59,7 @@ const ProgressBarSegment = (): React.JSX.Element => {
     );
 };
 
-const Labels = (): React.JSX.Element => {
+const Labels = () => {
     const { alertThresholds } = useFusionAnalysis();
 
     return (
@@ -74,7 +73,7 @@ const Labels = (): React.JSX.Element => {
     );
 };
 
-export default function RiskScore(): React.JSX.Element {
+export default function RiskScore() {
     return (
         <div className="rounded-lg p-4 bg-gray-100 flex flex-col gap-1">
             <HeadLabels />

@@ -1,4 +1,3 @@
-import React from "react";
 import {
     AlertCircle,
     AlertTriangle,
@@ -47,7 +46,7 @@ const getTierConfig = (tier: number) => {
     return tierConfig[tier] ?? tierConfig[1];
 };
 
-export default function AlertTierContainer(): React.JSX.Element {
+export default function AlertTierContainer() {
     const { analysisData } = useFusionAnalysis();
 
     const { alert_tier, alert_name } = analysisData?.fusionData || {};

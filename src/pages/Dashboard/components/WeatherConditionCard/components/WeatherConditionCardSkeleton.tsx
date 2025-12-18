@@ -1,8 +1,7 @@
-import React from "react";
 import Card from "../../ui/Card";
-import CardHeaderText from "../../ui/CardHeaderText";
+import { CardHeaderText } from "../../ui/Card";
 
-export default function WeatherConditionCardSkeleton(): React.JSX.Element {
+export default function WeatherConditionCardSkeleton() {
     return (
         <Card>
             <CardHeaderText label="WEATHER CONDITION" />

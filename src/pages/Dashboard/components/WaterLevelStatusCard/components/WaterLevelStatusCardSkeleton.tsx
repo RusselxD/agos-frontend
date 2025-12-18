@@ -1,8 +1,7 @@
-import React from "react";
 import Card from "../../ui/Card";
-import CardHeaderText from "../../ui/CardHeaderText";
+import { CardHeaderText } from "../../ui/Card";
 
-export default function WaterLevelStatusCardSkeleton(): React.JSX.Element {
+export default function WaterLevelStatusCardSkeleton() {
     return (
         <Card className=" bg-white">
             <CardHeaderText label="WATER LEVEL STATUS" />

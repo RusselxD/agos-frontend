@@ -1,8 +1,8 @@
 import { useWaterwayContext } from "../../../../../context/BlockageContext";
-import type { Status } from "../../../../../lib/types/blockage";
+import type { Status } from "../../../../../types/blockage";
 import { barColors, getLevelCount } from "../BlockageStatusCard";
 
-export default function StatusText(): React.JSX.Element {
+export default function StatusText() {
     const { status } = useWaterwayContext();
 
     const getStatusColor = (status: Status | null): string => {

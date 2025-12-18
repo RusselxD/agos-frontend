@@ -1,14 +1,15 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 interface CardProps {
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
 }
 
-export default function Card({
-    children,
-    className,
-}: CardProps): React.JSX.Element {
+const CardHeaderText = ({ label }: { label: string }) => {
+    return <p className="text-sm text-gray-500 font-semibold">{label}</p>;
+};
+
+export default function Card({ children, className }: CardProps) {
     return (
         <div
             className={`custom-shadow border border-gray-300 rounded-md p-4 flex flex-col justify-between ${
@@ -19,3 +20,5 @@ export default function Card({
         </div>
     );
 }
+
+export { CardHeaderText };

@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import getTimeAgo from "../../../../../lib/utils/getTimeAgo";
 
-export default function LastUpdatedInfo({
-    timestamp,
-}: {
-    timestamp: string;
-}): React.JSX.Element {
+export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
     const [timeAgo, setTimeAgo] = useState<string>(getTimeAgo(timestamp));
 
     useEffect(() => {

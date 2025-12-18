@@ -24,7 +24,7 @@ const normalizePhoneNumber = (input: string): string => {
     }
 };
 
-const RegisterAsResponder = (): React.JSX.Element => {
+const RegisterAsResponder = () => {
     return (
         <p className="w-full text-center text-sm -mt-5 font-semibold">
             <span>REGISTER AS </span>
@@ -45,7 +45,7 @@ const PhoneNumberInput = ({
     phoneNumber,
     handleInputNumber,
     normalizedPhoneNumber,
-}: PhoneNumberInputProps): React.JSX.Element => {
+}: PhoneNumberInputProps) => {
     return (
         <label className="flex flex-col relative">
             <span className="text-sm text-gray-700 mb-1 font-semibold">
@@ -101,10 +101,7 @@ interface PasswordInputProps {
     setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const PasswordInput = ({
-    password,
-    setPassword,
-}: PasswordInputProps): React.JSX.Element => {
+const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
     return (
         <label className="flex flex-col">
             <span className="text-sm text-gray-700 font-semibold">
@@ -121,7 +118,7 @@ const PasswordInput = ({
     );
 };
 
-export default function LoginForm(): React.JSX.Element {
+export default function LoginForm() {
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -181,8 +178,9 @@ export default function LoginForm(): React.JSX.Element {
             <PasswordInput password={password} setPassword={setPassword} />
 
             <button
+                disabled={normalizedPhoneNumber.length < 12 || !password}
                 type="submit"
-                className="bg-accent rounded-xl hover:bg-accent/90 transition-colors py-3 px-8 text-gray-100"
+                className="bg-accent rounded-xl hover:bg-accent/90 transition-colors py-3 px-8 text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-accent"
             >
                 Login
             </button>

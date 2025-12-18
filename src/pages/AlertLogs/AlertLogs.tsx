@@ -1,5 +1,5 @@
-import React from "react";
 
-export default function AlertLogs(): React.JSX.Element {
+
+export default function AlertLogs() {
     return <div>AlertLogs</div>;
 }

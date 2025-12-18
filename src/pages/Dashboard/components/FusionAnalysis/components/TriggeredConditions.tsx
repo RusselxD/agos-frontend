@@ -1,4 +1,3 @@
-import React from "react";
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 import { CircleCheck } from "lucide-react";
 
@@ -13,9 +12,9 @@ const getIconColor = (alert_tier: number): string => {
         default:
             return "text-gray-500";
     }
-}
+};
 
-export default function TriggeredConditions(): React.JSX.Element {
+export default function TriggeredConditions() {
     const { analysisData } = useFusionAnalysis();
 
     const conditions = analysisData?.triggeredConditions || [];
@@ -30,7 +29,10 @@ export default function TriggeredConditions(): React.JSX.Element {
                 {conditions.map((condition, i) => {
                     return (
                         <li key={i} className="flex items-center gap-1">
-                            <CircleCheck size={18} className={getIconColor(alert_tier)} />
+                            <CircleCheck
+                                size={18}
+                                className={getIconColor(alert_tier)}
+                            />
                             <span className="text-gray-900">{condition}</span>
                         </li>
                     );

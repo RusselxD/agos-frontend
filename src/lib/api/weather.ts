@@ -1,4 +1,4 @@
-import type { WeatherData } from "../types/weather";
+import type { WeatherData } from "../../types/weather";
 import { getWeatherInfo } from "../utils/getWeatherInfo";
 
 export const fetchWeatherData = async ({

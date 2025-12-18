@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useVideoContext } from "../../../context/VideoContext";
 
-const Header = (): React.JSX.Element => {
+const Header = () => {
     return (
         <div className="flex items-center justify-between font-semibold mb-2">
             <p className="text-neutral-600">LIVE VISION FEED</p>
@@ -13,7 +13,7 @@ const Header = (): React.JSX.Element => {
     );
 };
 
-const VideoPlaceholder = (): React.JSX.Element => {
+const VideoPlaceholder = () => {
     const { attachVideoContainer, detachVideoContainer, isLoading, error } =
         useVideoContext();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ const VideoPlaceholder = (): React.JSX.Element => {
 
             {/* The video element is appended here by the context */}
 
-            {/* Optional: Stream info overlay */}
+            {/* Stream info overlay */}
             <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded text-sm z-20 pointer-events-none">
                 Cam.01: Maysan Creek 1
             </div>
@@ -60,7 +60,7 @@ const VideoPlaceholder = (): React.JSX.Element => {
     );
 };
 
-export default function VideoContainer(): React.JSX.Element {
+export default function VideoContainer() {
     return (
         <div className="bg-white shadow-lg p-5 flex-1 rounded-md">
             <Header />
