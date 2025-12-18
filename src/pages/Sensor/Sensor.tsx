@@ -1,7 +1,6 @@
-import React from "react";
 import CalibrationCard from "./components/CalibrationCard";
 
-export default function Sensor(): React.JSX.Element {
+export default function Sensor() {
     return (
         <div>
             <CalibrationCard />

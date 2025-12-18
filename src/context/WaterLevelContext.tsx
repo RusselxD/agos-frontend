@@ -7,7 +7,7 @@ import {
     useState,
     type ReactNode,
 } from "react";
-import type { SensorData, SensorThresholds } from "../lib/types/sensor";
+import type { SensorData, SensorThresholds } from "../types/sensor";
 import { sampleSensorAPI } from "../lib/api/sensor";
 
 interface WaterLevelContextValue {
@@ -24,11 +24,7 @@ const WaterLevelContext = createContext<WaterLevelContextValue | undefined>(
     undefined
 );
 
-export function WaterLevelProvider({
-    children,
-}: {
-    children: ReactNode;
-}): React.JSX.Element {
+export function WaterLevelProvider({ children }: { children: ReactNode }) {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
     const [sensorConfig, setSensorConfig] = useState<SensorThresholds | null>(
         null

@@ -1,8 +1,7 @@
-import React from "react";
 import Card from "../../ui/Card";
-import CardHeaderText from "../../ui/CardHeaderText";
+import { CardHeaderText } from "../../ui/Card";
 
-export default function BlockageStatusCardSkeleton(): React.JSX.Element {
+export default function BlockageStatusCardSkeleton() {
     return (
         <Card>
             <CardHeaderText label="CURRENT STATUS" />

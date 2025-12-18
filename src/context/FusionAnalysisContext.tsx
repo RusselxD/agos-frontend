@@ -5,11 +5,14 @@ import {
     useMemo,
     useRef,
     useState,
+    type ReactNode,
 } from "react";
+
 import type {
     AlertThresholds,
     FusionAnalysisData,
-} from "../lib/types/fusionAnalysis";
+} from "../types/fusionAnalysis";
+
 import { sampleFusionAnalysisAPI } from "../lib/api/fusionAnalysis";
 
 interface FusionAnalysisContextValue {
@@ -23,11 +26,7 @@ const FusionAnalysisContext = createContext<
     FusionAnalysisContextValue | undefined
 >(undefined);
 
-export function FusionAnalysisProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
     const [analysisData, setAnalysisData] = useState<FusionAnalysisData | null>(
         null
     );

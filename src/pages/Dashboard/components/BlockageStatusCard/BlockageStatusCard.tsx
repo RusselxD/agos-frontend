@@ -1,7 +1,6 @@
-import React from "react";
-import CardHeaderText from "../ui/CardHeaderText";
+import { CardHeaderText } from "../ui/Card";
 import Card from "../ui/Card";
-import type { Status } from "../../../../lib/types/blockage";
+import type { Status } from "../../../../types/blockage";
 import ProgressBar from "./components/ProgressBar";
 import StatusText from "./components/StatusText";
 import { useWaterwayContext } from "../../../../context/BlockageContext";
@@ -22,7 +21,7 @@ export const getLevelCount = (status: Status | null): number => {
     }
 };
 
-export default function BlockageStatusCard(): React.JSX.Element {
+export default function BlockageStatusCard() {
     const { isFetching, error } = useWaterwayContext();
 
     if (isFetching) {

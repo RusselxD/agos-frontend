@@ -13,6 +13,7 @@ import { VideoProvider } from "./context/VideoContext";
 import AuthLayout from "./layouts/AuthLayout";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Admins from "./pages/Admins";
 
 export const router = createBrowserRouter([
     {
@@ -64,13 +65,18 @@ export const router = createBrowserRouter([
                 path: "sensor",
                 element: <Sensor />,
             },
-            {
-                path: "settings",
-                element: <Settings />,
-            },
+
             {
                 path: "responders",
                 element: <Responders />,
+            },
+            {
+                path: "admins",
+                element: <Admins />,
+            },
+            {
+                path: "settings",
+                element: <Settings />,
             },
         ],
     },

@@ -1,8 +1,6 @@
 import type { WeatherProps } from "../WeatherConditionCard";
 
-export default function WeatherCondition({
-    weather,
-}: WeatherProps): React.JSX.Element {
+export default function WeatherCondition({ weather }: WeatherProps) {
     return (
         <div className="flex gap-2 items-center">
             <weather.icon size={40} className={weather.color} />

@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "./components/Header";
 import VideoContainer from "./components/VideoContainer";
 import BlockageStatusCard from "./components/BlockageStatusCard";
@@ -7,7 +6,7 @@ import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 import FusionAnalysis from "./components/FusionAnalysis";
 import { useAuth } from "../../context/AuthContext";
 
-export default function Dashboard(): React.JSX.Element {
+export default function Dashboard() {
     const { user } = useAuth();
     console.log(user);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Settings, Users, FileCheck, MonitorDot, Waves } from "lucide-react";
+import { Settings, Users, FileCheck, MonitorDot, Waves, UserStar } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -29,6 +29,11 @@ const tabs = [
         name: "Responders",
         path: "/admin/responders",
         icon: Users,
+    },
+    {
+        name: "Admins",
+        path: "/admin/admins",
+        icon: UserStar,
     },
     {
         name: "Settings",

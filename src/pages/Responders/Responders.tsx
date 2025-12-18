@@ -1,5 +1,3 @@
-import React from "react";
-
-export default function Responders(): React.JSX.Element {
+export default function Responders() {
     return <div>Responders</div>;
 }

@@ -1,19 +1,14 @@
 import { Activity, Clock, Power, Wifi } from "lucide-react";
-import React from "react";
+import type { ReactNode } from "react";
 
 interface StatusCardPropd {
-    icon: React.ReactNode;
+    icon: ReactNode;
     title: string;
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
 }
 
-const StatusCard = ({
-    icon,
-    title,
-    children,
-    className,
-}: StatusCardPropd): React.JSX.Element => {
+const StatusCard = ({ icon, title, children, className }: StatusCardPropd) => {
     return (
         <div className={`bg-white px-4 py-5 ${className}`}>
             <div className="flex items-center gap-4">
@@ -25,11 +20,11 @@ const StatusCard = ({
     );
 };
 
-const StatusText = ({ text }: { text: string }): React.JSX.Element => {
+const StatusText = ({ text }: { text: string }) => {
     return <p className="font-semibold  ml-12">{text}</p>;
 };
 
-const ConnectionContainer = (): React.JSX.Element => {
+const ConnectionContainer = () => {
     return (
         <StatusCard
             icon={
@@ -42,7 +37,7 @@ const ConnectionContainer = (): React.JSX.Element => {
     );
 };
 
-const LastUpdatedContainer = (): React.JSX.Element => {
+const LastUpdatedContainer = () => {
     return (
         <StatusCard
             icon={
@@ -55,7 +50,7 @@ const LastUpdatedContainer = (): React.JSX.Element => {
     );
 };
 
-const SignalContainer = (): React.JSX.Element => {
+const SignalContainer = () => {
     return (
         <StatusCard
             icon={
@@ -75,7 +70,7 @@ const SignalContainer = (): React.JSX.Element => {
     );
 };
 
-const HealthContainer = (): React.JSX.Element => {
+const HealthContainer = () => {
     return (
         <StatusCard
             icon={
@@ -88,7 +83,7 @@ const HealthContainer = (): React.JSX.Element => {
     );
 };
 
-export default function StatusContainer(): React.JSX.Element {
+export default function StatusContainer() {
     return (
         <div className="border bg-gray-50 borde border-gray-300 rounded-md p-3">
             <h1 className="flex items-center font-medium text-gray-700 gap-2 mb-2">

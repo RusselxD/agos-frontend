@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import type { Status } from "../types/blockage";
+import type { Status } from "../../types/blockage";
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
@@ -25,7 +25,7 @@ export const sampleBlockageAPI = {
             latestFrameBase64,
             "image/jpeg"
         );
-        
+
         const prompt = `
             Analyze the image of the stream. Classify the waterway's flow status.
             Rules: **Clear**: Water is flowing freely, minimal to no debris.
@@ -42,7 +42,7 @@ export const sampleBlockageAPI = {
 
         const statusText = res.text ?? ""; // Default to an empty string if res.text is undefined
         const status = statusText.trim();
-        
+
         if (["Clear", "Partial", "Blocked"].includes(status)) {
             return status as Status;
         } else {

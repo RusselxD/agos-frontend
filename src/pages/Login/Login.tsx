@@ -1,7 +1,6 @@
-import React from "react";
 import LoginForm from "./components/LoginForm";
 
-const LoginHeader = (): React.JSX.Element => {
+const LoginHeader = () => {
     return (
         <div className="flex flex-col items-center gap-2">
             <img
@@ -17,7 +16,7 @@ const LoginHeader = (): React.JSX.Element => {
     );
 };
 
-export default function Login(): React.JSX.Element {
+export default function Login() {
     return (
         <div className="flex-1 py-10 px-40 flex flex-col gap-14 items-center justify-center">
             <LoginHeader />

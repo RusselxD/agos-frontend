@@ -1,7 +1,6 @@
-import React from "react";
 import Card from "../ui/Card";
-import CardHeaderText from "../ui/CardHeaderText";
-import type { WeatherData } from "../../../../lib/types/weather";
+import { CardHeaderText } from "../ui/Card";
+import type { WeatherData } from "../../../../types/weather";
 import WeatherCondition from "./components/WeatherCondition";
 import PrecipitationInfo from "./components/PrecipitationInfo";
 import LastUpdatedInfo from "./components/LastUpdatedInfo";
@@ -12,13 +11,11 @@ export type WeatherProps = {
     weather: WeatherData;
 };
 
-export default function WeatherConditionCard(): React.JSX.Element {
+export default function WeatherConditionCard() {
     const { weatherData, isFetching } = useWeather();
 
     if (isFetching || !weatherData) {
-        return (
-            <WeatherConditionCardSkeleton/>
-        );
+        return <WeatherConditionCardSkeleton />;
     }
 
     return (

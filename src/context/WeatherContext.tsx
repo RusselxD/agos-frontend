@@ -5,8 +5,9 @@ import {
     useMemo,
     createContext,
     useContext,
+    type ReactNode,
 } from "react";
-import type { WeatherData } from "../lib/types/weather";
+import type { WeatherData } from "../types/weather";
 import { getCurrentLocation } from "../lib/utils/getCurrentLocation";
 import { fetchWeatherData } from "../lib/api/weather";
 
@@ -20,11 +21,7 @@ const WeatherContext = createContext<WeatherContextValue | undefined>(
     undefined
 );
 
-export function WeatherProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}): React.JSX.Element {
+export function WeatherProvider({ children }: { children: ReactNode }) {
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);

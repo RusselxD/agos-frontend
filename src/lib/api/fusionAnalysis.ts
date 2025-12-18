@@ -1,7 +1,7 @@
 import type {
     AlertThresholds,
     FusionAnalysisData,
-} from "../types/fusionAnalysis";
+} from "../../types/fusionAnalysis";
 export const sampleFusionAnalysisAPI = {
     getAnalysisThresholds: async (): Promise<AlertThresholds> => {
         return {

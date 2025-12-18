@@ -1,8 +1,7 @@
-import React from "react";
 import { barColors, getLevelCount } from "../BlockageStatusCard";
 import { useWaterwayContext } from "../../../../../context/BlockageContext";
 
-export default function ProgressBar(): React.JSX.Element {
+export default function ProgressBar() {
     const { status } = useWaterwayContext();
     const barCount = getLevelCount(status);
 

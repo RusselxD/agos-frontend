@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 import { Minus, TrendingDown, TrendingUp, type LucideIcon } from "lucide-react";
 
@@ -17,11 +17,11 @@ const getWaterLevelTrendIcon = (trend: string): LucideIcon => {
 
 interface StatCardProps {
     title: string;
-    value: string | React.ReactNode;
+    value: string | ReactNode;
     desc?: string;
 }
 
-const StatCard = ({ title, value, desc }: StatCardProps): React.JSX.Element => {
+const StatCard = ({ title, value, desc }: StatCardProps) => {
     return (
         <div className="bg-gray-100 p-4 rounded-md">
             <p className="text-sm text-gray-600">{title}</p>
@@ -31,7 +31,7 @@ const StatCard = ({ title, value, desc }: StatCardProps): React.JSX.Element => {
     );
 };
 
-export default function DecisionFactorsGrid(): React.JSX.Element {
+export default function DecisionFactorsGrid() {
     const { analysisData } = useFusionAnalysis();
 
     const WaterLevelTrendIcon = getWaterLevelTrendIcon(

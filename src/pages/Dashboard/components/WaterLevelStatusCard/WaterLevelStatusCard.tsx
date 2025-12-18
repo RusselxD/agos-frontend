@@ -1,12 +1,11 @@
-import React from "react";
 import Card from "../ui/Card";
-import CardHeaderText from "../ui/CardHeaderText";
+import { CardHeaderText } from "../ui/Card";
 import MainDisplay from "./components/MainDisplay";
 import MetricCards from "./components/MetricCards";
 import { useWaterLevel } from "../../../../context/WaterLevelContext";
 import WaterLevelStatusCardSkeleton from "./components/WaterLevelStatusCardSkeleton";
 
-export default function WaterLevelStatusCard(): React.JSX.Element {
+export default function WaterLevelStatusCard() {
     const { isFetchingData, isFetchingConfig, error } = useWaterLevel();
 
     if (isFetchingConfig || isFetchingData) {

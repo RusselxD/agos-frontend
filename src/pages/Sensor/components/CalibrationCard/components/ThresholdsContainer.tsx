@@ -1,13 +1,13 @@
 import { AlertTriangle, Bell, Gauge } from "lucide-react";
-import React from "react";
+import type { ReactNode } from "react";
 import { useCalibrationCard } from "../context/CalibrationCardContext";
 
 interface ThresholdCardProps {
     title: string;
     desc: string;
-    icon: React.ReactNode;
+    icon: ReactNode;
     className?: string;
-    children?: React.ReactNode;
+    children?: ReactNode;
 }
 
 const ThresholdCard = ({
@@ -16,7 +16,7 @@ const ThresholdCard = ({
     icon,
     className,
     children,
-}: ThresholdCardProps): React.JSX.Element => {
+}: ThresholdCardProps) => {
     return (
         <div
             className={`rounded-md p-3 flex items-center gap-5 border ${className}`}
@@ -31,13 +31,13 @@ const ThresholdCard = ({
     );
 };
 
-const HeightDisplay = ({ height }: { height: number }): React.JSX.Element => {
+const HeightDisplay = ({ height }: { height: number }) => {
     return (
         <p className="px-3 py-2 w-3/4 rounded-md bg-white border border-gray-300">{`${height} cm`}</p>
     );
 };
 
-const InstallationHeightCard = (): React.JSX.Element => {
+const InstallationHeightCard = () => {
     // 1. User clicks "Auto" button
     // 2. Frontend sends request to Raspberry Pi API
     // 3. Pi triggers ultrasonic sensor to take reading
@@ -65,7 +65,7 @@ const InstallationHeightCard = (): React.JSX.Element => {
     );
 };
 
-const WarningThresholdCard = (): React.JSX.Element => {
+const WarningThresholdCard = () => {
     const { isEditing, warningThreshold } = useCalibrationCard();
 
     return (
@@ -84,7 +84,7 @@ const WarningThresholdCard = (): React.JSX.Element => {
     );
 };
 
-const CriticalThresholdCard = (): React.JSX.Element => {
+const CriticalThresholdCard = () => {
     const { isEditing, criticalThreshold } = useCalibrationCard();
 
     return (
@@ -105,7 +105,7 @@ const CriticalThresholdCard = (): React.JSX.Element => {
     );
 };
 
-export default function ThresholdsContainer(): React.JSX.Element {
+export default function ThresholdsContainer() {
     const { isEditing, setIsEditing, handleSaveChanges } = useCalibrationCard();
 
     return (

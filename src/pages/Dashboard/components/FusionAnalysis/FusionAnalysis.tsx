@@ -1,5 +1,4 @@
 import { Activity } from "lucide-react";
-import React from "react";
 import { useFusionAnalysis } from "../../../../context/FusionAnalysisContext";
 import getTimeAgo from "../../../../lib/utils/getTimeAgo";
 import AlertTierContainer from "./components/AlertTierContainer";
@@ -7,7 +6,7 @@ import RiskScore from "./components/RiskScore";
 import DecisionFactorsGrid from "./components/DecisionFactorsGrid";
 import TriggeredConditions from "./components/TriggeredConditions";
 
-const Header = (): React.JSX.Element => {
+const Header = () => {
     const { timestamp } = useFusionAnalysis().analysisData?.fusionData ?? {
         timestamp: "",
     };
@@ -27,7 +26,7 @@ const Header = (): React.JSX.Element => {
     );
 };
 
-export default function FusionAnalysis(): React.JSX.Element {
+export default function FusionAnalysis() {
     return (
         <div className="w-full bg-white custom-shadow border border-gray-300 rounded-md p-5 space-y-3">
             <Header />

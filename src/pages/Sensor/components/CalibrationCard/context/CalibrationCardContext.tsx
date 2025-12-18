@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 
 interface CalibrationCardContextValue {
     warningThreshold: number;
@@ -19,11 +20,7 @@ const CalibrationCardContext = createContext<
     CalibrationCardContextValue | undefined
 >(undefined);
 
-export function CalibrationCardProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}): React.JSX.Element {
+export function CalibrationCardProvider({ children }: { children: ReactNode }) {
     const [warningThreshold, setWarningThreshold] = useState<number>(0);
     const [criticalThreshold, setCriticalThreshold] = useState<number>(0);
     const [installationHeight, setInstallationHeight] = useState<number>(0);
@@ -33,7 +30,7 @@ export function CalibrationCardProvider({
     const handleSaveChanges = () => {
         // Implement save logic here
         setIsEditing(false);
-    }
+    };
 
     const contextValue = useMemo(
         () => ({
@@ -60,7 +57,9 @@ export function CalibrationCardProvider({
 export const useCalibrationCard = () => {
     const context = useContext(CalibrationCardContext);
     if (!context) {
-        throw new Error("useCalibrationCard must be used within a CalibrationCardProvider");
+        throw new Error(
+            "useCalibrationCard must be used within a CalibrationCardProvider"
+        );
     }
     return context;
 };
