@@ -19,11 +19,7 @@ const StatCard = ({ title, data, desc }: StatCardProps) => {
 export default function MetricCards() {
     const { sensorData } = useWaterLevel();
 
-    const getTitleAndDesc = (): {
-        title: string;
-        data: number;
-        desc: string;
-    } => {
+    const getTitleAndDesc = (): StatCardProps => {
         switch (sensorData?.alert.level) {
             case "normal":
                 return {

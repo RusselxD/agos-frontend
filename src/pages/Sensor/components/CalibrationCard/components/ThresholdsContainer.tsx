@@ -1,6 +1,7 @@
 import { AlertTriangle, Bell, Gauge } from "lucide-react";
 import type { ReactNode } from "react";
 import { useCalibrationCard } from "../context/CalibrationCardContext";
+import ContainerHeader from "../../../../../components/ui/ContainerHeader";
 
 interface ThresholdCardProps {
     title: string;
@@ -31,7 +32,31 @@ const ThresholdCard = ({
     );
 };
 
-const HeightDisplay = ({ height }: { height: number }) => {
+const HeightInput = ({
+    height,
+    config,
+}: {
+    height: number | undefined;
+    config: string;
+}) => {
+    const { handleUpdateConfig } = useCalibrationCard();
+
+    return (
+        <div className="flex items-center w-full gap-2">
+            <input
+                type="number"
+                className="px-3 py-2 w-full rounded-md border border-gray-300"
+                value={height ?? ""}
+                onChange={(e) =>
+                    handleUpdateConfig(config, e.target.valueAsNumber)
+                }
+            />
+            <span>cm</span>
+        </div>
+    );
+};
+
+const HeightDisplay = ({ height }: { height: number | undefined }) => {
     return (
         <p className="px-3 py-2 w-3/4 rounded-md bg-white border border-gray-300">{`${height} cm`}</p>
     );
@@ -45,7 +70,7 @@ const InstallationHeightCard = () => {
     // 5. Pi sends this value back to frontend
     // 6. Frontend auto-fills the Installation Height field
 
-    const { isEditing, installationHeight } = useCalibrationCard();
+    const { isEditing, originalConfig, newConfig } = useCalibrationCard();
 
     return (
         <ThresholdCard
@@ -57,8 +82,15 @@ const InstallationHeightCard = () => {
             }
         >
             <div>
-                {isEditing ? null : (
-                    <HeightDisplay height={installationHeight} />
+                {isEditing ? (
+                    <HeightInput
+                        height={newConfig?.installation_height}
+                        config="installation_height"
+                    />
+                ) : (
+                    <HeightDisplay
+                        height={originalConfig?.installation_height}
+                    />
                 )}
             </div>
         </ThresholdCard>
@@ -66,7 +98,7 @@ const InstallationHeightCard = () => {
 };
 
 const WarningThresholdCard = () => {
-    const { isEditing, warningThreshold } = useCalibrationCard();
+    const { isEditing, originalConfig, newConfig } = useCalibrationCard();
 
     return (
         <ThresholdCard
@@ -78,14 +110,21 @@ const WarningThresholdCard = () => {
             }
         >
             <div>
-                {isEditing ? null : <HeightDisplay height={warningThreshold} />}
+                {isEditing ? (
+                    <HeightInput
+                        height={newConfig?.warning_threshold}
+                        config="warning_threshold"
+                    />
+                ) : (
+                    <HeightDisplay height={originalConfig?.warning_threshold} />
+                )}
             </div>
         </ThresholdCard>
     );
 };
 
 const CriticalThresholdCard = () => {
-    const { isEditing, criticalThreshold } = useCalibrationCard();
+    const { isEditing, originalConfig, newConfig } = useCalibrationCard();
 
     return (
         <ThresholdCard
@@ -97,8 +136,13 @@ const CriticalThresholdCard = () => {
             }
         >
             <div>
-                {isEditing ? null : (
-                    <HeightDisplay height={criticalThreshold} />
+                {isEditing ? (
+                    <HeightInput
+                        height={newConfig?.critical_threshold}
+                        config="critical_threshold"
+                    />
+                ) : (
+                    <HeightDisplay height={originalConfig?.critical_threshold} />
                 )}
             </div>
         </ThresholdCard>
@@ -106,13 +150,26 @@ const CriticalThresholdCard = () => {
 };
 
 export default function ThresholdsContainer() {
-    const { isEditing, setIsEditing, handleSaveChanges } = useCalibrationCard();
+    const { isFetching, isEditing, setIsEditing, handleSaveChanges } =
+        useCalibrationCard();
+
+    if (isFetching) {
+        return (
+            <div className="space-y-3">
+                <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
+                    SENSOR CONFIGURATION
+                </h2>
+                <div className="skeleton rounded-md w-full h-28"></div>
+                <div className="skeleton rounded-md w-full h-28"></div>
+                <div className="skeleton rounded-md w-full h-28"></div>
+                <div className="skeleton rounded-md w-40 h-12"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-3">
-            <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
-                SENSOR CONFIGURATION
-            </h2>
+            <ContainerHeader title="SENSOR CONFIGURATION" />
             <InstallationHeightCard />
             <WarningThresholdCard />
             <CriticalThresholdCard />
@@ -121,13 +178,13 @@ export default function ThresholdsContainer() {
                     <>
                         <button
                             onClick={() => setIsEditing(false)}
-                            className="custom-button bg-gray-200 hover:bg-gray-300"
+                            className="btn-cancel"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={() => handleSaveChanges()}
-                            className="custom-button hover:bg-primary/90 bg-primary text-white"
+                            className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary"
                         >
                             Save Changes
                         </button>
@@ -135,7 +192,7 @@ export default function ThresholdsContainer() {
                 ) : (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="custom-button hover:bg-primary/90 bg-primary text-white"
+                        className="btn-custom bg-primary text-white hover:bg-primary/90"
                     >
                         Edit Configuration
                     </button>

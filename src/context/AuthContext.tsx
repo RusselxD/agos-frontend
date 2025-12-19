@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../lib/api/auth";
-import type { LoginCredentials, LoginResponse } from "../lib/api/auth";
+import type { LoginCredentials, LoginResponse } from "../types/auth";
 
 interface TokenClaims {
     sub: string;

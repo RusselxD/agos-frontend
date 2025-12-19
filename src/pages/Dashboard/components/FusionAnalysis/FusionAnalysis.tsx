@@ -5,6 +5,7 @@ import AlertTierContainer from "./components/AlertTierContainer";
 import RiskScore from "./components/RiskScore";
 import DecisionFactorsGrid from "./components/DecisionFactorsGrid";
 import TriggeredConditions from "./components/TriggeredConditions";
+import Container from "../../../../components/ui/Container";
 
 const Header = () => {
     const { timestamp } = useFusionAnalysis().analysisData?.fusionData ?? {
@@ -28,12 +29,12 @@ const Header = () => {
 
 export default function FusionAnalysis() {
     return (
-        <div className="w-full bg-white custom-shadow border border-gray-300 rounded-md p-5 space-y-3">
-            <Header />
+        <Container headerTitle="FUSION ANALYSIS" className="space-y-5">
+            {/* <Header /> */}
             <AlertTierContainer />
             <RiskScore />
             <DecisionFactorsGrid />
             <TriggeredConditions />
-        </div>
+        </Container>
     );
 }

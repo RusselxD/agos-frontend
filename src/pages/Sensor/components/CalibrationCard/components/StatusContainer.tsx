@@ -10,7 +10,7 @@ interface StatusCardPropd {
 
 const StatusCard = ({ icon, title, children, className }: StatusCardPropd) => {
     return (
-        <div className={`bg-white px-4 py-5 ${className}`}>
+        <div className={`bg-white border border-gray-300 rounded-md px-4 py-5 h-full ${className}`}>
             <div className="flex items-center gap-4">
                 {icon}
                 <p className="text-gray-500 text-sm font-semibold">{title}</p>
@@ -70,31 +70,30 @@ const SignalContainer = () => {
     );
 };
 
-const HealthContainer = () => {
-    return (
-        <StatusCard
-            icon={
-                <Activity className="p-2 rounded-md bg-cyan-100 text-cyan-600 w-8 h-8" />
-            }
-            title="HEALTH"
-        >
-            <StatusText text="Excellent" />
-        </StatusCard>
-    );
-};
+// const HealthContainer = () => {
+//     return (
+//         <StatusCard
+//             icon={
+//                 <Activity className="p-2 rounded-md bg-cyan-100 text-cyan-600 w-8 h-8" />
+//             }
+//             title="HEALTH"
+//         >
+//             <StatusText text="Excellent" />
+//         </StatusCard>
+//     );
+// };
 
 export default function StatusContainer() {
     return (
-        <div className="border bg-gray-50 borde border-gray-300 rounded-md p-3">
+        <div className="border bg-gray-50 border-gray-300 rounded-md p-3 flex flex-col">
             <h1 className="flex items-center font-medium text-gray-700 gap-2 mb-2">
                 <Activity size={20} />
                 <span>Sensor Status</span>
             </h1>
-            <div className="space-y-2">
+            <div className="grid grid-rows-3 gap-3 flex-1">
                 <ConnectionContainer />
                 <LastUpdatedContainer />
                 <SignalContainer />
-                <HealthContainer />
             </div>
         </div>
     );

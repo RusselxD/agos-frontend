@@ -34,8 +34,7 @@ export function BlockageProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const fetchAnalysis = async () => {
             if (!latestFrameBase64) return;
-            console.log("Hey");
-            console.log(" latestFrameBase64:", latestFrameBase64);
+            
             try {
                 if (isFirstFetch.current) {
                     setIsFetching(true);

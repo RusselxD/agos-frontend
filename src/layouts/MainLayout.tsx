@@ -4,9 +4,9 @@ import Sidebar from "../components/Sidebar";
 
 export default function MainLayout(): React.JSX.Element {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-background flex ">
             <Sidebar />
-            <div className="bg-background border flex-1 min-h-screen ml-56 p-5">
+            <div className="flex-1 ml-56 p-5 ">
                 <Outlet />
             </div>
         </div>
