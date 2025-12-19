@@ -44,7 +44,8 @@ interface Alert {
 // raw_distance_cm is the distance from the sensor to the water surface, so:
 // water_level_cm = SENSOR_HEIGHT_CM - raw_distance_cm
 
-export interface SensorThresholds {
-    warning_cm: number;
-    critical_cm: number;
+export interface SensorConfig {
+    installation_height: number
+    warning_threshold: number;
+    critical_threshold: number;
 }

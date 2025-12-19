@@ -64,8 +64,9 @@ export default function DecisionFactorsGrid() {
                 title="Weather"
                 value={analysisData?.decisionFactors.weather_condition || "N/A"}
                 desc={
-                    `${analysisData?.decisionFactors.weather_precipitation} mm/h` ||
-                    "N/A"
+                    `${analysisData?.decisionFactors.weather_precipitation.toFixed(
+                        1
+                    )} mm/h` || "N/A"
                 }
             />
         </div>

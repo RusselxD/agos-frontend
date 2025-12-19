@@ -24,7 +24,11 @@ const WaterLevelContext = createContext<WaterLevelContextValue | undefined>(
     undefined
 );
 
-export function WaterLevelProvider({ children }: { children: ReactNode }) {
+export function WaterLevelProvider({
+    children,
+}: {
+    children: ReactNode;
+}): React.JSX.Element {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
     const [sensorConfig, setSensorConfig] = useState<SensorThresholds | null>(
         null

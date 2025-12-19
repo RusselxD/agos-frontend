@@ -14,7 +14,7 @@ body {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     }
 
-    .custom-button {
+    .btn-custom {
         padding: 0.75rem 1rem;
         border-radius: 0.5rem;
         font-size: 0.875rem;
@@ -23,6 +23,38 @@ body {
             text-decoration-color, fill, stroke;
         transition-timing-function: ease-in-out;
         transition-duration: 150ms;
+        cursor: pointer;
+    }
+
+    .btn-custom:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-cancel {
+        background-color: #e5e7eb; /* light gray */
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        line-height: 1.25rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition-property: color, background-color, border-color,
+            text-decoration-color, fill, stroke;
+        transition-timing-function: ease-in-out;
+        transition-duration: 150ms;
+    }
+
+    .btn-cancel:hover {
+        background-color: #d1d5db;
+    }
+
+    .btn-cancel:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-cancel:disabled:hover {
+        background-color: #e5e7eb;
     }
 
     .pulse-circle {
@@ -50,8 +82,6 @@ body {
     }
 
     .spinner {
-        width: 2rem;
-        height: 2rem;
         border: 3px solid transparent;
         border-top-color: currentColor;
         border-right-color: currentColor;

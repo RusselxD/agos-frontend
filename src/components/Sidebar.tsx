@@ -42,9 +42,9 @@ const tabs = [
     },
 ];
 
-export default function Sidebar(): React.JSX.Element {
+export default function Sidebar() {
     return (
-        <div className="fixed border top-0 bottom-0 left-0 w-56 flex flex-col">
+        <div className="fixed border top-0 bottom-0 left-0 w-56 flex flex-col bg-white">
             <div className="w-full p-5 mb-3 h-20">
                 <img src="/agos-w-text.png" className="-ml-3" />
             </div>

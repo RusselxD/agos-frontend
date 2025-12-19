@@ -1,3 +1,9 @@
+import DataRetention from "./components/DataRetention";
+
 export default function Settings() {
-    return <div>Settings</div>;
+    return (
+        <div>
+            <DataRetention />
+        </div>
+    );
 }

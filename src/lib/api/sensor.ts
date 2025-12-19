@@ -1,11 +1,13 @@
-import type { SensorData, SensorThresholds } from "../../types/sensor";
+import apiClient from "./axiosConfig";
+
+import type { SensorData, SensorConfig } from "../../types/sensor";
 
 export const sampleSensorAPI = {
-    getSensorConfig: async (): Promise<SensorThresholds> => {
-        return {
-            warning_cm: 50,
-            critical_cm: 80,
-        } as SensorThresholds;
+    getSensorConfig: async (): Promise<SensorConfig> => {
+        const res = await apiClient.get<SensorConfig>(
+            "system-settings/sensor_config/value"
+        );
+        return res.data;
     },
 
     getLatestSensorData: async (): Promise<SensorData> => {

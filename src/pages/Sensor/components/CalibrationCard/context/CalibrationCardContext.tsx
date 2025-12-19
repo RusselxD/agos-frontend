@@ -1,14 +1,14 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import type { SensorConfig } from "../../../../../types/sensor";
+import { sampleSensorAPI } from "../../../../../lib/api/sensor";
 
 interface CalibrationCardContextValue {
-    warningThreshold: number;
-    criticalThreshold: number;
-    installationHeight: number;
+    originalConfig: SensorConfig | null;
+    newConfig: SensorConfig | null;
+    handleUpdateConfig: (config: string, value: number) => void;
 
-    setWarningThreshold: (value: number) => void;
-    setCriticalThreshold: (value: number) => void;
-    setInstallationHeight: (value: number) => void;
+    isFetching: boolean;
 
     isEditing: boolean;
     setIsEditing: (value: boolean) => void;
@@ -21,11 +21,39 @@ const CalibrationCardContext = createContext<
 >(undefined);
 
 export function CalibrationCardProvider({ children }: { children: ReactNode }) {
-    const [warningThreshold, setWarningThreshold] = useState<number>(0);
-    const [criticalThreshold, setCriticalThreshold] = useState<number>(0);
-    const [installationHeight, setInstallationHeight] = useState<number>(0);
+    const [originalConfig, setOriginalConfig] = useState<SensorConfig | null>(
+        null
+    );
 
+    const [newConfig, setNewConfig] = useState<SensorConfig | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
+
+    const handleUpdateConfig = (config: string, value: number) => {
+        setNewConfig((prev) => (prev ? { ...prev, [config]: value } : null));
+    };
+
+    useEffect(() => {
+        const fetchSensorConfig = async () => {
+            try {
+                setIsFetching(true);
+                await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
+                const res = await sampleSensorAPI.getSensorConfig();                
+                setOriginalConfig(res);
+            } catch (error) {
+            } finally {
+                setIsFetching(false);
+            }
+        };
+        fetchSensorConfig();
+    }, []);
+
+    // When entering edit mode, initialize newConfig with originalConfig
+    useEffect(() => {
+        if (isEditing) {
+            setNewConfig(originalConfig);
+        }
+    }, [isEditing]);
 
     const handleSaveChanges = () => {
         // Implement save logic here
@@ -34,17 +62,15 @@ export function CalibrationCardProvider({ children }: { children: ReactNode }) {
 
     const contextValue = useMemo(
         () => ({
-            warningThreshold,
-            criticalThreshold,
-            installationHeight,
-            setWarningThreshold,
-            setCriticalThreshold,
-            setInstallationHeight,
+            originalConfig,
+            newConfig,
+            handleUpdateConfig,
+            isFetching,
             isEditing,
             setIsEditing,
             handleSaveChanges,
         }),
-        [warningThreshold, criticalThreshold, installationHeight, isEditing]
+        [originalConfig, newConfig, isEditing, isFetching]
     );
 
     return (

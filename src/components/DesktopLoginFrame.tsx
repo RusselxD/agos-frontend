@@ -1,6 +1,4 @@
-import React from "react";
-
-export default function DesktopLoginFrame(): React.JSX.Element {
+export default function DesktopLoginFrame() {
     return (
         <div className="w-1/2">
             <img
