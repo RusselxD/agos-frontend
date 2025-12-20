@@ -103,7 +103,6 @@ export default function SensorReadings() {
         const fetchSensorReadings = async () => {
             try {
                 setIsFetching(true);
-                await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
                 const res = await sensorAPI.getLatestSensorReadings(
                     1,
                     10

@@ -11,7 +11,7 @@ export default function Dashboard() {
     console.log(user);
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
             <Header />
             <div className="flex w-full gap-2">
                 <VideoContainer />

@@ -22,7 +22,7 @@ const StatusCard = ({ icon, title, children, className }: StatusCardPropd) => {
         <div
             className={`bg-white border border-gray-300 rounded-md px-4 py-4 h-full flex flex-col gap-1 ${className}`}
         >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
                 {icon}
                 <p className="text-gray-500 text-sm font-medium">{title}</p>
             </div>
@@ -32,7 +32,7 @@ const StatusCard = ({ icon, title, children, className }: StatusCardPropd) => {
 };
 
 const StatusText = ({ text }: { text: string }) => {
-    return <p className="font-semibold ml-10">{text}</p>;
+    return <p className="font-semibold ml-12">{text}</p>;
 };
 
 const ConnectionContainer = ({ value }: CardProps) => {

@@ -41,7 +41,6 @@ export function SensorConfigurationProvider({
         const fetchSensorConfig = async () => {
             try {
                 setIsFetching(true);
-                await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
                 const res = await sensorAPI.getSensorConfig();
                 setOriginalConfig(res);
             } catch (error) {
