@@ -7,12 +7,12 @@ import {
     useState,
     type ReactNode,
 } from "react";
-import type { SensorData, SensorThresholds } from "../types/sensor";
-import { sampleSensorAPI } from "../lib/api/sensor";
+import type { SensorData, SensorConfig } from "../types/sensor";
+import { sensorAPI } from "../lib/api/sensor";
 
 interface WaterLevelContextValue {
     sensorData: SensorData | null;
-    sensorConfig: SensorThresholds | null;
+    sensorConfig: SensorConfig | null;
 
     isFetchingData: boolean;
     isFetchingConfig: boolean;
@@ -30,7 +30,7 @@ export function WaterLevelProvider({
     children: ReactNode;
 }): React.JSX.Element {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
-    const [sensorConfig, setSensorConfig] = useState<SensorThresholds | null>(
+    const [sensorConfig, setSensorConfig] = useState<SensorConfig | null>(
         null
     );
 
@@ -46,7 +46,7 @@ export function WaterLevelProvider({
         const fetchSensorConfig = async () => {
             try {
                 setIsFetchingConfig(true);
-                const config = await sampleSensorAPI.getSensorConfig();
+                const config = await sensorAPI.getSensorConfig();
                 setSensorConfig(config);
             } catch (error) {
                 setError("Failed to fetch sensor configuration");
@@ -66,7 +66,7 @@ export function WaterLevelProvider({
                     isFirstFetch.current = false;
                 }
 
-                const data = await sampleSensorAPI.getLatestSensorData();
+                const data = await sensorAPI.getLatestSensorData();
 
                 setSensorData(data);
             } catch (error) {

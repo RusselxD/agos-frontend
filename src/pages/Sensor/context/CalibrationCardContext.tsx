@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { SensorConfig } from "../../../../../types/sensor";
-import { sampleSensorAPI } from "../../../../../lib/api/sensor";
+import type { SensorConfig } from "../../../types/sensor";
+import { sensorAPI } from "../../../lib/api/sensor";
 
 interface CalibrationCardContextValue {
     originalConfig: SensorConfig | null;
@@ -20,7 +20,11 @@ const CalibrationCardContext = createContext<
     CalibrationCardContextValue | undefined
 >(undefined);
 
-export function CalibrationCardProvider({ children }: { children: ReactNode }) {
+export function SensorConfigurationProvider({
+    children,
+}: {
+    children: ReactNode;
+}) {
     const [originalConfig, setOriginalConfig] = useState<SensorConfig | null>(
         null
     );
@@ -38,7 +42,7 @@ export function CalibrationCardProvider({ children }: { children: ReactNode }) {
             try {
                 setIsFetching(true);
                 await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
-                const res = await sampleSensorAPI.getSensorConfig();                
+                const res = await sensorAPI.getSensorConfig();
                 setOriginalConfig(res);
             } catch (error) {
             } finally {

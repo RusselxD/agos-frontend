@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getTimeAgo from "../../../../../lib/utils/getTimeAgo";
+import { getTimeAgo } from "../../../../../lib/utils/formatter";
 
 export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
     const [timeAgo, setTimeAgo] = useState<string>(getTimeAgo(timestamp));
