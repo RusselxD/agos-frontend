@@ -1,8 +1,18 @@
 import apiClient from "./axiosConfig";
 
-import type { SensorData, SensorConfig } from "../../types/sensor";
+import type {
+    SensorData,
+    SensorConfig,
+    SensorReading,
+    SensorDeviceStatus,
+} from "../../types/sensor";
 
-export const sampleSensorAPI = {
+interface SensorReadingResponse {
+    items: SensorReading[];
+    has_more: boolean;
+}
+
+export const sensorAPI = {
     getSensorConfig: async (): Promise<SensorConfig> => {
         const res = await apiClient.get<SensorConfig>(
             "system-settings/sensor_config/value"
@@ -10,6 +20,27 @@ export const sampleSensorAPI = {
         return res.data;
     },
 
+    getLatestSensorReadings: async (
+        page: number,
+        page_size: number
+    ): Promise<SensorReadingResponse> => {
+        const res = await apiClient.get("/sensor-readings", {
+            params: {
+                page: page,
+                page_size: page_size,
+            },
+        });
+
+        console.log(res);
+        return res.data as SensorReadingResponse;
+    },
+
+    getSensorStatus: async (id: number = 1): Promise<SensorDeviceStatus> => {
+        const res = await apiClient.get(`sensor-devices/${id}/status`);
+        return res.data;
+    },
+
+    // for dashboard
     getLatestSensorData: async (): Promise<SensorData> => {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 

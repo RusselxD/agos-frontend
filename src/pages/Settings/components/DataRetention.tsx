@@ -31,8 +31,7 @@ export default function DataRetention() {
             try {
                 const res = await settingsAPI.getSettingValue(
                     "data_retention_days"
-                );
-                throw new Error("Simulated fetch error");
+                );                
                 setOriginalValue(res);
                 setNewValue(res);
             } catch (error) {

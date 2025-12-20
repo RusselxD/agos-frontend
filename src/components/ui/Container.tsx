@@ -1,11 +1,18 @@
 import type { ReactNode } from "react";
-import ContainerHeader from "./ContainerHeader";
 
 interface ContainerProps {
     children: ReactNode;
     headerTitle: string;
     className?: string;
 }
+
+const ContainerHeader = ({ title }: { title: string }) => {
+    return (
+        <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary w-full mb-3">
+            {title}
+        </h2>
+    );
+};
 
 export default function Container({
     headerTitle,

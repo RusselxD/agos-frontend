@@ -1,7 +1,8 @@
 import { AlertTriangle, Bell, Gauge } from "lucide-react";
 import type { ReactNode } from "react";
 import { useCalibrationCard } from "../context/CalibrationCardContext";
-import ContainerHeader from "../../../../../components/ui/ContainerHeader";
+
+import Container from "../../../components/ui/Container";
 
 interface ThresholdCardProps {
     title: string;
@@ -142,62 +143,66 @@ const CriticalThresholdCard = () => {
                         config="critical_threshold"
                     />
                 ) : (
-                    <HeightDisplay height={originalConfig?.critical_threshold} />
+                    <HeightDisplay
+                        height={originalConfig?.critical_threshold}
+                    />
                 )}
             </div>
         </ThresholdCard>
     );
 };
 
-export default function ThresholdsContainer() {
+export default function SensorConfiguration() {
     const { isFetching, isEditing, setIsEditing, handleSaveChanges } =
         useCalibrationCard();
 
     if (isFetching) {
         return (
-            <div className="space-y-3">
-                <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
-                    SENSOR CONFIGURATION
-                </h2>
-                <div className="skeleton rounded-md w-full h-28"></div>
-                <div className="skeleton rounded-md w-full h-28"></div>
-                <div className="skeleton rounded-md w-full h-28"></div>
-                <div className="skeleton rounded-md w-40 h-12"></div>
-            </div>
+            <Container headerTitle="SENSOR CONFIGURATION">
+                <div className="grid grid-cols-3 gap-3 mt-3">
+                    <div className="skeleton rounded-md w-full h-28"></div>
+                    <div className="skeleton rounded-md w-full h-28"></div>
+                    <div className="skeleton rounded-md w-full h-28"></div>
+                </div>
+                <div className="flex justify-end">
+                    <div className="skeleton rounded-md w-40 h-12 mt-3"></div>
+                </div>
+            </Container>
         );
     }
 
     return (
-        <div className="space-y-3">
-            <ContainerHeader title="SENSOR CONFIGURATION" />
-            <InstallationHeightCard />
-            <WarningThresholdCard />
-            <CriticalThresholdCard />
-            <div className="flex gap-2 font-medium">
-                {isEditing ? (
-                    <>
+        <Container headerTitle="SENSOR CONFIGURATION">
+            <div className=" grid grid-cols-3 gap-3">
+                <InstallationHeightCard />
+                <WarningThresholdCard />
+                <CriticalThresholdCard />
+                <div className="flex gap-2 font-medium col-span-3 justify-end">
+                    {isEditing ? (
+                        <>
+                            <button
+                                onClick={() => setIsEditing(false)}
+                                className="btn-cancel"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => handleSaveChanges()}
+                                className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary"
+                            >
+                                Save Changes
+                            </button>
+                        </>
+                    ) : (
                         <button
-                            onClick={() => setIsEditing(false)}
-                            className="btn-cancel"
+                            onClick={() => setIsEditing(true)}
+                            className="btn-custom bg-primary text-white hover:bg-primary/90"
                         >
-                            Cancel
+                            Edit Configuration
                         </button>
-                        <button
-                            onClick={() => handleSaveChanges()}
-                            className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary"
-                        >
-                            Save Changes
-                        </button>
-                    </>
-                ) : (
-                    <button
-                        onClick={() => setIsEditing(true)}
-                        className="btn-custom bg-primary text-white hover:bg-primary/90"
-                    >
-                        Edit Configuration
-                    </button>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+        </Container>
     );
 }
