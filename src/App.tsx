@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 export default function App() {
     return (
-        <div className="bg-red-500">
+        <div className="bg-background">
             <AuthProvider>
                 <ToastProvider>
                     <RouterProvider router={router} />
