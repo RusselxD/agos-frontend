@@ -56,7 +56,7 @@ const LastUpdatedContainer = ({ value }: CardProps) => {
             }
             title="Last Updated"
         >
-            <StatusText text={getTimeAgo(value)} />
+            <StatusText text={value ? getTimeAgo(value) : "N/A"} />
         </StatusCard>
     );
 };
@@ -69,7 +69,7 @@ const SignalContainer = ({ value }: CardProps) => {
             }
             title="Signal"
         >
-            <StatusText text={capitalizeFirstLetter(value)} />
+            <StatusText text={value ? capitalizeFirstLetter(value) : "N/A"} />
         </StatusCard>
     );
 };
@@ -95,10 +95,10 @@ export default function SensorStatus() {
         const fetchStatus = async () => {
             try {
                 setIsFetching(true);
-                await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
                 const res = await sensorAPI.getSensorStatus(1);
                 setSensorStatus(res);
             } catch (error) {
+                console.log(error)
                 toastError("Failed to fetch sensor status.");
             } finally {
                 setIsFetching(false);

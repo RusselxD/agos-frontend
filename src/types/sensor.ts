@@ -36,6 +36,6 @@ export interface SensorDeviceStatus {
     device_name: string;
     location: string;
     connection: string;
-    last_updated: string;
-    signal: string;
+    last_updated: string | null;
+    signal: string | null;
 }
