@@ -56,7 +56,7 @@ export default function SensorReadings() {
                 } else {
                     setIsFetchingMore(true);
                 }
-                await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate network delay
+                // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate network delay
                 const res = await sensorAPI.getLatestSensorReadings(page, 10);
                 setSensorReadings((prev) => [...prev, ...res.items]);
                 setHasMore(res.has_more);

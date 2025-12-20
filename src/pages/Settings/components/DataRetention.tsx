@@ -31,11 +31,11 @@ export default function DataRetention() {
             try {
                 const res = await settingsAPI.getSettingValue(
                     "data_retention_days"
-                );                
-                setOriginalValue(res);
-                setNewValue(res);
+                );
+                setOriginalValue(Number(res));
+                setNewValue(Number(res));
             } catch (error) {
-                console.log("here")
+                console.log("here");
                 toastError(
                     "Failed to fetch data retention period. Please try again."
                 );
@@ -57,8 +57,8 @@ export default function DataRetention() {
                 json_value: JSON.stringify(newValue),
             } as SystemSettingsUpdate);
 
-            setOriginalValue(res);
-            setNewValue(res);
+            setOriginalValue(Number(res));
+            setNewValue(Number(res));
             setIsEditing(false);
 
             toastSuccess("Data retention period updated successfully.");
@@ -73,6 +73,8 @@ export default function DataRetention() {
     };
 
     const handleDragRange = (value: number) => {
+        console.log("Value: ", value);
+        console.log("Original Value: ", originalValue);
         setIsEditing(value !== originalValue);
         setNewValue(value);
     };
