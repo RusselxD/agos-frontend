@@ -88,7 +88,8 @@ const GaugeDisplay = () => {
     }
 
     const warningPercentage =
-        (sensorConfig.warning_cm / sensorConfig.critical_cm) * 100;
+        (sensorConfig.warning_threshold / sensorConfig.critical_threshold) *
+        100;
 
     return (
         <div className="water-gauge">
