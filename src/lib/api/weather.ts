@@ -20,6 +20,7 @@ export const fetchWeatherData = async ({
     }
 
     const data = await res.json();
+    console.log(data)
 
     const precipitation = data.current.precipitation || 0;
     const weatherCode = data.current.weather_code;

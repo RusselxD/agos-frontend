@@ -150,7 +150,9 @@ export default function MainDisplay() {
             <div className="space-y-2">
                 <p>
                     <span className="text-3xl font-semibold">
-                        {`${(sensorData?.water_level.current_cm || 0).toFixed(1)} `}
+                        {`${(sensorData?.water_level.current_cm || 0).toFixed(
+                            1
+                        )} `}
                     </span>
                     <span>cm</span>
                 </p>

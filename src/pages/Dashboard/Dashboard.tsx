@@ -6,8 +6,6 @@ import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 import FusionAnalysis from "./components/FusionAnalysis";
 
 export default function Dashboard() {
-    
-    
 
     return (
         <div className="flex flex-col gap-2">
