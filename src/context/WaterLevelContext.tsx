@@ -3,12 +3,16 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useRef,
     useState,
     type ReactNode,
 } from "react";
-import type { SensorData, SensorConfig } from "../types/sensor";
+import type {
+    SensorData,
+    SensorConfig,
+    SensorReadingSummaryResponse,
+} from "../types/sensor";
 import { sensorAPI } from "../lib/api/sensor";
+import { useWebSocketMessage } from "./WebSocketContext";
 
 interface WaterLevelContextValue {
     sensorData: SensorData | null;
@@ -30,16 +34,12 @@ export function WaterLevelProvider({
     children: ReactNode;
 }): React.JSX.Element {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
-    const [sensorConfig, setSensorConfig] = useState<SensorConfig | null>(
-        null
-    );
+    const [sensorConfig, setSensorConfig] = useState<SensorConfig | null>(null);
 
     const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
     const [isFetchingConfig, setIsFetchingConfig] = useState<boolean>(true);
 
     const [error, setError] = useState<string | null>(null);
-
-    const isFirstFetch = useRef(true);
 
     // Fetch config data on mount
     useEffect(() => {
@@ -49,6 +49,7 @@ export function WaterLevelProvider({
                 const config = await sensorAPI.getSensorConfig();
                 setSensorConfig(config);
             } catch (error) {
+                console.log(error);
                 setError("Failed to fetch sensor configuration");
             } finally {
                 setIsFetchingConfig(false);
@@ -57,29 +58,51 @@ export function WaterLevelProvider({
         fetchSensorConfig();
     }, []);
 
-    // Fetch latest sensor data periodically
-    useEffect(() => {
-        const fetchSensorData = async () => {
-            try {
-                if (isFirstFetch.current) {
-                    setIsFetchingData(true);
-                    isFirstFetch.current = false;
-                }
-
-                const data = await sensorAPI.getLatestSensorData();
-
-                setSensorData(data);
-            } catch (error) {
-                setError("Failed to fetch sensor data");
-            } finally {
-                setIsFetchingData(false);
+    // WebSocket message handler for sensor updates
+    useWebSocketMessage(
+        "sensor_update",
+        (data: SensorReadingSummaryResponse) => {
+            if (data.status == "error") {
+                setError(data.message);
+            } else if (data.status == "warning") {
+                setError(data.message);
+                setSensorData(data.sensor_reading);
+            } else if (data.status == "success") {
+                console.log("Here");
+                setError(null);
+                setSensorData(data.sensor_reading);
             }
-        };
-        fetchSensorData();
+            setIsFetchingData(false);
 
-        const intervalId = setInterval(fetchSensorData, 10 * 1000); // every 60 seconds
-        return () => clearInterval(intervalId);
-    }, []);
+            console.log("SENSOR UPDATE RECEIVED");
+            console.log(data);
+        }
+    );
+
+    // // Fetch latest sensor data periodically
+    // useEffect(() => {
+    //     const fetchSensorData = async () => {
+    //         try {
+    //             if (isFirstFetch.current) {
+    //                 setIsFetchingData(true);
+    //                 isFirstFetch.current = false;
+    //             }
+
+    //             const data = await sensorAPI.getLatestSensorData();
+
+    //             setSensorData(data);
+    //         } catch (error) {
+    //             console.log(error)
+    //             setError("Failed to fetch sensor data");
+    //         } finally {
+    //             setIsFetchingData(false);
+    //         }
+    //     };
+    //     fetchSensorData();
+
+    //     const intervalId = setInterval(fetchSensorData, 10 * 1000); // every 60 seconds
+    //     return () => clearInterval(intervalId);
+    // }, []);
 
     const contextValue = useMemo(
         () => ({

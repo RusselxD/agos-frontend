@@ -10,6 +10,8 @@ import {
 import type { ReactNode } from "react";
 import type { SensorUpdateMessage } from "../types/sensor";
 
+const backendBaseUrl = import.meta.env.VITE_API_BASE_URL.replace(/^https?:\/\//, '');
+
 type WebSocketMessage = SensorUpdateMessage | { type: string; data: any };
 
 interface WSContextValue {
@@ -32,7 +34,9 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-        const ws = new WebSocket(`ws://localhost:8000/ws?token=${token}`);
+        console.log(`ws://${backendBaseUrl}/ws?token=${token}`)
+
+        const ws = new WebSocket(`ws://${backendBaseUrl}/ws?token=${token}`);
         socketRef.current = ws;
 
         ws.onopen = () => {
