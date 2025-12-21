@@ -24,7 +24,7 @@ export const sensorAPI = {
         page: number,
         page_size: number
     ): Promise<SensorReadingResponse> => {
-        const res = await apiClient.get("/sensor-readings", {
+        const res = await apiClient.get("/sensor-readings/paginated", {
             params: {
                 page: page,
                 page_size: page_size,
