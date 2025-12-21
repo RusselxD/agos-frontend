@@ -1,12 +1,18 @@
+export interface SensorReadingSummaryResponse{
+    status: string;
+    message: string;
+    sensor_reading: SensorData;
+}
+
 export interface SensorData {
     timestamp: string;
-    waterLevel: WaterLevel;
+    water_level: WaterLevel;
     alert: Alert;
 }
 
 interface WaterLevel {
     current_cm: number;
-    change_rate_cm_per_min: number;
+    change_rate: number;
     trend: "rising" | "falling" | "stable";
 }
 
@@ -24,6 +30,7 @@ export interface SensorConfig {
     critical_threshold: number;
 }
 
+// For Sensor Readings table at Sensor Page
 export interface SensorReading {
     id: number;
     timestamp: string;
@@ -32,6 +39,7 @@ export interface SensorReading {
     change_rate: number;
 }
 
+// For Sensor Status at Sensor Page
 export interface SensorDeviceStatus {
     device_name: string;
     location: string;
@@ -40,6 +48,7 @@ export interface SensorDeviceStatus {
     signal: string | null;
 }
 
+// For WebSocket Messages
 export interface SensorUpdateMessage {
     type: "sensor_update";
     data: any;

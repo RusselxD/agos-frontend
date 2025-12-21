@@ -1,12 +1,13 @@
 import "../style.css";
 import { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from "lucide-react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
+import { getTimeAgo } from "../../../../../lib/utils/formatter";
 
 const capitalizeFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const AlertCapsule = () => {
+const AlertCategory = () => {
     const { sensorData } = useWaterLevel();
     const alert = sensorData?.alert.level || "";
 
@@ -14,25 +15,21 @@ const AlertCapsule = () => {
         switch (alert) {
             case "normal":
                 return {
-                    bg: "bg-green-100",
                     circle: "bg-green-600",
                     text: "text-green-700",
                 };
             case "warning":
                 return {
-                    bg: "bg-yellow-100",
-                    circle: "bg-yellow-600",
-                    text: "text-yellow-700",
+                    circle: "bg-yellow-500",
+                    text: "text-yellow-600",
                 };
             case "critical":
                 return {
-                    bg: "bg-red-100",
                     circle: "bg-red-600",
                     text: "text-red-700",
                 };
             default:
                 return {
-                    bg: "bg-gray-100",
                     circle: "bg-gray-600",
                     text: "text-gray-700",
                 };
@@ -42,11 +39,9 @@ const AlertCapsule = () => {
     const classes = getAlertClasses(alert);
 
     return (
-        <div
-            className={`flex rounded-full px-3 items-center gap-2 py-2 ${classes.bg}`}
-        >
-            <span className={`w-3 h-3 rounded-full ${classes.circle}`}></span>
-            <span className={`text-sm ${classes.text}`}>
+        <div className="flex  w-fit items-center gap-2">
+            <span className={`w-4 h-4 rounded-full ${classes.circle}`}></span>
+            <span className={`text-sm font-medium ${classes.text}`}>
                 {capitalizeFirstLetter(alert)}
             </span>
         </div>
@@ -55,7 +50,7 @@ const AlertCapsule = () => {
 
 const LevelInfo = () => {
     const { sensorData } = useWaterLevel();
-    const level = sensorData?.waterLevel.trend || "stable";
+    const level = sensorData?.water_level.trend || "stable";
 
     const getArrowDirection = (level: string): LucideIcon => {
         switch (level) {
@@ -87,29 +82,35 @@ const GaugeDisplay = () => {
         return <div className="water-gauge" />;
     }
 
-    const warningPercentage =
+    // Calculate positions with 20% padding at top
+    // Critical line is at 80% of gauge height (leaving 20% padding)
+    const criticalLinePosition = 80;
+
+    // Warning line position relative to critical
+    const warningLinePosition =
         (sensorConfig.warning_threshold / sensorConfig.critical_threshold) *
-        100;
+        criticalLinePosition;
+
+    // Water fill scales to 80% max (where critical line is)
+    const waterHeight =
+        (sensorData.alert.percentage_of_critical / 100) * criticalLinePosition;
 
     return (
         <div className="water-gauge">
             <div
                 className="threshold-marker warning"
-                style={{ bottom: `${warningPercentage}%` }}
+                style={{ bottom: `${warningLinePosition}%` }}
             />
 
             <div
                 className="threshold-marker critical"
-                style={{ bottom: "100%" }}
+                style={{ bottom: `${criticalLinePosition}%` }}
             />
 
             <div
                 className="water-fill"
                 style={{
-                    height: `${Math.min(
-                        sensorData.alert.percentage_of_critical,
-                        100
-                    )}%`,
+                    height: `${Math.min(waterHeight, 100)}%`,
                 }}
             >
                 <div className="wave-container">
@@ -128,7 +129,7 @@ const GaugeDisplay = () => {
                         <path d="M0,10 Q12.5,15 25,10 T50,10 T75,10 T100,10 L100,20 L0,20 Z" />
                     </svg>
                     <svg
-                        className="wave wave2"
+                        className="wave wave3"
                         viewBox="0 0 100 20"
                         preserveAspectRatio="none"
                     >
@@ -144,18 +145,21 @@ export default function MainDisplay() {
     const { sensorData } = useWaterLevel();
 
     return (
-        <div className="flex  items-center gap-2">
+        <div className="flex relative items-center gap-2 -mt-4">
             <GaugeDisplay />
             <div className="space-y-2">
                 <p>
                     <span className="text-3xl font-semibold">
-                        {`${sensorData?.waterLevel.current_cm} `}
+                        {`${(sensorData?.water_level.current_cm || 0).toFixed(1)} `}
                     </span>
                     <span>cm</span>
                 </p>
-                <AlertCapsule />
+                <AlertCategory />
                 <LevelInfo />
             </div>
+            <span className="absolute left-0 bottom-0 text-[0.800rem] text-gray-900">
+                {`Updated ${getTimeAgo(sensorData?.timestamp || "")}`}
+            </span>
         </div>
     );
 }

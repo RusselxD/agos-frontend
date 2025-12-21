@@ -4,13 +4,10 @@ import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
 import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 import FusionAnalysis from "./components/FusionAnalysis";
-import { useWebSocketMessage } from "../../context/WebSocketContext";
 
 export default function Dashboard() {
-    useWebSocketMessage("sensor_update", (data) => {
-        console.log("SENSOR UPDATE RECEIVED");
-        console.log(data);
-    });
+    
+    
 
     return (
         <div className="flex flex-col gap-2">
