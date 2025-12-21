@@ -39,3 +39,8 @@ export interface SensorDeviceStatus {
     last_updated: string | null;
     signal: string | null;
 }
+
+export interface SensorUpdateMessage {
+    type: "sensor_update";
+    data: any;
+}

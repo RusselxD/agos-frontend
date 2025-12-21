@@ -14,6 +14,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Admins from "./pages/Admins";
+import { WebSocketProvider } from "./context/WebSocketContext";
 
 export const router = createBrowserRouter([
     {
@@ -34,19 +35,21 @@ export const router = createBrowserRouter([
             // WaterLevelProvider = for water level sensor data
             //
             // FusionAnalysisProvider = for fusion analysis data
-            <ProtectedRoute>
-                <BlockageProvider>
-                    <VideoProvider>
-                        <WeatherProvider>
-                            <WaterLevelProvider>
-                                <FusionAnalysisProvider>
-                                    <MainLayout />
-                                </FusionAnalysisProvider>
-                            </WaterLevelProvider>
-                        </WeatherProvider>
-                    </VideoProvider>
-                </BlockageProvider>
-            </ProtectedRoute>
+            <WebSocketProvider>
+                <ProtectedRoute>
+                    <BlockageProvider>
+                        <VideoProvider>
+                            <WeatherProvider>
+                                <WaterLevelProvider>
+                                    <FusionAnalysisProvider>
+                                        <MainLayout />
+                                    </FusionAnalysisProvider>
+                                </WaterLevelProvider>
+                            </WeatherProvider>
+                        </VideoProvider>
+                    </BlockageProvider>
+                </ProtectedRoute>
+            </WebSocketProvider>
         ),
         children: [
             {
