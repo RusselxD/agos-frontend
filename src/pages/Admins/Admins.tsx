@@ -1,3 +1,13 @@
+import CreateNewAdminButton from "./components/CreateNewAdminButton";
+import SearchBar from "./components/SearchBar";
+
 export default function Admins() {
-    return <div>Admins</div>;
+    return (
+        <div>
+            <div className="flex items-center justify-between">
+                <SearchBar />
+                <CreateNewAdminButton />
+            </div>
+        </div>
+    );
 }
