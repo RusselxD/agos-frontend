@@ -1,78 +1,15 @@
-import { Clock, Power, Wifi } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
-import Container from "../../../components/ui/Container";
-import type { SensorDeviceStatus } from "../../../types/sensor";
-import { useToast } from "../../../context/ToastContext";
-import { sensorAPI } from "../../../lib/api/sensor";
-import { getTimeAgo, capitalizeFirstLetter } from "../../../lib/utils/formatter";
+import { useEffect, useState } from "react";
+import Container from "../../../../components/ui/Container";
+import type { SensorDeviceStatus } from "../../../../types/sensor";
+import { useToast } from "../../../../context/ToastContext";
+import { sensorAPI } from "../../../../lib/api/sensor";
+import ConnectionContainer from "./components/ConnectionContianer";
+import LastUpdatedContainer from "./components/LastUpdatedContainer";
+import SignalContainer from "./components/SignalContainer";
 
-interface StatusCardPropd {
-    icon: ReactNode;
-    title: string;
-    children: ReactNode;
-    className?: string;
-}
-
-interface CardProps {
+export interface CardProps {
     value: string;
 }
-
-const StatusCard = ({ icon, title, children, className }: StatusCardPropd) => {
-    return (
-        <div
-            className={`bg-white border border-gray-300 rounded-md px-4 py-4 h-full flex flex-col gap-1 ${className}`}
-        >
-            <div className="flex items-center gap-4">
-                {icon}
-                <p className="text-gray-500 text-sm font-medium">{title}</p>
-            </div>
-            {children}
-        </div>
-    );
-};
-
-const StatusText = ({ text }: { text: string }) => {
-    return <p className="font-semibold ml-12">{text}</p>;
-};
-
-const ConnectionContainer = ({ value }: CardProps) => {
-    return (
-        <StatusCard
-            icon={
-                <Power className="p-2 rounded-md bg-green-100 text-green-600 w-8 h-8" />
-            }
-            title="Connection"
-        >
-            <StatusText text={value} />
-        </StatusCard>
-    );
-};
-
-const LastUpdatedContainer = ({ value }: CardProps) => {
-    return (
-        <StatusCard
-            icon={
-                <Clock className="p-2 rounded-md bg-blue-100 text-blue-600 w-8 h-8" />
-            }
-            title="Last Updated"
-        >
-            <StatusText text={value ? getTimeAgo(value) : "N/A"} />
-        </StatusCard>
-    );
-};
-
-const SignalContainer = ({ value }: CardProps) => {
-    return (
-        <StatusCard
-            icon={
-                <Wifi className="p-2 rounded-md bg-purple-100 text-purple-600 w-8 h-8" />
-            }
-            title="Signal"
-        >
-            <StatusText text={value ? capitalizeFirstLetter(value) : "N/A"} />
-        </StatusCard>
-    );
-};
 
 const Details = ({ label, value }: { label: string; value: string }) => {
     return (
@@ -98,7 +35,7 @@ export default function SensorStatus() {
                 const res = await sensorAPI.getSensorStatus(1);
                 setSensorStatus(res);
             } catch (error) {
-                console.log(error)
+                console.log(error);
                 toastError("Failed to fetch sensor status.");
             } finally {
                 setIsFetching(false);
@@ -125,9 +62,6 @@ export default function SensorStatus() {
                 </div>
             </Container>
         );
-    }
-
-    if (!sensorStatus) {
     }
 
     return (

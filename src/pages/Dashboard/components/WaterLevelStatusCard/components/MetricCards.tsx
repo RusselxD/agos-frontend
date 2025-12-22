@@ -8,10 +8,12 @@ type StatCardProps = {
 
 const StatCard = ({ title, data, desc }: StatCardProps) => {
     return (
-        <div className="border w-full rounded-md bg-gray-100/60 border-gray-300 px-4 py-3">
+        <div className="border w-full h-full flex flex-col justify-between rounded-md bg-slate-100 border-gray-300 px-4 py-3">
             <p className="text-sm font-medium text-gray-700">{title}</p>
-            <p className="text-xl font-semibold">{data}</p>
-            <p className="text-xs text-gray-700">{desc}</p>
+            <p>
+                <span className="text-2xl font-semibold">{data}</span>
+                <span className="text-xs ml-1 text-gray-700">{desc}</span>
+            </p>
         </div>
     );
 };
@@ -24,25 +26,33 @@ export default function MetricCards() {
             case "normal":
                 return {
                     title: "To Warning",
-                    data: (sensorData?.alert.distance_to_warning_cm || 0).toFixed(1),
+                    data: (
+                        sensorData?.alert.distance_to_warning_cm || 0
+                    ).toFixed(1),
                     desc: "cm remaining",
                 };
             case "warning":
                 return {
                     title: "To Critical",
-                    data: (sensorData?.alert.distance_to_critical_cm || 0).toFixed(1),
+                    data: (
+                        sensorData?.alert.distance_to_critical_cm || 0
+                    ).toFixed(1),
                     desc: "cm remaining",
                 };
             case "critical":
                 return {
                     title: "Above Critical",
-                    data: (sensorData?.alert.distance_from_critical_cm || 0).toFixed(1),
+                    data: (
+                        sensorData?.alert.distance_from_critical_cm || 0
+                    ).toFixed(1),
                     desc: "cm over",
                 };
             default:
                 return {
                     title: "To Warning",
-                    data: (sensorData?.alert.distance_to_warning_cm || 0).toFixed(1),
+                    data: (
+                        sensorData?.alert.distance_to_warning_cm || 0
+                    ).toFixed(1),
                     desc: "cm remaining",
                 };
         }
@@ -55,7 +65,7 @@ export default function MetricCards() {
         changeRateData > 0 ? `+${changeRateData}` : `${changeRateData}`;
 
     return (
-        <div className="flex flex-col justify-between ml-10 gap-1 flex-1">
+        <div className="flex flex-col justify-between ml-10 gap-3 flex-1">
             <StatCard
                 title="Change Rate"
                 data={changeRateDisplay}

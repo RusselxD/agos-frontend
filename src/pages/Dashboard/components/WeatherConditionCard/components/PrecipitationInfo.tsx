@@ -4,7 +4,7 @@ export default function PrecipitationInfo({
     precipitation: number;
 }) {
     return (
-        <div className="bg-gray-100 rounded-lg p-2.5">
+        <div className="bg-slate-100 rounded-lg p-2.5 border">
             <p className="text-sm text-gray-500">Precipitation</p>
             <p className="text-sm ">
                 <span>{`${precipitation.toFixed(1)} mm/h`}</span>

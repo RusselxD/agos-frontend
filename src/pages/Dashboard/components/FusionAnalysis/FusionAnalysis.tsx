@@ -23,9 +23,13 @@ export default function FusionAnalysis() {
         <Container headerTitle="FUSION ANALYSIS" className="space-y-5 relative">
             <UpdatedTimestamp />
             <AlertTierContainer />
-            <RiskScore />
-            <DecisionFactorsGrid />
-            <TriggeredConditions />
+            <div className="flex gap-3">
+                <div className="flex-1 flex flex-col gap-5">
+                    <RiskScore />
+                    <TriggeredConditions />
+                </div>
+                <DecisionFactorsGrid />
+            </div>
         </Container>
     );
 }

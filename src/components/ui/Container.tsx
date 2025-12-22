@@ -20,7 +20,7 @@ export default function Container({
     children,
 }: ContainerProps) {
     return (
-        <div className={`bg-white custom-shadow rounded-md p-5 ${className}`}>
+        <div className={`bg-white custom-shadow rounded-lg p-5 ${className}`}>
             <ContainerHeader title={headerTitle} />
             {children}
         </div>

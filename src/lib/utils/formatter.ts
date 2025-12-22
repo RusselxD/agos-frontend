@@ -25,6 +25,16 @@ export const capitalizeFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+export const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+
 export const formatTimestamp = (timestampString: string) => {
     const date = new Date(timestampString);
 

@@ -30,7 +30,7 @@ const VideoPlaceholder = () => {
     return (
         <div
             ref={containerRef}
-            className="relative bg-black rounded-md w-full h-[32rem] overflow-hidden"
+            className="relative bg-black rounded-lg custom-shadow w-full h-[32rem] overflow-hidden"
         >
             {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
@@ -62,7 +62,7 @@ const VideoPlaceholder = () => {
 
 export default function VideoContainer() {
     return (
-        <div className="bg-white shadow-lg p-5 flex-1 rounded-md">
+        <div className="bg-white custom-shadow p-5 flex-1 rounded-lg">
             <Header />
             <VideoPlaceholder />
         </div>

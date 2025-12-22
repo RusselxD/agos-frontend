@@ -1,5 +1,6 @@
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
+import { formatDate } from "../../../lib/utils/formatter";
 
 const MapPinFilled = ({ className }: { className?: string }) => (
     <svg
@@ -20,8 +21,10 @@ const MapPinFilled = ({ className }: { className?: string }) => (
 
 const Location = () => {
     return (
-        <div className="bg-white custom-shadow rounded-lg w-fit flex items-start justify-center py-3 pl-4 pr-32 gap-1 font-medium">
-            <MapPinFilled className="text-red-500" />
+        <div className="flex -ml-1 items-center gap-2 border-r-2 border-gray-400 pr-4 mr-4">
+            <div className="bg-red-100 p-1.5 rounded-lg">
+                <MapPinFilled className="text-red-500" />
+            </div>
             <span className="font-semibold">
                 Valenzuela Site 1: Maysan Creek
             </span>
@@ -29,16 +32,7 @@ const Location = () => {
     );
 };
 
-const SystemStatus = () => {
-    return (
-        <div className="flex items-center gap-2">
-            <span className="rounded-full w-5 h-5 bg-emerald-500"></span>
-            <span className="text-emerald-600">SYSTEM ONLINE</span>
-        </div>
-    );
-};
-
-const ClockDisplay = () => {
+const TimeAndDate = () => {
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
@@ -61,28 +55,41 @@ const ClockDisplay = () => {
     });
 
     return (
-        <div className="flex items-center gap-2">
-            <Clock />
-            <span>{formattedTime}</span>
+        <div>
+            <p className="font-medium">{formattedTime}</p>
+            <p>{formatDate(time.toDateString())}</p>
+        </div>
+    );
+};
+
+const TimeDisplay = () => {
+    return (
+        <div className="flex items-center gap-2 text-sm border border-gray-300 px-3 py-2 rounded-lg bg-gray-50">
+            <div className="border-r-2 border-gray-400 pr-3 mr-3">
+                <Clock />
+            </div>
+            <TimeAndDate />
+        </div>
+    );
+};
+
+const Status = () => {
+    return (
+        <div className="flex items-center gap-2 border-green-400 border bg-green-100 py-2 px-3 rounded-md">
+            <div className="bg-emerald-500 rounded-full w-3 h-3"></div>
+            <p className="text-emerald-600 text-sm font-semibold">Connected</p>
         </div>
     );
 };
 
 export default function Header() {
     return (
-        <div>
-            <div className="font-bold flex items-center justify-between mb-2">
-                <h1 className="text-3xl">Dashboard</h1>
-                <p>ADMIN_LGU</p>
-            </div>
-
-            <div className="flex justify-between items-center">
+        <div className="bg-white custom-shadow rounded-lg pl-5 pr-3 py-2 flex items-center justify-between">
+            <div className="flex items-center">
                 <Location />
-                <div className="flex flex-col items-end font-medium text-sm gap-1">
-                    <SystemStatus />
-                    <ClockDisplay />
-                </div>
+                <Status />
             </div>
+            <TimeDisplay />
         </div>
     );
 }

@@ -97,7 +97,7 @@ const GaugeDisplay = () => {
 
     return (
         <div className="water-gauge">
-            <div
+            {/* <div
                 className="threshold-marker warning"
                 style={{ bottom: `${warningLinePosition}%` }}
             />
@@ -105,7 +105,7 @@ const GaugeDisplay = () => {
             <div
                 className="threshold-marker critical"
                 style={{ bottom: `${criticalLinePosition}%` }}
-            />
+            /> */}
 
             <div
                 className="water-fill"
