@@ -6,13 +6,11 @@ import { ToastContainer } from "react-toastify";
 
 export default function App() {
     return (
-        <div className="bg-background min-h-screen">
-            <AuthProvider>
-                <ToastProvider>
-                    <RouterProvider router={router} />
-                    <ToastContainer hideProgressBar={true}/>
-                </ToastProvider>
-            </AuthProvider>
-        </div>
+        <AuthProvider>
+            <ToastProvider>
+                <RouterProvider router={router} />
+                <ToastContainer hideProgressBar={true} />
+            </ToastProvider>
+        </AuthProvider>
     );
 }

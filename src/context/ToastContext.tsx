@@ -69,13 +69,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         );
     };
 
-    const contextValue = () => ({
+    const contextValue = {
         toastSuccess,
         toastError,
-    });
+    };
 
     return (
-        <ToastContext.Provider value={contextValue()}>
+        <ToastContext.Provider value={contextValue}>
             {children}
         </ToastContext.Provider>
     );

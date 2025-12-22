@@ -5,4 +5,6 @@ export interface AdminUserResponse {
     phone_number: string;
     is_superuser: boolean;
     is_active: boolean;
+    last_login: string;
+    created_by: string | null;
 }

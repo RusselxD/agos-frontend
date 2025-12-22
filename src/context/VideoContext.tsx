@@ -264,13 +264,15 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     };
 
     const detachVideoContainer = () => {
-        if (videoRef.current && hiddenContainerRef.current) {
-            // If it's already there, do nothing
-            if (hiddenContainerRef.current.contains(videoRef.current)) return;
+    if (videoRef.current && hiddenContainerRef.current) {
+        // If it's already there, do nothing
+        if (hiddenContainerRef.current.contains(videoRef.current)) return;
 
-            hiddenContainerRef.current.appendChild(videoRef.current);
-        }
-    };
+        // Clear any text nodes or stray content
+        hiddenContainerRef.current.innerHTML = '';
+        hiddenContainerRef.current.appendChild(videoRef.current);
+    }
+};
 
     return (
         <VideoContext.Provider
@@ -289,14 +291,15 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                 ref={hiddenContainerRef}
                 style={{
                     position: "fixed",
-                    top: -10000,
-                    left: -10000,
-                    width: 1,
-                    height: 1,
+                    top: "-10000px",
+                    left: "-10000px",
+                    width: "1px",
+                    height: "1px",
                     overflow: "hidden",
                     visibility: "hidden",
+                    pointerEvents: "none",
                 }}
-            />
+            ></div>
         </VideoContext.Provider>
     );
 }

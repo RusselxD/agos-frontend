@@ -22,6 +22,7 @@ export default function DataRetention() {
     const [newValue, setNewValue] = useState<number>(7);
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
     const { toastSuccess, toastError } = useToast();
