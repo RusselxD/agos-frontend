@@ -42,9 +42,9 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     const RETRY_DELAY_MS = 10000;
 
     const streamUrl =
-        "https://cdn-005.whatsupcams.com/hls/si_solkankajak.m3u8";
-        // "https://cdn-005.whatsupcams.com/hls/ba_mostar01.m3u8";
-    // "https://cdn-002.whatsupcams.com/hls/si_solkan02.m3u8";
+        // "https://cdn-005.whatsupcams.com/hls/si_solkankajak.m3u8";
+        // "https://cdn-005.whatsupc ams.com/hls/ba_mostar01.m3u8";
+     "https://cdn-002.whatsupcams.com/hls/si_solkan02.m3u8";
     // "https://cdn-002.whatsupcams.com/hls/hr_rastoke1.m3u8";
     // "https://videos-3.earthcam.com/fecnetwork/4387.flv/chunklist_w274942325.m3u8?t=UzhbnKWg%2FPy%2BGo5V6Go%2B0iKPv70B5mMBzCZ%2FIR6UFofiOJBj1nKX7cnyarR5nH3i&td=202512120535";
     // "https://videos-3.earthcam.com/fecnetwork/23032.flv/chunklist_w190875193.m3u8?t=mhlmCQFLhmptNf%2FU%2FYGa8sxTJJXTJ56vYZYvqNdAiSKrPTjToBO5hViUDn1KTiAK&td=202512120537";

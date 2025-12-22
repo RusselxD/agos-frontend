@@ -8,7 +8,6 @@ import {
     type ReactNode,
 } from "react";
 import type { WeatherData } from "../types/weather";
-import { getCurrentLocation } from "../lib/utils/getCurrentLocation";
 import { fetchWeatherData } from "../lib/api/weather";
 
 interface WeatherContextValue {
@@ -35,19 +34,8 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
                     isFirstFetch.current = false;
                 }
 
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-
-                let latitude = 14.69;
-                let longitude = 121.97;
-                try {
-                    const location = await getCurrentLocation();
-                    latitude = location.latitude;
-                    longitude = location.longitude;
-                } catch (error) {}
-
                 const weatherData: WeatherData = await fetchWeatherData({
-                    latitude: latitude || 14.69,
-                    longitude: longitude || 121.97,
+                    sensor_id: 1,
                 });
 
                 setWeatherData(weatherData);
@@ -61,8 +49,8 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
         // Initial fetch
         fetchData();
 
-        // Set up interval to fetch every 5 minutes
-        const intervalId = setInterval(fetchData, 5 * 60 * 1000);
+        // Set up interval to fetch every 60 minutes
+        const intervalId = setInterval(fetchData, 60 * 60 * 1000);
 
         return () => clearInterval(intervalId);
     }, []);

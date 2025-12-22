@@ -1,5 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 
+export interface WeatherApiResponse {
+    precipitation: number;
+    weather_code: number;
+}
+
 export interface WeatherData {
     condition: string; // e.g., "Sunny", "Rainy"
     precipitation: number;
