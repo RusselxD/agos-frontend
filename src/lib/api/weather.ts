@@ -1,60 +1,56 @@
-import type { WeatherData } from "../../types/weather";
+import type { WeatherApiResponse, WeatherData } from "../../types/weather";
 import { getWeatherInfo } from "../utils/getWeatherInfo";
+import apiClient from "./axiosConfig";
 
 export const fetchWeatherData = async ({
-    latitude,
-    longitude,
+    sensor_id  = 1,
 }: {
-    latitude: number;
-    longitude: number;
+    sensor_id: number;
 }): Promise<WeatherData> => {
-    const url =
-        "https://api.open-meteo.com/v1/forecast?" +
-        `latitude=${latitude}&longitude=${longitude}&` +
-        "current=precipitation,weather_code";
+    try {
+        const res = await apiClient.get("/weather-condition", {
+            params: {
+                sensor_id: sensor_id,
+            },
+        });
+        const weatherData: WeatherApiResponse = res.data;
 
-    const res = await fetch(url);
+        const precipitation = weatherData.precipitation;
+        const weatherCode = weatherData.weather_code;
 
-    if (!res.ok) {
-        throw new Error(`Weather API error: ${res.status}`);
+        // Get icon and description from weather code
+        const weatherInfo = getWeatherInfo(weatherCode);
+
+        // Categorize severity based on precipitation amount
+        let color: string;
+        let severityDescription: string;
+
+        if (precipitation === 0) {
+            color = "text-green-500";
+            severityDescription = "No rainfall detected";
+        } else if (precipitation <= 2.5) {
+            color = "text-blue-400";
+            severityDescription = "Light precipitation";
+        } else if (precipitation <= 10) {
+            color = "text-yellow-500";
+            severityDescription = "Moderate rainfall intensity";
+        } else if (precipitation <= 50) {
+            color = "text-orange-500";
+            severityDescription = "Heavy rainfall detected";
+        } else {
+            color = "text-red-500";
+            severityDescription = "Extreme rainfall conditions";
+        }
+
+        return {
+            condition: weatherInfo.description,
+            precipitation,
+            description: severityDescription,
+            timestamp: new Date().toISOString(),
+            icon: weatherInfo.icon,
+            color,
+        };
+    } catch (error) {
+        throw error;
     }
-
-    const data = await res.json();
-    console.log(data)
-
-    const precipitation = data.current.precipitation || 0;
-    const weatherCode = data.current.weather_code;
-
-    // Get icon and description from weather code
-    const weatherInfo = getWeatherInfo(weatherCode);
-
-    // Categorize severity based on precipitation amount
-    let color: string;
-    let severityDescription: string;
-
-    if (precipitation === 0) {
-        color = "text-green-500";
-        severityDescription = "No rainfall detected";
-    } else if (precipitation <= 2.5) {
-        color = "text-blue-400";
-        severityDescription = "Light precipitation";
-    } else if (precipitation <= 10) {
-        color = "text-yellow-500";
-        severityDescription = "Moderate rainfall intensity";
-    } else if (precipitation <= 50) {
-        color = "text-orange-500";
-        severityDescription = "Heavy rainfall detected";
-    } else {
-        color = "text-red-500";
-        severityDescription = "Extreme rainfall conditions";
-    }
-
-    return {
-        condition: weatherInfo.description,
-        precipitation,
-        description: severityDescription,
-        timestamp: new Date().toISOString(),
-        icon: weatherInfo.icon,
-        color,
-    };
 };
