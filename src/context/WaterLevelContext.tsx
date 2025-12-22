@@ -79,31 +79,6 @@ export function WaterLevelProvider({
         }
     );
 
-    // // Fetch latest sensor data periodically
-    // useEffect(() => {
-    //     const fetchSensorData = async () => {
-    //         try {
-    //             if (isFirstFetch.current) {
-    //                 setIsFetchingData(true);
-    //                 isFirstFetch.current = false;
-    //             }
-
-    //             const data = await sensorAPI.getLatestSensorData();
-
-    //             setSensorData(data);
-    //         } catch (error) {
-    //             console.log(error)
-    //             setError("Failed to fetch sensor data");
-    //         } finally {
-    //             setIsFetchingData(false);
-    //         }
-    //     };
-    //     fetchSensorData();
-
-    //     const intervalId = setInterval(fetchSensorData, 10 * 1000); // every 60 seconds
-    //     return () => clearInterval(intervalId);
-    // }, []);
-
     const contextValue = useMemo(
         () => ({
             sensorData,

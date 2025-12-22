@@ -16,7 +16,7 @@ export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
     }, [timestamp]);
 
     return (
-        <div className="bg-gray-100 rounded-lg p-2.5">
+        <div className="bg-slate-100 rounded-lg p-2.5 border">
             <p className="text-sm text-gray-500">Last Updated</p>
             <p className="text-sm">{timeAgo}</p>
         </div>

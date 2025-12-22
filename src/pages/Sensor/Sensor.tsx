@@ -1,4 +1,4 @@
-import SensorStatus from "./components/SensorStatus";
+import SensorStatus from "./components/SensorStatus/SensorStatus";
 import SensorConfiguration from "./components/SensorConfiguration";
 import { SensorConfigurationProvider } from "./context/CalibrationCardContext";
 import SensorReadings from "./components/SensorReadings";
