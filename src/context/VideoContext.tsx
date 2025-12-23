@@ -7,7 +7,20 @@ import {
     type ReactNode,
 } from "react";
 import Hls from "hls.js";
-import { useWaterwayContext } from "./BlockageContext";
+import axios from "axios";
+
+const createVideoElement = (): HTMLVideoElement => {
+    const v = document.createElement("video");
+    v.crossOrigin = "anonymous";
+    v.autoplay = true;
+    v.muted = true;
+    v.playsInline = true;
+    v.loop = true;
+    v.style.width = "100%";
+    v.style.height = "100%";
+    v.style.objectFit = "cover";
+    return v;
+};
 
 interface VideoContextValue {
     // The persistent video DOM element.
@@ -26,6 +39,10 @@ interface VideoContextValue {
 
 const VideoContext = createContext<VideoContextValue | undefined>(undefined);
 
+// Backend configuration
+const API_BASE_URL = "http://localhost:8000"; // Change to your backend URL
+const HLS_STREAM_URL = `${API_BASE_URL}/api/v1/stream/hls/stream.m3u8`;
+
 export function VideoProvider({ children }: { children: ReactNode }) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const hiddenContainerRef = useRef<HTMLDivElement>(null);
@@ -35,36 +52,15 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Get the setter from BlockageContext to update frames
-    const { setLatestFrameBase64 } = useWaterwayContext();
-
     const MAX_RETRIES = 5;
     const RETRY_DELAY_MS = 10000;
 
-    const streamUrl =
-        // "https://cdn-005.whatsupcams.com/hls/si_solkankajak.m3u8";
-        // "https://cdn-005.whatsupc ams.com/hls/ba_mostar01.m3u8";
-     "https://cdn-002.whatsupcams.com/hls/si_solkan02.m3u8";
-    // "https://cdn-002.whatsupcams.com/hls/hr_rastoke1.m3u8";
-    // "https://videos-3.earthcam.com/fecnetwork/4387.flv/chunklist_w274942325.m3u8?t=UzhbnKWg%2FPy%2BGo5V6Go%2B0iKPv70B5mMBzCZ%2FIR6UFofiOJBj1nKX7cnyarR5nH3i&td=202512120535";
-    // "https://videos-3.earthcam.com/fecnetwork/23032.flv/chunklist_w190875193.m3u8?t=mhlmCQFLhmptNf%2FU%2FYGa8sxTJJXTJ56vYZYvqNdAiSKrPTjToBO5hViUDn1KTiAK&td=202512120537";
-
     // Initialize the Video Element once
     if (!videoRef.current) {
-        const v = document.createElement("video");
-        v.crossOrigin = "anonymous";
-        v.autoplay = true;
-        v.muted = true;
-        v.playsInline = true;
-        v.loop = true;
-        // Basic styling to ensure it fits any container it's placed in
-        v.style.width = "100%";
-        v.style.height = "100%";
-        v.style.objectFit = "cover";
-        videoRef.current = v;
+        videoRef.current = createVideoElement();
     }
 
-    const loadStream = () => {
+    const loadStream = async () => {
         try {
             const video = videoRef.current;
             if (!video) return;
@@ -72,87 +68,137 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             setError(null);
             setIsLoading(true);
 
+            // --- STEP 1: Check Status & Start if needed ---
+            let isReady = false;
+            try {
+                // Check if the process is running in Python
+                const statusRes = await axios.get(
+                    `${API_BASE_URL}/api/v1/stream/status`
+                );
+
+                if (!statusRes.data.is_running) {
+                    console.log("Stream stopped. Starting engine...");
+                    await axios.post(`${API_BASE_URL}/api/v1/stream/start`);
+                    // We don't wait here anymore, we rely on the polling loop below to know when it's TRULY ready
+                }
+            } catch (err) {
+                console.warn(
+                    "Status check failed (Backend might be down):",
+                    err
+                );
+                setError("Server is unreachable. Please try again later.");
+            }
+
+            // --- STEP 2: The "Availability" Loop (The most important part) ---
+            // We poll until the .m3u8 file actually exists on the disk.
+            // This prevents Hls.js from crashing with a 404 fatal error.
+            let retries = 0;
+            const maxPollRetries = 20; // 20 * 1.5s = 30 seconds max wait
+
+            while (!isReady && retries < maxPollRetries) {
+                try {
+                    // HEAD request checks if file exists without downloading the whole body
+                    await axios.head(HLS_STREAM_URL);
+                    isReady = true;
+                    console.log("Stream file found! Initializing player...");
+                } catch (e) {
+                    console.log(
+                        `Waiting for stream generation... (${
+                            retries + 1
+                        }/${maxPollRetries})`
+                    );
+                    await new Promise((r) => setTimeout(r, 1500)); // Wait 1.5s between checks
+                    retries++;
+                }
+            }
+
+            if (!isReady) {
+                throw new Error(
+                    "Stream timed out. Backend could not generate video files."
+                );
+            }
+
+            // --- STEP 3: Initialize Player (Only safe after Step 2) ---
+
+            // Clean up previous instance
             if (hlsRef.current) {
                 hlsRef.current.destroy();
                 hlsRef.current = null;
             }
 
             if (Hls.isSupported()) {
-                const hls = new Hls();
+                const hls = new Hls({
+                    enableWorker: true,
+                    // STABILITY SETTINGS:
+                    lowLatencyMode: false, // Important: False for stability with 6s segments
+                    liveSyncDurationCount: 3, // Buffer 3 segments (18s) behind live edge to prevent stutter
+                    fragLoadingMaxRetry: 10,
+                    manifestLoadingMaxRetry: 10,
+                });
                 hlsRef.current = hls;
 
                 hls.attachMedia(video);
 
                 hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-                    hls.loadSource(streamUrl);
+                    // Add timestamp (?t=...) to force browser to fetch fresh playlist
+                    // otherwise it might load a cached old version
+                    hls.loadSource(`${HLS_STREAM_URL}?t=${Date.now()}`);
                 });
 
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     video
                         .play()
-                        .catch((e) =>
-                            console.log("Video playback error (autoplay):", e)
-                        );
+                        .catch((e) => console.log("Autoplay blocked:", e));
                 });
 
-                // --- HLS.js ERROR HANDLING (Crucial for robust streaming) ---
                 hls.on(Hls.Events.ERROR, (_, data) => {
                     if (data.fatal) {
                         console.warn("HLS.js Fatal Error:", data);
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
-                                if (
-                                    (data.details as string) ===
-                                    "levelParsingError"
-                                ) {
-                                    console.log(
-                                        "Fatal level parsing error, reloading stream..."
-                                    );
-                                    hls.destroy();
-                                    setTimeout(() => loadStream(), 2000);
-                                } else {
-                                    console.log(
-                                        "Fatal network error encountered, trying to recover..."
-                                    );
-                                    hls.startLoad();
-                                }
+                                console.log(
+                                    "Network error, trying to recover..."
+                                );
+                                hls.startLoad();
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
                                 console.log(
-                                    "Fatal media error encountered, trying to recover..."
+                                    "Media error, trying to recover..."
                                 );
                                 hls.recoverMediaError();
                                 break;
                             default:
-                                // Cannot recover, do full reload
+                                setError(
+                                    `Fatal Playback Error: ${data.details}`
+                                );
                                 handleStreamFailure();
                                 break;
                         }
                     }
                 });
             } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-                video.src = streamUrl;
+                // Native HLS support (Safari)
+                video.src = `${HLS_STREAM_URL}?t=${Date.now()}`;
                 video.load();
             } else {
-                setError(
-                    "HLS is not supported in this browser. Please use Chrome, Firefox, or Safari."
-                );
+                setError("HLS is not supported in this browser.");
                 setIsLoading(false);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             setError("Error loading stream: " + (error as Error).message);
+            setIsLoading(false);
         }
     };
 
     const handleStreamFailure = () => {
         if (retryCountRef.current < MAX_RETRIES) {
             retryCountRef.current += 1;
-            console.log(
-                `Stream connection lost. Retrying in ${
-                    RETRY_DELAY_MS / 1000
-                }s... (Attempt ${retryCountRef.current}/${MAX_RETRIES})`
-            );
+            const msg = `Stream connection lost. Retrying in ${
+                RETRY_DELAY_MS / 1000
+            }s... (Attempt ${retryCountRef.current}/${MAX_RETRIES})`;
+            console.log(msg);
+            setError(msg);
             setTimeout(() => {
                 loadStream();
             }, RETRY_DELAY_MS);
@@ -162,49 +208,12 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const captureFrame = () => {
-        const video = videoRef.current;
-        if (!video || video.paused || video.ended) return;
-
-        const TARGET_WIDTH = 640;
-        const TARGET_HEIGHT = 360;
-
-        const canvas = document.createElement("canvas");
-        canvas.width = TARGET_WIDTH;
-        canvas.height = TARGET_HEIGHT;
-
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        ctx.drawImage(video, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
-
-        try {
-            canvas.toBlob(
-                (blob) => {
-                    if (!blob) return;
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                        const imageBase64 = reader.result;
-                        if (typeof imageBase64 === "string") {
-                            setLatestFrameBase64(imageBase64);
-                        }
-                    };
-                    reader.readAsDataURL(blob);
-                },
-                "image/jpeg",
-                0.3
-            );
-        } catch (e) {
-            console.error("Capture failed", e);
-        }
-    };
-
-    // Lifecycle for stream and listeners
+    // Lifecycle for stream
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
 
-        // Ensure video is initially in the hidden container to allow playback logic to start
+        // Ensure video is initially in the hidden container
         if (hiddenContainerRef.current && !video.parentElement) {
             hiddenContainerRef.current.appendChild(video);
         }
@@ -214,29 +223,12 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         const handleLoadedData = () => {
             setIsLoading(false);
             retryCountRef.current = 0;
-            captureFrame();
         };
-
-        // We need to manage the interval ID separately because addEventListener doesn't support returning a cleanup
-        // So we'll just set the interval in the main effect or use a separate effect for the interval?
-        // Actually, the previous code attached 'play' listener.
-        // Let's simplify: just set interval here if playing.
-        let intervalId: NodeJS.Timeout;
 
         video.addEventListener("loadeddata", handleLoadedData);
 
-        // Start capturing when it plays
-        const onPlay = () => {
-            captureFrame();
-            intervalId = setInterval(captureFrame, 10 * 60 * 1000);
-        };
-        video.addEventListener("play", onPlay);
-        video.addEventListener("pause", () => clearInterval(intervalId));
-
         return () => {
             video.removeEventListener("loadeddata", handleLoadedData);
-            video.removeEventListener("play", onPlay);
-            clearInterval(intervalId);
 
             if (hlsRef.current) {
                 hlsRef.current.destroy();
@@ -246,12 +238,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
 
     const attachVideoContainer = (container: HTMLElement) => {
         if (videoRef.current && container) {
-            // If it's already there, do nothing
             if (container.contains(videoRef.current)) return;
 
             container.appendChild(videoRef.current);
 
-            // Force play after moving node
             if (videoRef.current.paused) {
                 const playPromise = videoRef.current.play();
                 if (playPromise !== undefined) {
@@ -264,15 +254,13 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     };
 
     const detachVideoContainer = () => {
-    if (videoRef.current && hiddenContainerRef.current) {
-        // If it's already there, do nothing
-        if (hiddenContainerRef.current.contains(videoRef.current)) return;
+        if (videoRef.current && hiddenContainerRef.current) {
+            if (hiddenContainerRef.current.contains(videoRef.current)) return;
 
-        // Clear any text nodes or stray content
-        hiddenContainerRef.current.innerHTML = '';
-        hiddenContainerRef.current.appendChild(videoRef.current);
-    }
-};
+            hiddenContainerRef.current.innerHTML = "";
+            hiddenContainerRef.current.appendChild(videoRef.current);
+        }
+    };
 
     return (
         <VideoContext.Provider

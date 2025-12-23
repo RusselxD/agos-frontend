@@ -53,10 +53,12 @@ export default function DataRetention() {
         try {
             setIsUpdating(true);
 
-            const res = await settingsAPI.updateDataRetention({
+            const updatedValue = {
                 key: "data_retention_days",
                 json_value: JSON.stringify(newValue),
-            } as SystemSettingsUpdate);
+            } as SystemSettingsUpdate;
+
+            const res = await settingsAPI.updateDataRetention(updatedValue);
 
             setOriginalValue(Number(res));
             setNewValue(Number(res));

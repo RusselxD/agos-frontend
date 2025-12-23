@@ -1,17 +1,17 @@
 import {
     createContext,
     useContext,
-    useEffect,
     useMemo,
-    useRef,
     useState,
     type ReactNode,
 } from "react";
 
 import type { Status } from "../types/blockage";
+import { useWebSocketMessage } from "./WebSocketContext";
+import { capitalizeFirstLetter } from "../lib/utils/formatter";
+import type { BlockageSummaryResponse } from "../types/readingResponse";
 
 interface WaterwayContextProps {
-    setLatestFrameBase64: React.Dispatch<React.SetStateAction<string | null>>;
     status: Status | null;
     isFetching: boolean;
     error: string | null;
@@ -22,56 +22,36 @@ const WaterwayContext = createContext<WaterwayContextProps | undefined>(
 );
 
 export function BlockageProvider({ children }: { children: ReactNode }) {
-    const [latestFrameBase64, setLatestFrameBase64] = useState<string | null>(
-        null
-    );
     const [status, setStatus] = useState<Status | null>(null);
     const [isFetching, setIsFetching] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const isFirstFetch = useRef(true);
-
-    useEffect(() => {
-        const fetchAnalysis = async () => {
-            if (!latestFrameBase64) return;
-            
-            try {
-                if (isFirstFetch.current) {
-                    setIsFetching(true);
-                    isFirstFetch.current = false;
-                }
-
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-
-                const randomStatus: string = ["Clear", "Partial", "Blocked"][
-                    Math.floor(Math.random() * 3)
-                ];
-
-                setStatus(randomStatus as Status);
-
-                // const res = await sampleBlockageAPI.getBlockageStatus(
-                //     latestFrameBase64
-                // );
-                // setStatus(res);
-            } catch (error) {
-                console.log(error);
-                setError("Failed to fetch blockage analysis");
-            } finally {
-                setIsFetching(false);
+    useWebSocketMessage(
+        "blockage_detection_update",
+        (data: BlockageSummaryResponse) => {
+            if (data.status == "error") {
+                setError(data.message);
+            } else if (data.status == "warning") {
+                setError(data.message);
+                setStatus(capitalizeFirstLetter(data.blockage_status) as Status);
+            } else if (data.status == "success") {
+                setError(null);
+                setStatus(capitalizeFirstLetter(data.blockage_status) as Status);
             }
-        };
-
-        fetchAnalysis();
-    }, [latestFrameBase64]);
+            setIsFetching(false);
+            console.log("BLOCKAGE STATUS UPDATE RECEIVED");
+            console.log(data);
+        }
+    );
 
     const contextValue = useMemo(
         () => ({
-            setLatestFrameBase64,
+            
             status,
             isFetching,
             error,
         }),
-        [setLatestFrameBase64, status, isFetching, error]
+        [ status, isFetching, error]
     );
 
     return (

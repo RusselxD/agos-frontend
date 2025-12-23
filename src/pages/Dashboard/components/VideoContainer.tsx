@@ -4,9 +4,12 @@ import { useVideoContext } from "../../../context/VideoContext";
 const Header = () => {
     return (
         <div className="flex items-center justify-between font-semibold mb-2">
-            <p className="text-neutral-600">LIVE VISION FEED</p>
-            <div className="flex items-center gap-2">
-                <span className="bg-red-600 rounded-full w-3 h-3 pulse-circle"></span>
+            {/* <p className="text-neutral-600">LIVE VISION FEED</p> */}
+            <div className=" bg-black/50 text-white px-3 py-1.5 rounded text-sm pointer-events-none">
+                Cam.01: Maysan Creek 1
+            </div>
+            <div className="flex items-center gap-2 border border-red-600 bg-red-100 px-3.5 py-0.5 rounded">
+                <span className="bg-red-600 rounded-full w-3 h-3"></span>
                 <span className="text-red-600">LIVE</span>
             </div>
         </div>
@@ -53,9 +56,6 @@ const VideoPlaceholder = () => {
             {/* The video element is appended here by the context */}
 
             {/* Stream info overlay */}
-            <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded text-sm z-20 pointer-events-none">
-                Cam.01: Maysan Creek 1
-            </div>
         </div>
     );
 };

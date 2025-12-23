@@ -1,6 +1,7 @@
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../lib/utils/formatter";
+import { useWebSocket } from "../../../context/WebSocketContext";
 
 const MapPinFilled = ({ className }: { className?: string }) => (
     <svg
@@ -73,6 +74,15 @@ const TimeDisplay = () => {
     );
 };
 
+const ConnectingStatus = () => {
+    return (
+        <div className="flex items-center gap-2 border-amber-400 border bg-amber-100 py-2 px-3 rounded-md">
+            <div className="bg-amber-500 rounded-full w-3 h-3 pulse-circle"></div>
+            <p className="text-amber-600 text-sm font-semibold">Connecting</p>
+        </div>
+    );
+};
+
 const Status = () => {
     return (
         <div className="flex items-center gap-2 border-green-400 border bg-green-100 py-2 px-3 rounded-md">
@@ -83,11 +93,13 @@ const Status = () => {
 };
 
 export default function Header() {
+    const { isConnected } = useWebSocket();
+
     return (
         <div className="bg-white custom-shadow rounded-lg pl-5 pr-3 py-2 flex items-center justify-between">
             <div className="flex items-center">
                 <Location />
-                <Status />
+                {isConnected ? <Status /> : <ConnectingStatus />}
             </div>
             <TimeDisplay />
         </div>
