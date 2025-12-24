@@ -107,7 +107,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                             retries + 1
                         }/${maxPollRetries})`
                     );
-                    await new Promise((r) => setTimeout(r, 1500)); // Wait 1.5s between checks
+                    await new Promise((r) => setTimeout(r, 3000)); // Wait 3s between checks
                     retries++;
                 }
             }
