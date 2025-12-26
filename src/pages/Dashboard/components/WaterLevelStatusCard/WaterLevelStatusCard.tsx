@@ -6,14 +6,19 @@ import { useWaterLevel } from "../../../../context/WaterLevelContext";
 import WaterLevelStatusCardSkeleton from "./components/WaterLevelStatusCardSkeleton";
 
 export default function WaterLevelStatusCard() {
-    const { isFetchingData, isFetchingConfig, error } = useWaterLevel();
+    const { isFetching, isFetchingConfig, error } = useWaterLevel();
 
-    if (isFetchingConfig || isFetchingData) {
+    if (isFetchingConfig || isFetching) {
         return <WaterLevelStatusCardSkeleton />;
     }
 
     if (error) {
-        return <div>Error</div>;
+        return (
+            <Card className="!justify-start bg-white">
+                <CardHeaderText label="WATER LEVEL STATUS" />
+                <p>{error}</p>
+            </Card>
+        );
     }
 
     return (

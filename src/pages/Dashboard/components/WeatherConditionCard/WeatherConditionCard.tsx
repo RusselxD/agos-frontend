@@ -12,10 +12,19 @@ export type WeatherProps = {
 };
 
 export default function WeatherConditionCard() {
-    const { weatherData, isFetching } = useWeather();
+    const { weatherData, isFetching, error } = useWeather();
 
-    if (isFetching || !weatherData) {
+    if (isFetching) {
         return <WeatherConditionCardSkeleton />;
+    }
+
+    if (error) {
+        return (
+            <Card>
+                <CardHeaderText label="WEATHER CONDITION" />
+                <p>{error}</p>
+            </Card>
+        );
     }
 
     return (
@@ -23,7 +32,7 @@ export default function WeatherConditionCard() {
             <CardHeaderText label="WEATHER CONDITION" />
             <WeatherCondition weather={weatherData!} />
             <div className="grid grid-cols-2 gap-2">
-                <PrecipitationInfo precipitation={weatherData!.precipitation} />
+                <PrecipitationInfo precipitation_mm={weatherData!.precipitation_mm} />
                 <LastUpdatedInfo timestamp={weatherData!.timestamp} />
             </div>
         </Card>

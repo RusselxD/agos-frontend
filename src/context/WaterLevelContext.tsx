@@ -18,9 +18,10 @@ interface WaterLevelContextValue {
     sensorData: SensorData | null;
     sensorConfig: SensorConfig | null;
 
-    isFetchingData: boolean;
+    isFetching: boolean;
     isFetchingConfig: boolean;
 
+    warning: string | null;
     error: string | null;
 }
 
@@ -36,9 +37,10 @@ export function WaterLevelProvider({
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
     const [sensorConfig, setSensorConfig] = useState<SensorConfig | null>(null);
 
-    const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
     const [isFetchingConfig, setIsFetchingConfig] = useState<boolean>(true);
 
+    const [warning, setWarning] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     // Fetch config data on mount
@@ -62,17 +64,23 @@ export function WaterLevelProvider({
     useWebSocketMessage(
         "sensor_update",
         (data: SensorReadingSummaryResponse) => {
+            setIsFetching(false);
+
             if (data.status == "error") {
                 setError(data.message);
-            } else if (data.status == "warning") {
-                setError(data.message);
-                setSensorData(data.sensor_reading);
-            } else if (data.status == "success") {
-                console.log("Here");
+                return;
+            }
+
+            if (data.status == "warning") {
+                setWarning(data.message);
                 setError(null);
                 setSensorData(data.sensor_reading);
+                return;
             }
-            setIsFetchingData(false);
+
+            setError(null);
+            setWarning(null);
+            setSensorData(data.sensor_reading);
 
             console.log("SENSOR UPDATE RECEIVED");
             console.log(data);
@@ -83,11 +91,12 @@ export function WaterLevelProvider({
         () => ({
             sensorData,
             sensorConfig,
-            isFetchingData,
+            isFetching,
             isFetchingConfig,
+            warning,
             error,
         }),
-        [sensorData, sensorConfig, isFetchingData, isFetchingConfig, error]
+        [sensorData, sensorConfig, isFetching, isFetchingConfig, warning, error]
     );
 
     return (

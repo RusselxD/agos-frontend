@@ -17,8 +17,13 @@ const Header = () => {
 };
 
 const VideoPlaceholder = () => {
-    const { attachVideoContainer, detachVideoContainer, isLoading, error } =
-        useVideoContext();
+    const {
+        attachVideoContainer,
+        detachVideoContainer,
+        isLoading,
+        isSyncing,
+        error,
+    } = useVideoContext();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -40,6 +45,17 @@ const VideoPlaceholder = () => {
                     <div className="text-white text-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
                         <p>Loading stream...</p>
+                    </div>
+                </div>
+            )}
+
+            {isSyncing && !isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 backdrop-blur-[1px]">
+                    <div className="bg-black/60 px-4 py-2 rounded-lg text-white flex items-center gap-3">
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/80 border-t-transparent"></div>
+                        <span className="text-sm font-medium">
+                            Syncing live feed...
+                        </span>
                     </div>
                 </div>
             )}
