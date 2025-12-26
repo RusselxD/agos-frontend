@@ -131,7 +131,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                     enableWorker: true,
                     // STABILITY SETTINGS:
                     lowLatencyMode: false, // Important: False for stability with 6s segments
-                    liveSyncDurationCount: 3, // Buffer 3 segments (18s) behind live edge to prevent stutter
+                    liveSyncDurationCount: 5, // Buffer 5 segments (30s) behind live edge to prevent stutter
                     fragLoadingMaxRetry: 10,
                     manifestLoadingMaxRetry: 10,
                 });
