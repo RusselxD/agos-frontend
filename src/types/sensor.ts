@@ -1,6 +1,6 @@
-export interface SensorReadingSummaryResponse{
-    status: string;
-    message: string;
+import type { SummaryResponse } from "./readingResponse";
+
+export interface SensorReadingSummaryResponse extends SummaryResponse{
     sensor_reading: SensorData;
 }
 

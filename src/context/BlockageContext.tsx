@@ -9,7 +9,7 @@ import {
 import type { Status } from "../types/blockage";
 import { useWebSocketMessage } from "./WebSocketContext";
 import { capitalizeFirstLetter } from "../lib/utils/formatter";
-import type { BlockageSummaryResponse } from "../types/readingResponse";
+import type { BlockageSummaryResponse } from "../types/blockage";
 
 interface WaterwayContextProps {
     status: Status | null;

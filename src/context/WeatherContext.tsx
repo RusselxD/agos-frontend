@@ -1,18 +1,22 @@
 import {
     useState,
-    useRef,
-    useEffect,
     useMemo,
     createContext,
     useContext,
     type ReactNode,
 } from "react";
-import type { WeatherData } from "../types/weather";
-import { fetchWeatherData } from "../lib/api/weather";
+import type {
+    WeatherConditionSummaryResponse,
+    WeatherData,
+} from "../types/weather";
+import { useWebSocketMessage } from "./WebSocketContext";
+import { getWeatherColor, getWeatherIcon } from "../lib/utils/weather";
 
 interface WeatherContextValue {
     weatherData: WeatherData | null;
     isFetching: boolean;
+
+    warning: string | null;
     error: string | null;
 }
 
@@ -23,45 +27,53 @@ const WeatherContext = createContext<WeatherContextValue | undefined>(
 export function WeatherProvider({ children }: { children: ReactNode }) {
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [isFetching, setIsFetching] = useState<boolean>(true);
+
+    const [warning, setWarning] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const isFirstFetch = useRef(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (isFirstFetch.current) {
-                    setIsFetching(true);
-                    isFirstFetch.current = false;
-                }
+    useWebSocketMessage(
+        "weather_update",
+        (data: WeatherConditionSummaryResponse) => {
+            setIsFetching(false);
 
-                const weatherData: WeatherData = await fetchWeatherData({
-                    sensor_id: 1,
-                });
-
-                setWeatherData(weatherData);
-            } catch (error) {
-                setError("Failed to fetch weather data");
-            } finally {
-                setIsFetching(false);
+            if (data.status == "error") {
+                setError(data.message);
+                return;
             }
-        };
 
-        // Initial fetch
-        fetchData();
+            const weatherCondition = {
+                precipitation_mm: data.weather_condition.precipitation_mm,
+                condition: data.weather_condition.condition,
+                description: data.weather_condition.description,
+                timestamp: data.weather_condition.timestamp,
+                icon: getWeatherIcon(data.weather_condition.weather_code),
+                color: getWeatherColor(data.weather_condition.precipitation_mm),
+            } as WeatherData;
 
-        // Set up interval to fetch every 60 minutes
-        const intervalId = setInterval(fetchData, 60 * 60 * 1000);
+            if (data.status == "warning") {
+                setWarning(data.message);
+                setError(null);
+                setWeatherData(weatherCondition);
+                return;
+            }
 
-        return () => clearInterval(intervalId);
-    }, []);
+            setError(null);
+            setWarning(null);
+            setWeatherData(weatherCondition);
+
+            console.log("WEATHER UPDATE RECEIVED");
+            console.log(data);
+        }
+    );
 
     const contextValue = useMemo(
         () => ({
             weatherData,
             isFetching,
+            warning,
             error,
         }),
-        [weatherData, isFetching, error]
+        [weatherData, isFetching, warning, error]
     );
 
     return (

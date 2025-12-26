@@ -29,7 +29,12 @@ export default function BlockageStatusCard() {
     }
 
     if (error) {
-        return <div>Error</div>;
+        return (
+            <Card>
+                <CardHeaderText label="BLOCKAGE STATUS" />
+                <p>{error}</p>
+            </Card>
+        );
     }
 
     return (

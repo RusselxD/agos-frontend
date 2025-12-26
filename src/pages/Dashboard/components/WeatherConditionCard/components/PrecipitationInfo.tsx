@@ -1,13 +1,13 @@
 export default function PrecipitationInfo({
-    precipitation,
+    precipitation_mm,
 }: {
-    precipitation: number;
+    precipitation_mm: number;
 }) {
     return (
         <div className="bg-slate-100 rounded-lg p-2.5 border">
             <p className="text-sm text-gray-500">Precipitation</p>
             <p className="text-sm ">
-                <span>{`${precipitation.toFixed(1)} mm/h`}</span>
+                <span>{`${precipitation_mm.toFixed(1)} mm/h`}</span>
             </p>
         </div>
     );

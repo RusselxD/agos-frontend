@@ -15,7 +15,6 @@ const createVideoElement = (): HTMLVideoElement => {
     v.autoplay = true;
     v.muted = true;
     v.playsInline = true;
-    v.loop = true;
     v.style.width = "100%";
     v.style.height = "100%";
     v.style.objectFit = "cover";
@@ -33,6 +32,7 @@ interface VideoContextValue {
     detachVideoContainer: () => void;
 
     isLoading: boolean;
+    isSyncing: boolean; // New state for resyncing
     error: string | null;
     reloadStream: () => void;
 }
@@ -50,6 +50,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     const retryCountRef = useRef(0);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isSyncing, setIsSyncing] = useState(false); // New state
     const [error, setError] = useState<string | null>(null);
 
     const MAX_RETRIES = 5;
@@ -91,7 +92,6 @@ export function VideoProvider({ children }: { children: ReactNode }) {
 
             // --- STEP 2: The "Availability" Loop (The most important part) ---
             // We poll until the .m3u8 file actually exists on the disk.
-            // This prevents Hls.js from crashing with a 404 fatal error.
             let retries = 0;
             const maxPollRetries = 20; // 20 * 1.5s = 30 seconds max wait
 
@@ -130,10 +130,14 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                 const hls = new Hls({
                     enableWorker: true,
                     // STABILITY SETTINGS:
-                    lowLatencyMode: false, // Important: False for stability with 6s segments
-                    liveSyncDurationCount: 5, // Buffer 5 segments (30s) behind live edge to prevent stutter
+                    lowLatencyMode: false,
+                    liveSyncDurationCount: 3, // Reduced to 3 (~18s) to stay closer to live
                     fragLoadingMaxRetry: 10,
                     manifestLoadingMaxRetry: 10,
+                    // RESYNC SETTINGS:
+                    // If we fall behind (e.g. background tab), play 2x speed to catch up
+                    liveMaxLatencyDurationCount: 10,
+                    maxLiveSyncPlaybackRate: 2,
                 });
                 hlsRef.current = hls;
 
@@ -141,7 +145,6 @@ export function VideoProvider({ children }: { children: ReactNode }) {
 
                 hls.on(Hls.Events.MEDIA_ATTACHED, () => {
                     // Add timestamp (?t=...) to force browser to fetch fresh playlist
-                    // otherwise it might load a cached old version
                     hls.loadSource(`${HLS_STREAM_URL}?t=${Date.now()}`);
                 });
 
@@ -222,13 +225,65 @@ export function VideoProvider({ children }: { children: ReactNode }) {
 
         const handleLoadedData = () => {
             setIsLoading(false);
+            setIsSyncing(false); // Ensure syncing is cleared
             retryCountRef.current = 0;
         };
 
         video.addEventListener("loadeddata", handleLoadedData);
+        video.addEventListener("playing", () => setIsSyncing(false)); // Clear syncing on play
+
+        // --- NEW: Handle Tab Switching (Visibility Change) ---
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") {
+                const hls = hlsRef.current;
+
+                if (hls && video) {
+                    console.log("Tab Active: Checking synchronization...");
+
+                    // If the browser throttled the tab, hls.latency might be very high (e.g., >10s)
+                    // or the buffer might be empty. We check for drift or stalled state.
+                    // Note: hls.latency can be NaN during startup/stall, so we handle that too.
+                    const currentLatency = hls.latency || 0;
+                    // Relaxed threshold to 30s to avoid false positives on short switches
+                    const isDrifted = currentLatency > 30;
+                    
+                    if (isDrifted) {
+                        console.log(
+                            `Stream drifted by ${currentLatency.toFixed(1)}s. performing Hard Resync...`
+                        );
+
+                        // Trigger syncing state (transparent overlay) instead of full loading
+                        setIsSyncing(true);
+
+                        // Hard Resync: Instead of seeking in a potentially stale buffer,
+                        // we reload the source manifest to get the fresh Live Edge.
+                        hls.loadSource(`${HLS_STREAM_URL}?t=${Date.now()}`);
+
+                        hls.once(Hls.Events.MANIFEST_PARSED, () => {
+                            video
+                                .play()
+                                .catch((e) => console.log("Resync auto-play failed:", e));
+                        });
+                    } else if (video.paused) {
+                        // If we are in sync (low latency) but just paused by the browser
+                        console.log("Stream in sync. Resuming playback.");
+                        video
+                            .play()
+                            .catch((e) => console.log("Resume on visibility failed:", e));
+                    }
+                }
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         return () => {
             video.removeEventListener("loadeddata", handleLoadedData);
+            video.removeEventListener("playing", () => setIsSyncing(false));
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
 
             if (hlsRef.current) {
                 hlsRef.current.destroy();
@@ -269,6 +324,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                 attachVideoContainer,
                 detachVideoContainer,
                 isLoading,
+                isSyncing,
                 error,
                 reloadStream: loadStream,
             }}
