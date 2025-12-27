@@ -1,13 +1,13 @@
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 import { CircleCheck } from "lucide-react";
 
-const getIconColor = (alert_tier: number): string => {
-    switch (alert_tier) {
-        case 1:
+const getIconColor = (alert_name: string): string => {
+    switch (alert_name.toLowerCase()) {
+        case "normal":
             return "text-emerald-700";
-        case 2:
+        case "warning":
             return "text-yellow-600";
-        case 3:
+        case "critical":
             return "text-red-500";
         default:
             return "text-gray-500";
@@ -15,10 +15,10 @@ const getIconColor = (alert_tier: number): string => {
 };
 
 export default function TriggeredConditions() {
-    const { analysisData } = useFusionAnalysis();
+    const { fusionAnalysis } = useFusionAnalysis();
 
-    const conditions = analysisData?.triggeredConditions || [];
-    const alert_tier = analysisData?.fusionData.alert_tier || 0;
+    const conditions = fusionAnalysis?.fusion_data.triggered_conditions || [];
+    const alertName = fusionAnalysis?.fusion_data.alert_name || "normal";
 
     return (
         <div>
@@ -31,7 +31,7 @@ export default function TriggeredConditions() {
                         <li key={i} className="flex items-center gap-1">
                             <CircleCheck
                                 size={18}
-                                className={getIconColor(alert_tier)}
+                                className={getIconColor(alertName)}
                             />
                             <span className="text-gray-900">{condition}</span>
                         </li>

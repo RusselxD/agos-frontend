@@ -7,11 +7,10 @@ import {
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 
 interface TierConfig {
-    [key: number]: TierDetails;
+    [key: string]: TierDetails;
 }
 
 interface TierDetails {
-    name: string;
     color: string;
     bgColor: string;
     borderColor: string;
@@ -19,22 +18,19 @@ interface TierDetails {
 }
 
 const tierConfig: TierConfig = {
-    1: {
-        name: "Monitoring",
+    "normal": {
         color: "text-emerald-600",
         bgColor: "bg-emerald-50",
         borderColor: "border-emerald-300",
         icon: CheckCircle,
     },
-    2: {
-        name: "Warning",
+    "warning": {
         color: "text-yellow-600",
         bgColor: "bg-yellow-50",
         borderColor: "border-yellow-400",
         icon: AlertTriangle,
     },
-    3: {
-        name: "Critical",
+    "critical": {
         color: "text-red-600",
         bgColor: "bg-red-50",
         borderColor: "border-red-400",
@@ -42,16 +38,17 @@ const tierConfig: TierConfig = {
     },
 };
 
-const getTierConfig = (tier: number) => {
-    return tierConfig[tier] ?? tierConfig[1];
+const getTierConfig = (tier: string | undefined) => {
+    tier = tier?.toLowerCase() || "normal";
+    return tierConfig[tier] ?? tierConfig["normal"];
 };
 
 export default function AlertTierContainer() {
-    const { analysisData } = useFusionAnalysis();
+    const { fusionAnalysis } = useFusionAnalysis();
 
-    const { alert_tier, alert_name } = analysisData?.fusionData || {};
+    const  alert_name = fusionAnalysis?.fusion_data.alert_name || "Normal";
 
-    const tierDetails = getTierConfig(alert_tier || 1);
+    const tierDetails = getTierConfig(alert_name);
 
     return (
         <div
@@ -62,7 +59,7 @@ export default function AlertTierContainer() {
                 <p className="transition-colors duration-300 ease-in-out text-gray-500 font-medium">
                     Alert Tier
                 </p>
-                <p className="transition-colors duration-300 ease-in-out font-semibold text-2xl">{`Tier ${alert_tier}: ${alert_name}`}</p>
+                <p className="transition-colors duration-300 ease-in-out font-semibold text-2xl">{`${alert_name}`}</p>
             </div>
         </div>
     );

@@ -3,7 +3,6 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useRef,
     useState,
     type ReactNode,
 } from "react";
@@ -11,14 +10,17 @@ import {
 import type {
     AlertThresholds,
     FusionAnalysisData,
+    FusionAnalysisSummaryResponse,
 } from "../types/fusionAnalysis";
 
-import { sampleFusionAnalysisAPI } from "../lib/api/fusionAnalysis";
+import { settingsAPI } from "../lib/api/settings";
+import { useWebSocketMessage } from "./WebSocketContext";
 
 interface FusionAnalysisContextValue {
-    analysisData: FusionAnalysisData | null;
+    fusionAnalysis: FusionAnalysisData | null;
     alertThresholds: AlertThresholds | null;
     isFetching: boolean;
+    warning: string | null;
     error: string | null;
 }
 
@@ -27,21 +29,21 @@ const FusionAnalysisContext = createContext<
 >(undefined);
 
 export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
-    const [analysisData, setAnalysisData] = useState<FusionAnalysisData | null>(
-        null
-    );
     const [alertThresholds, setAlertThresholds] =
         useState<AlertThresholds | null>(null);
-    const [isFetching, setIsFetching] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
 
-    const isFirstFetch = useRef(true);
+    const [fusionAnalysis, setFusionAnalysis] =
+        useState<FusionAnalysisData | null>(null);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
+    const [warning, setWarning] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchAlertThresholds = async () => {
             try {
-                const res =
-                    await sampleFusionAnalysisAPI.getAnalysisThresholds();
+                const res: AlertThresholds = await settingsAPI.getSettingValue(
+                    "alert_thresholds"
+                );
                 setAlertThresholds(res);
             } catch (error) {
                 setError("Failed to fetch alert thresholds");
@@ -49,33 +51,38 @@ export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
             }
         };
 
-        const fetchFusionAnalysisData = async () => {
-            try {
-                if (isFirstFetch.current) {
-                    setIsFetching(true);
-                    isFirstFetch.current = false;
-                }
-
-                const res = await sampleFusionAnalysisAPI.getLatestFusionData();
-                setAnalysisData(res);
-            } catch (error) {
-                setError("Failed to fetch fusion analysis data");
-            } finally {
-                setIsFetching(false);
-            }
-        };
-
-        fetchFusionAnalysisData();
         fetchAlertThresholds();
-
-        const intervalId = setInterval(fetchFusionAnalysisData, 5 * 1000); // Fetch every 1 minute
-
-        return () => clearInterval(intervalId);
     }, []);
 
+    useWebSocketMessage(
+        "fusion_analysis_update",
+        (data: FusionAnalysisSummaryResponse) => {
+            setIsFetching(false);
+
+            if (data.status == "error") {
+                setError(data.message);
+                return;
+            }
+
+            if (data.status == "warning") {
+                setWarning(data.message);
+                setError(null);
+                setFusionAnalysis(data.fusion_analysis);
+                return;
+            }
+
+            setError(null);
+            setWarning(null);
+            setFusionAnalysis(data.fusion_analysis);
+
+            console.log("FUSION ANALYSIS UPDATE RECEIVED");
+            console.log(data);
+        }
+    );
+
     const contextValue = useMemo(
-        () => ({ analysisData, alertThresholds, isFetching, error }),
-        [analysisData, alertThresholds, isFetching, error]
+        () => ({ fusionAnalysis, alertThresholds, isFetching, warning, error }),
+        [fusionAnalysis, alertThresholds, isFetching, warning, error]
     );
 
     return (

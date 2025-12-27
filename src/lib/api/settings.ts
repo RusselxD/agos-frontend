@@ -2,7 +2,7 @@ import type { SystemSettingsUpdate } from "../../types/system_settings";
 import apiClient from "./axiosConfig";
 
 export const settingsAPI = {
-    getSettingValue: async (key: string): Promise<number> => {
+    getSettingValue: async (key: string) => {
         const res = await apiClient.get(`/system-settings/${key}/value`);
         return res.data;
     },

@@ -1,8 +1,9 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 import { Minus, TrendingDown, TrendingUp, type LucideIcon } from "lucide-react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 import type { SensorConfig } from "../../../../../types/sensor";
+import { capitalizeFirstLetter, getTimeAgo } from "../../../../../lib/utils/formatter";
 
 const getWaterLevelTrendIcon = (trend: string): LucideIcon => {
     switch (trend) {
@@ -65,40 +66,61 @@ interface StatCardProps {
     title: string;
     value: string | ReactNode;
     desc?: string;
+    timestamp: string;
     className?: string;
 }
 
-const StatCard = ({ title, value, desc, className }: StatCardProps) => {
+const LastUpdatedInfo = ({ timestamp }: { timestamp: string }) => {
+    const [timeAgo, setTimeAgo] = useState<string>(getTimeAgo(timestamp));
+
+    useEffect(() => {
+        setTimeAgo(getTimeAgo(timestamp));
+        // Update every 60 seconds
+        const intervalId = setInterval(() => {
+            setTimeAgo(getTimeAgo(timestamp));
+        }, 60 * 1000);
+
+        // Cleanup
+        return () => clearInterval(intervalId);
+    }, [timestamp]);
+
     return (
-        <div className={`border-l-4 border p-4 h-fit rounded-md ${className}`}>
+        <p className="absolute font-medium top-2 right-2 text-sm text-gray-500">{`${timeAgo || "N/A"}`}</p>
+    );
+}
+
+const StatCard = ({ title, value, desc, timestamp, className }: StatCardProps) => {
+    return (
+        <div className={`border-l-4 border relative p-4 h-fit rounded-md ${className}`}>
             <p className="text-sm text-gray-600">{title}</p>
             <div className="font-semibold text-xl">{value}</div>
             {desc && <p className="text-sm text-gray-600">{desc}</p>}
+
+            <LastUpdatedInfo timestamp={timestamp} />
         </div>
     );
 };
 
 export default function DecisionFactorsGrid() {
-    const { analysisData } = useFusionAnalysis();
+    const { fusionAnalysis } = useFusionAnalysis();
 
     const WaterLevelTrendIcon = getWaterLevelTrendIcon(
-        analysisData?.decisionFactors.water_level_trend || ""
+        fusionAnalysis?.water_level_status.trend || ""
     );
 
     const { sensorConfig } = useWaterLevel();
 
-    const blockageStatus =
-        analysisData?.decisionFactors.visual_analysis || "N/A";
-    const precipitation =
-        analysisData?.decisionFactors.weather_precipitation || 0;
-    const waterLevelCm = analysisData?.decisionFactors.water_level_cm || null;
+    const blockageStatus = fusionAnalysis?.blockage_status.status || "N/A";
+    const precipitation = fusionAnalysis?.weather_status.precipitation_mm || 0;
+    const waterLevelCm = fusionAnalysis?.water_level_status.water_level_cm || 0;
 
     return (
         <div className="flex flex-col gap-2 w-1/3">
             <StatCard
                 title="Visual Status"
-                value={blockageStatus}
+                value={capitalizeFirstLetter(blockageStatus)}
                 className={getBlockageColors(blockageStatus)}
+                timestamp={fusionAnalysis?.blockage_status.timestamp || ""}
             />
             <StatCard
                 title="Water Level"
@@ -110,14 +132,18 @@ export default function DecisionFactorsGrid() {
                 }
                 className={getWaterLevelColors(waterLevelCm, sensorConfig)}
                 desc={
-                    `${analysisData?.decisionFactors.water_change_rate} cm/min` ||
+                    `${fusionAnalysis?.water_level_status.change_rate} cm/min` ||
                     "N/A"
                 }
+                timestamp={fusionAnalysis?.water_level_status.timestamp || ""}
             />
             <StatCard
                 title="Weather"
-                value={analysisData?.decisionFactors.weather_condition || "N/A"}
+                value={
+                    fusionAnalysis?.weather_status.weather_condition || "N/A"
+                }
                 desc={`${precipitation.toFixed(1)} mm/h` || "N/A"}
+                timestamp={fusionAnalysis?.weather_status.timestamp || ""}
                 className={getWeatherColors(precipitation)}
             />
         </div>

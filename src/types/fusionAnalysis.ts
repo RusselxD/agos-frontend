@@ -1,23 +1,39 @@
+import type { SummaryResponse } from "./readingResponse";
+
+export interface FusionAnalysisSummaryResponse extends SummaryResponse{
+    fusion_analysis: FusionAnalysisData;
+}
+
 export interface FusionAnalysisData {
-    fusionData: FusionData;
-    decisionFactors: DecisionFactors;
-    triggeredConditions: string[];
+    fusion_data: FusionData;
+    blockage_status : BlockageStatus;
+    water_level_status : WaterLevelStatus;
+    weather_status : WeatherStatus;
 }
 
 interface FusionData {
-    alert_tier: number; // 1, 2, or 3
-    alert_name: "Normal" | "Warning" | "Critical";
+    alert_name: string;
     combined_risk_score: number;
+    triggered_conditions: string[];
+}
+interface StatusBase{
     timestamp: string;
 }
 
-interface DecisionFactors {
-    visual_analysis: "Clear" | "Partial" | "Blocked";
+interface BlockageStatus extends StatusBase{
+    status: string;
+}
+
+interface WaterLevelStatus extends StatusBase{
     water_level_cm: number;
-    water_level_trend: "falling" | "stable" | "rising";
-    water_change_rate: number;
+    change_rate: number;
+    critical_percentage: number;
+    trend: string;
+}
+
+interface WeatherStatus extends StatusBase{
+    precipitation_mm: number;
     weather_condition: string;
-    weather_precipitation: number;
 }
 
 export interface AlertThresholds {

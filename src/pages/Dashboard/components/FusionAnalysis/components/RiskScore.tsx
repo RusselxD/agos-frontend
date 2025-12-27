@@ -1,14 +1,14 @@
 import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext";
 
 const getData = () => {
-    const { alertThresholds, analysisData } = useFusionAnalysis();
+    const { alertThresholds, fusionAnalysis } = useFusionAnalysis();
 
     const normalThreshold = alertThresholds?.tier_1_max || 44;
     const warningThresholdMin = alertThresholds?.tier_2_min || 45;
     const warningThresholdMax = alertThresholds?.tier_2_max || 74;
 
     const combined_risk_score =
-        analysisData?.fusionData.combined_risk_score || 0;
+        fusionAnalysis?.fusion_data.combined_risk_score || 0;
 
     const getBarColor = (score: number): string => {
         if (score <= normalThreshold) return "bg-emerald-500";
