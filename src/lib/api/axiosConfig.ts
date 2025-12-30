@@ -26,10 +26,10 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response.status === 401) {
-            localStorage.removeItem("authToken");
-            window.location.href = "/login";
-        }
+        // if (error.response.status === 401) {
+        //     localStorage.removeItem("authToken");
+        //     window.location.href = "/login";
+        // }
         return Promise.reject(error); // Propagate other errors to be handled in the calling code
     }
 );

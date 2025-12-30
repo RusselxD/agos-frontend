@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../lib/api/auth";
-import type { LoginCredentials, LoginResponse } from "../types/auth";
+import type { LoginCredentials, TokenResponse } from "../types/auth";
 
 interface TokenClaims {
     sub: string;
@@ -16,6 +16,7 @@ interface AuthContextValue {
     user: TokenClaims | null;
     login: (phone_number: string, password: string) => Promise<void>;
     logout: () => void;
+    updateUser: (accessToken: string) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -69,13 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } as LoginCredentials;
 
         try {
-            const res: LoginResponse = await authAPI.login(loginCredentials);
-
-            localStorage.setItem("authToken", res.access_token);
-
-            const claims = decodeToken(res.access_token);
-            setIsAuthenticated(true);
-            setUser(claims);
+            const res: TokenResponse = await authAPI.login(loginCredentials);
+            updateUser(res.access_token);
         } catch (error) {
             throw error; // Rethrow to handle in the calling function
         }
@@ -87,12 +83,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
     };
 
+    const updateUser = (accessToken: string): void => {
+        localStorage.setItem("authToken", accessToken);
+
+        const claims = decodeToken(accessToken);
+        setIsAuthenticated(true);
+        setUser(claims);
+    };
+
     const contextValue = useMemo(
         () => ({
             isAuthenticated,
             user,
             login,
             logout,
+            updateUser,
         }),
         [isAuthenticated, user]
     );
