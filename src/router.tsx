@@ -15,15 +15,24 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Admins from "./pages/Admins";
 import { WebSocketProvider } from "./context/WebSocketContext";
+import ForcePasswordChange from "./pages/ForcePasswordChange";
 
 export const router = createBrowserRouter([
     {
-        path: "login",
+        path: "auth",
         element: <AuthLayout />,
         children: [
             {
                 index: true,
+                element: <Navigate to="login" replace />,
+            },
+            {
+                path: "login",
                 element: <Login />,
+            },
+            {
+                path: "force-password-change",
+                element: <ForcePasswordChange />,
             },
         ],
     },

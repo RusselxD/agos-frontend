@@ -3,7 +3,11 @@ export interface LoginCredentials {
     password: string;
 }
 
-export interface LoginResponse {
+export interface TokenResponse {
     access_token: string;
     token_type: string;
+}
+
+export interface ChangePasswordCredentials {
+    new_password: string;
 }

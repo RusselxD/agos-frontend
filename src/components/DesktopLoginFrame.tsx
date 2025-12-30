@@ -1,8 +1,8 @@
 export default function DesktopLoginFrame() {
     return (
-        <div className="w-1/2">
+        <div className="hidden lg:block w-3/5">
             <img
-                src="login-frame-desktop.png"
+                src="/auth-frame-desktop.png"
                 className="h-screen w-full"
                 alt="Login Frame"
             />
