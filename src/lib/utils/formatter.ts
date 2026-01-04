@@ -33,7 +33,7 @@ export const formatDate = (dateString: string) => {
         day: "numeric",
         year: "numeric",
     });
-}
+};
 
 export const formatTimestamp = (timestampString: string) => {
     const date = new Date(timestampString);
@@ -46,4 +46,44 @@ export const formatTimestamp = (timestampString: string) => {
         minute: "2-digit",
         hour12: true,
     });
+};
+
+export const normalizePhoneNumber = (input: string): string => {
+    // Remove all non-digits
+    const digitsOnly = input.replace(/\D/g, "");
+
+    // Handle different input formats
+    if (digitsOnly.startsWith("63") && digitsOnly.length === 12) {
+        // +639207134335 or 639207134335 -> +639207134335
+        return `+${digitsOnly}`;
+    } else if (digitsOnly.startsWith("0") && digitsOnly.length === 11) {
+        // 09207134335 -> +639207134335
+        return `+63${digitsOnly.substring(1)}`;
+    } else if (digitsOnly.length > 0) {
+        // Any other digits -> +63{digits}
+        // 9207134335 -> +639207134335
+        // 123 -> +63123
+        return `+63${digitsOnly}`;
+    } else {
+        // Empty input
+        return "";
+    }
+};
+
+export const removeNonDigits = (input: string): string => {
+    return input.replace(/\D/g, "");
+};
+
+export const determinePhoneMaxLength = (digitsOnly: string): number => {
+    let maxLength;
+    if (digitsOnly.startsWith("63")) {
+        maxLength = 12; // 639XXXXXXXXX (12 digits)
+    } else if (digitsOnly.startsWith("0")) {
+        maxLength = 11; // 09XXXXXXXXX (11 digits)
+    } else if (digitsOnly.startsWith("9")) {
+        maxLength = 10; // 9XXXXXXXXX (10 digits)
+    } else {
+        maxLength = 10; // Default to longest possible
+    }
+    return maxLength;
 };

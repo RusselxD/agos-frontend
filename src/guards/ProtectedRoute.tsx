@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
         return <Navigate to="/auth/login" replace />;
     }
 
-    if (user?.force_password_change){
+    if (user?.force_password_change) {
         return <Navigate to="/auth/force-password-change" replace />;
     }
 

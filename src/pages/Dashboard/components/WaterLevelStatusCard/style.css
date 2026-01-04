@@ -1,7 +1,7 @@
+/* Water Gauge Container */
 .water-gauge {
-    position: relative;
-    width: 50px;
-    height: 144px;
+    @apply relative w-[50px] h-[144px] rounded-[40px] border-[3px] border-solid border-gray-200 overflow-hidden shrink-0;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
     background: linear-gradient(
         to bottom,
         #dc2626 0%,
@@ -13,106 +13,77 @@
         #10b981 65%,
         #10b981 100%
     );
-    border-radius: 40px;
-    border: 3px solid #e5e7eb;
-    overflow: hidden;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
 }
 
+/* Threshold Markers */
 .threshold-marker {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 2px;
-    z-index: 10;
+    @apply absolute left-0 right-0 h-[2px] z-10;
 }
 
 .threshold-marker.warning {
-    background: #f59e0b;
+    @apply bg-[#f59e0b];
 }
 
 .threshold-marker.critical {
-    background: #dc2626;
+    @apply bg-[#dc2626];
 }
 
+/* Marker Triangle (After) */
 .threshold-marker::after {
-    content: "";
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
+    @apply content-[''] absolute right-[-8px] top-1/2 -translate-y-1/2 w-0 h-0;
     border-left: 8px solid currentColor;
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
 }
 
 .threshold-marker.warning::after {
-    border-left-color: #f59e0b;
+    @apply border-l-[#f59e0b];
 }
 
 .threshold-marker.critical::after {
-    border-left-color: #dc2626;
+    @apply border-l-[#dc2626];
 }
 
+/* Water Fill Level */
 .water-fill {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    @apply absolute bottom-0 left-0 right-0 transition-[height] duration-[0.7s] ease-out rounded-b-[37px] overflow-visible;
     background: linear-gradient(to top, #2563eb, #3b82f6, #60a5fa);
-    transition: height 0.7s ease-out;
-    border-radius: 0 0 37px 37px;
-    overflow: visible;
 }
 
+/* Wave Container */
 .wave-container {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 20px;
-    overflow: hidden;
+    @apply absolute top-[-10px] left-0 right-0 w-full h-[20px] overflow-hidden;
 }
 
+/* Wave Animation Bases */
 .wave {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
+    @apply absolute top-0 left-[-100%] w-[200%] h-full;
 }
 
 .wave path {
-    fill: rgba(96, 165, 250, 0.5);
+    @apply fill-blue-400/50;
 }
 
+/* Specific Wave Speeds and Colors */
 .wave1 {
-    animation: wave-move 4s linear infinite;
+    @apply animate-[wave-move_4s_linear_infinite];
 }
-
 .wave1 path {
-    fill: rgba(147, 197, 253, 0.6);
+    @apply fill-blue-300/60;
 }
 
 .wave2 {
-    animation: wave-move 6s linear infinite reverse;
+    @apply animate-[wave-move_6s_linear_infinite_reverse];
 }
-
 .wave2 path {
-    fill: rgba(96, 165, 250, 0.4);
+    @apply fill-blue-400/40;
 }
 
 .wave3 {
-    animation: wave-move 5s linear infinite;
-    animation-delay: -2s;
+    @apply animate-[wave-move_5s_linear_infinite] delay-[-2s];
 }
-
 .wave3 path {
-    fill: rgba(59, 130, 246, 0.3);
+    @apply fill-blue-500/30;
 }
 
 @keyframes wave-move {
