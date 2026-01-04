@@ -1,13 +1,12 @@
 import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface PasswordFieldProps {
     label: string;
     placeholder: string;
     password: string;
-    setPassword:
-        | React.Dispatch<React.SetStateAction<string>>
-        | ((value: string) => void);
+    setPassword: Dispatch<SetStateAction<string>> | ((value: string) => void);
 }
 
 export default function PasswordField({
@@ -21,7 +20,7 @@ export default function PasswordField({
     return (
         <label className="flex flex-col">
             <span className="text-sm text-gray-700 font-semibold">{label}</span>
-            <div className="w-full bg-red-200 relative">
+            <div className="w-full relative">
                 <input
                     type={showPassword ? "text" : "password"}
                     value={password}

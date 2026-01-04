@@ -1,23 +1,81 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+
 import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
 import Dashboard from "./pages/Dashboard";
 import AlertLogs from "./pages/AlertLogs";
 import Sensor from "./pages/Sensor";
 import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
+import ProtectedRoute from "./guards/ProtectedRoute";
+
+import Admins from "./pages/Admins";
+import Login from "./pages/Login";
+import ForcePasswordChange from "./pages/ForcePasswordChange";
+
+import Register from "./pages/RespondersRegister/pages/Register";
+
 import { WeatherProvider } from "./context/WeatherContext";
 import { WaterLevelProvider } from "./context/WaterLevelContext";
 import { BlockageProvider } from "./context/BlockageContext";
 import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
 import { VideoProvider } from "./context/VideoContext";
-import AuthLayout from "./layouts/AuthLayout";
-import Login from "./pages/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Admins from "./pages/Admins";
 import { WebSocketProvider } from "./context/WebSocketContext";
-import ForcePasswordChange from "./pages/ForcePasswordChange";
+import { RespondersRegisterProvider } from "./pages/RespondersRegister/context/RespondersRegisterContext";
+import VerifyOTP from "./pages/RespondersRegister/pages/VerifyOTP";
+import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
+import UploadID from "./pages/RespondersRegister/pages/UploadID";
+import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 
 export const router = createBrowserRouter([
+    {
+        path: "responder",
+        element: (
+            <RespondersRegisterProvider>
+                <AuthLayout />
+            </RespondersRegisterProvider>
+        ),
+        children: [
+            {
+                index: true,
+                element: <Navigate to="register" replace />,
+            },
+            {
+                path: "register",
+                element: (
+                    <ResponderRegistrationGuard>
+                        <Register />
+                    </ResponderRegistrationGuard>
+                ),
+            },
+            {
+                path: "verify-otp",
+                element: (
+                    <ResponderRegistrationGuard requireInitialData={true}>
+                        <VerifyOTP />
+                    </ResponderRegistrationGuard>
+                ),
+            },
+            {
+                path: "upload-id-photo",
+                element: (
+                    <ResponderRegistrationGuard requireOTPVerified={true}>
+                        <UploadID />
+                    </ResponderRegistrationGuard>
+                ),
+            },
+            {
+                path: "registration-complete",
+                element: (
+                    <ResponderRegistrationGuard
+                        requireRegistrationCompleted={true}
+                    >
+                        <RegistrationComplete />
+                    </ResponderRegistrationGuard>
+                ),
+            },
+        ],
+    },
     {
         path: "auth",
         element: <AuthLayout />,
@@ -77,7 +135,6 @@ export const router = createBrowserRouter([
                 path: "sensor",
                 element: <Sensor />,
             },
-
             {
                 path: "responders",
                 element: <Responders />,
