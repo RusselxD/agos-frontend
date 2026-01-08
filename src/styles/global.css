@@ -80,10 +80,12 @@ body {
 
 @keyframes pulse-out {
     0% {
-        @apply scale-100 opacity-80;
+        transform: scale(1);
+        opacity: 0.8;
     }
     100% {
-        @apply scale-[2.5] opacity-0;
+        transform: scale(2.5);
+        opacity: 0;
     }
 }
 
