@@ -42,7 +42,7 @@ export interface SensorReading {
 // For Sensor Status at Sensor Page
 export interface SensorDeviceStatus {
     device_name: string;
-    location: string;
+    location_name: string;
     connection: string;
     last_updated: string | null;
     signal: string | null;

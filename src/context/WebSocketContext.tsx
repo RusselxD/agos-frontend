@@ -34,9 +34,9 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-        console.log(`ws://${backendBaseUrl}/ws?token=${token}`)
+        console.log(`ws://${backendBaseUrl}/ws?token=${token}&location_id=1`);
 
-        const ws = new WebSocket(`ws://${backendBaseUrl}/ws?token=${token}`);
+        const ws = new WebSocket(`ws://${backendBaseUrl}/ws?token=${token}&location_id=1`);
         socketRef.current = ws;
 
         ws.onopen = () => {

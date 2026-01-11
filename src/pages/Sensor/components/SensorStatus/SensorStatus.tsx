@@ -83,7 +83,7 @@ export default function SensorStatus() {
                 />
                 <Details
                     label="Location:"
-                    value={sensorStatus?.location || ""}
+                    value={sensorStatus?.location_name || ""}
                 />
             </div>
         </Container>
