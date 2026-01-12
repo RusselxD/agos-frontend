@@ -10,6 +10,11 @@ export interface SensorData {
     alert: Alert;
 }
 
+export interface SensorReadingResponse {
+    items: SensorReading[];
+    has_more: boolean;
+}
+
 interface WaterLevel {
     current_cm: number;
     change_rate: number;

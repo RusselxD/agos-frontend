@@ -26,6 +26,7 @@ import VerifyOTP from "./pages/RespondersRegister/pages/VerifyOTP";
 import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
 import UploadID from "./pages/RespondersRegister/pages/UploadID";
 import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
+import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 
 export const router = createBrowserRouter([
     {
@@ -141,7 +142,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "admins",
-                element: <Admins />,
+                element: (
+                    <AdminsPageProvider>
+                        <Admins />
+                    </AdminsPageProvider>
+                ),
             },
             {
                 path: "settings",

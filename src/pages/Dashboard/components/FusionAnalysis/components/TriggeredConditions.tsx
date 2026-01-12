@@ -20,6 +20,10 @@ export default function TriggeredConditions() {
     const conditions = fusionAnalysis?.fusion_data.triggered_conditions || [];
     const alertName = fusionAnalysis?.fusion_data.alert_name || "normal";
 
+    if (conditions.length === 0) {
+        return null;
+    }
+
     return (
         <div>
             <p className="font-medium text-sm text-gray-500 mb-1">

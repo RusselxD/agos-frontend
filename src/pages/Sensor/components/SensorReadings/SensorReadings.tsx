@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import Container from "../../../../components/ui/Container";
-import type { SensorReading } from "../../../../types/sensor";
+import type {
+    SensorReading,
+    SensorReadingResponse,
+} from "../../../../types/sensor";
 import { sensorAPI } from "../../../../lib/api/sensor";
 import { useToast } from "../../../../context/ToastContext";
 import Table from "./components/Table";
-import TableSkeleton from "./components/TableSkeleton";
+import TableSkeleton from "../../../../components/common/TableSkeleton";
 
 export default function SensorReadings() {
     const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
@@ -41,6 +44,7 @@ export default function SensorReadings() {
             observer.observe(observerTarget.current);
         }
 
+        // Cleanup function
         return () => {
             if (observerTarget.current) {
                 observer.unobserve(observerTarget.current);
@@ -56,13 +60,15 @@ export default function SensorReadings() {
                 } else {
                     setIsFetchingMore(true);
                 }
-                // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate network delay
-                const res = await sensorAPI.getLatestSensorReadings(page, 10);
+
+                const res: SensorReadingResponse =
+                    await sensorAPI.getLatestSensorReadings(page, 10);
                 setSensorReadings((prev) => [...prev, ...res.items]);
                 setHasMore(res.has_more);
             } catch (error) {
                 console.log("Error fetching sensor readings:", error);
                 toastError("Failed to fetch sensor readings.");
+                setHasMore(false); // Stop further fetches on error
             } finally {
                 setIsFetching(false);
                 setIsFetchingMore(false);
@@ -75,7 +81,7 @@ export default function SensorReadings() {
     }, [page]);
 
     if (isFetching) {
-        return <TableSkeleton />;
+        return <TableSkeleton title="SENSOR READINGS" rows={7} />;
     }
 
     return (
