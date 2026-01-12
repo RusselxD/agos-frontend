@@ -12,10 +12,14 @@ export default function AuthFormContainer({
     title,
     subtitle,
     children,
-    className
+    className,
 }: AuthFormContainerProps) {
     return (
-        <div className={`flex flex-col gap-10 w-full items-center justify-center ${className ?? ""}`}>
+        <div
+            className={`flex flex-col text-sm md:text-base gap-10 w-full items-center justify-center ${
+                className ?? ""
+            }`}
+        >
             <AuthHeader title={title} subtitle={subtitle} />
             {children}
         </div>

@@ -96,7 +96,7 @@ const RegisterForm = () => {
 
     return (
         <form
-            className="w-full flex flex-col gap-6"
+            className="w-full flex flex-col gap-8"
             onSubmit={(e) => handleSubmit(e)}
         >
             {errorMessage && (
@@ -104,7 +104,8 @@ const RegisterForm = () => {
                     {errorMessage}
                 </div>
             )}
-            <div className="flex gap-3">
+
+            <div className="flex flex-col gap-8 md:flex-row md:gap-3">
                 <TextInputField
                     value={firstName}
                     setValue={setFirstName}
@@ -118,6 +119,7 @@ const RegisterForm = () => {
                     placeholder="Enter your last name"
                 />
             </div>
+
             <PhoneNumberInput
                 phoneNumber={phoneNumber}
                 handleInputNumber={handleInputNumber}
@@ -143,8 +145,8 @@ const RegisterForm = () => {
 export default function Register() {
     return (
         <AuthFormContainer
-            title="RESPONDER REGISTER"
-            subtitle="PLEASE FILL OUT THE FORM TO REGISTER AS A RESPONDER"
+            title="REGISTER"
+            subtitle="FILL OUT THE FORM TO REGISTER AS A RESPONDER"
         >
             <RegisterForm />
         </AuthFormContainer>
