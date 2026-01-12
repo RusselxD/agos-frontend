@@ -6,7 +6,7 @@ import type { LoginCredentials, TokenResponse } from "../types/auth";
 interface TokenClaims {
     sub: string;
     is_superuser: boolean;
-    is_active: boolean;
+    is_enabled: boolean;
     force_password_change: boolean;
     exp: number;
 }

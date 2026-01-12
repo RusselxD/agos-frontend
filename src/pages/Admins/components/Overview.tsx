@@ -1,4 +1,4 @@
-import type { AdminUserResponse } from "../../../types/user";
+import type { AdminUserResponse } from "../../../types/adminUser";
 import { useAdmins } from "../context/AdminsPageContext";
 import "../style.css";
 import { Star } from "lucide-react";
@@ -14,14 +14,22 @@ const getAdminCount = (admins: AdminUserResponse[]): string => {
 };
 
 export default function Overview() {
-    const { admins } = useAdmins();
+    const { admins, isFetchingAdmins } = useAdmins();
+
+    if (isFetchingAdmins) {
+        return <div className="rounded-xl skeleton h-full aspect-square"></div>;
+    }
+    
+    if (admins.length === 0) {
+        return <div className="rounded-xl h-full aspect-square bg-red-50 border border-red-400"></div>;
+    }
 
     return (
-        <div className="gradient-bg rounded-xl py-7 px-8 text-white relative">
+        <div className="gradient-bg rounded-xl py-7 px-8 text-white relative flex flex-col justify-center">
             <p className="text-gray-200 font-semibold mb-3 text-sm">OVERVIEW</p>
 
             <p className="font-bold text-6xl">
-                {getAdminCount(admins.filter((a) => a.is_active))}
+                {getAdminCount(admins.filter((a) => a.is_enabled))}
             </p>
             <p className="text-sm text-gray-200 font-light">
                 Active System Admins
@@ -43,12 +51,12 @@ export default function Overview() {
                 <p className="text-gray-100">Regular Admin</p>
                 <p className="font-medium">
                     {getAdminCount(
-                        admins.filter((a) => !a.is_superuser && a.is_active)
+                        admins.filter((a) => !a.is_superuser && a.is_enabled)
                     )}
                 </p>
             </div>
 
-            <Star className="absolute bottom-16 text-gray-100/15 rotate-45 right-10 w-48 h-48"/>
+            <Star className="absolute bottom-16 text-gray-100/15 rotate-45 right-10 w-48 h-48" />
         </div>
     );
 }

@@ -22,17 +22,18 @@ body {
     }
 
     .btn-custom {
-        @apply px-4 py-3 rounded-lg text-sm leading-5 cursor-pointer;
+        @apply flex gap-2 items-center px-4 py-3 rounded-lg text-sm leading-5 cursor-pointer;
         @apply transition-colors ease-in-out duration-150;
         @apply disabled:opacity-50 disabled:cursor-not-allowed;
     }
 
     .btn-cancel {
-        @apply bg-gray-200 text-gray-800 px-4 py-3 rounded-lg text-sm leading-5 cursor-pointer;
+        @apply px-4 py-3 text-sm border border-gray-300 text-gray-700 cursor-pointer rounded-lg;
+        @apply hover:bg-gray-100;
         @apply transition-colors ease-in-out duration-150;
-        @apply hover:bg-gray-300;
+        @apply hover:bg-gray-100;
         @apply disabled:opacity-50 disabled:cursor-not-allowed;
-        @apply disabled:hover:bg-gray-200;
+        @apply disabled:hover:bg-white;
     }
 
     .pulse-circle {
@@ -53,7 +54,7 @@ body {
     }
 
     .custom-input {
-        @apply border-b-2 border-solid border-[rgb(183,183,183)] bg-gray-50;
+        @apply border-b-2 border-solid border-[rgb(183,183,183)] bg-white;
         @apply pt-2 pr-3 pb-2 pl-0;
         @apply outline-none transition-all duration-[0.2s] ease-in-out;
         @apply focus:border-[#111827];

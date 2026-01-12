@@ -1,12 +1,17 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { AdminUserResponse } from "../../../types/user";
-import type { ReactNode } from "react";
-import { adminUsersAPI } from "../../../lib/api/user";
+import type { AdminUserResponse } from "../../../types/adminUser";
+import type { Dispatch, SetStateAction, ReactNode } from "react";
+import { adminUsersAPI } from "../../../lib/api/adminUser";
 import { useToast } from "../../../context/ToastContext";
 
 interface AdminsPageContextValue {
     admins: AdminUserResponse[];
-    isFetching: boolean;
+    isFetchingAdmins: boolean;
+    createNewAdminIsOpen: boolean;
+    setCreateNewAdminIsOpen: Dispatch<SetStateAction<boolean>>;
+    addNewAdmin: (newAdmin: AdminUserResponse) => void;
+    logRefetchTrigger: number;
+    triggerLogRefetch: () => void;
 }
 
 const AdminsPageContext = createContext<AdminsPageContextValue | undefined>(
@@ -15,32 +20,50 @@ const AdminsPageContext = createContext<AdminsPageContextValue | undefined>(
 
 export function AdminsPageProvider({ children }: { children: ReactNode }) {
     const [admins, setAdmins] = useState<AdminUserResponse[]>([]);
-    const [isFetching, setIsFetching] = useState<boolean>(false);
+    const [isFetchingAdmins, setIsFetchingAdmins] = useState<boolean>(false);
+
+    const [createNewAdminIsOpen, setCreateNewAdminIsOpen] =
+        useState<boolean>(false);
+
+    const [logRefetchTrigger, setLogRefetchTrigger] = useState<number>(0);
+
+    const triggerLogRefetch = () => {
+        setLogRefetchTrigger((prev) => prev + 1);
+    };
 
     const { toastError } = useToast();
 
     useEffect(() => {
         const fetchAdmins = async () => {
             try {
-                setIsFetching(true);
+                setIsFetchingAdmins(true);
                 const res = await adminUsersAPI.getAllAdmins();
                 setAdmins(res);
             } catch (error) {
                 toastError("Failed to fetch admin users");
             } finally {
-                setIsFetching(false);
+                setIsFetchingAdmins(false);
             }
         };
 
         fetchAdmins();
     }, []);
 
+    const addNewAdmin = (newAdmin: AdminUserResponse) => {
+        setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
+    };
+
     const contextValue = useMemo(
         () => ({
             admins,
-            isFetching,
+            isFetchingAdmins,
+            createNewAdminIsOpen,
+            setCreateNewAdminIsOpen,
+            addNewAdmin,
+            logRefetchTrigger,
+            triggerLogRefetch,
         }),
-        [admins, isFetching]
+        [admins, isFetchingAdmins, createNewAdminIsOpen, logRefetchTrigger]
     );
 
     return (

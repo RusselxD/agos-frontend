@@ -3,11 +3,7 @@ import type { FormEvent } from "react";
 import AuthFormContainer from "../../../components/common/auth/AuthFormContainer";
 import PhoneNumberInput from "../../../components/common/auth/PhoneNumberInput";
 import { useRespondersRegister } from "../context/RespondersRegisterContext";
-import {
-    determinePhoneMaxLength,
-    normalizePhoneNumber,
-    removeNonDigits,
-} from "../../../lib/utils/formatter";
+import { normalizeNumberInput } from "../../../lib/utils/formatter";
 import TextInputField from "../../../components/common/auth/TextInputField";
 import { responderAPI } from "../../../lib/api/responder";
 import type {
@@ -36,17 +32,7 @@ const RegisterForm = () => {
     } = useRespondersRegister();
 
     const handleInputNumber = (input: string) => {
-        // Remove all non-digits
-        const digitsOnly = removeNonDigits(input);
-
-        // Determine max length based on what user is typing
-        let maxLength = determinePhoneMaxLength(digitsOnly);
-
-        // Only update if within limit
-        if (digitsOnly.length <= maxLength) {
-            setPhoneNumber(digitsOnly);
-            setNormalizedPhoneNumber(normalizePhoneNumber(input));
-        }
+        normalizeNumberInput(input, setPhoneNumber, setNormalizedPhoneNumber);
     };
 
     // If initial data is already filled, navigate to OTP verification

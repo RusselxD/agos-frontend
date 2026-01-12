@@ -31,7 +31,7 @@ const CheckListItem = ({
 
 const DetailsContainer = () => {
     return (
-        <div className="border border-gray-300 rounded-lg bg-white w-full p-5 space-y-6">
+        <div className="border border-gray-300 rounded-lg bg-gray-50 w-full p-5 space-y-6">
             <CheckListItem
                 title="Registration Submitted"
                 desc="Your details have been received"

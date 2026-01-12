@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 export const getTimeAgo = (timestamp: string): string => {
     const seconds = Math.floor(
         (new Date().getTime() - new Date(timestamp).getTime()) / 1000
@@ -86,4 +88,22 @@ export const determinePhoneMaxLength = (digitsOnly: string): number => {
         maxLength = 10; // Default to longest possible
     }
     return maxLength;
+};
+
+export const normalizeNumberInput = (
+    input: string,
+    setPhoneNumber: Dispatch<SetStateAction<string>>,
+    setNormalizedPhoneNumber: Dispatch<SetStateAction<string>>
+) => {
+    // Remove all non-digits
+    const digitsOnly = removeNonDigits(input);
+
+    // Determine max length based on what user is typing
+    let maxLength = determinePhoneMaxLength(digitsOnly);
+
+    // Only update if within limit
+    if (digitsOnly.length <= maxLength) {
+        setPhoneNumber(digitsOnly);
+        setNormalizedPhoneNumber(normalizePhoneNumber(digitsOnly));
+    }
 };

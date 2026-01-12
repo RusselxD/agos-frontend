@@ -36,17 +36,23 @@ const tierConfig: TierConfig = {
         borderColor: "border-red-400",
         icon: AlertCircle,
     },
+    "n/a": {
+        color: "text-gray-600",
+        bgColor: "bg-gray-50",
+        borderColor: "border-gray-300",
+        icon: CheckCircle,
+    }
 };
 
-const getTierConfig = (tier: string | undefined) => {
-    tier = tier?.toLowerCase() || "normal";
-    return tierConfig[tier] ?? tierConfig["normal"];
+const getTierConfig = (tier: string) => {
+    tier = tier?.toLowerCase();
+    return tierConfig[tier];
 };
 
 export default function AlertTierContainer() {
     const { fusionAnalysis } = useFusionAnalysis();
 
-    const  alert_name = fusionAnalysis?.fusion_data.alert_name || "Normal";
+    const  alert_name = fusionAnalysis?.fusion_data.alert_name || "N/A";
 
     const tierDetails = getTierConfig(alert_name);
 

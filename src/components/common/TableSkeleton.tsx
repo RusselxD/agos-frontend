@@ -1,13 +1,16 @@
-import Container from "../../../../../components/ui/Container";
+import Container from "../ui/Container";
 
-export default function TableSkeleton() {
+export default function TableSkeleton({
+    title,
+    rows,
+}: {
+    title: string;
+    rows: number;
+}) {
     return (
-        <Container
-            headerTitle="SENSOR READINGS"
-            className="flex-1 flex flex-col"
-        >
+        <Container headerTitle={title} className="flex-1 flex flex-col">
             <div className="space-y-3">
-                {Array.from({ length: 7 }).map((_, index) => {
+                {Array.from({ length: rows }).map((_, index) => {
                     return (
                         <div
                             key={index}

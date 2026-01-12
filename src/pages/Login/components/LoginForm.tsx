@@ -3,11 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
 import PasswordField from "../../../components/common/auth/PasswordField";
-import {
-    determinePhoneMaxLength,
-    normalizePhoneNumber,
-    removeNonDigits,
-} from "../../../lib/utils/formatter";
+import { normalizeNumberInput } from "../../../lib/utils/formatter";
 import type { FormEvent } from "react";
 import PhoneNumberInput from "../../../components/common/auth/PhoneNumberInput";
 
@@ -35,17 +31,7 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     const handleInputNumber = (input: string) => {
-        // Remove all non-digits
-        const digitsOnly = removeNonDigits(input);
-
-        // Determine max length based on what user is typing
-        let maxLength = determinePhoneMaxLength(digitsOnly);
-
-        // Only update if within limit
-        if (digitsOnly.length <= maxLength) {
-            setPhoneNumber(digitsOnly);
-            setNormalizedPhoneNumber(normalizePhoneNumber(input));
-        }
+        normalizeNumberInput(input, setPhoneNumber, setNormalizedPhoneNumber);
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
