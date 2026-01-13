@@ -27,6 +27,7 @@ import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
 import UploadID from "./pages/RespondersRegister/pages/UploadID";
 import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
+import { LocationAndDevicesProvider } from "./context/LocationAndDevicesContext";
 
 export const router = createBrowserRouter([
     {
@@ -103,21 +104,26 @@ export const router = createBrowserRouter([
             // WaterLevelProvider = for water level sensor data
             //
             // FusionAnalysisProvider = for fusion analysis data
-            <WebSocketProvider>
-                <ProtectedRoute>
-                    <BlockageProvider>
-                        <VideoProvider>
-                            <WeatherProvider>
-                                <WaterLevelProvider>
-                                    <FusionAnalysisProvider>
-                                        <MainLayout />
-                                    </FusionAnalysisProvider>
-                                </WaterLevelProvider>
-                            </WeatherProvider>
-                        </VideoProvider>
-                    </BlockageProvider>
-                </ProtectedRoute>
-            </WebSocketProvider>
+            //
+            // WebSocketProvider = for websocket connection
+            // LocationAndDevicesProvider = for location ID and device IDs
+            <LocationAndDevicesProvider>
+                <WebSocketProvider>
+                    <ProtectedRoute>
+                        <BlockageProvider>
+                            <VideoProvider>
+                                <WeatherProvider>
+                                    <WaterLevelProvider>
+                                        <FusionAnalysisProvider>
+                                            <MainLayout />
+                                        </FusionAnalysisProvider>
+                                    </WaterLevelProvider>
+                                </WeatherProvider>
+                            </VideoProvider>
+                        </BlockageProvider>
+                    </ProtectedRoute>
+                </WebSocketProvider>
+            </LocationAndDevicesProvider>
         ),
         children: [
             {
