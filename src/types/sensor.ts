@@ -1,6 +1,6 @@
 import type { SummaryResponse } from "./readingResponse";
 
-export interface SensorReadingSummaryResponse extends SummaryResponse{
+export interface SensorReadingSummaryResponse extends SummaryResponse {
     sensor_reading: SensorData;
 }
 
@@ -51,6 +51,21 @@ export interface SensorDeviceStatus {
     connection: string;
     last_updated: string | null;
     signal: string | null;
+}
+
+// For exporting sensor readings to Excel
+export interface SensorReadingForExport {
+    water_level_cm: number;
+    status: string;
+    change_rate: number;
+    timestamp: string;
+    signal_strength: number | null;
+    signal_quality: string | null;
+}
+
+export interface SensorReadingForExportResponse{
+    readings: SensorReadingForExport[];
+    sensor_device_name: string;
 }
 
 // For WebSocket Messages

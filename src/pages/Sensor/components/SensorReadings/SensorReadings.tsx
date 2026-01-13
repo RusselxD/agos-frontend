@@ -8,6 +8,8 @@ import { sensorAPI } from "../../../../lib/api/sensor";
 import { useToast } from "../../../../context/ToastContext";
 import Table from "./components/Table";
 import TableSkeleton from "../../../../components/common/TableSkeleton";
+import ExportToExcelButton from "./components/ExportToExcelButton";
+import { useCoreIDs } from "../../../../context/LocationAndDevicesContext";
 
 export default function SensorReadings() {
     const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
@@ -20,6 +22,8 @@ export default function SensorReadings() {
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);
+
+    const {sensor_device_id} = useCoreIDs();
 
     // Infinite scroll observer
     useEffect(() => {
@@ -62,7 +66,7 @@ export default function SensorReadings() {
                 }
 
                 const res: SensorReadingResponse =
-                    await sensorAPI.getLatestSensorReadings(page, 10);
+                    await sensorAPI.getLatestSensorReadings(page, 10, sensor_device_id);
                 setSensorReadings((prev) => [...prev, ...res.items]);
                 setHasMore(res.has_more);
             } catch (error) {
@@ -87,8 +91,10 @@ export default function SensorReadings() {
     return (
         <Container
             headerTitle="SENSOR READINGS"
-            className="flex-1 flex flex-col"
+            className="flex-1 flex flex-col relative"
         >
+            <ExportToExcelButton />
+
             <div ref={containerRef} className="flex-1 overflow-y-auto">
                 <Table sensorReadings={sensorReadings} />
 
