@@ -1,14 +1,15 @@
-import type { DeviceIDs } from "../../types/system_settings";
+import type { DeviceDetails, LocationDetails } from "../../types/core";
+
 import apiClient from "./axiosConfig";
 
 export const coreAPI = {
-    getLocationID: async (): Promise<number> => {
-        const res = await apiClient.get("/core/location-id");
-        return res.data as number;
+    getLocationDetails: async (): Promise<LocationDetails> => {
+        const res = await apiClient.get("/core/location-details");
+        return res.data as LocationDetails;
     },
 
-    getDeviceIDs: async (): Promise<DeviceIDs> => {
-        const res = await apiClient.get("/core/device-ids");
-        return res.data as DeviceIDs;
+    getDeviceDetails: async (): Promise<DeviceDetails> => {
+        const res = await apiClient.get("/core/device-details");
+        return res.data as DeviceDetails;
     },
 };

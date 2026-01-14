@@ -9,7 +9,7 @@ import { useToast } from "../../../../context/ToastContext";
 import Table from "./components/Table";
 import TableSkeleton from "../../../../components/common/TableSkeleton";
 import ExportToExcelButton from "./components/ExportToExcelButton";
-import { useCoreIDs } from "../../../../context/LocationAndDevicesContext";
+import { useCoreHook } from "../../../../context/CoreContext";
 
 export default function SensorReadings() {
     const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
@@ -23,7 +23,7 @@ export default function SensorReadings() {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);
 
-    const {sensor_device_id} = useCoreIDs();
+    const { sensor_device_id } = useCoreHook();
 
     // Infinite scroll observer
     useEffect(() => {
@@ -66,7 +66,11 @@ export default function SensorReadings() {
                 }
 
                 const res: SensorReadingResponse =
-                    await sensorAPI.getLatestSensorReadings(page, 10, sensor_device_id);
+                    await sensorAPI.getLatestSensorReadings(
+                        page,
+                        10,
+                        sensor_device_id
+                    );
                 setSensorReadings((prev) => [...prev, ...res.items]);
                 setHasMore(res.has_more);
             } catch (error) {

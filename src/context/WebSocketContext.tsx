@@ -9,9 +9,12 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 import type { SensorUpdateMessage } from "../types/sensor";
-import { useCoreIDs } from "./LocationAndDevicesContext";
+import { useCoreHook } from "./CoreContext";
 
-const backendBaseUrl = import.meta.env.VITE_API_BASE_URL.replace(/^https?:\/\//, '');
+const backendBaseUrl = import.meta.env.VITE_API_BASE_URL.replace(
+    /^https?:\/\//,
+    ""
+);
 
 type WebSocketMessage = SensorUpdateMessage | { type: string; data: any };
 
@@ -30,15 +33,16 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(
         new Map()
     );
-    
-    const {locationId} = useCoreIDs();
+
+    const { location_id } = useCoreHook();
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-
-        const ws = new WebSocket(`ws://${backendBaseUrl}/ws?token=${token}&location_id=${locationId}`);
+        const ws = new WebSocket(
+            `ws://${backendBaseUrl}/ws?token=${token}&location_id=${location_id}`
+        );
         socketRef.current = ws;
 
         ws.onopen = () => {

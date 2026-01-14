@@ -6,8 +6,7 @@ interface Column {
     width?: number;
 }
 
-interface ExportOptions {
-    fileName: string;
+export interface ExportOptions {
     sheetName?: string;
     columns?: Column[];
     headerStyle?: {
@@ -40,9 +39,8 @@ const formatColumnHeader = (key: string): string => {
 export const exportToExcel = async (
     data: any[],
     options: ExportOptions
-): Promise<void> => {
+): Promise<ExcelJS.Workbook> => {
     const {
-        fileName,
         sheetName = "Sheet1",
         columns,
         headerStyle = {},
@@ -116,23 +114,28 @@ export const exportToExcel = async (
             worksheet.views = [{ state: "frozen", ySplit: 1 }];
         }
 
-        // Generate buffer and download
-        const buffer = await workbook.xlsx.writeBuffer();
-        const blob = new Blob([buffer], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName.endsWith(".xlsx")
-            ? fileName
-            : `${fileName}.xlsx`;
-        link.click();
-        window.URL.revokeObjectURL(url);
+        return workbook;
     } catch (error) {
-        console.error("Error exporting to Excel:", error);
+        console.error("Error processing Excel file:", error);
         throw error;
     }
+};
+
+export const downloadExcelFile = async (
+    workbook: ExcelJS.Workbook,
+    fileName: string
+) => {
+    // Generate buffer and download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName.endsWith(".xlsx") ? fileName : `${fileName}.xlsx`;
+    link.click();
+    window.URL.revokeObjectURL(url);
 };
 
 // /**

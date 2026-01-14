@@ -3,9 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import ModalContainer from "../../../../../components/common/ModalContainer";
 import { Calendar, Clock } from "lucide-react";
 import { sensorAPI } from "../../../../../lib/api/sensor";
-import { exportToExcel } from "../../../../../lib/utils/export";
-import type { SensorReadingForExportResponse } from "../../../../../types/sensor";
-import { useCoreIDs } from "../../../../../context/LocationAndDevicesContext";
+import { useCoreHook } from "../../../../../context/CoreContext";
 
 interface ChooseDateRangeModalProps {
     setModalIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -46,7 +44,7 @@ export default function ChooseDateRangeModal({
     >([]);
     const [isFetchingDays, setIsFetchingDays] = useState(false);
 
-    const { sensor_device_id } = useCoreIDs();
+    const { sensor_device_id } = useCoreHook();
 
     useEffect(() => {
         const fetchAvailableDays = async () => {
@@ -78,6 +76,7 @@ export default function ChooseDateRangeModal({
     const [startHour, setStartHour] = useState<number>(0);
     const [endHour, setEndHour] = useState<number>(23);
 
+    const { exportSensorReadingsToExcel } = useCoreHook();
     const hours = Array.from({ length: 24 }, (_, i) => i);
 
     const isDateRangeValid =
@@ -102,7 +101,7 @@ export default function ChooseDateRangeModal({
         )}`;
     };
 
-    const handleApply = async () => {
+    const handleExport = async () => {
         // Format datetime for backend with UTC timezone: YYYY-MM-DDTHH:mm:ssZ
         const startDateTime = `${startDate}T${startHour
             .toString()
@@ -111,43 +110,9 @@ export default function ChooseDateRangeModal({
             .toString()
             .padStart(2, "0")}:00:00Z`;
 
-        console.log("Selected:", {
-            start_datetime: startDateTime,
-            end_datetime: endDateTime,
-        });
-        // setModalIsOpen(false);
-
         try {
-            const res: SensorReadingForExportResponse =
-                await sensorAPI.getSensorReadingsForExport(
-                    startDateTime,
-                    endDateTime,
-                    sensor_device_id
-                );
-            await exportToExcel(res.readings, {
-                fileName: `${res.sensor_device_name}_Readings_${startDate}_to_${endDate}`,
-                columns: [
-                    {
-                        header: "Water Level (cm)",
-                        key: "water_level_cm",
-                        width: 20,
-                    },
-                    { header: "Change Rate (cm)", key: "change_rate", width: 18 },
-                    { header: "Status", key: "status", width: 15 },
-                    {
-                        header: "Signal Strength",
-                        key: "signal_strength",
-                        width: 20,
-                    },
-                    {
-                        header: "Signal Quality",
-                        key: "signal_quality",
-                        width: 20,
-                    },
-                    { header: "Timestamp", key: "timestamp", width: 30 },
-                ],
-            });
-            // setModalIsOpen(false);
+            setModalIsOpen(false);
+            await exportSensorReadingsToExcel(startDateTime, endDateTime);
         } catch (error) {
             console.log(error);
         }
@@ -273,7 +238,7 @@ export default function ChooseDateRangeModal({
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end items-center gap-3">
                     <button
                         type="button"
                         onClick={() => setModalIsOpen(false)}
@@ -283,14 +248,14 @@ export default function ChooseDateRangeModal({
                     </button>
                     <button
                         type="button"
-                        onClick={handleApply}
+                        onClick={handleExport}
                         disabled={
                             !isDateRangeValid ||
                             (startDate === endDate && startHour >= endHour)
                         }
-                        className="btn-custom bg-primary text-white hover:bg-primary/90"
+                        className="btn-custom bg-primary text-white hover:bg-primary/90 px-6"
                     >
-                        Apply
+                        Export
                     </button>
                 </div>
             </div>

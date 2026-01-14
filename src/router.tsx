@@ -27,7 +27,7 @@ import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
 import UploadID from "./pages/RespondersRegister/pages/UploadID";
 import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
-import { LocationAndDevicesProvider } from "./context/LocationAndDevicesContext";
+import { CoreProvider } from "./context/CoreContext";
 
 export const router = createBrowserRouter([
     {
@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
             // WebSocketProvider = for websocket connection
             // LocationAndDevicesProvider = for location ID and device IDs
             <ProtectedRoute>
-                <LocationAndDevicesProvider>
+                <CoreProvider>
                     <WebSocketProvider>
                         <BlockageProvider>
                             <VideoProvider>
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
                             </VideoProvider>
                         </BlockageProvider>
                     </WebSocketProvider>
-                </LocationAndDevicesProvider>
+                </CoreProvider>
             </ProtectedRoute>
         ),
         children: [
