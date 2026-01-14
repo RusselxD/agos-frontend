@@ -26,7 +26,7 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 {logs.map((log, index) => (
                     <tr
                         key={index}

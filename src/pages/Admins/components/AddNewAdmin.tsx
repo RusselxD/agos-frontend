@@ -40,15 +40,15 @@ export default function AddNewAdmin() {
     const { addNewAdmin, triggerLogRefetch } = useAdmins();
     const { user } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const { toastError, toastSuccess } = useToast();
+    const { toastSuccess } = useToast();
+    const [error, setError] = useState<string>("");
 
     const handleInputNumber = (input: string) => {
         normalizeNumberInput(input, setPhoneNumber, setNormalizedPhoneNumber);
     };
 
     const handleGeneratePassword = () => {
-        const newPassword = generateRandomPassword();
-        setTemporaryPassword(newPassword);
+        setTemporaryPassword(generateRandomPassword());
         setCopied(false);
     };
 
@@ -102,20 +102,31 @@ export default function AddNewAdmin() {
             // Trigger logs refetch
             triggerLogRefetch();
 
+            // Remove focus from any input fields
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+
             clearEntireForm();
             toastSuccess("New admin created successfully.");
         } catch (error) {
             console.log(error);
             if (axios.isAxiosError(error)) {
-                toastError(
+                setError(
                     error?.response?.data?.detail ||
                         "Failed to create new admin. Please try again."
                 );
             } else {
-                toastError("An unexpected error occurred. Please try again.");
+                setError("An unexpected error occurred. Please try again.");
             }
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleFormFieldsChange = () => {
+        if (error) {
+            setError("");
         }
     };
 
@@ -143,6 +154,7 @@ export default function AddNewAdmin() {
     return (
         <form
             onSubmit={(e) => handleSubmit(e)}
+            onChange={() => handleFormFieldsChange()}
             ref={containerRef}
             id="new-admin-container"
             className={`w-full bg-white rounded-lg overflow-hidden transition-all text-sm duration-200 ${
@@ -178,37 +190,42 @@ export default function AddNewAdmin() {
                 {/* Right Column */}
                 <div className="flex-1">
                     {/* Temporary Password */}
-                    <div className="flex items-end gap-3">
-                        <TextInputField
-                            label="TEMPORARY PASSWORD"
-                            value={temporaryPassword}
-                            setValue={setTemporaryPassword}
-                            placeholder="Generate or enter password"
-                        />
-                        {temporaryPassword && (
-                            <button
-                                type="button"
-                                onClick={() => handleCopyPassword()}
-                                className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
-                                    copied
-                                        ? "bg-green-600 text-white"
-                                        : "bg-gray-200 hover:bg-gray-300 text-gray-700"
-                                }`}
-                            >
-                                <Copy className="w-4 h-4" />
-                                {copied ? "Copied!" : "Copy"}
-                            </button>
-                        )}
+                    <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-2">
+                            TEMPORARY PASSWORD
+                        </label>
+                        <div className="flex items-center gap-3">
+                            <div className="flex-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 font-mono text-sm min-h-[42px] flex items-center">
+                                {temporaryPassword || (
+                                    <span className="text-gray-400">
+                                        Click generate to create password
+                                    </span>
+                                )}
+                            </div>
+                            {temporaryPassword && (
+                                <button
+                                    type="button"
+                                    onClick={() => handleCopyPassword()}
+                                    className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
+                                        copied
+                                            ? "bg-green-600 text-white"
+                                            : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+                                    }`}
+                                >
+                                    <Copy className="w-4 h-4" />
+                                    {copied ? "Copied!" : "Copy"}
+                                </button>
+                            )}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleGeneratePassword}
+                            className="flex items-center gap-2 mt-2 text-purple-500 hover:text-purple-600 cursor-pointer"
+                        >
+                            <Wand2 className="w-4 h-4" />
+                            <span>Generate</span>
+                        </button>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={handleGeneratePassword}
-                        className="flex items-center gap-2 mt-1 text-purple-500 hover:text-purple-600 cursor-pointer"
-                    >
-                        <Wand2 className="w-4 h-4" />
-                        <span>Generate</span>
-                    </button>
 
                     {/* Security Warning */}
                     {temporaryPassword && (
@@ -228,29 +245,43 @@ export default function AddNewAdmin() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3 text-sm">
-                <button
-                    type="button"
-                    className="btn-cancel"
-                    onClick={handleCancel}
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    disabled={
-                        !firstName ||
-                        !lastName ||
-                        normalizedPhoneNumber.length <= 12 ||
-                        !temporaryPassword
-                    }
-                    className="btn-submit px-4 w-fit rounded-md"
-                >
-                    {isSubmitting && (
-                        <div className="spinner w-5 h-5 mr-3"></div>
-                    )}
-                    <span>{isSubmitting ? "Creating..." : "Create Admin"}</span>
-                </button>
+            <div
+                className={`flex items-end gap-3 text-sm ${
+                    error ? "justify-between" : "justify-end"
+                }`}
+            >
+                {error && (
+                    <div className="border border-red-600 bg-red-100 text-red-800 px-5 py-2 rounded-md font-medium">
+                        {error}
+                    </div>
+                )}
+
+                <div className="flex gap-2">
+                    <button
+                        type="button"
+                        className="btn-cancel"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        disabled={
+                            !firstName ||
+                            !lastName ||
+                            normalizedPhoneNumber.length <= 12 ||
+                            !temporaryPassword
+                        }
+                        className="btn-submit px-4 w-fit rounded-md"
+                    >
+                        {isSubmitting && (
+                            <div className="spinner w-5 h-5 mr-3"></div>
+                        )}
+                        <span>
+                            {isSubmitting ? "Creating..." : "Create Admin"}
+                        </span>
+                    </button>
+                </div>
             </div>
         </form>
     );

@@ -107,9 +107,9 @@ export const router = createBrowserRouter([
             //
             // WebSocketProvider = for websocket connection
             // LocationAndDevicesProvider = for location ID and device IDs
-            <LocationAndDevicesProvider>
-                <WebSocketProvider>
-                    <ProtectedRoute>
+            <ProtectedRoute>
+                <LocationAndDevicesProvider>
+                    <WebSocketProvider>
                         <BlockageProvider>
                             <VideoProvider>
                                 <WeatherProvider>
@@ -121,9 +121,9 @@ export const router = createBrowserRouter([
                                 </WeatherProvider>
                             </VideoProvider>
                         </BlockageProvider>
-                    </ProtectedRoute>
-                </WebSocketProvider>
-            </LocationAndDevicesProvider>
+                    </WebSocketProvider>
+                </LocationAndDevicesProvider>
+            </ProtectedRoute>
         ),
         children: [
             {
