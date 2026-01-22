@@ -86,11 +86,6 @@ const GaugeDisplay = () => {
     // Critical line is at 80% of gauge height (leaving 20% padding)
     const criticalLinePosition = 80;
 
-    // Warning line position relative to critical
-    const warningLinePosition =
-        (sensorConfig.warning_threshold / sensorConfig.critical_threshold) *
-        criticalLinePosition;
-
     // Water fill scales to 80% max (where critical line is)
     const waterHeight =
         (sensorData.alert.percentage_of_critical / 100) * criticalLinePosition;

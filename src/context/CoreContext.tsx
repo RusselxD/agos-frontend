@@ -52,9 +52,11 @@ interface LocationAndDevicesContextValue {
     sensor_device_id: number;
     camera_device_id: number;
 
+    isExportingToExcel: boolean;
+
     exportSensorReadingsToExcel: (
         startDate: string,
-        endDate: string
+        endDate: string,
     ) => Promise<void>;
 }
 
@@ -86,7 +88,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
 
     const exportSensorReadingsToExcel = async (
         startDateTime: string,
-        endDateTime: string
+        endDateTime: string,
     ) => {
         setExportingToExcelInProgress({
             mainMessage: "Fetching sensor readings...",
@@ -96,7 +98,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
             await sensorAPI.getSensorReadingsForExport(
                 startDateTime,
                 endDateTime,
-                sensor_device_details.current.sensor_device_id
+                sensor_device_details.current.sensor_device_id,
             );
 
         setExportingToExcelInProgress({
@@ -108,7 +110,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
             {
                 // fileName: `${sensor_device_details.current.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}`,
                 columns: sensor_readings_export_columns,
-            }
+            },
         );
 
         setExportingToExcelInProgress({
@@ -117,7 +119,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
         });
         downloadExcelFile(
             workBook,
-            `${sensor_device_details.current.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`
+            `${sensor_device_details.current.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`,
         );
 
         setExportingToExcelInProgress({ mainMessage: "", subMessage: "" });
@@ -125,7 +127,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
 
     const exportRecordsToExcel = (
         data: any[],
-        options: ExportOptions
+        options: ExportOptions,
     ): Promise<ExcelJS.Workbook> => {
         return exportToExcel(data, options);
     };
@@ -158,9 +160,10 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
             location_id: location_details.current.location_id,
             sensor_device_id: sensor_device_details.current.sensor_device_id,
             camera_device_id: camera_device_details.current.camera_device_id,
+            isExportingToExcel: exportingToExcelInProgress.mainMessage !== "",
             exportSensorReadingsToExcel,
         }),
-        []
+        [exportingToExcelInProgress],
     );
 
     return (

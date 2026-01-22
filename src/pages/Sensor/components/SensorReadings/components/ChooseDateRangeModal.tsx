@@ -50,9 +50,8 @@ export default function ChooseDateRangeModal({
         const fetchAvailableDays = async () => {
             try {
                 setIsFetchingDays(true);
-                const res: string[] = await sensorAPI.getAvailableDays(
-                    sensor_device_id
-                );
+                const res: string[] =
+                    await sensorAPI.getAvailableDays(sensor_device_id);
 
                 const availableDates = res.map((dateStr: string) => ({
                     value: dateStr,
@@ -97,7 +96,7 @@ export default function ChooseDateRangeModal({
         if (!isDateRangeValid) return "";
         return `${formatDateTime(startDate, startHour)} - ${formatDateTime(
             endDate,
-            endHour
+            endHour,
         )}`;
     };
 
