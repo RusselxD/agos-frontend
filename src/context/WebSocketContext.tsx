@@ -41,7 +41,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         if (!token) return;
 
         const ws = new WebSocket(
-            `ws://${backendBaseUrl}/ws?token=${token}&location_id=${location_id}`
+            `wss://${backendBaseUrl}/ws?token=${token}&location_id=${location_id}`
         );
         socketRef.current = ws;
 
