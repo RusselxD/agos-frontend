@@ -40,7 +40,7 @@ interface VideoContextValue {
 const VideoContext = createContext<VideoContextValue | undefined>(undefined);
 
 // Backend configuration
-const API_BASE_URL = "http://localhost:8000"; // Change to your backend URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const HLS_STREAM_URL = `${API_BASE_URL}/api/v1/stream/hls/stream.m3u8`;
 
 export function VideoProvider({ children }: { children: ReactNode }) {
@@ -74,7 +74,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             try {
                 // Check if the process is running in Python
                 const statusRes = await axios.get(
-                    `${API_BASE_URL}/api/v1/stream/status`
+                    `${API_BASE_URL}/api/v1/stream/status`,
                 );
 
                 if (!statusRes.data.is_running) {
@@ -85,7 +85,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             } catch (err) {
                 console.warn(
                     "Status check failed (Backend might be down):",
-                    err
+                    err,
                 );
                 setError("Server is unreachable. Please try again later.");
             }
@@ -105,7 +105,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                     console.log(
                         `Waiting for stream generation... (${
                             retries + 1
-                        }/${maxPollRetries})`
+                        }/${maxPollRetries})`,
                     );
                     await new Promise((r) => setTimeout(r, 3000)); // Wait 3s between checks
                     retries++;
@@ -114,7 +114,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
 
             if (!isReady) {
                 throw new Error(
-                    "Stream timed out. Backend could not generate video files."
+                    "Stream timed out. Backend could not generate video files.",
                 );
             }
 
@@ -160,19 +160,19 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
                                 console.log(
-                                    "Network error, trying to recover..."
+                                    "Network error, trying to recover...",
                                 );
                                 hls.startLoad();
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
                                 console.log(
-                                    "Media error, trying to recover..."
+                                    "Media error, trying to recover...",
                                 );
                                 hls.recoverMediaError();
                                 break;
                             default:
                                 setError(
-                                    `Fatal Playback Error: ${data.details}`
+                                    `Fatal Playback Error: ${data.details}`,
                                 );
                                 handleStreamFailure();
                                 break;
@@ -246,10 +246,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                     const currentLatency = hls.latency || 0;
                     // Relaxed threshold to 30s to avoid false positives on short switches
                     const isDrifted = currentLatency > 30;
-                    
+
                     if (isDrifted) {
                         console.log(
-                            `Stream drifted by ${currentLatency.toFixed(1)}s. performing Hard Resync...`
+                            `Stream drifted by ${currentLatency.toFixed(1)}s. performing Hard Resync...`,
                         );
 
                         // Trigger syncing state (transparent overlay) instead of full loading
@@ -262,14 +262,18 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                         hls.once(Hls.Events.MANIFEST_PARSED, () => {
                             video
                                 .play()
-                                .catch((e) => console.log("Resync auto-play failed:", e));
+                                .catch((e) =>
+                                    console.log("Resync auto-play failed:", e),
+                                );
                         });
                     } else if (video.paused) {
                         // If we are in sync (low latency) but just paused by the browser
                         console.log("Stream in sync. Resuming playback.");
                         video
                             .play()
-                            .catch((e) => console.log("Resume on visibility failed:", e));
+                            .catch((e) =>
+                                console.log("Resume on visibility failed:", e),
+                            );
                     }
                 }
             }
@@ -282,7 +286,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             video.removeEventListener("playing", () => setIsSyncing(false));
             document.removeEventListener(
                 "visibilitychange",
-                handleVisibilityChange
+                handleVisibilityChange,
             );
 
             if (hlsRef.current) {
