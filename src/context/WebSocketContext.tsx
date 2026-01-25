@@ -11,10 +11,7 @@ import type { ReactNode } from "react";
 import type { SensorUpdateMessage } from "../types/sensor";
 import { useCoreHook } from "./CoreContext";
 
-const backendBaseUrl = import.meta.env.VITE_API_BASE_URL.replace(
-    /^https?:\/\//,
-    ""
-);
+const websocketUrl = import.meta.env.VITE_API_WS_URL;
 
 type WebSocketMessage = SensorUpdateMessage | { type: string; data: any };
 
@@ -31,17 +28,17 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
 
     // Storage box that keeps track of event listeners for different message types
     const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(
-        new Map()
+        new Map(),
     );
 
-    const { location_id } = useCoreHook();
+    const { locationDetails } = useCoreHook();
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
         const ws = new WebSocket(
-            `wss://${backendBaseUrl}/ws?token=${token}&location_id=${location_id}`
+            `${websocketUrl}/ws?token=${token}&location_id=${locationDetails.location_id}`,
         );
         socketRef.current = ws;
 
@@ -105,7 +102,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
                 }
             };
         },
-        []
+        [],
     );
 
     const contextValue = useMemo(
@@ -113,7 +110,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
             isConnected,
             subscribe,
         }),
-        [isConnected, subscribe]
+        [isConnected, subscribe],
     );
 
     return (
@@ -135,7 +132,7 @@ export const useWebSocket = () => {
 // ===========================================
 export function useWebSocketMessage<T = any>(
     messageType: string,
-    onMessage: (data: T) => void
+    onMessage: (data: T) => void,
 ) {
     // Get subscribe function from context
     const { subscribe } = useWebSocket();

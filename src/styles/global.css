@@ -22,7 +22,7 @@ body {
     }
 
     .btn-custom {
-        @apply flex gap-2 items-center px-4 py-3 rounded-lg text-sm leading-5 cursor-pointer;
+        @apply flex gap-2 items-center justify-center px-4 py-3 rounded-lg text-sm leading-5 cursor-pointer;
         @apply transition-colors ease-in-out duration-150;
         @apply disabled:opacity-50 disabled:cursor-not-allowed;
     }

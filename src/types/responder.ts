@@ -24,3 +24,27 @@ export interface ResponderCreateRequest {
     phone_number: string;
     id_photo_path: string;
 }
+
+export interface ResponderListItem {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    status: string;
+}
+
+export interface ResponderListResponse {
+    responders: ResponderListItem[];
+}
+
+export interface ResponderDetailsResponse {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    id_photo_path: string;
+    status: string;
+    created_at: string;
+    approved_by: string | null;
+    approved_at: string | null;
+}

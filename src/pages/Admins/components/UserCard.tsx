@@ -2,7 +2,7 @@ import { EllipsisVertical, Star } from "lucide-react";
 import type { AdminUserResponse } from "../../../types/adminUser";
 import "../style.css";
 import type { ReactNode } from "react";
-import { getTimeAgo } from "../../../lib/utils/formatter";
+import { formatPHNumber, getTimeAgo } from "../../../lib/utils/formatter";
 
 const AccountStatusBadge = ({ isEnabled }: { isEnabled: boolean }) => {
     return (
@@ -74,7 +74,10 @@ export default function UserCard({ user }: { user: AdminUserResponse }) {
         >
             <Header user={user} />
             <div className="grid grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 rounded-lg relative text-sm">
-                <Details label="Phone Number" value={user.phone_number} />
+                <Details
+                    label="Phone Number"
+                    value={formatPHNumber(user.phone_number)}
+                />
 
                 <Details
                     label="Registered By"

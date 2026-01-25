@@ -114,7 +114,7 @@ export default function AddNewAdmin() {
             if (axios.isAxiosError(error)) {
                 setError(
                     error?.response?.data?.detail ||
-                        "Failed to create new admin. Please try again."
+                        "Failed to create new admin. Please try again.",
                 );
             } else {
                 setError("An unexpected error occurred. Please try again.");
@@ -275,7 +275,7 @@ export default function AddNewAdmin() {
                         className="btn-submit px-4 w-fit rounded-md"
                     >
                         {isSubmitting && (
-                            <div className="spinner w-5 h-5 mr-3"></div>
+                            <div className="spinner w-5 h-5"></div>
                         )}
                         <span>
                             {isSubmitting ? "Creating..." : "Create Admin"}

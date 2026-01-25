@@ -3,7 +3,6 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useRef,
     useState,
 } from "react";
 import { coreAPI } from "../lib/api/core";
@@ -48,9 +47,9 @@ const sensor_readings_export_columns = [
 ];
 
 interface LocationAndDevicesContextValue {
-    location_id: number;
-    sensor_device_id: number;
-    camera_device_id: number;
+    locationDetails: LocationDetails;
+    sensorDeviceDetails: SensorDeviceDetails;
+    cameraDeviceDetails: CameraDeviceDetails;
 
     isExportingToExcel: boolean;
 
@@ -65,18 +64,20 @@ const LocationAndDevicesContext = createContext<
 >(undefined);
 
 export function CoreProvider({ children }: { children: React.ReactNode }) {
-    const location_details = useRef<LocationDetails>({
+    const [locationDetails, setLocationDetails] = useState<LocationDetails>({
         location_id: 1,
         location_name: "",
     });
-    const sensor_device_details = useRef<SensorDeviceDetails>({
-        sensor_device_id: 1,
-        sensor_device_name: "",
-    });
-    const camera_device_details = useRef<CameraDeviceDetails>({
-        camera_device_id: 1,
-        camera_device_name: "",
-    });
+    const [sensorDeviceDetails, setSensorDeviceDetails] =
+        useState<SensorDeviceDetails>({
+            sensor_device_id: 1,
+            sensor_device_name: "",
+        });
+    const [cameraDeviceDetails, setCameraDeviceDetails] =
+        useState<CameraDeviceDetails>({
+            camera_device_id: 1,
+            camera_device_name: "",
+        });
 
     const [exportingToExcelInProgress, setExportingToExcelInProgress] =
         useState<{ mainMessage: string; subMessage: string }>({
@@ -98,7 +99,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
             await sensorAPI.getSensorReadingsForExport(
                 startDateTime,
                 endDateTime,
-                sensor_device_details.current.sensor_device_id,
+                sensorDeviceDetails.sensor_device_id,
             );
 
         setExportingToExcelInProgress({
@@ -119,7 +120,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
         });
         downloadExcelFile(
             workBook,
-            `${sensor_device_details.current.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`,
+            `${sensorDeviceDetails.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`,
         );
 
         setExportingToExcelInProgress({ mainMessage: "", subMessage: "" });
@@ -135,18 +136,20 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const fetchIDs = async () => {
             try {
-                const locationIDres = await coreAPI.getLocationDetails();
-                location_details.current = locationIDres;
+                const locationDetailsRes = await coreAPI.getLocationDetails();
+                setLocationDetails(locationDetailsRes);
+                console.log("heyyyyyyyyyyyyyy")
+                console.log(locationDetailsRes);
 
                 const deviceDetailsRes = await coreAPI.getDeviceDetails();
-                sensor_device_details.current = {
+                setSensorDeviceDetails({
                     sensor_device_id: deviceDetailsRes.sensor_device_id,
                     sensor_device_name: deviceDetailsRes.sensor_device_name,
-                };
-                camera_device_details.current = {
+                });
+                setCameraDeviceDetails({
                     camera_device_id: deviceDetailsRes.camera_device_id,
                     camera_device_name: deviceDetailsRes.camera_device_name,
-                };
+                });
             } catch (error) {
                 toastError("Failed to fetch location and device IDs");
             }
@@ -157,13 +160,20 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
 
     const contextValue = useMemo(
         () => ({
-            location_id: location_details.current.location_id,
-            sensor_device_id: sensor_device_details.current.sensor_device_id,
-            camera_device_id: camera_device_details.current.camera_device_id,
+            locationDetails,
+            sensorDeviceDetails,
+            cameraDeviceDetails,
+
             isExportingToExcel: exportingToExcelInProgress.mainMessage !== "",
+
             exportSensorReadingsToExcel,
         }),
-        [exportingToExcelInProgress],
+        [
+            locationDetails,
+            sensorDeviceDetails,
+            cameraDeviceDetails,
+            exportingToExcelInProgress,
+        ],
     );
 
     return (

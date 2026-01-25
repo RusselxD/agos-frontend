@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 export const getTimeAgo = (timestamp: string): string => {
     const seconds = Math.floor(
-        (new Date().getTime() - new Date(timestamp).getTime()) / 1000
+        (new Date().getTime() - new Date(timestamp).getTime()) / 1000,
     );
     if (seconds < 60) return "Just now";
 
@@ -93,7 +93,7 @@ export const determinePhoneMaxLength = (digitsOnly: string): number => {
 export const normalizeNumberInput = (
     input: string,
     setPhoneNumber: Dispatch<SetStateAction<string>>,
-    setNormalizedPhoneNumber: Dispatch<SetStateAction<string>>
+    setNormalizedPhoneNumber: Dispatch<SetStateAction<string>>,
 ) => {
     // Remove all non-digits
     const digitsOnly = removeNonDigits(input);
@@ -106,4 +106,9 @@ export const normalizeNumberInput = (
         setPhoneNumber(digitsOnly);
         setNormalizedPhoneNumber(normalizePhoneNumber(digitsOnly));
     }
+};
+
+export const formatPHNumber = (phoneNumber: string): string => {
+    // This regex looks for the +63 prefix, then captures 3 digits, 3 digits, and 4 digits
+    return phoneNumber.replace(/(\+63)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
 };

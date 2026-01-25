@@ -4,8 +4,17 @@ import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
 import WaterLevelStatusCard from "./components/WaterLevelStatusCard";
 import FusionAnalysis from "./components/FusionAnalysis";
+import { useEffect } from "react";
 
 export default function Dashboard() {
+    useEffect(() => {
+        document.title = "Dashboard - AGOS";
+
+        return () => {
+            document.title = "AGOS";
+        };
+    }, []);
+
     return (
         <div className="flex flex-col gap-2">
             <Header />

@@ -2,6 +2,7 @@ import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../lib/utils/formatter";
 import { useWebSocket } from "../../../context/WebSocketContext";
+import { useCoreHook } from "../../../context/CoreContext";
 
 const MapPinFilled = ({ className }: { className?: string }) => (
     <svg
@@ -21,13 +22,17 @@ const MapPinFilled = ({ className }: { className?: string }) => (
 );
 
 const Location = () => {
+    const { locationDetails } = useCoreHook();
+    console.log("dito");
+    console.log(locationDetails);
+
     return (
         <div className="flex -ml-1 items-center gap-2 border-r-2 border-gray-400 pr-4 mr-4">
             <div className="bg-red-100 p-1.5 rounded-lg">
                 <MapPinFilled className="text-red-500" />
             </div>
             <span className="font-semibold">
-                Valenzuela Site 1: Maysan Creek
+                {locationDetails.location_name}
             </span>
         </div>
     );

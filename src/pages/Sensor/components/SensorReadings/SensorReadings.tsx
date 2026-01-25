@@ -10,6 +10,8 @@ import Table from "./components/Table";
 import TableSkeleton from "../../../../components/common/TableSkeleton";
 import ExportToExcelButton from "./components/ExportToExcelButton";
 import { useCoreHook } from "../../../../context/CoreContext";
+import EmptyList from "../../../../components/common/EmptyList";
+import { FileText } from "lucide-react";
 
 export default function SensorReadings() {
     const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
@@ -23,7 +25,7 @@ export default function SensorReadings() {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);
 
-    const { sensor_device_id } = useCoreHook();
+    const { sensorDeviceDetails } = useCoreHook();
 
     // Infinite scroll observer
     useEffect(() => {
@@ -41,7 +43,7 @@ export default function SensorReadings() {
             {
                 root: containerRef.current,
                 threshold: 0.1,
-            }
+            },
         );
 
         if (observerTarget.current) {
@@ -69,7 +71,7 @@ export default function SensorReadings() {
                     await sensorAPI.getLatestSensorReadings(
                         page,
                         10,
-                        sensor_device_id
+                        sensorDeviceDetails.sensor_device_id,
                     );
                 setSensorReadings((prev) => [...prev, ...res.items]);
                 setHasMore(res.has_more);
@@ -97,7 +99,7 @@ export default function SensorReadings() {
             headerTitle="SENSOR READINGS"
             className="flex-1 flex flex-col relative"
         >
-            <ExportToExcelButton />
+            {sensorReadings.length > 0 && <ExportToExcelButton />}
 
             <div ref={containerRef} className="flex-1 overflow-y-auto">
                 <Table sensorReadings={sensorReadings} />
@@ -118,13 +120,14 @@ export default function SensorReadings() {
                         No more data
                     </p>
                 )}
-            </div>
 
-            {sensorReadings.length === 0 && (
-                <p className="text-center text-gray-500 py-4">
-                    No sensor readings available.
-                </p>
-            )}
+                {sensorReadings.length === 0 && (
+                    <EmptyList
+                        icon={FileText}
+                        title="No sensor readings available."
+                    />
+                )}
+            </div>
         </Container>
     );
 }

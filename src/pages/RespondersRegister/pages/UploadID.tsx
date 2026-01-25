@@ -77,6 +77,8 @@ export default function UploadID() {
             // On successful complete registration, modify the flag variable and it will automatically navigate (via useEffect above)
             setRegistrationCompleted(true);
         } catch (error) {
+            console.log("RESPONDER ERROR")
+            console.log(error)
             if (axios.isAxiosError(error)) {
                 toastError(
                     error.message ||

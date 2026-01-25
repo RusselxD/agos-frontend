@@ -44,14 +44,15 @@ export default function ChooseDateRangeModal({
     >([]);
     const [isFetchingDays, setIsFetchingDays] = useState(false);
 
-    const { sensor_device_id } = useCoreHook();
+    const { sensorDeviceDetails } = useCoreHook();
 
     useEffect(() => {
         const fetchAvailableDays = async () => {
             try {
                 setIsFetchingDays(true);
-                const res: string[] =
-                    await sensorAPI.getAvailableDays(sensor_device_id);
+                const res: string[] = await sensorAPI.getAvailableDays(
+                    sensorDeviceDetails.sensor_device_id,
+                );
 
                 const availableDates = res.map((dateStr: string) => ({
                     value: dateStr,
