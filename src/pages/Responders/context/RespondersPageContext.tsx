@@ -37,7 +37,7 @@ const RespondersPageContext = createContext<
 >(undefined);
 
 export function RespondersPageProvider({ children }: { children: ReactNode }) {
-    const [isFetching, setIsFetching] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
     const [responders, setResponders] = useState<ResponderListItem[]>([]); // Master list
     const [selectedOption, setSelectedOption] = useState(RESPONDER_STATUS[0]);
 

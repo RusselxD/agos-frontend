@@ -20,7 +20,7 @@ const AdminsPageContext = createContext<AdminsPageContextValue | undefined>(
 
 export function AdminsPageProvider({ children }: { children: ReactNode }) {
     const [admins, setAdmins] = useState<AdminUserResponse[]>([]);
-    const [isFetchingAdmins, setIsFetchingAdmins] = useState<boolean>(false);
+    const [isFetchingAdmins, setIsFetchingAdmins] = useState<boolean>(true);
 
     const [createNewAdminIsOpen, setCreateNewAdminIsOpen] =
         useState<boolean>(false);

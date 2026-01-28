@@ -41,3 +41,66 @@ export const getWeatherColor = (precipitation: number): string => {
         return "text-red-500";
     }
 };
+
+export type WeatherTierStyle = {
+    border: string;
+    bg: string;
+    text: string;
+};
+
+export const getWeatherTierStyle = (
+    precipitation: number,
+): WeatherTierStyle => {
+    if (precipitation === 0) {
+        return {
+            border: "border-emerald-400",
+            bg: "bg-emerald-50",
+            text: "text-emerald-700",
+        };
+    }
+    if (precipitation <= 2.5) {
+        return {
+            border: "border-blue-400",
+            bg: "bg-blue-50",
+            text: "text-blue-700",
+        };
+    }
+    if (precipitation <= 10) {
+        return {
+            border: "border-yellow-400",
+            bg: "bg-yellow-50",
+            text: "text-yellow-700",
+        };
+    }
+    if (precipitation <= 50) {
+        return {
+            border: "border-orange-400",
+            bg: "bg-orange-50",
+            text: "text-orange-700",
+        };
+    }
+    return {
+        border: "border-red-400",
+        bg: "bg-red-50",
+        text: "text-red-700",
+    };
+};
+
+export function getComfortType(level: string): "good" | "moderate" | "bad" {
+    const l = level.toLowerCase();
+    if (l.includes("comfortable") || l === "cool") return "good";
+    if (
+        l.includes("uncomfortable") ||
+        l.includes("oppressive") ||
+        l.includes("heat stress")
+    )
+        return "bad";
+    return "moderate";
+}
+
+export function getStormRiskType(level: string): "good" | "moderate" | "bad" {
+    const l = level.toLowerCase();
+    if (l === "none" || l === "low") return "good";
+    if (l === "likely") return "bad";
+    return "moderate";
+}

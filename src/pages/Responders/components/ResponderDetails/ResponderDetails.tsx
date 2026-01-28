@@ -18,7 +18,7 @@ export default function ResponderDetails() {
     const [responder, setResponder] = useState<ResponderDetailsResponse | null>(
         null,
     );
-    const [isFetching, setIsFetching] = useState(false);
+    const [isFetching, setIsFetching] = useState(true);
 
     useEffect(() => {
         if (!selectedResponderId) {

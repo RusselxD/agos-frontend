@@ -25,27 +25,30 @@ export default function DataRetention() {
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const { toastSuccess, toastError } = useToast();
 
     useEffect(() => {
         const fetchDataRetention = async () => {
             try {
                 const res = await settingsAPI.getSettingValue(
-                    "data_retention_days"
+                    "data_retention_days",
                 );
                 setOriginalValue(Number(res));
                 setNewValue(Number(res));
             } catch (error) {
                 console.log("here");
                 toastError(
-                    "Failed to fetch data retention period. Please try again."
+                    "Failed to fetch data retention period. Please try again.",
                 );
             } finally {
+                setIsLoading(false);
             }
         };
 
         fetchDataRetention();
-    }, []);
+    }, [toastError]);
 
     const handleConfirmChanges = async () => {
         if (isUpdating) return;
@@ -66,9 +69,8 @@ export default function DataRetention() {
 
             toastSuccess("Data retention period updated successfully.");
         } catch (error) {
-            console.log("dito");
             toastError(
-                "Failed to update data retention period. Please try again."
+                "Failed to update data retention period. Please try again.",
             );
         } finally {
             setIsUpdating(false);
@@ -76,8 +78,6 @@ export default function DataRetention() {
     };
 
     const handleDragRange = (value: number) => {
-        console.log("Value: ", value);
-        console.log("Original Value: ", originalValue);
         setIsEditing(value !== originalValue);
         setNewValue(value);
     };
@@ -85,44 +85,70 @@ export default function DataRetention() {
     return (
         <Container className="space-y-3" headerTitle="DATA RETENTION">
             <InfoBox />
-            <div>
-                <div className="flex items-center justify-between">
-                    <p className="text-gray-700">Retention Period</p>
-                    <p className="font-semibold text-blue-700">{`${newValue} days`}</p>
+            {isLoading ? (
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                        <div className="skeleton rounded-md h-5 w-32"></div>
+                        <div className="skeleton rounded-md h-5 w-24"></div>
+                    </div>
+                    <div className="skeleton rounded-md h-2 w-full"></div>
+                    <div className="flex items-center justify-between text-sm">
+                        <div className="skeleton rounded-md h-4 w-24"></div>
+                        <div className="skeleton rounded-md h-4 w-24"></div>
+                    </div>
+                    <div className="space-x-2 font-medium flex items-center">
+                        <div className="skeleton rounded-md h-10 w-40"></div>
+                        <div className="skeleton rounded-md h-10 w-24"></div>
+                    </div>
                 </div>
-                <input
-                    type="range"
-                    min={7}
-                    max={30}
-                    className="w-full cursor-pointer"
-                    value={newValue}
-                    onChange={(e) => handleDragRange(Number(e.target.value))}
-                />
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                    <p>{`7 days (Min)`}</p>
-                    <p>{`30 days (Max)`}</p>
-                </div>
-            </div>
-            <div className="space-x-2 font-medium flex items-center">
-                <button
-                    className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary flex items-center"
-                    disabled={!isEditing || isUpdating}
-                    onClick={() => handleConfirmChanges()}
-                >
-                    {isUpdating && <div className="spinner w-5 h-5 mr-3"></div>}
-                    <span>{isUpdating ? "Saving..." : "Save Changes"}</span>
-                </button>
-                <button
-                    disabled={!isEditing || isUpdating}
-                    onClick={() => {
-                        setIsEditing(false);
-                        setNewValue(originalValue);
-                    }}
-                    className="btn-cancel"
-                >
-                    Cancel
-                </button>
-            </div>
+            ) : (
+                <>
+                    <div>
+                        <div className="flex items-center justify-between">
+                            <p className="text-gray-700">Retention Period</p>
+                            <p className="font-semibold text-blue-700">{`${newValue} days`}</p>
+                        </div>
+                        <input
+                            type="range"
+                            min={7}
+                            max={30}
+                            className="w-full cursor-pointer"
+                            value={newValue}
+                            onChange={(e) =>
+                                handleDragRange(Number(e.target.value))
+                            }
+                        />
+                        <div className="flex items-center justify-between text-sm text-gray-500">
+                            <p>{`7 days (Min)`}</p>
+                            <p>{`30 days (Max)`}</p>
+                        </div>
+                    </div>
+                    <div className="space-x-2 font-medium flex items-center">
+                        <button
+                            className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary flex items-center"
+                            disabled={!isEditing || isUpdating}
+                            onClick={() => handleConfirmChanges()}
+                        >
+                            {isUpdating && (
+                                <div className="spinner w-5 h-5 mr-3"></div>
+                            )}
+                            <span>
+                                {isUpdating ? "Saving..." : "Save Changes"}
+                            </span>
+                        </button>
+                        <button
+                            disabled={!isEditing || isUpdating}
+                            onClick={() => {
+                                setIsEditing(false);
+                                setNewValue(originalValue);
+                            }}
+                            className="btn-cancel"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </>
+            )}
         </Container>
     );
 }

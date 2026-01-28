@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import DataRetention from "./components/DataRetention";
+import AutoSendCriticalSMSToggle from "./components/AutoSendCriticalSMSToggle";
 
 export default function Settings() {
     useEffect(() => {
@@ -11,8 +12,9 @@ export default function Settings() {
     }, []);
 
     return (
-        <div>
+        <div className="space-y-4">
             <DataRetention />
+            <AutoSendCriticalSMSToggle />
         </div>
     );
 }

@@ -101,7 +101,7 @@ export default function Header() {
     const { isConnected } = useWebSocket();
 
     return (
-        <div className="bg-white custom-shadow rounded-lg pl-5 pr-3 py-2 flex items-center justify-between">
+        <div className="bg-white custom-shadow rounded-xl pl-5 pr-3 py-2 flex items-center justify-between">
             <div className="flex items-center">
                 <Location />
                 {isConnected ? <Status /> : <ConnectingStatus />}

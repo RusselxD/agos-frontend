@@ -20,7 +20,7 @@ export default function SensorReadings() {
     const { toastError } = useToast();
 
     const [page, setPage] = useState<number>(1);
-    const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
+    const [isFetchingMore, setIsFetchingMore] = useState<boolean>(true);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);

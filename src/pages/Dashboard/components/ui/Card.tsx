@@ -12,7 +12,7 @@ const CardHeaderText = ({ label }: { label: string }) => {
 export default function Card({ children, className }: CardProps) {
     return (
         <div
-            className={`custom-shadow border border-gray-300 rounded-lg p-4 flex flex-col justify-between ${
+            className={`custom-shadow border border-gray-300 rounded-xl p-4 flex flex-col justify-between ${
                 className || "bg-white"
             }`}
         >

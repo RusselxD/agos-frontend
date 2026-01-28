@@ -42,7 +42,7 @@ export default function ChooseDateRangeModal({
     const [availableDates, setAvailableDates] = useState<
         { value: string; label: string }[]
     >([]);
-    const [isFetchingDays, setIsFetchingDays] = useState(false);
+    const [isFetchingDays, setIsFetchingDays] = useState(true);
 
     const { sensorDeviceDetails } = useCoreHook();
 
@@ -121,7 +121,22 @@ export default function ChooseDateRangeModal({
     if (isFetchingDays) {
         return (
             <ModalContainer setModalOpen={setModalIsOpen}>
-                <div>loading....</div>
+                <div
+                    className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="w-2/4 skeleton h-8 rounded-md"></div>
+                    <div className="w-2/4 skeleton h-5 rounded-md -mb-2"></div>
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="skeleton w-full h-10 rounded-md"></div>
+                        <div className="skeleton w-full h-10 rounded-md"></div>
+                    </div>
+                    <div className="w-2/4 skeleton h-3 rounded-md -mt-1"></div>
+                    <div className="flex items-center justify-end gap-2">
+                        <div className="h-10 skeleton w-1/4 rounded-md"></div>
+                        <div className="h-10 skeleton w-1/4 rounded-md"></div>
+                    </div>
+                </div>
             </ModalContainer>
         );
     }

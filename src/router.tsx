@@ -28,6 +28,7 @@ import UploadID from "./pages/RespondersRegister/pages/UploadID";
 import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
+import Weather from "./pages/Weather/Weather";
 
 export const router = createBrowserRouter([
     {
@@ -135,8 +136,8 @@ export const router = createBrowserRouter([
                 element: <Dashboard />,
             },
             {
-                path: "alert-logs",
-                element: <AlertLogs />,
+                path: "weather",
+                element: <Weather />,
             },
             {
                 path: "sensor",
@@ -145,6 +146,10 @@ export const router = createBrowserRouter([
             {
                 path: "responders",
                 element: <Responders />,
+            },
+            {
+                path: "alert-logs",
+                element: <AlertLogs />,
             },
             {
                 path: "admins",

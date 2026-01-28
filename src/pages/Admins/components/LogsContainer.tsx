@@ -51,7 +51,7 @@ export default function LogsContainer() {
     const [logs, setLogs] = useState<AdminUserLogs[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(true);
 
-    const [isFetching, setIsFetching] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(true);
 
     const [page, setPage] = useState<number>(1);
     const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);

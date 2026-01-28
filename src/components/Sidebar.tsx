@@ -1,12 +1,27 @@
-import React from "react";
-import { Settings, Users, FileCheck, MonitorDot, Waves, UserStar } from "lucide-react";
+import type { FC } from "react";
+import {
+    Settings,
+    Users,
+    FileCheck,
+    MonitorDot,
+    Waves,
+    UserStar,
+    PanelLeftClose,
+    PanelLeftOpen,
+    CloudSunRain,
+} from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 interface Tab {
     name: string;
     path: string;
-    icon: React.FC<LucideProps>;
+    icon: FC<LucideProps>;
+}
+
+interface SidebarProps {
+    isCollapsed: boolean;
+    onToggle: () => void;
 }
 
 const tabs = [
@@ -16,9 +31,9 @@ const tabs = [
         icon: MonitorDot,
     },
     {
-        name: "Alert Logs",
-        path: "/admin/alert-logs",
-        icon: FileCheck,
+        name: "Weather",
+        path: "/admin/weather",
+        icon: CloudSunRain,
     },
     {
         name: "Sensor",
@@ -29,6 +44,11 @@ const tabs = [
         name: "Responders",
         path: "/admin/responders",
         icon: Users,
+    },
+    {
+        name: "Alert Logs",
+        path: "/admin/alert-logs",
+        icon: FileCheck,
     },
     {
         name: "Admins",
@@ -42,36 +62,83 @@ const tabs = [
     },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
     return (
-        <div className="fixed border top-0 bottom-0 left-0 w-56 flex flex-col bg-white">
-            <div className="w-full p-5 mb-3 h-20">
-                <img src="/agos-w-text.png" className="-ml-3" />
+        <div
+            className={`relative border px-5 top-0 bottom-0 left-0 flex flex-col items-center bg-white transition-all duration-200 overflow-hidden ${
+                isCollapsed ? "w-20" : "w-56"
+            }`}
+        >
+            {/* Header - toggle button fixed at top-right */}
+            <div className="w-full flex items-center justify-between py-2 mt-1">
+                {!isCollapsed && (
+                    <img
+                        src="/agos.svg"
+                        alt="AGOS"
+                        className="w-7"
+                        aria-label="AGOS Logo"
+                        title="AGOS Logo"
+                    />
+                )}
+
+                <button
+                    aria-label="Toggle sidebar"
+                    title="Toggle sidebar"
+                    onClick={onToggle}
+                    className="flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 transition-colors text-gray-500"
+                >
+                    {isCollapsed ? (
+                        <PanelLeftOpen className="w-5 h-5" />
+                    ) : (
+                        <PanelLeftClose className="w-5 h-5" />
+                    )}
+                </button>
             </div>
 
-            {/* Tabs */}
-            <ul className="w-full flex flex-col px-3 gap-2">
-                {tabs.map((tab: Tab, index: number) => {
-                    return (
+            {isCollapsed ? (
+                <ul className="flex flex-col items-center gap-2">
+                    {tabs.map((tab: Tab, index: number) => (
                         <li key={index}>
                             <NavLink
                                 to={tab.path}
                                 end
                                 className={({ isActive }) =>
-                                    `flex transition-all duration-100 ease-in-out gap-3 rounded-xl py-3.5 px-4 ${
+                                    `flex items-center justify-center rounded-xl p-3 ${
                                         isActive
-                                            ? "border-l-[6px] bg-gray-100 border-primary font-semibold cursor-default"
+                                            ? "bg-gray-200 text-primary"
                                             : "text-neutral hover:bg-gray-100 transition-colors"
                                     }`
                                 }
                             >
-                                <tab.icon />
-                                <span>{tab.name}</span>
+                                <tab.icon className="w-5 h-5" />
                             </NavLink>
                         </li>
-                    );
-                })}
-            </ul>
+                    ))}
+                </ul>
+            ) : (
+                <ul className="flex flex-col gap-2 w-full">
+                    {tabs.map((tab: Tab, index: number) => (
+                        <li key={index}>
+                            <NavLink
+                                to={tab.path}
+                                end
+                                className={({ isActive }) =>
+                                    `flex gap-2 rounded-xl py-3.5 px-3 ${
+                                        isActive
+                                            ? "border-l-[4px] bg-gray-100 border-primary font-semibold cursor-default"
+                                            : "text-neutral hover:bg-gray-100 transition-colors"
+                                    }`
+                                }
+                            >
+                                <tab.icon className="w-5 h-5" />
+                                <span className="text-[0.9rem]">
+                                    {tab.name}
+                                </span>
+                            </NavLink>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }
