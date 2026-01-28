@@ -33,15 +33,21 @@ export default function MainDisplay({
 }: MainDisplayProps) {
     const WeatherIcon = getWeatherIcon(weatherData.weather_code);
 
-    const [timeAgo, setTimeAgo] = useState("");
+    // const [timeAgo, setTimeAgo] = useState("");
+
+    const [timeAgo, setTimeAgo] = useState<string>(
+        getTimeAgo(weatherData.timestamp),
+    );
 
     useEffect(() => {
-        if (!weatherData) return;
-        const id = setInterval(
-            () => setTimeAgo(getTimeAgo(weatherData.timestamp)),
-            60_000,
-        );
-        return () => clearInterval(id);
+        setTimeAgo(getTimeAgo(weatherData.timestamp));
+        // Update every 60 seconds
+        const intervalId = setInterval(() => {
+            setTimeAgo(getTimeAgo(weatherData.timestamp));
+        }, 60 * 1000);
+
+        // Cleanup
+        return () => clearInterval(intervalId);
     }, [weatherData]);
 
     return (

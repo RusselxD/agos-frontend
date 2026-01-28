@@ -65,7 +65,7 @@ const tabs = [
 export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
     return (
         <div
-            className={`relative border px-5 top-0 bottom-0 left-0 flex flex-col items-center bg-white transition-all duration-200 overflow-hidden ${
+            className={`fixed border px-5 top-0 bottom-0 left-0 flex flex-col items-center bg-white transition-all duration-200 overflow-hidden ${
                 isCollapsed ? "w-20" : "w-56"
             }`}
         >
