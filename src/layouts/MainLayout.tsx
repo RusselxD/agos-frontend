@@ -11,7 +11,7 @@ export default function MainLayout(): React.JSX.Element {
                 isCollapsed={isSidebarCollapsed}
                 onToggle={() => setIsSidebarCollapsed((prev) => !prev)}
             />
-            <div className={`flex-1 p-5 transition-all duration-200 `}>
+            <div className={`flex-1 p-5 transition-all duration-200 ${isSidebarCollapsed ? "ml-20" : "ml-56"}`}>
                 <Outlet />
             </div>
         </div>
