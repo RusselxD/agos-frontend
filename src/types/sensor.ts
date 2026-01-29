@@ -63,7 +63,7 @@ export interface SensorReadingForExport {
     signal_quality: string | null;
 }
 
-export interface SensorReadingForExportResponse{
+export interface SensorReadingForExportResponse {
     readings: SensorReadingForExport[];
     sensor_device_name: string;
 }
@@ -72,4 +72,9 @@ export interface SensorReadingForExportResponse{
 export interface SensorUpdateMessage {
     type: "sensor_update";
     data: any;
+}
+
+export interface SensorReadingTrendResponse {
+    labels: string[];
+    levels: number[];
 }

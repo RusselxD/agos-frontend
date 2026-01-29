@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 interface ContainerProps {
     children: ReactNode;
-    headerTitle: string;
+    headerTitle?: string;
     className?: string;
 }
 
@@ -21,7 +21,7 @@ export default function Container({
 }: ContainerProps) {
     return (
         <div className={`bg-white custom-shadow rounded-xl p-5 ${className}`}>
-            <ContainerHeader title={headerTitle} />
+            {headerTitle && <ContainerHeader title={headerTitle} />}
             {children}
         </div>
     );

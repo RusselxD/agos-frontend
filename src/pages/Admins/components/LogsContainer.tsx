@@ -26,7 +26,7 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
                     </th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 {logs.map((log, index) => (
                     <tr
                         key={index}
@@ -66,7 +66,7 @@ export default function LogsContainer() {
     const fetchLogs = useCallback(
         async (pageToFetch: number, forceLoading = false) => {
             try {
-                if (forceLoading || logs.length === 0) {
+                if (forceLoading) {
                     setIsFetching(true);
                 } else {
                     setIsFetchingMore(true);
@@ -84,8 +84,13 @@ export default function LogsContainer() {
                 setIsFetchingMore(false);
             }
         },
-        [logs.length, toastError]
+        [toastError],
     );
+
+    // Initial fetch
+    useEffect(() => {
+        fetchLogs(1, true);
+    }, [fetchLogs]);
 
     // Refetch logs when trigger changes
     useEffect(() => {
@@ -107,6 +112,13 @@ export default function LogsContainer() {
         }
     }, [logRefetchTrigger, page, fetchLogs]);
 
+    // Fetch more when page changes (but not on initial mount)
+    useEffect(() => {
+        if (page > 1 && hasMore && !isFetching && !isFetchingMore) {
+            fetchLogs(page);
+        }
+    }, [page, hasMore, isFetching, isFetchingMore, fetchLogs]);
+
     // Infinite scroll observer
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -123,7 +135,7 @@ export default function LogsContainer() {
             {
                 root: containerRef.current,
                 threshold: 0.1,
-            }
+            },
         );
 
         if (observerTarget.current) {
@@ -137,12 +149,6 @@ export default function LogsContainer() {
             }
         };
     }, [hasMore, isFetchingMore, isFetching]);
-
-    useEffect(() => {
-        if (hasMore && !isFetching && !isFetchingMore) {
-            fetchLogs(page);
-        }
-    }, [page]);
 
     if (isFetching) {
         return <TableSkeleton title="AUDIT LOGS" rows={3} />;

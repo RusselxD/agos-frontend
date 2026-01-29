@@ -88,12 +88,8 @@ export const getWeatherTierStyle = (
 
 export function getComfortType(level: string): "good" | "moderate" | "bad" {
     const l = level.toLowerCase();
-    if (l.includes("comfortable") || l === "cool") return "good";
-    if (
-        l.includes("uncomfortable") ||
-        l.includes("oppressive") ||
-        l.includes("heat stress")
-    )
+    if (l === "comfortable" || l === "cool") return "good";
+    if (l === "uncomfortable" || l === "oppressive" || l === "heat stress")
         return "bad";
     return "moderate";
 }

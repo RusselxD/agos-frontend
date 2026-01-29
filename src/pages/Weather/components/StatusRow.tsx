@@ -36,6 +36,9 @@ interface StatusRowProps {
 }
 
 export default function StatusRow({ weatherData }: StatusRowProps) {
+
+    console.log(weatherData)
+
     return (
         <div className="grid grid-cols-2 gap-3">
             <StatusCard
