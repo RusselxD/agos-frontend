@@ -21,7 +21,7 @@ interface WeatherContextValue {
 }
 
 const WeatherContext = createContext<WeatherContextValue | undefined>(
-    undefined
+    undefined,
 );
 
 export function WeatherProvider({ children }: { children: ReactNode }) {
@@ -38,6 +38,8 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
 
             if (data.status == "error") {
                 setError(data.message);
+                setWarning(null);
+                setWeatherData(null);
                 return;
             }
 
@@ -60,10 +62,7 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
             setError(null);
             setWarning(null);
             setWeatherData(weatherCondition);
-
-            console.log("WEATHER UPDATE RECEIVED");
-            console.log(data);
-        }
+        },
     );
 
     const contextValue = useMemo(
@@ -73,7 +72,7 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
             warning,
             error,
         }),
-        [weatherData, isFetching, warning, error]
+        [weatherData, isFetching, warning, error],
     );
 
     return (

@@ -26,7 +26,7 @@ interface WaterLevelContextValue {
 }
 
 const WaterLevelContext = createContext<WaterLevelContextValue | undefined>(
-    undefined
+    undefined,
 );
 
 export function WaterLevelProvider({
@@ -68,6 +68,8 @@ export function WaterLevelProvider({
 
             if (data.status == "error") {
                 setError(data.message);
+                setWarning(null);
+                setSensorData(null);
                 return;
             }
 
@@ -81,10 +83,7 @@ export function WaterLevelProvider({
             setError(null);
             setWarning(null);
             setSensorData(data.sensor_reading);
-
-            console.log("SENSOR UPDATE RECEIVED");
-            console.log(data);
-        }
+        },
     );
 
     const contextValue = useMemo(
@@ -96,7 +95,14 @@ export function WaterLevelProvider({
             warning,
             error,
         }),
-        [sensorData, sensorConfig, isFetching, isFetchingConfig, warning, error]
+        [
+            sensorData,
+            sensorConfig,
+            isFetching,
+            isFetchingConfig,
+            warning,
+            error,
+        ],
     );
 
     return (
@@ -110,7 +116,7 @@ export const useWaterLevel = () => {
     const context = useContext(WaterLevelContext);
     if (context === undefined) {
         throw new Error(
-            "useWaterLevel must be used within a WaterLevelProvider"
+            "useWaterLevel must be used within a WaterLevelProvider",
         );
     }
     return context;

@@ -7,8 +7,12 @@ type StatCardProps = {
 };
 
 const StatCard = ({ title, data, desc }: StatCardProps) => {
+    const { warning } = useWaterLevel();
+
     return (
-        <div className="border w-full h-full flex flex-col justify-between rounded-md bg-slate-100 border-gray-300 px-4 py-3">
+        <div
+            className={`border w-full h-full flex flex-col justify-between rounded-md px-4 py-3 ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
+        >
             <p className="text-sm font-medium text-gray-700">{title}</p>
             <p>
                 <span className="text-2xl font-semibold">{data}</span>

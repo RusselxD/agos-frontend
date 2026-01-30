@@ -5,6 +5,7 @@ import FilterDropDown from "./FilterDropDown";
 import type { SensorReadingTrendResponse } from "../../../../types/sensor";
 import { sensorAPI } from "../../../../lib/api/sensor";
 import { useCoreHook } from "../../../../context/CoreContext";
+import LineChartSkeleton from "./LineChartSkeleton";
 
 export interface TimeRange {
     label: string;
@@ -29,17 +30,28 @@ export default function WaterLevelTrendContainer() {
 
     const [trendData, setTrendData] =
         useState<SensorReadingTrendResponse | null>(null);
+    const [isFetching, setIsFetching] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchTrendData = async () => {
-            const res = await sensorAPI.getSensorReadingTrendData(
-                chosenRange.duration,
-                sensorDeviceDetails.sensor_device_id,
-            );
-            setTrendData(res);
+            try {
+                setIsFetching(true);
+                const res = await sensorAPI.getSensorReadingTrendData(
+                    chosenRange.duration,
+                    sensorDeviceDetails.sensor_device_id,
+                );
+                setTrendData(res);
+            } catch (error) {
+            } finally {
+                setIsFetching(false);
+            }
         };
         fetchTrendData();
     }, [chosenRange]);
+
+    if (isFetching) {
+        return <LineChartSkeleton />;
+    }
 
     if (!trendData) {
         return null;

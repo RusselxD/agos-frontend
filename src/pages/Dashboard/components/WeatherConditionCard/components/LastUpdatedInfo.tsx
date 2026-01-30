@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { getTimeAgo } from "../../../../../lib/utils/formatter";
+import { useWeather } from "../../../../../context/WeatherContext";
 
 export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
+    const { warning } = useWeather();
+
     const [timeAgo, setTimeAgo] = useState<string>(getTimeAgo(timestamp));
 
     useEffect(() => {
@@ -16,7 +19,9 @@ export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
     }, [timestamp]);
 
     return (
-        <div className="bg-slate-100 rounded-lg p-2.5 border">
+        <div
+            className={`rounded-lg p-2.5 border ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
+        >
             <p className="text-sm text-gray-500">Last Updated</p>
             <p className="text-sm">{timeAgo}</p>
         </div>

@@ -1,4 +1,4 @@
-import { CardHeaderText } from "../ui/Card";
+import { CardHeaderText, ErrorCard } from "../ui/Card";
 import Card from "../ui/Card";
 import type { Status } from "../../../../types/blockage";
 import ProgressBar from "./components/ProgressBar";
@@ -22,23 +22,18 @@ export const getLevelCount = (status: Status | null): number => {
 };
 
 export default function BlockageStatusCard() {
-    const { isFetching, error } = useWaterwayContext();
+    const { isFetching, error, warning } = useWaterwayContext();
 
     if (isFetching) {
         return <BlockageStatusCardSkeleton />;
     }
 
     if (error) {
-        return (
-            <Card>
-                <CardHeaderText label="BLOCKAGE STATUS" />
-                <p>{error}</p>
-            </Card>
-        );
+        return <ErrorCard message={error} />;
     }
 
     return (
-        <Card>
+        <Card warning={warning}>
             <CardHeaderText label="BLOCKAGE STATUS" />
             <StatusText />
             <ProgressBar />

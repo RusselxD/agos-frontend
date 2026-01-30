@@ -1,4 +1,4 @@
-import Card from "../ui/Card";
+import Card, { ErrorCard } from "../ui/Card";
 import { CardHeaderText } from "../ui/Card";
 import type { WeatherData } from "../../../../types/weather";
 import WeatherCondition from "./components/WeatherCondition";
@@ -12,27 +12,24 @@ export type WeatherProps = {
 };
 
 export default function WeatherConditionCard() {
-    const { weatherData, isFetching, error } = useWeather();
+    const { weatherData, isFetching, error, warning } = useWeather();
 
     if (isFetching) {
         return <WeatherConditionCardSkeleton />;
     }
 
     if (error) {
-        return (
-            <Card>
-                <CardHeaderText label="WEATHER CONDITION" />
-                <p>{error}</p>
-            </Card>
-        );
+        return <ErrorCard message={error} />;
     }
 
     return (
-        <Card>
+        <Card warning={warning}>
             <CardHeaderText label="WEATHER CONDITION" />
             <WeatherCondition weather={weatherData!} />
             <div className="grid grid-cols-2 gap-2">
-                <PrecipitationInfo precipitation_mm={weatherData!.precipitation_mm} />
+                <PrecipitationInfo
+                    precipitation_mm={weatherData!.precipitation_mm}
+                />
                 <LastUpdatedInfo timestamp={weatherData!.timestamp} />
             </div>
         </Card>

@@ -106,7 +106,6 @@ export function RespondersPageProvider({ children }: { children: ReactNode }) {
         const fetchResponders = async () => {
             try {
                 setIsFetching(true);
-                await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate loading delay
                 const res: ResponderListResponse =
                     await responderAPI.getAllResponders();
                 setResponders(res.responders);
