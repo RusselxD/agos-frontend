@@ -1,10 +1,18 @@
+import type { ReactNode } from "react";
 import "./style.css";
 
-export default function LineChartSkeleton() {
+export default function LineChartSkeleton({
+    children,
+}: {
+    children: ReactNode;
+}) {
     return (
-        <div className="w-full mx-auto p-8 bg-white rounded-xl shadow-lg">
-            <div className="h-6 w-72 bg-gray-200 rounded mb-6 skeleton" />
+        <div className="w-full mx-auto p-8 bg-white rounded-xl shadow-lg relative">
+            <h2 className="text-center -mt-2 font-semibold text-gray-600">
+                Water Level Trend
+            </h2>
 
+            {children}
             <div className="h-96 border-2 border-gray-200 rounded-lg p-4 relative">
                 <div className="grid grid-cols-10 gap-2 lg:gap-5 h-full">
                     {[...Array(10)].map((_, index) => (

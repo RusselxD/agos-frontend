@@ -50,7 +50,14 @@ export default function WaterLevelTrendContainer() {
     }, [chosenRange]);
 
     if (isFetching) {
-        return <LineChartSkeleton />;
+        return (
+            <LineChartSkeleton>
+                <FilterDropDown
+                    selectedRange={chosenRange}
+                    setSelectedRange={setChosenRange}
+                />
+            </LineChartSkeleton>
+        );
     }
 
     if (!trendData) {
