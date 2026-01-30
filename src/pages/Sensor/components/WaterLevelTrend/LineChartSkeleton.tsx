@@ -8,7 +8,7 @@ export default function LineChartSkeleton({
 }) {
     return (
         <div className="w-full mx-auto p-8 bg-white rounded-xl shadow-lg relative">
-            <h2 className="text-center -mt-2 font-semibold text-gray-600">
+            <h2 className="text-center -mt-2 mb-4 font-semibold text-gray-600">
                 Water Level Trend
             </h2>
 

@@ -4,11 +4,13 @@ import type { TimeRange } from "./WaterLevelTrendContainer";
 import { timeRanges } from "./WaterLevelTrendContainer";
 
 interface FilterDropDownProps {
+    isFetching?: boolean;
     selectedRange: TimeRange;
     setSelectedRange: Dispatch<SetStateAction<TimeRange>>;
 }
 
 export default function FilterDropDown({
+    isFetching,
     selectedRange,
     setSelectedRange,
 }: FilterDropDownProps) {
@@ -58,6 +60,8 @@ export default function FilterDropDown({
                             <div
                                 key={i}
                                 onClick={() => {
+                                    if (isFetching) return;
+
                                     setSelectedRange(range);
                                     setOptionsVisible(false);
                                 }}
