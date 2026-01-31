@@ -1,8 +1,8 @@
 import { AlertTriangle, Bell, Gauge } from "lucide-react";
 import type { ReactNode } from "react";
-import { useCalibrationCard } from "../context/CalibrationCardContext";
+import { useCalibrationCard } from "./CalibrationCardContext";
 
-import Container from "../../../components/ui/Container";
+import Container from "../../../../components/ui/Container";
 
 interface ThresholdCardProps {
     title: string;

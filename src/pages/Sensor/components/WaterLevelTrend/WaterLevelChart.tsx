@@ -168,7 +168,7 @@ export default function WaterLevelChart({
     const chartId = useId();
 
     return (
-        <div className="h-full mt-2">
+        <div className="h-full mt-2 relative w-full overflow-hidden z-10">
             <Line data={data} options={options} id={chartId} key={chartId} />
         </div>
     );

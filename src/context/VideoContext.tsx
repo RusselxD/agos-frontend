@@ -61,13 +61,17 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         videoRef.current = createVideoElement();
     }
 
-    const loadStream = async () => {
+    const loadStream = async (isResync = false) => {
         try {
             const video = videoRef.current;
             if (!video) return;
 
             setError(null);
-            setIsLoading(true);
+            if (isResync) {
+                setIsSyncing(true);
+            } else {
+                setIsLoading(true);
+            }
 
             // --- STEP 1: Check Status & Start if needed ---
             let isReady = false;
@@ -132,8 +136,8 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                     // STABILITY SETTINGS:
                     lowLatencyMode: false,
                     liveSyncDurationCount: 3, // Reduced to 3 (~18s) to stay closer to live
-                    fragLoadingMaxRetry: 10,
-                    manifestLoadingMaxRetry: 10,
+                    fragLoadingMaxRetry: 3,
+                    manifestLoadingMaxRetry: 3,
                     // RESYNC SETTINGS:
                     // If we fall behind (e.g. background tab), play 2x speed to catch up
                     liveMaxLatencyDurationCount: 10,
@@ -252,20 +256,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
                             `Stream drifted by ${currentLatency.toFixed(1)}s. performing Hard Resync...`,
                         );
 
-                        // Trigger syncing state (transparent overlay) instead of full loading
-                        setIsSyncing(true);
-
-                        // Hard Resync: Instead of seeking in a potentially stale buffer,
-                        // we reload the source manifest to get the fresh Live Edge.
-                        hls.loadSource(`${HLS_STREAM_URL}?t=${Date.now()}`);
-
-                        hls.once(Hls.Events.MANIFEST_PARSED, () => {
-                            video
-                                .play()
-                                .catch((e) =>
-                                    console.log("Resync auto-play failed:", e),
-                                );
-                        });
+                        loadStream(true);
                     } else if (video.paused) {
                         // If we are in sync (low latency) but just paused by the browser
                         console.log("Stream in sync. Resuming playback.");

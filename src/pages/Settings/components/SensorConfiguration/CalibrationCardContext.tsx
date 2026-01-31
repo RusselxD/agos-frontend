@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { SensorConfig } from "../../../types/sensor";
-import { sensorAPI } from "../../../lib/api/sensor";
+import type { SensorConfig } from "../../../../types/sensor";
+import { sensorAPI } from "../../../../lib/api/sensor";
 
 interface CalibrationCardContextValue {
     originalConfig: SensorConfig | null;
@@ -26,7 +26,7 @@ export function SensorConfigurationProvider({
     children: ReactNode;
 }) {
     const [originalConfig, setOriginalConfig] = useState<SensorConfig | null>(
-        null
+        null,
     );
 
     const [newConfig, setNewConfig] = useState<SensorConfig | null>(null);
@@ -73,7 +73,7 @@ export function SensorConfigurationProvider({
             setIsEditing,
             handleSaveChanges,
         }),
-        [originalConfig, newConfig, isEditing, isFetching]
+        [originalConfig, newConfig, isEditing, isFetching],
     );
 
     return (
@@ -87,7 +87,7 @@ export const useCalibrationCard = () => {
     const context = useContext(CalibrationCardContext);
     if (!context) {
         throw new Error(
-            "useCalibrationCard must be used within a CalibrationCardProvider"
+            "useCalibrationCard must be used within a CalibrationCardProvider",
         );
     }
     return context;

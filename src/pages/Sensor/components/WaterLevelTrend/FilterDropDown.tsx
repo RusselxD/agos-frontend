@@ -22,16 +22,16 @@ export default function FilterDropDown({
         if (!isHovered && optionsVisible) {
             setOptionsVisible(false);
         }
-    }, [isHovered]);
+    }, [isHovered, optionsVisible]);
 
     return (
         <div
-            className="absolute top-2 right-2"
+            className="absolute top-2 right-2 pb-1 z-20"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <button
-                className="btn-custom rounded-md border mb-1 border-gray-400 text-gray-700 px-3 py-2 text-xs flex items-center justify-center transition-all duration-200"
+                className="btn-custom rounded-md border border-gray-400 text-gray-700 px-3 py-2 text-xs flex items-center justify-center transition-all duration-200"
                 style={{ gap: isHovered ? "12px" : "0" }}
                 onClick={() => setOptionsVisible((prev) => !prev)}
             >
@@ -52,25 +52,23 @@ export default function FilterDropDown({
                 />
             </button>
             <div
-                className={`absolute shadow-md top-full z-40 overflow-hidden bg-white rounded-lg w-36 right-0  transition-[max-height] duration-150 ease-in-out ${optionsVisible && isHovered ? "max-h-96" : "max-h-0"}`}
+                className={`absolute shadow-md top-full z-40 overflow-hidden bg-white rounded-lg w-36 right-0 transition-[max-height] duration-150 ease-in-out ${optionsVisible ? "max-h-96" : "max-h-0"}`}
             >
                 <div className="rounded-lg bg-white">
-                    {timeRanges.map((range, i) => {
-                        return (
-                            <div
-                                key={i}
-                                onClick={() => {
-                                    if (isFetching) return;
+                    {timeRanges.map((range, i) => (
+                        <div
+                            key={i}
+                            onClick={() => {
+                                if (isFetching) return;
 
-                                    setSelectedRange(range);
-                                    setOptionsVisible(false);
-                                }}
-                                className={`px-4 py-2 flex items-center gap-2 text-sm ${selectedRange.label === range.label ? "bg-gray-100 text-black font-medium" : "hover:text-black cursor-pointer text-gray-700"}`}
-                            >
-                                <span>{range.label}</span>
-                            </div>
-                        );
-                    })}
+                                setSelectedRange(range);
+                                setOptionsVisible(false);
+                            }}
+                            className={`px-4 py-2 flex items-center gap-2 text-sm ${selectedRange.label === range.label ? "bg-gray-100 text-black font-medium" : "hover:text-black cursor-pointer text-gray-700"}`}
+                        >
+                            <span>{range.label}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
