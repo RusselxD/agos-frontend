@@ -31,20 +31,27 @@ export interface ResponderListItem {
     last_name: string;
     phone_number: string;
     status: string;
+    groups: string[];
 }
 
-export interface ResponderListResponse {
-    responders: ResponderListItem[];
-}
-
-export interface ResponderDetailsResponse {
-    id: string;
-    first_name: string;
-    last_name: string;
-    phone_number: string;
+export interface ResponderAdditionalDetails {
     id_photo_path: string;
-    status: string;
     created_at: string;
     approved_by: string | null;
     approved_at: string | null;
+}
+
+export interface ResponderAllDetails extends ResponderListItem, ResponderAdditionalDetails {}
+
+export interface MessageTemplate {
+    id: number;
+    template_name: string;
+    template_content: string;
+    auto_send_on_critical: boolean;
+}
+
+export interface MessageTemplateCreateRequest {
+    template_name: string;
+    template_content: string;
+    auto_send_on_critical: boolean;
 }

@@ -17,7 +17,7 @@ export default function Settings() {
         <div className="space-y-2">
             <DataRetention />
             <AutoSendCriticalSMSToggle />
-            
+
             <SensorConfigurationProvider>
                 <SensorConfiguration />
             </SensorConfigurationProvider>

@@ -110,7 +110,6 @@ export default function AddNewAdmin() {
             clearEntireForm();
             toastSuccess("New admin created successfully.");
         } catch (error) {
-            console.log(error);
             if (axios.isAxiosError(error)) {
                 setError(
                     error?.response?.data?.detail ||

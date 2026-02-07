@@ -1,30 +1,20 @@
-import { Phone } from "lucide-react";
-import { formatPHNumber } from "../../../../lib/utils/formatter";
 import { useState } from "react";
-import { responderAPI } from "../../../../lib/api/responder";
-import { useResponders } from "../../context/RespondersPageContext";
+import { useResponderList } from "../context/ResponderListContext";
+import { responderAPI } from "../../../../../lib/api/responder";
+import { formatPHNumber } from "../../../../../lib/utils/formatter";
+import { Phone } from "lucide-react";
 
-interface ApplicationDetailsProps {
-    responderId: string;
-    fullName: string;
-    phoneNumber: string;
-}
-
-export default function ApplicationDetails({
-    responderId,
-    fullName,
-    phoneNumber,
-}: ApplicationDetailsProps) {
+export default function ApplicationDetails() {
     const [isApproving, setIsApproving] = useState(false);
 
-    const { modifyResponderInList } = useResponders();
+    const { modifyResponderInList, chosenResponder } = useResponderList();
 
     const handleApprove = async () => {
         try {
             setIsApproving(true);
-            await responderAPI.approveResponder(responderId);
+            await responderAPI.approveResponder(chosenResponder?.id ?? "");
 
-            modifyResponderInList(responderId);
+            modifyResponderInList(chosenResponder?.id ?? "");
         } catch (error) {
         } finally {
             setIsApproving(false);
@@ -32,6 +22,7 @@ export default function ApplicationDetails({
     };
 
     const handleDecline = () => {};
+    const fullName = `${chosenResponder?.first_name ?? ""} ${chosenResponder?.last_name ?? ""}`;
 
     return (
         <div className="flex-1 flex flex-col justify-between">
@@ -39,7 +30,7 @@ export default function ApplicationDetails({
                 <h3 className="mb-1 font-medium">{fullName}</h3>
                 <p className="flex items-center gap-2 text-sm text-gray-700">
                     <Phone className="w-4 h-4" />
-                    {formatPHNumber(phoneNumber)}
+                    {formatPHNumber(chosenResponder?.phone_number ?? "")}
                 </p>
             </div>
 

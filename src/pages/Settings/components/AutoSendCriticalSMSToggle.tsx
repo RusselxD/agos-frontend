@@ -15,7 +15,7 @@ export default function AutoSendCriticalSMSToggle() {
                 const res = await settingsAPI.getSettingValue(
                     "auto_send_sms_when_critical",
                 );
-                setIsEnabled(res === "true");
+                setIsEnabled(res);
             } catch (error) {
                 toastError(
                     "Failed to fetch SMS alert setting. Please try again.",

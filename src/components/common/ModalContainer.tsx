@@ -8,14 +8,22 @@ interface ModalProps {
 
 export default function ModalContainer({ children, setModalOpen }: ModalProps) {
     useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setModalOpen(false);
+            }
+        };
+
         // Prevent body scroll when modal is open
         document.body.style.overflow = "hidden";
+        document.addEventListener("keydown", handleKeyDown);
 
         return () => {
             // Restore body scroll when modal closes
             document.body.style.overflow = "unset";
+            document.removeEventListener("keydown", handleKeyDown);
         };
-    }, []);
+    }, [setModalOpen]);
 
     return (
         <div
