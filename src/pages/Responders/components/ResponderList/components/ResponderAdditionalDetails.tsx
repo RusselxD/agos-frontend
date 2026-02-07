@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import type { ResponderDetailsResponse } from "../../../../types/responder";
-import { formatDate, formatPHNumber } from "../../../../lib/utils/formatter";
+import type { ResponderAllDetails } from "../../../../../types/responder";
+import { formatDate, formatPHNumber } from "../../../../../lib/utils/formatter";
 
 interface ContainerProps {
     title: string;
@@ -19,7 +19,7 @@ const Container = ({ title, children }: ContainerProps) => {
 export default function ResponderAdditionalDetails({
     responder,
 }: {
-    responder: ResponderDetailsResponse;
+    responder: ResponderAllDetails;
 }) {
     return (
         <div className="text-sm space-y-2">
@@ -36,9 +36,7 @@ export default function ResponderAdditionalDetails({
                 </Container>
             </div>
             <Container title="Approved By">
-                <p className="font-medium">
-                    {responder.approved_by || "N/A"}
-                </p>
+                <p className="font-medium">{responder.approved_by || "N/A"}</p>
             </Container>
 
             <Container title="Approved On">

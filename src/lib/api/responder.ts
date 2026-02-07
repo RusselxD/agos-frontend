@@ -1,7 +1,9 @@
 import type {
+    MessageTemplate,
+    MessageTemplateCreateRequest,
     ResponderCreateRequest,
-    ResponderDetailsResponse,
-    ResponderListResponse,
+    ResponderAdditionalDetails,
+    ResponderListItem,
     ResponderOTPRequest,
     ResponderOTPResponse,
     ResponderOTPVerifyRequest,
@@ -10,10 +12,10 @@ import type {
 import apiClient from "./axiosConfig";
 
 export const responderAPI = {
-    getAllResponders: async (): Promise<ResponderListResponse> => {
+    getAllResponders: async (): Promise<ResponderListItem[]> => {
         try {
             const res = await apiClient.get("/responder/all");
-            return res.data as ResponderListResponse;
+            return res.data as ResponderListItem[];
         } catch (error) {
             throw error;
         }
@@ -21,10 +23,12 @@ export const responderAPI = {
 
     getResponderDetails: async (
         responderId: string,
-    ): Promise<ResponderDetailsResponse> => {
+    ): Promise<ResponderAdditionalDetails> => {
         try {
-            const res = await apiClient.get(`/responder/${responderId}`);
-            return res.data as ResponderDetailsResponse;
+            const res = await apiClient.get(
+                `/responder/additional-details/${responderId}`,
+            );
+            return res.data as ResponderAdditionalDetails;
         } catch (error) {
             throw error;
         }
@@ -68,6 +72,44 @@ export const responderAPI = {
                 verifyOtpRequest,
             );
             return res.data as ResponderOTPVerifyResponse;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    getMessageTemplates: async (): Promise<MessageTemplate[]> => {
+        try {
+            const res = await apiClient.get("/message-template/all");
+            return res.data as MessageTemplate[];
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    createMessageTemplate: async (
+        messageTemplate: MessageTemplateCreateRequest,
+    ): Promise<MessageTemplate> => {
+        try {
+            const res = await apiClient.post(
+                "/message-template",
+                messageTemplate,
+            );
+            return res.data as MessageTemplate;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    updateMessageTemplate: async (
+        templateId: number,
+        messageTemplate: MessageTemplateCreateRequest,
+    ): Promise<MessageTemplate> => {
+        try {
+            const res = await apiClient.put(
+                `/message-template/${templateId}`,
+                messageTemplate,
+            );
+            return res.data as MessageTemplate;
         } catch (error) {
             throw error;
         }

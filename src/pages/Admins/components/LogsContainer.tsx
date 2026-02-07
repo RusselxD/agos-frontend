@@ -114,10 +114,10 @@ export default function LogsContainer() {
 
     // Fetch more when page changes (but not on initial mount)
     useEffect(() => {
-        if (page > 1 && hasMore && !isFetching && !isFetchingMore) {
+        if (page > 1 && hasMore) {
             fetchLogs(page);
         }
-    }, [page, hasMore, isFetching, isFetchingMore, fetchLogs]);
+    }, [page]);
 
     // Infinite scroll observer
     useEffect(() => {

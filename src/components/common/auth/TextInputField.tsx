@@ -5,6 +5,7 @@ interface TextInputFieldProps {
     setValue: Dispatch<SetStateAction<string>>;
     label: string;
     placeholder: string;
+    className?: string;
 }
 
 export default function TextInputField({
@@ -12,6 +13,7 @@ export default function TextInputField({
     setValue,
     label,
     placeholder,
+    className,
 }: TextInputFieldProps) {
     return (
         <label className="flex flex-col w-full">
@@ -22,7 +24,7 @@ export default function TextInputField({
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     placeholder={placeholder}
-                    className="custom-input w-full"
+                    className={`custom-input w-full ${className ?? ""}`}
                 />
             </div>
         </label>
