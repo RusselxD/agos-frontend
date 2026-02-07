@@ -63,7 +63,7 @@ export default function MessageTemplates() {
 
     useEffect(() => {
         const fetchTemplates = async () => {
-            if (cache.templates.length > 0) {
+            if (cache.templates !== undefined) {
                 return;
             }
 
@@ -100,7 +100,7 @@ export default function MessageTemplates() {
             <div className="flex items-center justify-between border-b border-gray-300 pb-2">
                 <h2 className="font-medium">Saved Message Templates</h2>
                 <p className="text-gray-700 text-sm">
-                    {cache.templates.length} templates
+                    {cache.templates?.length ?? 0} templates
                 </p>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-5">

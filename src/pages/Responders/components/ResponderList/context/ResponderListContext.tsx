@@ -63,7 +63,7 @@ export function ResponderListProvider({
     const modifyResponderInList = (responderId: string) => {
         setCache((prevCache) => ({
             ...prevCache,
-            responders: prevCache.responders.map((responder) =>
+            responders: prevCache.responders?.map((responder) =>
                 responder.id === responderId
                     ? { ...responder, status: "approved" }
                     : responder,

@@ -6,13 +6,16 @@ import {
     type Dispatch,
     type SetStateAction,
 } from "react";
-import type { MessageTemplate, ResponderListItem } from "../../../types/responder";
+import type {
+    MessageTemplate,
+    ResponderListItem,
+} from "../../../types/responder";
 
 interface TabsCache {
-    templates: MessageTemplate[];
+    templates: MessageTemplate[] | undefined;
     send_sms: any;
     groups: any;
-    responders: ResponderListItem[];
+    responders: ResponderListItem[] | undefined;
 }
 interface RespondersPageContextValue {
     cache: TabsCache;
@@ -29,10 +32,10 @@ export function RespondersPageProvider({
     children: React.ReactNode;
 }) {
     const [cache, setCache] = useState<TabsCache>({
-        templates: [],
-        send_sms: null,
-        groups: null,
-        responders: [],
+        templates: undefined,
+        send_sms: undefined,
+        groups: undefined,
+        responders: undefined,
     });
 
     const contextValue = useMemo(

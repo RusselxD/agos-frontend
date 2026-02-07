@@ -12,7 +12,7 @@ export default function ResponderList() {
 
     useEffect(() => {
         const fetchResponders = async () => {
-            if (cache.responders.length > 0) {
+            if (cache.responders !== undefined) {
                 return;
             }
 
@@ -48,7 +48,7 @@ export default function ResponderList() {
     return (
         <ResponderListProvider>
             <div className="flex flex-1 overflow-hidden">
-                <Table responders={cache.responders} />
+                <Table responders={cache.responders ?? []} />
                 <ResponderDetails />
             </div>
         </ResponderListProvider>
