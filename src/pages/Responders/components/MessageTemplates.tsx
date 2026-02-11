@@ -14,7 +14,7 @@ const MessageTemplateCard = ({
     const [templateFormIsOpen, setTemplateFormIsOpen] = useState(false);
 
     return (
-        <div className="p-3 border border-gray-300 rounded-lg flex flex-col justify-between relative overflow-hidden">
+        <div className="p-3 border border-gray-300 bg-gray-100 rounded-lg flex flex-col justify-between relative overflow-hidden">
             <div className="flex flex-col gap-2">
                 <h3 className="font-medium">{messageTemplate.template_name}</h3>
                 <p className="text-gray-700 text-sm">
@@ -96,13 +96,11 @@ export default function MessageTemplates() {
     }
 
     return (
-        <Container>
-            <div className="flex items-center justify-between border-b border-gray-300 pb-2">
-                <h2 className="font-medium">Saved Message Templates</h2>
-                <p className="text-gray-700 text-sm">
-                    {cache.templates?.length ?? 0} templates
-                </p>
-            </div>
+        <Container className="flex-1 relative" headerTitle="MESSAGE TEMPLATES">
+            <p className="text-gray-700 text-sm absolute top-5 right-5">
+                {cache.templates?.length ?? 0} templates
+            </p>
+
             <div className="grid grid-cols-2 gap-5 mt-5">
                 {cache.templates?.map((template) => (
                     <MessageTemplateCard

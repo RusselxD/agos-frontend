@@ -8,6 +8,8 @@ import type {
     ResponderOTPResponse,
     ResponderOTPVerifyRequest,
     ResponderOTPVerifyResponse,
+    ResponderGroup,
+    ResponderGroupCreateRequest,
 } from "../../types/responder";
 import apiClient from "./axiosConfig";
 
@@ -114,4 +116,22 @@ export const responderAPI = {
             throw error;
         }
     },
+
+    getAllGroups: async (): Promise<ResponderGroup[]> => {
+        try {
+            const res = await apiClient.get("/responder-groups/all");
+            return res.data as ResponderGroup[];
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    createGroup: async (groupCreate: ResponderGroupCreateRequest): Promise<ResponderGroup> => {
+        try {
+            const res = await apiClient.post("/responder-groups", groupCreate);
+            return res.data as ResponderGroup;
+        } catch (error) {
+            throw error;
+        }
+    }
 };

@@ -6,6 +6,7 @@ import ResponderGroups from "./components/ResponderGroups";
 import SendSMS from "./components/SendSMS";
 import { Mail, Plus } from "lucide-react";
 import MessageTemplateForm from "./components/MessageTemplateForm";
+import NewGroupForm from "./components/NewGroupForm";
 
 const TABS = [
     { name: "Message Templates", value: "templates" },
@@ -27,6 +28,7 @@ export default function Responders() {
 
     const [messageTemplateFormModalIsOpen, setMessageTemplateFormModalIsOpen] =
         useState(false);
+    const [groupFormModalIsOpen, setGroupFormModalIsOpen] = useState(false);
 
     return (
         <RespondersPageProvider>
@@ -46,7 +48,10 @@ export default function Responders() {
                         })}
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                        <button className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium">
+                        <button
+                            onClick={() => setGroupFormModalIsOpen(true)}
+                            className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                        >
                             <Plus className="w-5 h-5" />
                             <span>New Group</span>
                         </button>
@@ -73,6 +78,10 @@ export default function Responders() {
                 <MessageTemplateForm
                     setModalOpen={setMessageTemplateFormModalIsOpen}
                 />
+            )}
+
+            {groupFormModalIsOpen && (
+                <NewGroupForm setModalOpen={setGroupFormModalIsOpen} />
             )}
         </RespondersPageProvider>
     );
