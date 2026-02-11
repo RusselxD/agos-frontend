@@ -8,13 +8,14 @@ import {
 } from "react";
 import type {
     MessageTemplate,
+    ResponderGroup,
     ResponderListItem,
 } from "../../../types/responder";
 
 interface TabsCache {
     templates: MessageTemplate[] | undefined;
     send_sms: any;
-    groups: any;
+    groups: ResponderGroup[] | undefined;
     responders: ResponderListItem[] | undefined;
 }
 interface RespondersPageContextValue {

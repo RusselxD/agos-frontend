@@ -1,8 +1,36 @@
 import type { ResponderListItem } from "../../../../../types/responder";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CircleCheck, Clock, HelpCircle } from "lucide-react";
 import { useResponderList } from "../context/ResponderListContext";
-import { formatPHNumber } from "../../../../../lib/utils/formatter";
+import {
+    capitalizeFirstLetter,
+    formatPHNumber,
+} from "../../../../../lib/utils/formatter";
 import Container from "../../../../../components/ui/Container";
+import type { JSX } from "react";
+
+const getStatusColor = (status: string): string => {
+    status = status.toLowerCase();
+    switch (status) {
+        case "pending":
+            return "bg-amber-100 text-amber-800";
+        case "approved":
+            return "bg-green-100 text-green-800";
+        default:
+            return "bg-gray-100 text-gray-800";
+    }
+};
+
+const getStatusIcon = (status: string): JSX.Element => {
+    status = status.toLowerCase();
+    switch (status) {
+        case "pending":
+            return <Clock className="w-4 h-4" />;
+        case "approved":
+            return <CircleCheck className="w-4 h-4" />;
+        default:
+            return <HelpCircle className="w-4 h-4" />;
+    }
+};
 
 export default function Table({
     responders,
@@ -39,7 +67,7 @@ export default function Table({
                     {responders.map((responder, index) => {
                         const isSelected =
                             responder === chosenResponder && sideDrawerOpen;
-                        const isPending = responder.status === "pending";
+
                         const isEvenRow = index % 2 === 0;
 
                         return (
@@ -48,7 +76,7 @@ export default function Table({
                                 className={`
                                     border-l-4
                                     ${isSelected ? "border-blue-600 !bg-blue-100" : "border-transparent"}
-                                    ${isPending ? "bg-amber-100" : isEvenRow ? "bg-white" : "bg-gray-50"}
+                                    ${isEvenRow ? "bg-white" : "bg-gray-50"}
                                 `}
                             >
                                 <td className="px-4 py-3 text-left">
@@ -61,7 +89,14 @@ export default function Table({
                                     {formatPHNumber(responder.phone_number)}
                                 </td>
                                 <td className="px-4 py-3 text-left">
-                                    {responder.status}
+                                    <p
+                                        className={`${getStatusColor(responder.status)} px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1 w-fit`}
+                                    >
+                                        {getStatusIcon(responder.status)}
+                                        {capitalizeFirstLetter(
+                                            responder.status,
+                                        )}
+                                    </p>
                                 </td>
                                 <td className="text-left">
                                     <button

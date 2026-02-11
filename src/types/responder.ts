@@ -41,7 +41,8 @@ export interface ResponderAdditionalDetails {
     approved_at: string | null;
 }
 
-export interface ResponderAllDetails extends ResponderListItem, ResponderAdditionalDetails {}
+export interface ResponderAllDetails
+    extends ResponderListItem, ResponderAdditionalDetails {}
 
 export interface MessageTemplate {
     id: number;
@@ -54,4 +55,15 @@ export interface MessageTemplateCreateRequest {
     template_name: string;
     template_content: string;
     auto_send_on_critical: boolean;
+}
+
+export interface ResponderGroup {
+    id: number;
+    group_name: string;
+    member_ids: string[];
+}
+
+export interface ResponderGroupCreateRequest {
+    group_name: string;
+    member_ids: string[];
 }

@@ -30,7 +30,7 @@ export default function ResponderList() {
         };
 
         fetchResponders();
-    }, [cache.responders, setCache]);
+    }, []);
 
     if (isFetching) {
         return (
