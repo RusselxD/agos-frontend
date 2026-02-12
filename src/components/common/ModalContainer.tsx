@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import type { Dispatch, SetStateAction, ReactNode } from "react";
 
 interface ModalProps {
@@ -25,12 +26,13 @@ export default function ModalContainer({ children, setModalOpen }: ModalProps) {
         };
     }, [setModalOpen]);
 
-    return (
+    return createPortal(
         <div
             className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
             onClick={() => setModalOpen(false)}
         >
             {children}
-        </div>
+        </div>,
+        document.body,
     );
 }

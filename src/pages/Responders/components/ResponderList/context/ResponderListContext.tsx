@@ -16,8 +16,10 @@ interface ResponderListContextValue {
     chosenResponder: ResponderListItem | undefined;
     cachedResponders: Record<string, ResponderAllDetails>;
     sideDrawerOpen: boolean;
+    addResponderFormOpen: boolean;
 
     setSideDrawerOpen: Dispatch<SetStateAction<boolean>>;
+    setAddResponderFormOpen: Dispatch<SetStateAction<boolean>>;
     handleChooseResponder: (responder: ResponderListItem) => void;
     responderExistsInCache: (responderId: string) => boolean;
     addResponderToCache: (responder: ResponderAllDetails) => void;
@@ -37,6 +39,8 @@ export function ResponderListProvider({
         ResponderListItem | undefined
     >(undefined);
     const [sideDrawerOpen, setSideDrawerOpen] = useState<boolean>(false);
+    const [addResponderFormOpen, setAddResponderFormOpen] =
+        useState<boolean>(false);
 
     const [cachedResponders, setCachedResponders] = useState<
         Record<string, ResponderAllDetails>
@@ -87,13 +91,20 @@ export function ResponderListProvider({
             chosenResponder,
             cachedResponders,
             sideDrawerOpen,
+            addResponderFormOpen,
             setSideDrawerOpen,
+            setAddResponderFormOpen,
             handleChooseResponder,
             responderExistsInCache,
             addResponderToCache,
             modifyResponderInList,
         }),
-        [chosenResponder, cachedResponders, sideDrawerOpen],
+        [
+            chosenResponder,
+            cachedResponders,
+            sideDrawerOpen,
+            addResponderFormOpen,
+        ],
     );
 
     return (

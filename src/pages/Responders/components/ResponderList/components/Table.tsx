@@ -1,12 +1,19 @@
 import type { ResponderListItem } from "../../../../../types/responder";
-import { ChevronRight, CircleCheck, Clock, HelpCircle } from "lucide-react";
+import {
+    ChevronRight,
+    CircleCheck,
+    Clock,
+    HelpCircle,
+    UserPlus,
+    X,
+} from "lucide-react";
 import { useResponderList } from "../context/ResponderListContext";
 import {
     capitalizeFirstLetter,
     formatPHNumber,
 } from "../../../../../lib/utils/formatter";
-import Container from "../../../../../components/ui/Container";
 import type { JSX } from "react";
+import AddResponderForm from "./AddResponderForm";
 
 const getStatusColor = (status: string): string => {
     status = status.toLowerCase();
@@ -37,14 +44,45 @@ export default function Table({
 }: {
     responders: ResponderListItem[];
 }) {
-    const { handleChooseResponder, chosenResponder, sideDrawerOpen } =
-        useResponderList();
+    const {
+        handleChooseResponder,
+        chosenResponder,
+        sideDrawerOpen,
+        addResponderFormOpen,
+        setAddResponderFormOpen,
+    } = useResponderList();
 
     return (
-        <Container
-            headerTitle="RESPONDERS"
-            className={`p-0 flex-1 h-full overflow-auto min-w-0 ${sideDrawerOpen ? "mr-2" : ""}`}
+        <div
+            className={`bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 ${sideDrawerOpen ? "mr-2" : ""}`}
         >
+            <div className="flex items-center justify-between mb-3">
+                <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
+                    RESPONDERS
+                </h2>
+                <button
+                    onClick={() => setAddResponderFormOpen((prev) => !prev)}
+                    className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                        addResponderFormOpen
+                            ? "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+                            : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    }`}
+                >
+                    {addResponderFormOpen ? (
+                        <>
+                            <X className="w-4 h-4" />
+                            <span>Cancel</span>
+                        </>
+                    ) : (
+                        <>
+                            <UserPlus className="w-4 h-4" />
+                            <span>Add Responder</span>
+                        </>
+                    )}
+                </button>
+            </div>
+
+            <AddResponderForm />
             <table className="w-full text-left border-collapse text-sm">
                 <thead className="sticky top-0 z-10">
                     <tr className="rounded-t-md">
@@ -114,6 +152,6 @@ export default function Table({
                     })}
                 </tbody>
             </table>
-        </Container>
+        </div>
     );
 }

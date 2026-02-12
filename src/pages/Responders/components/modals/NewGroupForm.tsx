@@ -1,11 +1,11 @@
 import type { Dispatch, FormEvent, SetStateAction } from "react";
 import { useEffect, useState } from "react";
-import ModalContainer from "../../../components/common/ModalContainer";
+import ModalContainer from "../../../../components/common/ModalContainer";
 import { X } from "lucide-react";
-import TextInputField from "../../../components/common/auth/TextInputField";
-import { useResponders } from "../context/RespondersPageContext";
-import { responderAPI } from "../../../lib/api/responder";
-import { formatPHNumber } from "../../../lib/utils/formatter";
+import TextInputField from "../../../../components/common/auth/TextInputField";
+import { useResponders } from "../../context/RespondersPageContext";
+import { responderAPI } from "../../../../lib/api/responder";
+import { formatPHNumber } from "../../../../lib/utils/formatter";
 
 const MembersSkeleton = () => {
     return (
@@ -23,6 +23,7 @@ export default function NewGroupForm({
 }: {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+    
     const [groupName, setGroupName] = useState("");
     const [memberIDs, setMemberIDs] = useState<string[]>([]);
 

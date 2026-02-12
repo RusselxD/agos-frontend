@@ -4,7 +4,7 @@ import Container from "../../../components/ui/Container";
 import type { MessageTemplate } from "../../../types/responder";
 import { responderAPI } from "../../../lib/api/responder";
 import { Pencil, Send, Trash } from "lucide-react";
-import MessageTemplateForm from "./MessageTemplateForm";
+import MessageTemplateForm from "./modals/MessageTemplateForm";
 
 const MessageTemplateCard = ({
     messageTemplate,

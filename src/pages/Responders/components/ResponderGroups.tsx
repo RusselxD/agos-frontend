@@ -48,12 +48,6 @@ export default function ResponderGroups() {
 
             setIsFetching(true);
             try {
-                const res = await responderAPI.getAllGroups();
-                setCache((prevCache) => ({
-                    ...prevCache,
-                    groups: res,
-                }));
-
                 // Responders are needed to map the IDs to the names in the list
                 if (cache.responders === undefined) {
                     const respondersRes = await responderAPI.getAllResponders();
@@ -62,6 +56,13 @@ export default function ResponderGroups() {
                         responders: respondersRes,
                     }));
                 }
+                
+                const res = await responderAPI.getAllGroups();
+                setCache((prevCache) => ({
+                    ...prevCache,
+                    groups: res,
+                }));
+
             } catch (error) {
             } finally {
                 setIsFetching(false);

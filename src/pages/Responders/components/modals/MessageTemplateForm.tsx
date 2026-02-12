@@ -1,16 +1,16 @@
 import { useState } from "react";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import ModalContainer from "../../../components/common/ModalContainer";
+import ModalContainer from "../../../../components/common/ModalContainer";
 import { X } from "lucide-react";
-import TextInputField from "../../../components/common/auth/TextInputField";
-import { responderAPI } from "../../../lib/api/responder";
+import TextInputField from "../../../../components/common/auth/TextInputField";
+import { responderAPI } from "../../../../lib/api/responder";
 import type {
     MessageTemplate,
     MessageTemplateCreateRequest,
-} from "../../../types/responder";
+} from "../../../../types/responder";
 import axios from "axios";
-import { useResponders } from "../context/RespondersPageContext";
-import { useToast } from "../../../context/ToastContext";
+import { useResponders } from "../../context/RespondersPageContext";
+import { useToast } from "../../../../context/ToastContext";
 
 interface MessageTemplateFormProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;

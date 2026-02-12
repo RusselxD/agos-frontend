@@ -126,7 +126,7 @@ export default function ResponderDetails() {
 
     return (
         <div
-            className={`bg-white h-full rounded-lg border-l transition-[width] duration-300 ease-in-out overflow-hidden ${sideDrawerOpen ? "w-[22rem]" : "w-0 "}`}
+            className={`bg-white h-full rounded-lg transition-[width] duration-300 ease-in-out overflow-hidden ${sideDrawerOpen ? "w-[22rem]" : "w-0 "}`}
         >
             <div className="p-5 flex flex-col gap-3 h-full">
                 {isFetching && <ResponderDetailsSkeleton />}
