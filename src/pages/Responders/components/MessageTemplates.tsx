@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useResponders } from "../context/RespondersPageContext";
 import Container from "../../../components/ui/Container";
 import type { MessageTemplate } from "../../../types/responder";
-import { responderAPI } from "../../../lib/api/responder";
+import { messageTemplateAPI } from "../../../lib/api/responder";
 import { Pencil, Send, Trash } from "lucide-react";
+import DeleteConfirmationModal from "./modals/DeleteConfirmationModal";
 import MessageTemplateForm from "./modals/MessageTemplateForm";
+import QuickSendModal from "./modals/QuickSendModal";
+import { useToast } from "../../../context/ToastContext";
 
 const MessageTemplateCard = ({
     messageTemplate,
@@ -12,6 +15,29 @@ const MessageTemplateCard = ({
     messageTemplate: MessageTemplate;
 }) => {
     const [templateFormIsOpen, setTemplateFormIsOpen] = useState(false);
+    const [quickSendModalIsOpen, setQuickSendModalIsOpen] = useState(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
+    const { toastSuccess, toastError } = useToast();
+    const { setCache } = useResponders();
+
+    const handleConfirmDelete = async () => {
+        try {
+            await messageTemplateAPI.deleteMessageTemplate(messageTemplate.id);
+
+            setCache((prevCache) => ({
+                ...prevCache,
+                templates: prevCache.templates?.filter(
+                    (template) => template.id !== messageTemplate.id,
+                ),
+            }));
+
+            toastSuccess("Message template deleted successfully.");
+            setDeleteModalIsOpen(false);
+        } catch (error) {
+            toastError("Failed to delete message template. Please try again.");
+        }
+    };
 
     return (
         <div className="p-3 border border-gray-300 bg-gray-100 rounded-lg flex flex-col justify-between relative overflow-hidden">
@@ -22,19 +48,25 @@ const MessageTemplateCard = ({
                 </p>
             </div>
             <div className="flex items-center justify-between mt-2">
-                <button className="flex items-center gap-2 btn-custom bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 px-3">
+                <button
+                    onClick={() => setQuickSendModalIsOpen(true)}
+                    className="flex items-center gap-2 btn-custom bg-emerald-500 hover:bg-emerald-600 transition-colors text-white py-2.5 px-3"
+                >
                     <Send className="w-4 h-4" />
                     <span>Quick Send</span>
                 </button>
                 <div>
                     <div className="flex items-center gap-2">
                         <button
-                            className="flex items-center gap-2 btn-custom bg-blue-500 text-white py-2.5 px-3"
+                            className="flex items-center gap-2 btn-custom bg-blue-500 hover:bg-blue-600 transition-colors text-white py-2.5 px-3"
                             onClick={() => setTemplateFormIsOpen(true)}
                         >
                             <Pencil className="w-4 h-4" />
                         </button>
-                        <button className="flex items-center gap-2 btn-custom bg-red-500 text-white py-2.5 px-3">
+                        <button
+                            onClick={() => setDeleteModalIsOpen(true)}
+                            className="flex items-center gap-2 btn-custom bg-red-500 hover:bg-red-600 transition-colors text-white py-2.5 px-3"
+                        >
                             <Trash className="w-4 h-4" />
                         </button>
                     </div>
@@ -53,6 +85,22 @@ const MessageTemplateCard = ({
                     messageTemplate={messageTemplate}
                 />
             )}
+
+            {quickSendModalIsOpen && (
+                <QuickSendModal
+                    setModalOpen={setQuickSendModalIsOpen}
+                    messageTemplate={messageTemplate}
+                />
+            )}
+
+            {deleteModalIsOpen && (
+                <DeleteConfirmationModal
+                    setModalOpen={setDeleteModalIsOpen}
+                    title="Delete Message Template"
+                    description={`Are you sure you want to delete "${messageTemplate.template_name}"? This action cannot be undone.`}
+                    onConfirm={handleConfirmDelete}
+                />
+            )}
         </div>
     );
 };
@@ -69,7 +117,7 @@ export default function MessageTemplates() {
 
             setIsFetching(true);
             try {
-                const res = await responderAPI.getMessageTemplates();
+                const res = await messageTemplateAPI.getMessageTemplates();
                 setCache((prev) => ({ ...prev, templates: res }));
             } catch (error) {
             } finally {

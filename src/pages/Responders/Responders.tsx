@@ -6,7 +6,7 @@ import ResponderGroups from "./components/ResponderGroups";
 import SendSMS from "./components/SendSMS";
 import { ChevronDown, Mail, Plus, Users } from "lucide-react";
 import MessageTemplateForm from "./components/modals/MessageTemplateForm";
-import NewGroupForm from "./components/modals/NewGroupForm";
+import GroupForm from "./components/modals/GroupForm";
 
 const TABS = [
     { name: "Message Templates", value: "templates" },
@@ -115,7 +115,7 @@ export default function Responders() {
             )}
 
             {groupFormModalIsOpen && (
-                <NewGroupForm setModalOpen={setGroupFormModalIsOpen} />
+                <GroupForm setModalOpen={setGroupFormModalIsOpen} />
             )}
         </RespondersPageProvider>
     );

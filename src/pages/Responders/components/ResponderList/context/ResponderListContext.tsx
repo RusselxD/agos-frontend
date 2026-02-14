@@ -10,7 +10,6 @@ import type {
     ResponderAllDetails,
     ResponderListItem,
 } from "../../../../../types/responder";
-import { useResponders } from "../../../context/RespondersPageContext";
 
 interface ResponderListContextValue {
     chosenResponder: ResponderListItem | undefined;
@@ -23,7 +22,6 @@ interface ResponderListContextValue {
     handleChooseResponder: (responder: ResponderListItem) => void;
     responderExistsInCache: (responderId: string) => boolean;
     addResponderToCache: (responder: ResponderAllDetails) => void;
-    modifyResponderInList: (responderId: string) => void;
 }
 
 export const ResponderListContext = createContext<
@@ -62,30 +60,6 @@ export function ResponderListProvider({
         }));
     };
 
-    const { setCache } = useResponders();
-
-    const modifyResponderInList = (responderId: string) => {
-        setCache((prevCache) => ({
-            ...prevCache,
-            responders: prevCache.responders?.map((responder) =>
-                responder.id === responderId
-                    ? { ...responder, status: "approved" }
-                    : responder,
-            ),
-        }));
-
-        // Update chosenResponder if it's the one being modified
-        if (chosenResponder?.id === responderId) {
-            setChosenResponder({ ...chosenResponder, status: "approved" });
-        }
-
-        setCachedResponders((prevCache) => {
-            const newCache = { ...prevCache };
-            delete newCache[responderId];
-            return newCache;
-        });
-    };
-
     const contextValue = useMemo(
         () => ({
             chosenResponder,
@@ -97,7 +71,6 @@ export function ResponderListProvider({
             handleChooseResponder,
             responderExistsInCache,
             addResponderToCache,
-            modifyResponderInList,
         }),
         [
             chosenResponder,

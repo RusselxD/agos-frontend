@@ -1,22 +1,11 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
 import PasswordField from "../../../components/common/auth/PasswordField";
 import { normalizeNumberInput } from "../../../lib/utils/formatter";
 import type { FormEvent } from "react";
 import PhoneNumberInput from "../../../components/common/auth/PhoneNumberInput";
-
-const RegisterAsResponder = () => {
-    return (
-        <p className="w-full text-center text-sm -mt-5 font-semibold">
-            <span>REGISTER AS </span>
-            <NavLink to="/responder" className="text-accent">
-                RESPONDER
-            </NavLink>
-        </p>
-    );
-};
 
 export default function LoginForm() {
     const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -95,7 +84,7 @@ export default function LoginForm() {
                 {isLoading && <div className="spinner w-5 h-5"></div>}
                 <span>LOGIN</span>
             </button>
-            <RegisterAsResponder />
+            
         </form>
     );
 }

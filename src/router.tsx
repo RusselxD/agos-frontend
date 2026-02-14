@@ -12,8 +12,14 @@ import ProtectedRoute from "./guards/ProtectedRoute";
 import Admins from "./pages/Admins";
 import Login from "./pages/Login";
 import ForcePasswordChange from "./pages/ForcePasswordChange";
+import {
+    ResponderApproveLayout,
+    Landing as ResponderApproveLanding,
+    VerifyOTP as ResponderApproveVerifyOTP,
+    Success as ResponderApproveSuccess,
+} from "./pages/ResponderApprove";
 
-import Register from "./pages/RespondersRegister/pages/Register";
+// import Register from "./pages/RespondersRegister/pages/Register";
 
 import { WeatherProvider } from "./context/WeatherContext";
 import { WaterLevelProvider } from "./context/WaterLevelContext";
@@ -21,64 +27,64 @@ import { BlockageProvider } from "./context/BlockageContext";
 import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
 import { VideoProvider } from "./context/VideoContext";
 import { WebSocketProvider } from "./context/WebSocketContext";
-import { RespondersRegisterProvider } from "./pages/RespondersRegister/context/RespondersRegisterContext";
-import VerifyOTP from "./pages/RespondersRegister/pages/VerifyOTP";
-import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
-import UploadID from "./pages/RespondersRegister/pages/UploadID";
-import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
+// import { RespondersRegisterProvider } from "./pages/RespondersRegister/context/RespondersRegisterContext";
+// import VerifyOTP from "./pages/RespondersRegister/pages/VerifyOTP";
+// import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
+// import UploadID from "./pages/RespondersRegister/pages/UploadID";
+// import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
 import Weather from "./pages/Weather/Weather";
 
 export const router = createBrowserRouter([
-    {
-        path: "responder",
-        element: (
-            <RespondersRegisterProvider>
-                <AuthLayout />
-            </RespondersRegisterProvider>
-        ),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="register" replace />,
-            },
-            {
-                path: "register",
-                element: (
-                    <ResponderRegistrationGuard>
-                        <Register />
-                    </ResponderRegistrationGuard>
-                ),
-            },
-            {
-                path: "verify-otp",
-                element: (
-                    <ResponderRegistrationGuard requireInitialData={true}>
-                        <VerifyOTP />
-                    </ResponderRegistrationGuard>
-                ),
-            },
-            {
-                path: "upload-id-photo",
-                element: (
-                    <ResponderRegistrationGuard requireOTPVerified={true}>
-                        <UploadID />
-                    </ResponderRegistrationGuard>
-                ),
-            },
-            {
-                path: "registration-complete",
-                element: (
-                    <ResponderRegistrationGuard
-                        requireRegistrationCompleted={true}
-                    >
-                        <RegistrationComplete />
-                    </ResponderRegistrationGuard>
-                ),
-            },
-        ],
-    },
+    // {
+    //     path: "responder",
+    //     element: (
+
+    //             <AuthLayout />
+
+    //     ),
+    //     children: [
+    //         {
+    //             index: true,
+    //             element: <Navigate to="register" replace />,
+    //         },
+    //         {
+    //             path: "register",
+    //             element: (
+    //                 <ResponderRegistrationGuard>
+    //                     <Register />
+    //                 </ResponderRegistrationGuard>
+    //             ),
+    //         },
+    //         {
+    //             path: "verify-otp",
+    //             element: (
+    //                 <ResponderRegistrationGuard requireInitialData={true}>
+    //                     <VerifyOTP />
+    //                 </ResponderRegistrationGuard>
+    //             ),
+    //         },
+    //         {
+    //             path: "upload-id-photo",
+    //             element: (
+    //                 <ResponderRegistrationGuard requireOTPVerified={true}>
+    //                     <UploadID />
+    //                 </ResponderRegistrationGuard>
+    //             ),
+    //         },
+    //         {
+    //             path: "registration-complete",
+    //             element: (
+    //                 <ResponderRegistrationGuard
+    //                     requireRegistrationCompleted={true}
+    //                 >
+    //                     <RegistrationComplete />
+    //                 </ResponderRegistrationGuard>
+    //             ),
+    //         },
+    //     ],
+    // },
     {
         path: "auth",
         element: <AuthLayout />,
@@ -94,6 +100,24 @@ export const router = createBrowserRouter([
             {
                 path: "force-password-change",
                 element: <ForcePasswordChange />,
+            },
+        ],
+    },
+    {
+        path: "responder/approve/:uuid",
+        element: <ResponderApproveLayout />,
+        children: [
+            {
+                index: true,
+                element: <ResponderApproveLanding />,
+            },
+            {
+                path: "verify",
+                element: <ResponderApproveVerifyOTP />,
+            },
+            {
+                path: "success",
+                element: <ResponderApproveSuccess />,
             },
         ],
     },

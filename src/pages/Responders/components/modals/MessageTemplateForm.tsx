@@ -1,9 +1,8 @@
 import { useState } from "react";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
 import ModalContainer from "../../../../components/common/ModalContainer";
-import { X } from "lucide-react";
 import TextInputField from "../../../../components/common/auth/TextInputField";
-import { responderAPI } from "../../../../lib/api/responder";
+import { messageTemplateAPI } from "../../../../lib/api/responder";
 import type {
     MessageTemplate,
     MessageTemplateCreateRequest,
@@ -11,6 +10,7 @@ import type {
 import axios from "axios";
 import { useResponders } from "../../context/RespondersPageContext";
 import { useToast } from "../../../../context/ToastContext";
+import ResponderPageModalContainer from "./ResponderPageModalContainer";
 
 interface MessageTemplateFormProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -48,13 +48,13 @@ export default function MessageTemplateForm({
         payload: MessageTemplateCreateRequest,
     ): Promise<MessageTemplate> => {
         if (isEditMode && messageTemplate) {
-            return responderAPI.updateMessageTemplate(
+            return messageTemplateAPI.updateMessageTemplate(
                 messageTemplate.id,
                 payload,
             );
         }
 
-        return responderAPI.createMessageTemplate(payload);
+        return messageTemplateAPI.createMessageTemplate(payload);
     };
 
     const upsertTemplateInCache = (savedTemplate: MessageTemplate) => {
@@ -116,24 +116,14 @@ export default function MessageTemplateForm({
 
     return (
         <ModalContainer setModalOpen={setModalOpen}>
-            <div
-                className="bg-white rounded-lg shadow-xl p-5 max-w-[95vw] w-[32rem] flex flex-col gap-4"
-                onClick={(e) => e.stopPropagation()}
+            <ResponderPageModalContainer
+                headerText={
+                    isEditMode
+                        ? "Edit Message Template"
+                        : "New Message Template"
+                }
+                setModalOpen={setModalOpen}
             >
-                <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-lg">
-                        {isEditMode
-                            ? "Edit Message Template"
-                            : "New Message Template"}
-                    </h2>
-                    <button
-                        onClick={() => setModalOpen(false)}
-                        className="p-1 text-gray-700 hover:text-black"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <TextInputField
                         value={templateName}
@@ -232,7 +222,7 @@ export default function MessageTemplateForm({
                         </button>
                     </div>
                 </form>
-            </div>
+            </ResponderPageModalContainer>
         </ModalContainer>
     );
 }

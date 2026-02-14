@@ -1,3 +1,4 @@
+import { formatPHNumber } from "../../../lib/utils/formatter";
 import NumberOnlyInputField from "./NumberOnlyInputField";
 
 interface PhoneNumberInputProps {
@@ -26,7 +27,7 @@ export default function PhoneNumberInput({
                 />
             </div>
             {normalizedPhoneNumber && (
-                <span className="text-sm mt-1 text-gray-500">{`Full number: ${normalizedPhoneNumber}`}</span>
+                <span className="text-sm mt-1 text-gray-500">{`Full number: ${formatPHNumber(normalizedPhoneNumber)}`}</span>
             )}
         </label>
     );

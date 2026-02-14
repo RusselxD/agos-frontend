@@ -1,11 +1,17 @@
 import type { Dispatch, FormEvent, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import ModalContainer from "../../../../components/common/ModalContainer";
-import { X } from "lucide-react";
 import TextInputField from "../../../../components/common/auth/TextInputField";
 import { useResponders } from "../../context/RespondersPageContext";
-import { responderAPI } from "../../../../lib/api/responder";
+import { responderAPI, responderGroupAPI } from "../../../../lib/api/responder";
 import { formatPHNumber } from "../../../../lib/utils/formatter";
+import { useToast } from "../../../../context/ToastContext";
+import ResponderPageModalContainer from "./ResponderPageModalContainer";
+import type {
+    ResponderGroup,
+    ResponderGroupCreateRequest,
+} from "../../../../types/responder";
+import axios from "axios";
 
 const MembersSkeleton = () => {
     return (
@@ -18,20 +24,29 @@ const MembersSkeleton = () => {
     );
 };
 
-export default function NewGroupForm({
-    setModalOpen,
-}: {
+interface GroupFormProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
-}) {
-    
-    const [groupName, setGroupName] = useState("");
-    const [memberIDs, setMemberIDs] = useState<string[]>([]);
+    responderGroup?: ResponderGroup;
+}
+
+export default function GroupForm({
+    setModalOpen,
+    responderGroup,
+}: GroupFormProps) {
+    const [groupName, setGroupName] = useState(
+        responderGroup?.group_name || "",
+    );
+    const [memberIDs, setMemberIDs] = useState<string[]>(
+        responderGroup?.member_ids || [],
+    );
 
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
     const { cache, setCache } = useResponders();
+    const { toastSuccess } = useToast();
+    const isEditMode = Boolean(responderGroup);
 
     useEffect(() => {
         const fetchResponders = async () => {
@@ -65,50 +80,87 @@ export default function NewGroupForm({
         }
     };
 
+    const getPayload = (): ResponderGroupCreateRequest => ({
+        group_name: groupName.trim(),
+        member_ids: memberIDs,
+    });
+
+    const saveGroup = async (
+        payload: ResponderGroupCreateRequest,
+    ): Promise<ResponderGroup> => {
+        if (isEditMode && responderGroup) {
+            return responderGroupAPI.updateGroup(responderGroup.id, payload);
+        }
+
+        return responderGroupAPI.createGroup(payload);
+    };
+
+    const upsertGroupInCache = (savedGroup: ResponderGroup) => {
+        setCache((prev) => {
+            const existingGroups = prev.groups ?? [];
+            const hasExistingGroup = existingGroups.some(
+                (group) => group.id === savedGroup.id,
+            );
+
+            const nextGroups = hasExistingGroup
+                ? existingGroups.map((group) =>
+                      group.id === savedGroup.id ? savedGroup : group,
+                  )
+                : [...existingGroups, savedGroup];
+
+            return {
+                ...prev,
+                groups: nextGroups,
+            };
+        });
+    };
+
+    const getSubmitErrorMessage = (err: unknown) => {
+        if (axios.isAxiosError(err)) {
+            return (
+                err?.response?.data?.detail ||
+                (isEditMode
+                    ? "Failed to update group. Please try again."
+                    : "Failed to create new group. Please try again.")
+            );
+        }
+
+        return "An unexpected error occurred. Please try again.";
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError("");
-
         setIsSaving(true);
+
         try {
-            const res = await responderAPI.createGroup({
-                group_name: groupName.trim(),
-                member_ids: memberIDs,
-            });
-            setCache((prevCache) => ({
-                ...prevCache,
-                groups: prevCache.groups ? [...prevCache.groups, res] : [res],
-            }));
+            const savedGroup = await saveGroup(getPayload());
+            upsertGroupInCache(savedGroup);
+
+            toastSuccess(
+                isEditMode
+                    ? "Group updated successfully!"
+                    : "Group created successfully!",
+            );
             setModalOpen(false);
-        } catch (error) {
+        } catch (err) {
+            setError(getSubmitErrorMessage(err));
         } finally {
             setIsSaving(false);
         }
     };
 
-    const approvedResponders =
+    const activeResponders =
         cache.responders?.filter(
-            (responder) => responder.status.toLowerCase() === "approved",
+            (responder) => responder.status.toLowerCase() === "active",
         ) ?? [];
 
     return (
         <ModalContainer setModalOpen={setModalOpen}>
-            <div
-                className="bg-white rounded-lg shadow-xl p-5 max-w-[95vw] w-[32rem] flex flex-col gap-4"
-                onClick={(e) => e.stopPropagation()}
+            <ResponderPageModalContainer
+                headerText={isEditMode ? "Edit Group" : "Create New Group"}
+                setModalOpen={setModalOpen}
             >
-                <div className="flex items-center justify-between">
-                    <h2 className="font-semibold text-lg">
-                        Create Responder Group
-                    </h2>
-                    <button
-                        onClick={() => setModalOpen(false)}
-                        className="p-1 text-gray-700 hover:text-black"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <TextInputField
                         value={groupName}
@@ -120,16 +172,16 @@ export default function NewGroupForm({
 
                     <div className="space-y-1">
                         <span className="text-sm text-gray-700 font-semibold">
-                            SELECT MEMBERS
+                            SELECT ACIVE MEMBERS
                         </span>
-                        <div className="border border-gray-400 rounded-lg p-3 flex flex-col gap-2 overflow-auto max-h-40">
+                        <div className="border border-gray-400 rounded-lg p-3 flex flex-col overflow-auto max-h-40">
                             {isFetching && <MembersSkeleton />}
 
-                            {approvedResponders.map((responder) => {
+                            {activeResponders.map((responder) => {
                                 return (
                                     <label
                                         key={responder.id}
-                                        className="w-full"
+                                        className="w-full py-1"
                                     >
                                         <input
                                             type="checkbox"
@@ -174,11 +226,13 @@ export default function NewGroupForm({
                             {isSaving && (
                                 <div className="spinner w-4 h-4"></div>
                             )}
-                            <span>Create Group</span>
+                            <span>
+                                {isEditMode ? "Update Group" : "Create Group"}
+                            </span>
                         </button>
                     </div>
                 </form>
-            </div>
+            </ResponderPageModalContainer>
         </ModalContainer>
     );
 }

@@ -4,16 +4,59 @@ import type {
     ResponderCreateRequest,
     ResponderAdditionalDetails,
     ResponderListItem,
-    ResponderOTPRequest,
-    ResponderOTPResponse,
-    ResponderOTPVerifyRequest,
-    ResponderOTPVerifyResponse,
     ResponderGroup,
     ResponderGroupCreateRequest,
+    ResponderVerifyRequest,
+    ResponderOTPVerifyResponse,
+    ResponderOTPVerifyRequest,
+    SendSMSRequest,
 } from "../../types/responder";
 import apiClient from "./axiosConfig";
 
 export const responderAPI = {
+    getResponderDetailsForApproval: async (
+        responderId: string,
+    ): Promise<ResponderVerifyRequest> => {
+        try {
+            const res = await apiClient.get(
+                `/responder/for-approval/${responderId}`,
+            );
+            return res.data as ResponderVerifyRequest;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    sendVerificationOTP: async (responderId: string): Promise<void> => {
+        try {
+            await apiClient.post(`/responder/send-otp/${responderId}`);
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    verifyOTP: async (
+        request: ResponderOTPVerifyRequest,
+    ): Promise<ResponderOTPVerifyResponse> => {
+        try {
+            const res = await apiClient.post("/responder/verify-otp", request);
+            return res.data as ResponderOTPVerifyResponse;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    bulkCreateResponders: async (
+        responders: ResponderCreateRequest[],
+    ): Promise<ResponderListItem[]> => {
+        try {
+            const res = await apiClient.post("/responder/bulk", responders);
+            return res.data as ResponderListItem[];
+        } catch (error) {
+            throw error;
+        }
+    },
+
     getAllResponders: async (): Promise<ResponderListItem[]> => {
         try {
             const res = await apiClient.get("/responder/all");
@@ -36,52 +79,19 @@ export const responderAPI = {
         }
     },
 
-    approveResponder: async (responderId: string): Promise<void> => {
+    sendSMS: async (request: SendSMSRequest): Promise<void> => {
         try {
-            await apiClient.put(`/responder/approve/${responderId}`);
+            await apiClient.post("/responder/send-sms", request);
         } catch (error) {
             throw error;
         }
     },
+};
 
-    createResponder: async (
-        responderCreate: ResponderCreateRequest,
-    ): Promise<void> => {
-        try {
-            await apiClient.post("/responder/create", responderCreate);
-        } catch (error) {
-            throw error;
-        }
-    },
-
-    sendOTP: async (
-        otpRequest: ResponderOTPRequest,
-    ): Promise<ResponderOTPResponse> => {
-        try {
-            const res = await apiClient.post("/responder/send-otp", otpRequest);
-            return res.data as ResponderOTPResponse;
-        } catch (error) {
-            throw error;
-        }
-    },
-
-    verifyOTP: async (
-        verifyOtpRequest: ResponderOTPVerifyRequest,
-    ): Promise<ResponderOTPVerifyResponse> => {
-        try {
-            const res = await apiClient.post(
-                "/responder/verify-otp",
-                verifyOtpRequest,
-            );
-            return res.data as ResponderOTPVerifyResponse;
-        } catch (error) {
-            throw error;
-        }
-    },
-
+export const messageTemplateAPI = {
     getMessageTemplates: async (): Promise<MessageTemplate[]> => {
         try {
-            const res = await apiClient.get("/message-template/all");
+            const res = await apiClient.get("/message-templates/all");
             return res.data as MessageTemplate[];
         } catch (error) {
             throw error;
@@ -93,7 +103,7 @@ export const responderAPI = {
     ): Promise<MessageTemplate> => {
         try {
             const res = await apiClient.post(
-                "/message-template",
+                "/message-templates",
                 messageTemplate,
             );
             return res.data as MessageTemplate;
@@ -108,7 +118,7 @@ export const responderAPI = {
     ): Promise<MessageTemplate> => {
         try {
             const res = await apiClient.put(
-                `/message-template/${templateId}`,
+                `/message-templates/${templateId}`,
                 messageTemplate,
             );
             return res.data as MessageTemplate;
@@ -117,6 +127,16 @@ export const responderAPI = {
         }
     },
 
+    deleteMessageTemplate: async (templateId: number): Promise<void> => {
+        try {
+            await apiClient.delete(`/message-templates/${templateId}`);
+        } catch (error) {
+            throw error;
+        }
+    },
+};
+
+export const responderGroupAPI = {
     getAllGroups: async (): Promise<ResponderGroup[]> => {
         try {
             const res = await apiClient.get("/responder-groups/all");
@@ -126,12 +146,37 @@ export const responderAPI = {
         }
     },
 
-    createGroup: async (groupCreate: ResponderGroupCreateRequest): Promise<ResponderGroup> => {
+    createGroup: async (
+        groupCreate: ResponderGroupCreateRequest,
+    ): Promise<ResponderGroup> => {
         try {
             const res = await apiClient.post("/responder-groups", groupCreate);
             return res.data as ResponderGroup;
         } catch (error) {
             throw error;
         }
-    }
+    },
+
+    updateGroup: async (
+        groupId: number,
+        groupUpdate: ResponderGroupCreateRequest,
+    ): Promise<ResponderGroup> => {
+        try {
+            const res = await apiClient.put(
+                `/responder-groups/${groupId}`,
+                groupUpdate,
+            );
+            return res.data as ResponderGroup;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    deleteGroup: async (groupId: number): Promise<void> => {
+        try {
+            await apiClient.delete(`/responder-groups/${groupId}`);
+        } catch (error) {
+            throw error;
+        }
+    },
 };
