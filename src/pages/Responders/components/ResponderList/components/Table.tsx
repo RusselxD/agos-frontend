@@ -80,7 +80,7 @@ export default function Table({
     ] as const;
 
     return (
-        <table className="w-full text-left border-collapse text-sm table-fixed">
+        <table className="w-full text-left border-collapse text-sm table-fixed flex-1 border border-red-300">
             <colgroup>
                 <col className="w-[17%]" />
                 <col className="w-[17%]" />
@@ -197,6 +197,17 @@ export default function Table({
                         </tr>
                     );
                 })}
+
+                {filteredResponders.length === 0 && (
+                    <tr>
+                        <td
+                            colSpan={5}
+                            className="px-4 py-6 text-center text-gray-500"
+                        >
+                            No responders found.
+                        </td>
+                    </tr>
+                )}
             </tbody>
         </table>
     );
