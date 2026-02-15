@@ -158,16 +158,16 @@ export default function MessageTemplateForm({
             const savedTemplate = await saveTemplate(getPayload());
             upsertTemplateInCache(savedTemplate);
 
+            
+            // Re query here to ensure cache.templates is up to date with backend (in case backend modifies/sanitizes content)
+            const res = await messageTemplateAPI.getMessageTemplates();
+            setCache((prev) => ({ ...prev, templates: res }));
+            
             toastSuccess(
                 isEditMode
                     ? "Template updated successfully."
                     : "Template created successfully.",
             );
-
-            // Re query here to ensure cache.templates is up to date with backend (in case backend modifies/sanitizes content)
-            const res = await messageTemplateAPI.getMessageTemplates();
-            setCache((prev) => ({ ...prev, templates: res }));
-
             setModalOpen(false);
         } catch (err) {
             setError(getSubmitErrorMessage(err));
