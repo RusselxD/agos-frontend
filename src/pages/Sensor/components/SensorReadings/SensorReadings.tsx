@@ -9,23 +9,22 @@ import { useToast } from "../../../../context/ToastContext";
 import Table from "./components/Table";
 import TableSkeleton from "../../../../components/common/TableSkeleton";
 import ExportToExcelButton from "./components/ExportToExcelButton";
-import { useCoreHook } from "../../../../context/CoreContext";
 import EmptyList from "../../../../components/common/EmptyList";
 import { FileText } from "lucide-react";
+import { useCoreHook } from "../../../../context/CoreContext";
 
 export default function SensorReadings() {
     const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const { toastError } = useToast();
+    const { sensorDeviceDetails } = useCoreHook();
 
     const [page, setPage] = useState<number>(1);
     const [isFetchingMore, setIsFetchingMore] = useState<boolean>(true);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);
-
-    const { sensorDeviceDetails } = useCoreHook();
 
     // Infinite scroll observer
     useEffect(() => {

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import FilterDropDown from "./FilterDropDown";
 import type { SensorReadingTrendResponse } from "../../../../types/sensor";
 import { sensorAPI } from "../../../../lib/api/sensor";
-import { useCoreHook } from "../../../../context/CoreContext";
 import LineChartSkeleton from "./LineChartSkeleton";
+import { useCoreHook } from "../../../../context/CoreContext";
 
 export interface TimeRange {
     label: string;
@@ -25,8 +25,8 @@ export const timeRanges: TimeRange[] = [
 ];
 
 export default function WaterLevelTrendContainer() {
-    const [chosenRange, setChosenRange] = useState<TimeRange>(timeRanges[0]);
     const { sensorDeviceDetails } = useCoreHook();
+    const [chosenRange, setChosenRange] = useState<TimeRange>(timeRanges[0]);
 
     const [trendData, setTrendData] =
         useState<SensorReadingTrendResponse | null>(null);

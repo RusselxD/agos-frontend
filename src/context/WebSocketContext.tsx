@@ -25,17 +25,16 @@ const WSContext = createContext<WSContextValue | undefined>(undefined);
 export function WebSocketProvider({ children }: { children: ReactNode }) {
     const socketRef = useRef<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
+    const { locationDetails } = useCoreHook();
 
     // Storage box that keeps track of event listeners for different message types
     const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(
         new Map(),
     );
 
-    const { locationDetails } = useCoreHook();
-
     useEffect(() => {
         const token = localStorage.getItem("authToken");
-        if (!token) return;
+        if (!token || !locationDetails.location_id) return;
 
         const ws = new WebSocket(
             `${websocketUrl}/ws?token=${token}&location_id=${locationDetails.location_id}`,
@@ -74,7 +73,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         return () => {
             ws.close();
         };
-    }, []);
+    }, [locationDetails.location_id]);
 
     // Function to subscribe to messages of a specific type
     // useCallback memoizes a function definition between component re-renders

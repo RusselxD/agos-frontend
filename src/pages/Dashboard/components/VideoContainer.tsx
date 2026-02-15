@@ -3,13 +3,13 @@ import { useVideoContext } from "../../../context/VideoContext";
 import { useCoreHook } from "../../../context/CoreContext";
 
 const Header = () => {
-    const { locationDetails, cameraDeviceDetails } = useCoreHook();
+    const { cameraDeviceDetails, locationDetails } = useCoreHook();
 
     return (
         <div className="flex items-center justify-between font-semibold mb-2">
             {/* <p className="text-neutral-600">LIVE VISION FEED</p> */}
             <div className=" bg-black/50 text-white px-3 py-1.5 rounded text-sm pointer-events-none">
-                {`${cameraDeviceDetails?.camera_device_name} | ${locationDetails?.location_name}`}
+                {`${cameraDeviceDetails.camera_device_name} | ${locationDetails.location_name}`}
             </div>
             <div className="flex items-center gap-2 border border-red-600 bg-red-100 px-3.5 py-0.5 rounded">
                 <span className="bg-red-600 rounded-full w-3 h-3"></span>

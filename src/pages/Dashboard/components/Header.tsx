@@ -23,8 +23,6 @@ const MapPinFilled = ({ className }: { className?: string }) => (
 
 const Location = () => {
     const { locationDetails } = useCoreHook();
-    console.log("dito");
-    console.log(locationDetails);
 
     return (
         <div className="flex -ml-1 items-center gap-2 border-r-2 border-gray-400 pr-4 mr-4">

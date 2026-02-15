@@ -1,25 +1,28 @@
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
-import { coreAPI } from "../lib/api/core";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import ExcelJS from "exceljs";
 import { useToast } from "./ToastContext";
-import {
-    downloadExcelFile,
-    exportToExcel,
-    type ExportOptions,
-} from "../lib/utils/export";
+import { downloadExcelFile, exportToExcel } from "../lib/utils/export";
+import { coreAPI } from "../lib/api/core";
 import type { SensorReadingForExportResponse } from "../types/sensor";
 import type {
-    CameraDeviceDetails,
     LocationDetails,
     SensorDeviceDetails,
+    CameraDeviceDetails,
 } from "../types/core";
 import { sensorAPI } from "../lib/api/sensor";
+
+const STORAGE_KEYS = {
+    LOCATION: "core_location",
+    SENSOR_DEVICE: "core_sensor_device",
+    CAMERA_DEVICE: "core_camera_device",
+} as const;
+
+const getObjectFromStorage = <T,>(key: string): T | null => {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : null;
+};
+const setObjectToStorage = (key: string, value: object): void =>
+    localStorage.setItem(key, JSON.stringify(value));
 
 const sensor_readings_export_columns = [
     {
@@ -46,38 +49,47 @@ const sensor_readings_export_columns = [
     { header: "Timestamp", key: "timestamp", width: 30 },
 ];
 
-interface LocationAndDevicesContextValue {
+interface CoreContextValue {
     locationDetails: LocationDetails;
     sensorDeviceDetails: SensorDeviceDetails;
     cameraDeviceDetails: CameraDeviceDetails;
-
     isExportingToExcel: boolean;
-
     exportSensorReadingsToExcel: (
         startDate: string,
         endDate: string,
     ) => Promise<void>;
 }
 
-const LocationAndDevicesContext = createContext<
-    LocationAndDevicesContextValue | undefined
->(undefined);
+const CoreContext = createContext<CoreContextValue | undefined>(undefined);
 
 export function CoreProvider({ children }: { children: React.ReactNode }) {
-    const [locationDetails, setLocationDetails] = useState<LocationDetails>({
-        location_id: 1,
-        location_name: "",
-    });
+    const [locationDetails, setLocationDetails] = useState<LocationDetails>(
+        () =>
+            getObjectFromStorage<LocationDetails>(STORAGE_KEYS.LOCATION) ?? {
+                location_id: 0,
+                location_name: "",
+            },
+    );
     const [sensorDeviceDetails, setSensorDeviceDetails] =
-        useState<SensorDeviceDetails>({
-            sensor_device_id: 1,
-            sensor_device_name: "",
-        });
+        useState<SensorDeviceDetails>(
+            () =>
+                getObjectFromStorage<SensorDeviceDetails>(
+                    STORAGE_KEYS.SENSOR_DEVICE,
+                ) ?? {
+                    sensor_device_id: 0,
+                    sensor_device_name: "",
+                },
+        );
     const [cameraDeviceDetails, setCameraDeviceDetails] =
-        useState<CameraDeviceDetails>({
-            camera_device_id: 1,
-            camera_device_name: "",
-        });
+        useState<CameraDeviceDetails>(
+            () =>
+                getObjectFromStorage<CameraDeviceDetails>(
+                    STORAGE_KEYS.CAMERA_DEVICE,
+                ) ?? {
+                    camera_device_id: 0,
+                    camera_device_name: "",
+                },
+        );
 
     const [exportingToExcelInProgress, setExportingToExcelInProgress] =
         useState<{ mainMessage: string; subMessage: string }>({
@@ -87,85 +99,85 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
 
     const { toastError } = useToast();
 
+    // Fetch from API only if localStorage is empty
+    useEffect(() => {
+        const fetchIfNeeded = async () => {
+            try {
+                if (!getObjectFromStorage(STORAGE_KEYS.LOCATION)) {
+                    const res = await coreAPI.getLocationDetails();
+                    setObjectToStorage(STORAGE_KEYS.LOCATION, res);
+                    setLocationDetails(res);
+                }
+
+                if (!getObjectFromStorage(STORAGE_KEYS.SENSOR_DEVICE)) {
+                    const res = await coreAPI.getDeviceDetails();
+                    const sensor: SensorDeviceDetails = {
+                        sensor_device_id: res.sensor_device_id,
+                        sensor_device_name: res.sensor_device_name,
+                    };
+                    const camera: CameraDeviceDetails = {
+                        camera_device_id: res.camera_device_id,
+                        camera_device_name: res.camera_device_name,
+                    };
+                    setObjectToStorage(STORAGE_KEYS.SENSOR_DEVICE, sensor);
+                    setObjectToStorage(STORAGE_KEYS.CAMERA_DEVICE, camera);
+                    setSensorDeviceDetails(sensor);
+                    setCameraDeviceDetails(camera);
+                }
+            } catch (error) {
+                toastError("Failed to fetch location and device details");
+            }
+        };
+
+        fetchIfNeeded();
+    }, []);
+
     const exportSensorReadingsToExcel = async (
         startDateTime: string,
         endDateTime: string,
     ) => {
-        setExportingToExcelInProgress({
-            mainMessage: "Fetching sensor readings...",
-            subMessage: "",
-        });
-        const res: SensorReadingForExportResponse =
-            await sensorAPI.getSensorReadingsForExport(
-                startDateTime,
-                endDateTime,
-                sensorDeviceDetails.sensor_device_id,
+        try {
+            setExportingToExcelInProgress({
+                mainMessage: "Fetching sensor readings...",
+                subMessage: "",
+            });
+            const res: SensorReadingForExportResponse =
+                await sensorAPI.getSensorReadingsForExport(
+                    startDateTime,
+                    endDateTime,
+                    sensorDeviceDetails.sensor_device_id,
+                );
+
+            setExportingToExcelInProgress({
+                mainMessage: "Generating Excel file...",
+                subMessage: `Processing ${res.readings.length.toLocaleString()} rows`,
+            });
+            const workBook: ExcelJS.Workbook = await exportToExcel(
+                res.readings,
+                { columns: sensor_readings_export_columns },
             );
 
-        setExportingToExcelInProgress({
-            mainMessage: "Generating Excel file...",
-            subMessage: `Processing ${res.readings.length.toLocaleString()} rows`,
-        });
-        const workBook: ExcelJS.Workbook = await exportRecordsToExcel(
-            res.readings,
-            {
-                // fileName: `${sensor_device_details.current.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}`,
-                columns: sensor_readings_export_columns,
-            },
-        );
-
-        setExportingToExcelInProgress({
-            mainMessage: "Downloading Excel file...",
-            subMessage: `Processing ${res.readings.length.toLocaleString()} rows`,
-        });
-        downloadExcelFile(
-            workBook,
-            `${sensorDeviceDetails.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`,
-        );
-
-        setExportingToExcelInProgress({ mainMessage: "", subMessage: "" });
+            setExportingToExcelInProgress({
+                mainMessage: "Downloading Excel file...",
+                subMessage: `Processing ${res.readings.length.toLocaleString()} rows`,
+            });
+            downloadExcelFile(
+                workBook,
+                `${sensorDeviceDetails.sensor_device_name}_Readings_${startDateTime}_to_${endDateTime}.xlsx`,
+            );
+        } catch (error) {
+            toastError("Failed to export sensor readings");
+        } finally {
+            setExportingToExcelInProgress({ mainMessage: "", subMessage: "" });
+        }
     };
-
-    const exportRecordsToExcel = (
-        data: any[],
-        options: ExportOptions,
-    ): Promise<ExcelJS.Workbook> => {
-        return exportToExcel(data, options);
-    };
-
-    useEffect(() => {
-        const fetchIDs = async () => {
-            try {
-                const locationDetailsRes = await coreAPI.getLocationDetails();
-                setLocationDetails(locationDetailsRes);
-                console.log("heyyyyyyyyyyyyyy")
-                console.log(locationDetailsRes);
-
-                const deviceDetailsRes = await coreAPI.getDeviceDetails();
-                setSensorDeviceDetails({
-                    sensor_device_id: deviceDetailsRes.sensor_device_id,
-                    sensor_device_name: deviceDetailsRes.sensor_device_name,
-                });
-                setCameraDeviceDetails({
-                    camera_device_id: deviceDetailsRes.camera_device_id,
-                    camera_device_name: deviceDetailsRes.camera_device_name,
-                });
-            } catch (error) {
-                toastError("Failed to fetch location and device IDs");
-            }
-        };
-
-        fetchIDs();
-    }, []);
 
     const contextValue = useMemo(
         () => ({
             locationDetails,
             sensorDeviceDetails,
             cameraDeviceDetails,
-
             isExportingToExcel: exportingToExcelInProgress.mainMessage !== "",
-
             exportSensorReadingsToExcel,
         }),
         [
@@ -177,7 +189,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
     );
 
     return (
-        <LocationAndDevicesContext.Provider value={contextValue}>
+        <CoreContext.Provider value={contextValue}>
             {children}
 
             {/* Toast for Excel export progress */}
@@ -196,12 +208,12 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
             )}
-        </LocationAndDevicesContext.Provider>
+        </CoreContext.Provider>
     );
 }
 
 export const useCoreHook = () => {
-    const context = useContext(LocationAndDevicesContext);
+    const context = useContext(CoreContext);
     if (context === undefined) {
         throw new Error("useCoreHook must be used within a CoreProvider");
     }

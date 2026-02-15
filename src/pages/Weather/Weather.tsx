@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { weatherAPI } from "../../lib/api/weather";
 import type { WeatherComprehensiveResponse } from "../../types/weather";
-import { useCoreHook } from "../../context/CoreContext";
 import WeatherSkeleton from "./components/WeatherSkeleton";
 import MainDisplay from "./components/MainDisplay";
 import DetailsGrid from "./components/DetailsGrid";
 import StatusRow from "./components/StatusRow";
+import { useCoreHook } from "../../context/CoreContext";
 
 export default function Weather() {
+    const { locationDetails } = useCoreHook();
     const [weatherData, setWeatherData] =
         useState<WeatherComprehensiveResponse | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const { locationDetails } = useCoreHook();
 
     useEffect(() => {
         document.title = "Weather - AGOS";
@@ -23,28 +22,24 @@ export default function Weather() {
     }, []);
 
     useEffect(() => {
-        const locationId = locationDetails?.location_id;
-        if (locationId == null) {
-            setIsLoading(false);
-            setError("No location selected.");
-            return;
-        }
+        if (!locationDetails.location_id) return;
 
         const fetchData = async () => {
             try {
                 setIsLoading(true);
                 setError(null);
-                const res =
-                    await weatherAPI.getWeatherComprehensive(locationId);
+                const res = await weatherAPI.getWeatherComprehensive(
+                    locationDetails.location_id,
+                );
                 setWeatherData(res);
-            } catch {
+            } catch (error) {
                 setError("Failed to load weather data.");
             } finally {
                 setIsLoading(false);
             }
         };
         fetchData();
-    }, [locationDetails?.location_id]);
+    }, [locationDetails.location_id]);
 
     if (isLoading) {
         return <WeatherSkeleton />;

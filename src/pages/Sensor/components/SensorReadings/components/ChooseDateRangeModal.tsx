@@ -39,12 +39,11 @@ const Dropdown = ({ value, onChange, options, label }: DropdownProps) => {
 export default function ChooseDateRangeModal({
     setModalIsOpen,
 }: ChooseDateRangeModalProps) {
+    const { sensorDeviceDetails } = useCoreHook();
     const [availableDates, setAvailableDates] = useState<
         { value: string; label: string }[]
     >([]);
     const [isFetchingDays, setIsFetchingDays] = useState(true);
-
-    const { sensorDeviceDetails } = useCoreHook();
 
     useEffect(() => {
         const fetchAvailableDays = async () => {
