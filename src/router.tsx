@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import Dashboard from "./pages/Dashboard";
-import AlertLogs from "./pages/AlertLogs";
 import Sensor from "./pages/Sensor";
 import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
@@ -35,6 +34,7 @@ import { WebSocketProvider } from "./context/WebSocketContext";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
 import Weather from "./pages/Weather/Weather";
+import ReadingLogs from "./pages/ReadingLogs";
 
 export const router = createBrowserRouter([
     // {
@@ -172,8 +172,8 @@ export const router = createBrowserRouter([
                 element: <Responders />,
             },
             {
-                path: "alert-logs",
-                element: <AlertLogs />,
+                path: "reading-logs",
+                element: <ReadingLogs />,
             },
             {
                 path: "admins",

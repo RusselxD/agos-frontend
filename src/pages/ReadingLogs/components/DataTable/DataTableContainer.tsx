@@ -1,0 +1,143 @@
+import { useEffect, useRef, useState } from "react";
+import Container from "../../../../components/ui/Container";
+import EmptyList from "../../../../components/common/EmptyList";
+import TableSkeleton from "../../../../components/common/TableSkeleton";
+import { useReadingLogs } from "../../context/ReadingLogsContext";
+import TableRow from "./TableRow";
+import ExportButton from "./ExportButton";
+import { FileText } from "lucide-react";
+
+const TableHeader = () => (
+    <thead className="sticky top-0 z-10">
+        <tr>
+            <th className="px-5 py-4 font-medium text-left bg-background rounded-tl-md text-xs uppercase tracking-wide text-gray-600">
+                Date
+            </th>
+            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+                Risk Score
+            </th>
+            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+                Water Level
+            </th>
+            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+                Precipitation
+            </th>
+            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+                Blockage
+            </th>
+            <th className="px-5 py-4 font-medium text-left bg-background rounded-tr-md text-xs uppercase tracking-wide text-gray-600">
+                Debris Count
+            </th>
+        </tr>
+    </thead>
+);
+
+export default function DataTableContainer() {
+    const { summaries, isLoading, isFetchingMore, hasMore, fetchPage } =
+        useReadingLogs();
+
+    const [page, setPage] = useState<number>(1);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const observerTarget = useRef<HTMLDivElement | null>(null);
+
+    // Infinite scroll observer
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (
+                    entries[0].isIntersecting &&
+                    hasMore &&
+                    !isFetchingMore &&
+                    !isLoading
+                ) {
+                    setPage((prev) => prev + 1);
+                }
+            },
+            {
+                root: containerRef.current,
+                threshold: 0.1,
+            },
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => {
+            if (observerTarget.current) {
+                observer.unobserve(observerTarget.current);
+            }
+        };
+    }, [hasMore, isFetchingMore, isLoading]);
+
+    // Fetch when page changes
+    useEffect(() => {
+        if (hasMore) {
+            fetchPage(page);
+        }
+    }, [page]);
+
+    if (isLoading) {
+        return <TableSkeleton title="DAILY SUMMARIES" rows={8} />;
+    }
+
+    return (
+        <Container
+            headerTitle="DAILY SUMMARIES"
+            className="flex-1 flex flex-col min-h-[400px] relative"
+        >
+            {summaries.length > 0 && (
+                <div className="absolute top-4 right-4">
+                    <ExportButton />
+                </div>
+            )}
+
+            <div
+                ref={containerRef}
+                className="flex-1 overflow-y-auto rounded-md border border-gray-200 max-h-[500px]"
+            >
+                {summaries.length > 0 ? (
+                    <>
+                        <table className="w-full text-left border-collapse text-sm">
+                            <TableHeader />
+                            <tbody>
+                                {summaries.map((summary, index) => (
+                                    <TableRow
+                                        key={summary.summary_date}
+                                        summary={summary}
+                                        index={index}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+
+                        {/* Loading indicator for fetching more */}
+                        {isFetchingMore && (
+                            <div className="space-y-2 p-3">
+                                <div className="skeleton rounded-md w-full h-10"></div>
+                                <div className="skeleton rounded-md w-full h-10"></div>
+                            </div>
+                        )}
+
+                        {/* Observer target for infinite scroll */}
+                        {hasMore && (
+                            <div ref={observerTarget} className="h-4"></div>
+                        )}
+
+                        {/* End of data message */}
+                        {!hasMore && (
+                            <p className="text-center text-sm text-gray-500 py-4">
+                                No more data available
+                            </p>
+                        )}
+                    </>
+                ) : (
+                    <EmptyList
+                        icon={FileText}
+                        title="No daily summaries available"
+                    />
+                )}
+            </div>
+        </Container>
+    );
+}

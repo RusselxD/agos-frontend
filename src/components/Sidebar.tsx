@@ -46,8 +46,8 @@ const tabs = [
         icon: Users,
     },
     {
-        name: "Alert Logs",
-        path: "/admin/alert-logs",
+        name: "Reading Logs",
+        path: "/admin/reading-logs",
         icon: FileCheck,
     },
     {
