@@ -4,6 +4,7 @@ import type { DailySummary } from "../../../../types/readingLogs";
 interface TableRowProps {
     summary: DailySummary;
     index: number;
+    onSelect: (summary: DailySummary) => void;
 }
 
 const BlockageBadge = ({ status }: { status: string }) => {
@@ -45,9 +46,12 @@ const RiskBadge = ({ score }: { score: number }) => {
     );
 };
 
-export default function TableRow({ summary, index }: TableRowProps) {
+export default function TableRow({ summary, index, onSelect }: TableRowProps) {
     return (
-        <tr className={index % 2 !== 0 ? "bg-gray-50" : "bg-white"}>
+        <tr
+            onClick={() => onSelect(summary)}
+            className={`${index % 2 !== 0 ? "bg-gray-50" : "bg-white"} hover:bg-primary/5 cursor-pointer transition-colors`}
+        >
             <td className="px-5 py-4 text-left font-medium text-neutral whitespace-nowrap">
                 {formatDate(summary.summary_date)}
             </td>

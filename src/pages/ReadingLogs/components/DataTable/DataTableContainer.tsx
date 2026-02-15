@@ -5,7 +5,9 @@ import TableSkeleton from "../../../../components/common/TableSkeleton";
 import { useReadingLogs } from "../../context/ReadingLogsContext";
 import TableRow from "./TableRow";
 import ExportButton from "./ExportButton";
+import DayDetailPanel from "./DayDetailPanel/DayDetailPanel";
 import { FileText } from "lucide-react";
+import type { DailySummary } from "../../../../types/readingLogs";
 
 const TableHeader = () => (
     <thead className="sticky top-0 z-10">
@@ -37,6 +39,9 @@ export default function DataTableContainer() {
         useReadingLogs();
 
     const [page, setPage] = useState<number>(1);
+    const [selectedSummary, setSelectedSummary] = useState<DailySummary | null>(
+        null,
+    );
     const containerRef = useRef<HTMLDivElement | null>(null);
     const observerTarget = useRef<HTMLDivElement | null>(null);
 
@@ -106,6 +111,7 @@ export default function DataTableContainer() {
                                         key={summary.summary_date}
                                         summary={summary}
                                         index={index}
+                                        onSelect={setSelectedSummary}
                                     />
                                 ))}
                             </tbody>
@@ -138,6 +144,14 @@ export default function DataTableContainer() {
                     />
                 )}
             </div>
+
+            {/* Day Detail Panel */}
+            {selectedSummary && (
+                <DayDetailPanel
+                    summary={selectedSummary}
+                    onClose={() => setSelectedSummary(null)}
+                />
+            )}
         </Container>
     );
 }

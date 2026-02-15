@@ -37,10 +37,7 @@ export default function SummaryCardsContainer() {
                 };
             }
             totalPrecip += s.max_precipitation_mm;
-            if (
-                s.most_severe_blockage === "blocked" ||
-                s.most_severe_blockage === "partial"
-            ) {
+            if (s.most_severe_blockage === "blocked") {
                 blockedCount++;
             }
         });
@@ -55,7 +52,7 @@ export default function SummaryCardsContainer() {
 
     if (isLoading) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                 {Array.from({ length: 4 }).map((_, i) => (
                     <div
                         key={i}
@@ -89,7 +86,7 @@ export default function SummaryCardsContainer() {
             <StatCard
                 icon={CloudRain}
                 label="Avg Precipitation"
-                value={`${stats.avgPrecipitation.toFixed(1)} mm`}
+                value={`${stats.avgPrecipitation.toFixed(1)} mm/h`}
                 subValue="Across loaded days"
                 colorClass="text-primary"
                 bgColorClass="bg-primary/10"

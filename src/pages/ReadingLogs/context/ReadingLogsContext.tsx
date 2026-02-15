@@ -16,8 +16,6 @@ const ReadingLogsContext = createContext<ReadingLogsContextValue | undefined>(
     undefined,
 );
 
-const PAGE_SIZE = 15;
-
 export function ReadingLogsProvider({
     children,
 }: {
@@ -43,7 +41,7 @@ export function ReadingLogsProvider({
 
             const res = await readingLogsAPI.getLogsPaginated(
                 pageNum,
-                PAGE_SIZE,
+                10,
                 locationDetails.location_id,
             );
 
