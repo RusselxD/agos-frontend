@@ -78,6 +78,16 @@ const MessageTemplateCard = ({
                     Auto send on critical
                 </p>
             )}
+            {messageTemplate.auto_send_on_warning && (
+                <p className="absolute right-0 top-0 text-xs text-white bg-yellow-500 px-2 py-1 rounded-bl-md">
+                    Auto send on warning
+                </p>
+            )}
+            {messageTemplate.auto_send_on_blocked && (
+                <p className="absolute right-0 top-0 text-xs text-white bg-gray-700 px-2 py-1 rounded-bl-md">
+                    Auto send on blocked
+                </p>
+            )}
 
             {templateFormIsOpen && (
                 <MessageTemplateForm

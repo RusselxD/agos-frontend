@@ -44,23 +44,20 @@ export interface ResponderAdditionalDetails {
 export interface ResponderAllDetails
     extends ResponderListItem, ResponderAdditionalDetails {}
 
-export interface MessageTemplate {
+export interface MessageTemplate extends MessageTemplateCreateRequest {
     id: number;
-    template_name: string;
-    template_content: string;
-    auto_send_on_critical: boolean;
 }
 
 export interface MessageTemplateCreateRequest {
     template_name: string;
     template_content: string;
-    auto_send_on_critical: boolean;
+    auto_send_on_critical: boolean | null;
+    auto_send_on_warning: boolean | null;
+    auto_send_on_blocked: boolean | null;
 }
 
-export interface ResponderGroup {
+export interface ResponderGroup extends ResponderGroupCreateRequest {
     id: number;
-    group_name: string;
-    member_ids: string[];
 }
 
 export interface ResponderGroupCreateRequest {

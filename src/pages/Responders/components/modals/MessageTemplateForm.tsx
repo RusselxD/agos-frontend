@@ -11,11 +11,58 @@ import axios from "axios";
 import { useResponders } from "../../context/RespondersPageContext";
 import { useToast } from "../../../../context/ToastContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
+import AutoSendToggleOption from "./components/AutoSendToggleOption";
 
 interface MessageTemplateFormProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
     messageTemplate?: MessageTemplate;
 }
+
+type AutoSendTrigger = "critical" | "warning" | "blocked";
+
+const AUTO_SEND_OPTIONS: {
+    value: AutoSendTrigger;
+    label: string;
+    description: string;
+}[] = [
+    {
+        value: "critical",
+        label: "AUTO-SEND WHEN CRITICAL",
+        description: "Sends this template automatically for critical alerts.",
+    },
+    {
+        value: "warning",
+        label: "AUTO-SEND WHEN WARNING",
+        description: "Sends this template automatically for warning alerts.",
+    },
+    {
+        value: "blocked",
+        label: "AUTO-SEND WHEN BLOCKED",
+        description: "Sends this template automatically when incidents are blocked.",
+    },
+];
+
+const getInitialAutoSendTrigger = (
+    template?: MessageTemplate,
+): AutoSendTrigger | null => {
+    if (!template) {
+        return null;
+    }
+
+    if (template.auto_send_on_critical) {
+        return "critical";
+    }
+
+    if (template.auto_send_on_warning) {
+        return "warning";
+    }
+
+    if (template.auto_send_on_blocked) {
+        return "blocked";
+    }
+
+    return null;
+};
 
 export default function MessageTemplateForm({
     setModalOpen,
@@ -27,8 +74,10 @@ export default function MessageTemplateForm({
     const [templateContent, setTemplateContent] = useState(
         messageTemplate?.template_content || "",
     );
-    const [autoSendCritical, setAutoSendCritical] = useState(
-        messageTemplate?.auto_send_on_critical || false,
+    const [selectedAutoSendTrigger, setSelectedAutoSendTrigger] = useState<
+        AutoSendTrigger | null
+    >(
+        getInitialAutoSendTrigger(messageTemplate),
     );
 
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -41,8 +90,16 @@ export default function MessageTemplateForm({
     const getPayload = (): MessageTemplateCreateRequest => ({
         template_name: templateName.trim(),
         template_content: templateContent.trim(),
-        auto_send_on_critical: autoSendCritical,
+        auto_send_on_critical: selectedAutoSendTrigger === "critical",
+        auto_send_on_warning: selectedAutoSendTrigger === "warning",
+        auto_send_on_blocked: selectedAutoSendTrigger === "blocked",
     });
+
+    const handleAutoSendToggle = (trigger: AutoSendTrigger) => {
+        setSelectedAutoSendTrigger((currentTrigger) =>
+            currentTrigger === trigger ? null : trigger,
+        );
+    };
 
     const saveTemplate = async (
         payload: MessageTemplateCreateRequest,
@@ -106,6 +163,11 @@ export default function MessageTemplateForm({
                     ? "Template updated successfully."
                     : "Template created successfully.",
             );
+
+            // Re query here to ensure cache.templates is up to date with backend (in case backend modifies/sanitizes content)
+            const res = await messageTemplateAPI.getMessageTemplates();
+            setCache((prev) => ({ ...prev, templates: res }));
+
             setModalOpen(false);
         } catch (err) {
             setError(getSubmitErrorMessage(err));
@@ -133,36 +195,20 @@ export default function MessageTemplateForm({
                         className="text-sm"
                     />
 
-                    <div className="flex flex-col gap-1 w-full">
-                        <label className="flex items-center justify-between w-full">
-                            <span className="text-sm text-gray-700 font-semibold">
-                                AUTO-SEND WHEN CRITICAL
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setAutoSendCritical((prev) => !prev)
+                    <div className="flex flex-col gap-3">
+                        {AUTO_SEND_OPTIONS.map((option) => (
+                            <AutoSendToggleOption
+                                key={option.value}
+                                label={option.label}
+                                description={option.description}
+                                isSelected={
+                                    selectedAutoSendTrigger === option.value
                                 }
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                    autoSendCritical
-                                        ? "bg-gray-800"
-                                        : "bg-gray-300"
-                                }`}
-                                aria-pressed={autoSendCritical}
-                            >
-                                <span
-                                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                                        autoSendCritical
-                                            ? "translate-x-5"
-                                            : "translate-x-1"
-                                    }`}
-                                />
-                            </button>
-                        </label>
-                        <p className="text-xs text-gray-600">
-                            Sends this template automatically for critical
-                            alerts.
-                        </p>
+                                onToggle={() =>
+                                    handleAutoSendToggle(option.value)
+                                }
+                            />
+                        ))}
                     </div>
 
                     <label className="flex flex-col w-full">

@@ -7,7 +7,7 @@ import { responderAPI, responderGroupAPI } from "../../../../lib/api/responder";
 import type { MessageTemplate } from "../../../../types/responder";
 import { useResponders } from "../../context/RespondersPageContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
-import SendRecipientsInfo from "./SendRecipientsInfo";
+import SendRecipientsInfo from "./components/SendRecipientsInfo";
 
 interface QuickSendModalProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;

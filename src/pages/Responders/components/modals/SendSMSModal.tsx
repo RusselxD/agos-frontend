@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import ModalContainer from "../../../../components/common/ModalContainer";
 import { useToast } from "../../../../context/ToastContext";
-import { messageTemplateAPI, responderAPI } from "../../../../lib/api/responder";
+import {
+    messageTemplateAPI,
+    responderAPI,
+} from "../../../../lib/api/responder";
 import { useResponders } from "../../context/RespondersPageContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
-import SendRecipientsInfo from "./SendRecipientsInfo";
+import SendRecipientsInfo from "./components/SendRecipientsInfo";
 
 export default function SendSMSModal({
     setModalOpen,
