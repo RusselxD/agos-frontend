@@ -22,7 +22,7 @@ export default function AddResponderForm() {
     ]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { toastSuccess } = useToast();
+    const { toastSuccess, toastError } = useToast();
     const { setCache } = useResponders();
 
     // Reset form when closed
@@ -106,9 +106,10 @@ export default function AddResponderForm() {
             }));
 
             toastSuccess("Responders added successfully!");
-
             setAddResponderFormOpen(false);
         } catch (error) {
+            console.error("Failed to add responders:", error);
+            toastError("Failed to add responders. Please try again.");
         } finally {
             setIsLoading(false);
         }
