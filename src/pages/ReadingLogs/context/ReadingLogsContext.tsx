@@ -56,7 +56,7 @@ export function ReadingLogsProvider({
 
                 if (days.length > 0) {
                     const earliestDate = days[0];
-                    const latestDate = days[days.length - 1];
+                    const latestDate = days.length >= 10 ? days[9] : days[days.length - 1];
 
                     setStartDate(earliestDate);
                     setEndDate(latestDate);
