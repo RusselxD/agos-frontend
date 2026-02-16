@@ -1,21 +1,32 @@
-import type { DailySummaryPaginatedResponse } from "../../types/readingLogs";
+import type { DailySummary } from "../../types/readingLogs";
 import apiClient from "./axiosConfig";
 
 export const readingLogsAPI = {
-    getLogsPaginated: async (
-        page: number,
-        page_size: number,
-        location_id: number,
-    ): Promise<DailySummaryPaginatedResponse> => {
+    getAvailableDays: async (location_id: number): Promise<string[]> => {
         try {
-            const res = await apiClient.get("/daily-summaries/paginated", {
+            const res = await apiClient.get(
+                `/daily-summaries/available-days/${location_id}`,
+            );
+            return res.data as string[];
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    getDailySummaries: async (
+        location_id: number,
+        start_date: string,
+        end_date: string,
+    ): Promise<DailySummary[]> => {
+        try {
+            const res = await apiClient.get(`/daily-summaries`, {
                 params: {
-                    page: page,
-                    page_size: page_size,
-                    location_id: location_id,
+                    location_id,
+                    start_date,
+                    end_date,
                 },
             });
-            return res.data as DailySummaryPaginatedResponse;
+            return res.data as DailySummary[];
         } catch (error) {
             throw error;
         }

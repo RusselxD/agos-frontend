@@ -20,8 +20,3 @@ export interface DailySummary {
     max_precip_timestamp: string;
     most_severe_weather_code: number;
 }
-
-export interface DailySummaryPaginatedResponse {
-    items: DailySummary[];
-    has_more: boolean;
-}

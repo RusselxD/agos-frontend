@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Container from "../../../../components/ui/Container";
 import EmptyList from "../../../../components/common/EmptyList";
 import TableSkeleton from "../../../../components/common/TableSkeleton";
 import { useReadingLogs } from "../../context/ReadingLogsContext";
 import TableRow from "./TableRow";
-import ExportButton from "./ExportButton";
+// import ExportButton from "./ExportButton";
 import DayDetailPanel from "./DayDetailPanel/DayDetailPanel";
+import DateRangePicker from "./DateRangePicker";
 import { FileText } from "lucide-react";
 import type { DailySummary } from "../../../../types/readingLogs";
 
@@ -35,52 +36,11 @@ const TableHeader = () => (
 );
 
 export default function DataTableContainer() {
-    const { summaries, isLoading, isFetchingMore, hasMore, fetchPage } =
-        useReadingLogs();
+    const { summaries, isLoading } = useReadingLogs();
 
-    const [page, setPage] = useState<number>(1);
     const [selectedSummary, setSelectedSummary] = useState<DailySummary | null>(
         null,
     );
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const observerTarget = useRef<HTMLDivElement | null>(null);
-
-    // Infinite scroll observer
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (
-                    entries[0].isIntersecting &&
-                    hasMore &&
-                    !isFetchingMore &&
-                    !isLoading
-                ) {
-                    setPage((prev) => prev + 1);
-                }
-            },
-            {
-                root: containerRef.current,
-                threshold: 0.1,
-            },
-        );
-
-        if (observerTarget.current) {
-            observer.observe(observerTarget.current);
-        }
-
-        return () => {
-            if (observerTarget.current) {
-                observer.unobserve(observerTarget.current);
-            }
-        };
-    }, [hasMore, isFetchingMore, isLoading]);
-
-    // Fetch when page changes
-    useEffect(() => {
-        if (hasMore) {
-            fetchPage(page);
-        }
-    }, [page]);
 
     if (isLoading) {
         return <TableSkeleton title="DAILY SUMMARIES" rows={8} />;
@@ -91,16 +51,11 @@ export default function DataTableContainer() {
             headerTitle="DAILY SUMMARIES"
             className="flex-1 flex flex-col min-h-[400px] relative"
         >
-            {summaries.length > 0 && (
-                <div className="absolute top-4 right-4">
-                    <ExportButton />
-                </div>
-            )}
+            <div className="absolute top-4 right-4">
+                <DateRangePicker />
+            </div>
 
-            <div
-                ref={containerRef}
-                className="flex-1 overflow-y-auto rounded-md border border-gray-200 max-h-[500px]"
-            >
+            <div className="flex-1 overflow-y-auto rounded-md border border-gray-200 max-h-[500px]">
                 {summaries.length > 0 ? (
                     <>
                         <table className="w-full text-left border-collapse text-sm">
@@ -116,26 +71,6 @@ export default function DataTableContainer() {
                                 ))}
                             </tbody>
                         </table>
-
-                        {/* Loading indicator for fetching more */}
-                        {isFetchingMore && (
-                            <div className="space-y-2 p-3">
-                                <div className="skeleton rounded-md w-full h-10"></div>
-                                <div className="skeleton rounded-md w-full h-10"></div>
-                            </div>
-                        )}
-
-                        {/* Observer target for infinite scroll */}
-                        {hasMore && (
-                            <div ref={observerTarget} className="h-4"></div>
-                        )}
-
-                        {/* End of data message */}
-                        {!hasMore && (
-                            <p className="text-center text-sm text-gray-500 py-4">
-                                No more data available
-                            </p>
-                        )}
                     </>
                 ) : (
                     <EmptyList

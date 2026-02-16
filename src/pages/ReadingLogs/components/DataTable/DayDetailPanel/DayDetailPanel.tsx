@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import WeatherCard from "./components/WeatherCard";
 import CompactMetricCard from "./components/CompactMetricCard";
 import BlockageCard from "./components/BlockageCard";
+import { useEffect } from "react";
 
 interface DayDetailPanelProps {
     summary: DailySummary;
@@ -73,6 +74,25 @@ export default function DayDetailPanel({
     summary,
     onClose,
 }: DayDetailPanelProps) {
+    
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = "hidden";
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            // Restore body scroll when modal closes
+            document.body.style.overflow = "unset";
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [onClose]);
+
     const maxRiskLevel = getRiskLevel(summary.max_risk_score);
 
     return (
