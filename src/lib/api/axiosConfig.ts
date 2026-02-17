@@ -19,7 +19,7 @@ apiClient.interceptors.request.use(
     },
     (error) => {
         return Promise.reject(error);
-    }
+    },
 );
 
 // Add a response interceptor to handle errors
@@ -31,7 +31,7 @@ apiClient.interceptors.response.use(
         //     window.location.href = "/login";
         // }
         return Promise.reject(error); // Propagate other errors to be handled in the calling code
-    }
+    },
 );
 
 export default apiClient;

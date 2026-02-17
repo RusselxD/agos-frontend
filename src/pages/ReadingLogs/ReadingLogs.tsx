@@ -1,19 +1,29 @@
 import { useEffect } from "react";
-import { ReadingLogsProvider } from "./context/ReadingLogsContext";
+import {
+    ReadingLogsProvider,
+    useReadingLogs,
+} from "./context/ReadingLogsContext";
 import {
     SummaryCardsContainer,
     ChartsContainer,
     DataTableContainer,
 } from "./components";
-import Header from "./components/SummaryCards/Header";
+import Header from "./components/Header";
+import AnalyzePanel from "./components/Analyze/AnalyzePanel";
 
 function ReadingLogsContent() {
+    const { analyzeDrawerIsOpen } = useReadingLogs();
+
     return (
-        <div className="flex flex-col gap-2 min-w-0">
-            <Header />
-            <SummaryCardsContainer />
-            <ChartsContainer />
-            <DataTableContainer />
+        <div className="">
+            <div className="flex flex-col gap-2 ">
+                <Header />
+                <SummaryCardsContainer />
+                <ChartsContainer />
+                <DataTableContainer />
+            </div>
+
+            {analyzeDrawerIsOpen && <AnalyzePanel />}
         </div>
     );
 }

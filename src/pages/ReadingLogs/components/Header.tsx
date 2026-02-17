@@ -1,9 +1,9 @@
-import { Sparkle } from "lucide-react";
-import { formatDate } from "../../../../lib/utils/formatter";
-import { useReadingLogs } from "../../context/ReadingLogsContext";
+import { Sparkles } from "lucide-react";
+import { formatDate } from "../../../lib/utils/formatter";
+import { useReadingLogs } from "../context/ReadingLogsContext";
 
 export default function Header() {
-    const { startDate, endDate } = useReadingLogs();
+    const { startDate, endDate, setAnalyzeDrawerIsOpen } = useReadingLogs();
 
     return (
         <div className="flex items-center justify-between bg-white py-3 px-5 rounded-md custom-shadow">
@@ -14,8 +14,11 @@ export default function Header() {
                 </p>
             </div>
 
-            <button className="gemini-btn">
-                <Sparkle className="gemini-btn-icon w-4 h-4" />
+            <button
+                className="gemini-btn"
+                onClick={() => setAnalyzeDrawerIsOpen(true)}
+            >
+                <Sparkles className="gemini-btn-icon w-4 h-4" />
                 <span className="relative z-10">Analyze</span>
             </button>
         </div>

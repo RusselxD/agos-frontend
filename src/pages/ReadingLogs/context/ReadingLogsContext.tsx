@@ -14,12 +14,14 @@ import { useToast } from "../../../context/ToastContext";
 interface ReadingLogsContextValue {
     startDate: string;
     endDate: string;
-    setStartDate: (date: string) => void;
-    setEndDate: (date: string) => void;
     availableDays: string[];
-
+    analyzeDrawerIsOpen: boolean;
     summaries: DailySummary[];
     isLoading: boolean;
+
+    setStartDate: (date: string) => void;
+    setEndDate: (date: string) => void;
+    setAnalyzeDrawerIsOpen: (isOpen: boolean) => void;
 }
 
 const ReadingLogsContext = createContext<ReadingLogsContextValue | undefined>(
@@ -44,6 +46,8 @@ export function ReadingLogsProvider({
     const { locationDetails } = useCoreHook();
     const { toastError } = useToast();
 
+    const [analyzeDrawerIsOpen, setAnalyzeDrawerIsOpen] = useState(false);
+
     // Initial fetch to get available days and set default date range
     useEffect(() => {
         const initialFetch = async () => {
@@ -56,7 +60,8 @@ export function ReadingLogsProvider({
 
                 if (days.length > 0) {
                     const earliestDate = days[0];
-                    const latestDate = days.length >= 10 ? days[9] : days[days.length - 1];
+                    const latestDate =
+                        days.length >= 10 ? days[9] : days[days.length - 1];
 
                     setStartDate(earliestDate);
                     setEndDate(latestDate);
@@ -125,11 +130,20 @@ export function ReadingLogsProvider({
             isLoading,
             startDate,
             endDate,
+            analyzeDrawerIsOpen,
+            availableDays,
             setStartDate,
             setEndDate,
-            availableDays,
+            setAnalyzeDrawerIsOpen,
         }),
-        [summaries, isLoading, startDate, endDate, availableDays],
+        [
+            summaries,
+            isLoading,
+            startDate,
+            endDate,
+            availableDays,
+            analyzeDrawerIsOpen,
+        ],
     );
 
     return (
