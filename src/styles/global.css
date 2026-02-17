@@ -3,10 +3,22 @@
 @tailwind utilities;
 
 body {
-    font-family: "Poppins", ui-sans-serif, system-ui, -apple-system,
-        BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-        "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol", "Noto Color Emoji";
+    font-family:
+        "Poppins",
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans",
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 @layer components {
@@ -34,6 +46,54 @@ body {
         @apply hover:bg-gray-100;
         @apply disabled:opacity-50 disabled:cursor-not-allowed;
         @apply disabled:hover:bg-white;
+    }
+
+    .gemini-btn {
+        @apply flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm cursor-pointer overflow-hidden;
+        @apply transition-all duration-300 ease-out;
+        @apply shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98];
+        background: linear-gradient(
+            135deg,
+            #4285f4 0%,
+            #6366f1 30%,
+            #8b5cf6 60%,
+            #06b6d4 100%
+        );
+        background-size: 200% 200%;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        position: relative;
+        box-shadow:
+            0 4px 14px -2px rgba(99, 102, 241, 0.45),
+            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    }
+
+    .gemini-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.15) 50%,
+            transparent 100%
+        );
+        background-size: 200% 100%;
+        animation: gemini-shimmer 3s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    .gemini-btn:hover {
+        background-position: 100% 50%;
+        box-shadow:
+            0 8px 25px -4px rgba(99, 102, 241, 0.5),
+            0 0 20px -5px rgba(6, 182, 212, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+
+    .gemini-btn .gemini-btn-icon {
+        @apply relative z-10;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
     }
 
     .pulse-circle {
@@ -93,5 +153,15 @@ body {
 @keyframes shimmer {
     100% {
         transform: translateX(100%);
+    }
+}
+
+@keyframes gemini-shimmer {
+    0%,
+    100% {
+        background-position: 200% 0;
+    }
+    50% {
+        background-position: -200% 0;
     }
 }

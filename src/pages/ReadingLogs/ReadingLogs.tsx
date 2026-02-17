@@ -5,10 +5,12 @@ import {
     ChartsContainer,
     DataTableContainer,
 } from "./components";
+import Header from "./components/SummaryCards/Header";
 
 function ReadingLogsContent() {
     return (
         <div className="flex flex-col gap-2 min-w-0">
+            <Header />
             <SummaryCardsContainer />
             <ChartsContainer />
             <DataTableContainer />
