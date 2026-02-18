@@ -9,7 +9,7 @@ export default function AIBubble({
     showCursor?: boolean;
 }) {
     return (
-        <div className="flex gap-1.5 items-start mb-4">
+        <div className="flex gap-1.5 items-start">
             <div className="gemini-btn cursor-default p-2">
                 <Sparkles className="w-4 h-4" />
             </div>

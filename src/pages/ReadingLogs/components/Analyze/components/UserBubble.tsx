@@ -2,7 +2,7 @@ import { UserRound } from "lucide-react";
 
 export default function UserBubble({ text }: { text: string }) {
     return (
-        <div className="flex gap-1.5 items-start justify-end mb-4">
+        <div className="flex gap-1.5 items-start justify-end">
             <div className="max-w-[85%] bg-slate-900 text-white rounded-xl rounded-tr-sm px-4 py-3 shadow-sm">
                 <p className="text-sm whitespace-pre-wrap">{text}</p>
             </div>

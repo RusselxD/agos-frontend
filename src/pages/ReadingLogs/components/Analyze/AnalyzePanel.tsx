@@ -91,7 +91,10 @@ export default function AnalyzePanel() {
                 />
 
                 {/* Scrollable content */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3">
+                <div
+                    ref={scrollRef}
+                    className="flex-1 overflow-y-auto px-3 pt-4"
+                >
                     {/* Shimmer while loading */}
                     {isLoading && <Shimmer />}
 
@@ -124,7 +127,7 @@ export default function AnalyzePanel() {
                     )}
 
                     {messages.map((msg, i) => (
-                        <div key={i}>
+                        <div key={i} className="mb-4">
                             {msg.role === "user" ? (
                                 <UserBubble text={msg.content} />
                             ) : (
