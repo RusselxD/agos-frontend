@@ -75,8 +75,6 @@ export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
             setWarning(null);
             setFusionAnalysis(data.fusion_analysis);
 
-            console.log("FUSION ANALYSIS UPDATE RECEIVED");
-            console.log(data);
         }
     );
 

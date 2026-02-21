@@ -1,5 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
+let refreshPromise: Promise<{ accessToken: string; refreshToken: string } | null> | null = null;
+
 const apiClient = axios.create({
     baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
     timeout: 10000, // 10 seconds timeout
@@ -39,21 +41,34 @@ apiClient.interceptors.response.use(
             }
 
             try {
-                const { data } = await axios.post(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh`,
-                    {
-                        refresh_token: refreshToken,
-                    },
-                );
+                if (!refreshPromise) {
+                    refreshPromise = (async () => {
+                        try {
+                            const { data } = await axios.post(
+                                `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh`,
+                                { refresh_token: refreshToken },
+                            );
+                            localStorage.setItem("authToken", data.access_token);
+                            localStorage.setItem("refreshToken", data.refresh_token);
+                            return {
+                                accessToken: data.access_token,
+                                refreshToken: data.refresh_token,
+                            };
+                        } finally {
+                            refreshPromise = null;
+                        }
+                    })();
+                }
 
-                localStorage.setItem("authToken", data.access_token);
-                localStorage.setItem("refreshToken", data.refresh_token);
-
-                original.headers.Authorization = `Bearer ${data.access_token}`;
-                return apiClient(original);
-            } catch (error) {
+                const tokens = await refreshPromise;
+                if (tokens) {
+                    original.headers.Authorization = `Bearer ${tokens.accessToken}`;
+                    return apiClient(original);
+                }
+            } catch {
                 localStorage.clear();
                 window.location.href = "/auth/login";
+                return Promise.reject(error);
             }
         }
         return Promise.reject(error);

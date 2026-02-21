@@ -18,19 +18,19 @@ interface TierDetails {
 }
 
 const tierConfig: TierConfig = {
-    "normal": {
+    normal: {
         color: "text-emerald-600",
         bgColor: "bg-emerald-50",
         borderColor: "border-emerald-300",
         icon: CheckCircle,
     },
-    "warning": {
+    warning: {
         color: "text-yellow-600",
         bgColor: "bg-yellow-50",
         borderColor: "border-yellow-400",
         icon: AlertTriangle,
     },
-    "critical": {
+    critical: {
         color: "text-red-600",
         bgColor: "bg-red-50",
         borderColor: "border-red-400",
@@ -41,7 +41,7 @@ const tierConfig: TierConfig = {
         bgColor: "bg-gray-50",
         borderColor: "border-gray-300",
         icon: CheckCircle,
-    }
+    },
 };
 
 const getTierConfig = (tier: string) => {
@@ -52,7 +52,7 @@ const getTierConfig = (tier: string) => {
 export default function AlertTierContainer() {
     const { fusionAnalysis } = useFusionAnalysis();
 
-    const  alert_name = fusionAnalysis?.fusion_data.alert_name || "N/A";
+    const alert_name = fusionAnalysis?.fusion_data.alert_name || "N/A";
 
     const tierDetails = getTierConfig(alert_name);
 

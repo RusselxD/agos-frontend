@@ -8,12 +8,11 @@ import {
     useState,
 } from "react";
 import type { ReactNode } from "react";
-import type { SensorUpdateMessage } from "../types/sensor";
 import { useCoreHook } from "./CoreContext";
 
 const websocketUrl = import.meta.env.VITE_API_WS_URL;
 
-type WebSocketMessage = SensorUpdateMessage | { type: string; data: any };
+type WebSocketMessage = { type: string; data: any };
 
 interface WSContextValue {
     isConnected: boolean;
@@ -37,7 +36,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         if (!token || !locationDetails.location_id) return;
 
         const ws = new WebSocket(
-            `${websocketUrl}/ws?token=${token}&location_id=${locationDetails.location_id}`,
+            `${websocketUrl}/ws?location_id=${locationDetails.location_id}`,
         );
         socketRef.current = ws;
 
