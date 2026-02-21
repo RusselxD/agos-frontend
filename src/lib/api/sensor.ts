@@ -9,9 +9,11 @@ import type {
 } from "../../types/sensor";
 
 export const sensorAPI = {
-    getSensorConfig: async (): Promise<SensorConfig> => {
-        const res = await apiClient.get<SensorConfig>(
-            "system-settings/sensor_config/value",
+    getSensorConfig: async (
+        sensor_device_id: number,
+    ): Promise<SensorConfig> => {
+        const res = await apiClient.get(
+            `sensor-devices/${sensor_device_id}/config`,
         );
         return res.data as SensorConfig;
     },

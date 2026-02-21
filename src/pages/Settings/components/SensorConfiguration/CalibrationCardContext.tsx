@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { SensorConfig } from "../../../../types/sensor";
 import { sensorAPI } from "../../../../lib/api/sensor";
+import { useCoreHook } from "../../../../context/CoreContext";
 
 interface CalibrationCardContextValue {
     originalConfig: SensorConfig | null;
@@ -37,11 +38,15 @@ export function SensorConfigurationProvider({
         setNewConfig((prev) => (prev ? { ...prev, [config]: value } : null));
     };
 
+    const { sensorDeviceDetails } = useCoreHook();
+
     useEffect(() => {
         const fetchSensorConfig = async () => {
             try {
                 setIsFetching(true);
-                const res = await sensorAPI.getSensorConfig();
+                const res = await sensorAPI.getSensorConfig(
+                    sensorDeviceDetails.sensor_device_id,
+                );
                 setOriginalConfig(res);
             } catch (error) {
             } finally {

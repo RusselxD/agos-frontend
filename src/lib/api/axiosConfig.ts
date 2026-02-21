@@ -25,12 +25,38 @@ apiClient.interceptors.request.use(
 // Add a response interceptor to handle errors
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
-        // if (error.response.status === 401) {
-        //     localStorage.removeItem("authToken");
-        //     window.location.href = "/login";
-        // }
-        return Promise.reject(error); // Propagate other errors to be handled in the calling code
+    async (error) => {
+        const original = error.config;
+
+        if (error.response?.status === 401 && !original._retry) {
+            original._retry = true;
+
+            const refreshToken = localStorage.getItem("refreshToken");
+            if (!refreshToken) {
+                localStorage.clear();
+                window.location.href = "/auth/login";
+                return Promise.reject(error);
+            }
+
+            try {
+                const { data } = await axios.post(
+                    `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh`,
+                    {
+                        refresh_token: refreshToken,
+                    },
+                );
+
+                localStorage.setItem("authToken", data.access_token);
+                localStorage.setItem("refreshToken", data.refresh_token);
+
+                original.headers.Authorization = `Bearer ${data.access_token}`;
+                return apiClient(original);
+            } catch (error) {
+                localStorage.clear();
+                window.location.href = "/auth/login";
+            }
+        }
+        return Promise.reject(error);
     },
 );
 

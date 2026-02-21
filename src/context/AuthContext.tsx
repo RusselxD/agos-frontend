@@ -24,7 +24,14 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 const decodeToken = (token: string): TokenClaims | null => {
     try {
         const payload = token.split(".")[1];
-        const decoded = JSON.parse(atob(payload));
+        if (!payload) return null;
+
+        // JWT payload uses base64url, so normalize before decoding.
+        const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+        const padded =
+            normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
+
+        const decoded = JSON.parse(atob(padded));
         return decoded as TokenClaims;
     } catch (error) {
         console.error("Failed to decode token:", error);
@@ -47,6 +54,7 @@ const initializeAuth = (): {
     const token = localStorage.getItem("authToken");
     if (!token || !isTokenValid(token)) {
         localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
         return { isAuth: false, user: null };
     }
     return { isAuth: true, user: decodeToken(token) };
@@ -55,14 +63,17 @@ const initializeAuth = (): {
 export function AuthProvider({ children }: { children: ReactNode }) {
     // Initialize auth state from localStorage
     // Runs only once on component mount
-    const { isAuth, user: initialUser } = initializeAuth();
+    const [{ isAuth: initialIsAuth, user: initialUser }] = useState(
+        initializeAuth,
+    );
 
     const [user, setUser] = useState<TokenClaims | null>(initialUser);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(isAuth);
+    const [isAuthenticated, setIsAuthenticated] =
+        useState<boolean>(initialIsAuth);
 
     const login = async (
         phoneNumber: string,
-        password: string
+        password: string,
     ): Promise<void> => {
         const loginCredentials = {
             phone_number: phoneNumber,
@@ -71,16 +82,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         try {
             const res: TokenResponse = await authAPI.login(loginCredentials);
+            localStorage.setItem("refreshToken", res.refresh_token);
             updateUser(res.access_token);
         } catch (error) {
             throw error; // Rethrow to handle in the calling function
         }
     };
 
-    const logout = (): void => {
-        localStorage.removeItem("authToken");
-        setIsAuthenticated(false);
-        setUser(null);
+    const logout = async (): Promise<void> => {
+        try {
+            await authAPI.logout();
+
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("refreshToken");
+            setIsAuthenticated(false);
+            setUser(null);
+        } catch (error) {}
     };
 
     const updateUser = (accessToken: string): void => {
@@ -99,7 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             logout,
             updateUser,
         }),
-        [isAuthenticated, user]
+        [isAuthenticated, user],
     );
 
     return (

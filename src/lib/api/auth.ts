@@ -16,13 +16,21 @@ export const authAPI = {
         }
     },
 
+    logout: async (): Promise<void> => {
+        try {
+            await apiClient.post("/auth/logout");
+        } catch (error) {
+            throw error;
+        }
+    },
+
     resetPassword: async (
-        newPasswordCredentials: ChangePasswordCredentials
+        newPasswordCredentials: ChangePasswordCredentials,
     ): Promise<TokenResponse> => {
         try {
             const res = await apiClient.post(
                 "/auth/change-password",
-                newPasswordCredentials
+                newPasswordCredentials,
             );
             return res.data;
         } catch (error) {

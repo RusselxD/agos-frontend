@@ -13,6 +13,7 @@ import type {
 } from "../types/sensor";
 import { sensorAPI } from "../lib/api/sensor";
 import { useWebSocketMessage } from "./WebSocketContext";
+import { useCoreHook } from "./CoreContext";
 
 interface WaterLevelContextValue {
     sensorData: SensorData | null;
@@ -43,12 +44,16 @@ export function WaterLevelProvider({
     const [warning, setWarning] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    const { sensorDeviceDetails } = useCoreHook();
+
     // Fetch config data on mount
     useEffect(() => {
         const fetchSensorConfig = async () => {
             try {
                 setIsFetchingConfig(true);
-                const config = await sensorAPI.getSensorConfig();
+                const config = await sensorAPI.getSensorConfig(
+                    sensorDeviceDetails.sensor_device_id,
+                );
                 setSensorConfig(config);
             } catch (error) {
                 console.log(error);
