@@ -11,12 +11,6 @@ import ProtectedRoute from "./guards/ProtectedRoute";
 import Admins from "./pages/Admins";
 import Login from "./pages/Login";
 import ForcePasswordChange from "./pages/ForcePasswordChange";
-import {
-    ResponderApproveLayout,
-    Landing as ResponderApproveLanding,
-    VerifyOTP as ResponderApproveVerifyOTP,
-    Success as ResponderApproveSuccess,
-} from "./pages/ResponderApprove";
 
 // import Register from "./pages/RespondersRegister/pages/Register";
 
@@ -100,24 +94,6 @@ export const router = createBrowserRouter([
             {
                 path: "force-password-change",
                 element: <ForcePasswordChange />,
-            },
-        ],
-    },
-    {
-        path: "responder/approve/:uuid",
-        element: <ResponderApproveLayout />,
-        children: [
-            {
-                index: true,
-                element: <ResponderApproveLanding />,
-            },
-            {
-                path: "verify",
-                element: <ResponderApproveVerifyOTP />,
-            },
-            {
-                path: "success",
-                element: <ResponderApproveSuccess />,
             },
         ],
     },

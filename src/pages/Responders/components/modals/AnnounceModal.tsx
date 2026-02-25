@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import { Send } from "lucide-react";
+import { Megaphone } from "lucide-react";
 import ModalContainer from "../../../../components/common/ModalContainer";
 import { useToast } from "../../../../context/ToastContext";
-import { responderAPI, responderGroupAPI } from "../../../../lib/api/responder";
-import type { MessageTemplate } from "../../../../types/responder";
+import { responderAPI } from "../../../../lib/api/responder";
+import type { NotificationTemplate } from "../../../../types/responder";
 import { useResponders } from "../../context/RespondersPageContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
 import SendRecipientsInfo from "./components/SendRecipientsInfo";
+import { responderGroupAPI } from "../../../../lib/api/responderGroup";
+import { notificationAPI } from "../../../../lib/api/notification";
 
 interface QuickSendModalProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
-    messageTemplate: MessageTemplate;
+    notificationTemplate: NotificationTemplate;
 }
 
 interface RecipientOption {
@@ -20,9 +22,9 @@ interface RecipientOption {
     responderIds: string[];
 }
 
-export default function QuickSendModal({
+export default function AnnounceModal({
     setModalOpen,
-    messageTemplate,
+    notificationTemplate,
 }: QuickSendModalProps) {
     const { cache, setCache } = useResponders();
     const { toastSuccess, toastError } = useToast();
@@ -144,10 +146,10 @@ export default function QuickSendModal({
         isSending ||
         !selectedRecipientOption ||
         !confirmSend ||
-        !messageTemplate.template_content.trim() ||
+        !notificationTemplate.message.trim() ||
         selectedCount === 0;
 
-    const handleSendNow = async () => {
+    const handleAnnounce = async () => {
         if (isSendDisabled) {
             return;
         }
@@ -155,15 +157,22 @@ export default function QuickSendModal({
         setError("");
         setIsSending(true);
         try {
-            await responderAPI.sendSMS({
+            // await responderAPI.sendSMS({
+            //     responder_ids: selectedRecipientIds,
+            //     message: notificationTemplate.message.trim(),
+            // });
+            await notificationAPI.sendAnnouncement({
                 responder_ids: selectedRecipientIds,
-                message: messageTemplate.template_content.trim(),
+                notif_template:
+                    cache.templates?.find(
+                        (template) => template.id === notificationTemplate.id,
+                    ) ?? notificationTemplate,
             });
 
-            toastSuccess("Quick send completed successfully.");
+            toastSuccess("Announcement sent successfully.");
             setModalOpen(false);
-        } catch {
-            setError("Failed to send SMS. Please try again.");
+        } catch (error) {
+            setError("Failed to send announcement. Please try again.");
         } finally {
             setIsSending(false);
         }
@@ -172,7 +181,7 @@ export default function QuickSendModal({
     return (
         <ModalContainer setModalOpen={setModalOpen}>
             <ResponderPageModalContainer
-                headerText="Quick Send Confirmation"
+                headerText="Announce Confirmation"
                 setModalOpen={setModalOpen}
             >
                 <div className="flex flex-col gap-3">
@@ -182,11 +191,11 @@ export default function QuickSendModal({
                         </label>
                         <div className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-800">
                             <p className="text-sm leading-7 whitespace-pre-wrap">
-                                {messageTemplate.template_content}
+                                {notificationTemplate.message}
                             </p>
                         </div>
                         <p className="self-end text-xs text-gray-500">
-                            {messageTemplate.template_content.length} characters
+                            {notificationTemplate.message.length} characters
                         </p>
                     </div>
 
@@ -251,14 +260,14 @@ export default function QuickSendModal({
                         </button>
                         <button
                             type="button"
-                            onClick={handleSendNow}
+                            onClick={handleAnnounce}
                             disabled={isSendDisabled}
                             className="btn-custom rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:hover:bg-emerald-600"
                         >
                             {isSending ? (
                                 <div className="spinner h-4 w-4"></div>
                             ) : (
-                                <Send className="h-4 w-4" />
+                                <Megaphone className="h-4 w-4" />
                             )}
                             <span>{isSending ? "Sending..." : "Send Now"}</span>
                         </button>

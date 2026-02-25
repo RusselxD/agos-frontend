@@ -36,7 +36,9 @@ apiClient.interceptors.response.use(
             const refreshToken = localStorage.getItem("refreshToken");
             if (!refreshToken) {
                 localStorage.clear();
-                window.location.href = "/auth/login";
+                if (!window.location.pathname.includes("/auth/login")) {
+                    window.location.href = "/auth/login";
+                }
                 return Promise.reject(error);
             }
 
@@ -67,7 +69,9 @@ apiClient.interceptors.response.use(
                 }
             } catch {
                 localStorage.clear();
-                window.location.href = "/auth/login";
+                if (!window.location.pathname.includes("/auth/login")) {
+                    window.location.href = "/auth/login";
+                }
                 return Promise.reject(error);
             }
         }

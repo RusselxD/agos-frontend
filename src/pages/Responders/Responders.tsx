@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import MessageTemplates from "./components/MessageTemplates";
 import { RespondersPageProvider } from "./context/RespondersPageContext";
 import ResponderList from "./components/ResponderList/ResponderList";
 import ResponderGroups from "./components/ResponderGroups";
-import SendSMS from "./components/SendSMS";
-import { ChevronDown, Mail, Plus, Users } from "lucide-react";
-import MessageTemplateForm from "./components/modals/MessageTemplateForm";
+// import Announce from "./components/SendSMS";
+import { Bell, ChevronDown, Plus, Users } from "lucide-react";
+// import MessageTemplateForm from "./components/modals/MessageTemplateForm";
 import GroupForm from "./components/modals/GroupForm";
+import NotificationTemplates from "./components/NotificationTemplates/NotificationTemplates";
+import NotificationTemplateForm from "./components/modals/NotificationTemplateForm";
 
 const TABS = [
-    { name: "Message Templates", value: "templates" },
-    { name: "Send SMS", value: "send_sms" },
+    { name: "Notification Templates", value: "notif_templates" },
+    { name: "Announce", value: "announce" },
     { name: "Responder Groups", value: "groups" },
     { name: "Responders", value: "responders" },
 ];
@@ -24,7 +25,7 @@ export default function Responders() {
         };
     }, []);
 
-    const [chosenTab, setChosenTab] = useState("templates");
+    const [chosenTab, setChosenTab] = useState("notif_templates");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +77,7 @@ export default function Responders() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                            <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                                 <button
                                     onClick={() => {
                                         setGroupFormModalIsOpen(true);
@@ -85,7 +86,7 @@ export default function Responders() {
                                     className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
                                     <Users className="w-4 h-4" />
-                                    <span>New Group</span>
+                                    <span>Group</span>
                                 </button>
                                 <button
                                     onClick={() => {
@@ -94,22 +95,22 @@ export default function Responders() {
                                     }}
                                     className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
-                                    <Mail className="w-4 h-4" />
-                                    <span>New Template</span>
+                                    <Bell className="w-4 h-4" />
+                                    <span>Notification</span>
                                 </button>
                             </div>
                         )}
                     </div>
                 </div>
 
-                {chosenTab === "templates" && <MessageTemplates />}
-                {chosenTab === "send_sms" && <SendSMS />}
+                {chosenTab === "notif_templates" && <NotificationTemplates />}
+                {/* {chosenTab === "announce" && <Announce />} */}
                 {chosenTab === "groups" && <ResponderGroups />}
                 {chosenTab === "responders" && <ResponderList />}
             </div>
 
             {messageTemplateFormModalIsOpen && (
-                <MessageTemplateForm
+                <NotificationTemplateForm
                     setModalOpen={setMessageTemplateFormModalIsOpen}
                 />
             )}

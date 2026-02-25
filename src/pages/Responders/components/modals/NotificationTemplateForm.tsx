@@ -2,82 +2,81 @@ import { useState } from "react";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
 import ModalContainer from "../../../../components/common/ModalContainer";
 import TextInputField from "../../../../components/common/auth/TextInputField";
-import { messageTemplateAPI } from "../../../../lib/api/responder";
 import type {
-    MessageTemplate,
-    MessageTemplateCreateRequest,
+    NotificationTemplate,
+    NotificationTemplateCreateRequest,
+    NotificationType,
 } from "../../../../types/responder";
 import axios from "axios";
 import { useResponders } from "../../context/RespondersPageContext";
 import { useToast } from "../../../../context/ToastContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
-import AutoSendToggleOption from "./components/AutoSendToggleOption";
+import { notificationTemplatesAPI } from "../../../../lib/api/notificationTemplate";
+import { capitalizeFirstLetter } from "../../../../lib/utils/formatter";
 
 interface MessageTemplateFormProps {
     setModalOpen: Dispatch<SetStateAction<boolean>>;
-    messageTemplate?: MessageTemplate;
+    notificationTemplate?: NotificationTemplate;
 }
 
-type AutoSendTrigger = "critical" | "warning" | "blocked";
-
-const AUTO_SEND_OPTIONS: {
-    value: AutoSendTrigger;
+const NOTIF_TYPES: {
+    value: NotificationType;
     label: string;
-    description: string;
 }[] = [
     {
         value: "critical",
-        label: "AUTO-SEND WHEN CRITICAL",
-        description: "Sends this template automatically for critical alerts.",
+        label: "This will be sent when a critical alert is detected.",
     },
     {
         value: "warning",
-        label: "AUTO-SEND WHEN WARNING",
-        description: "Sends this template automatically for warning alerts.",
+        label: "This will be sent when a warning alert is detected.",
     },
     {
-        value: "blocked",
-        label: "AUTO-SEND WHEN BLOCKED",
-        description: "Sends this template automatically when incidents are blocked.",
+        value: "blockage",
+        label: "This will be sent when a blockage is detected.",
+    },
+    {
+        value: "announcement",
+        label: "Use this template for announcements / manual sending.",
     },
 ];
 
-const getInitialAutoSendTrigger = (
-    template?: MessageTemplate,
-): AutoSendTrigger | null => {
+const MESSAGE_LENGTH = 120;
+
+const getInitialNotifType = (
+    template?: NotificationTemplate,
+): NotificationType => {
     if (!template) {
-        return null;
+        return "announcement";
     }
 
-    if (template.auto_send_on_critical) {
+    if (template.type === "critical") {
         return "critical";
     }
 
-    if (template.auto_send_on_warning) {
+    if (template.type === "warning") {
         return "warning";
     }
 
-    if (template.auto_send_on_blocked) {
-        return "blocked";
+    if (template.type === "blockage") {
+        return "blockage";
     }
 
-    return null;
+    return "announcement";
 };
 
-export default function MessageTemplateForm({
+export default function NotificationTemplateForm({
     setModalOpen,
-    messageTemplate,
+    notificationTemplate,
 }: MessageTemplateFormProps) {
-    const [templateName, setTemplateName] = useState(
-        messageTemplate?.template_name || "",
+    const [templateTitle, setTemplateTitle] = useState(
+        notificationTemplate?.title || "",
     );
     const [templateContent, setTemplateContent] = useState(
-        messageTemplate?.template_content || "",
+        notificationTemplate?.message || "",
     );
-    const [selectedAutoSendTrigger, setSelectedAutoSendTrigger] = useState<
-        AutoSendTrigger | null
-    >(
-        getInitialAutoSendTrigger(messageTemplate),
+    const [selectedType, setSelectedType] = useState<NotificationType>(
+        getInitialNotifType(notificationTemplate),
     );
 
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -85,36 +84,32 @@ export default function MessageTemplateForm({
 
     const { setCache } = useResponders();
     const { toastSuccess } = useToast();
-    const isEditMode = Boolean(messageTemplate);
+    const isEditMode = Boolean(notificationTemplate);
 
-    const getPayload = (): MessageTemplateCreateRequest => ({
-        template_name: templateName.trim(),
-        template_content: templateContent.trim(),
-        auto_send_on_critical: selectedAutoSendTrigger === "critical",
-        auto_send_on_warning: selectedAutoSendTrigger === "warning",
-        auto_send_on_blocked: selectedAutoSendTrigger === "blocked",
+    const getPayload = (): NotificationTemplateCreateRequest => ({
+        title: templateTitle.trim(),
+        message: templateContent.trim(),
+        type: selectedType ?? "announcement",
     });
 
-    const handleAutoSendToggle = (trigger: AutoSendTrigger) => {
-        setSelectedAutoSendTrigger((currentTrigger) =>
-            currentTrigger === trigger ? null : trigger,
-        );
+    const handleTypeToggle = (type: NotificationType) => {
+        setSelectedType(type);
     };
 
     const saveTemplate = async (
-        payload: MessageTemplateCreateRequest,
-    ): Promise<MessageTemplate> => {
-        if (isEditMode && messageTemplate) {
-            return messageTemplateAPI.updateMessageTemplate(
-                messageTemplate.id,
+        payload: NotificationTemplateCreateRequest,
+    ): Promise<NotificationTemplate> => {
+        if (isEditMode && notificationTemplate) {
+            return notificationTemplatesAPI.updateNotificationTemplate(
+                notificationTemplate.id,
                 payload,
             );
         }
 
-        return messageTemplateAPI.createMessageTemplate(payload);
+        return notificationTemplatesAPI.createNotificationTemplate(payload);
     };
 
-    const upsertTemplateInCache = (savedTemplate: MessageTemplate) => {
+    const upsertTemplateInCache = (savedTemplate: NotificationTemplate) => {
         setCache((prev) => {
             const existingTemplates = prev.templates ?? [];
             const hasExistingTemplate = existingTemplates.some(
@@ -158,11 +153,10 @@ export default function MessageTemplateForm({
             const savedTemplate = await saveTemplate(getPayload());
             upsertTemplateInCache(savedTemplate);
 
-            
             // Re query here to ensure cache.templates is up to date with backend (in case backend modifies/sanitizes content)
-            const res = await messageTemplateAPI.getMessageTemplates();
+            const res = await notificationTemplatesAPI.getAllNotification();
             setCache((prev) => ({ ...prev, templates: res }));
-            
+
             toastSuccess(
                 isEditMode
                     ? "Template updated successfully."
@@ -181,39 +175,48 @@ export default function MessageTemplateForm({
             <ResponderPageModalContainer
                 headerText={
                     isEditMode
-                        ? "Edit Message Template"
-                        : "New Message Template"
+                        ? "Edit Notification Template"
+                        : "New Notification Template"
                 }
                 setModalOpen={setModalOpen}
             >
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <TextInputField
-                        value={templateName}
-                        setValue={setTemplateName}
-                        label="TEMPLATE NAME"
-                        placeholder="Enter template name"
+                        value={templateTitle}
+                        setValue={setTemplateTitle}
+                        label="NOTIFICATION TITLE"
+                        placeholder="Enter notification title"
                         className="text-sm"
                     />
 
-                    <div className="flex flex-col gap-3">
-                        {AUTO_SEND_OPTIONS.map((option) => (
-                            <AutoSendToggleOption
-                                key={option.value}
-                                label={option.label}
-                                description={option.description}
-                                isSelected={
-                                    selectedAutoSendTrigger === option.value
-                                }
-                                onToggle={() =>
-                                    handleAutoSendToggle(option.value)
-                                }
-                            />
-                        ))}
+                    <div className="flex flex-col gap-2">
+                        <span className="text-sm text-gray-700 font-semibold">
+                            NOTIFICATION TYPE
+                        </span>
+                        <div>
+                            {NOTIF_TYPES.map((type) => (
+                                <button
+                                    type="button"
+                                    key={type.value}
+                                    onClick={() => handleTypeToggle(type.value)}
+                                    className={`px-4 py-2 rounded-md mr-2 text-sm ${selectedType === type.value ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"} `}
+                                >
+                                    {capitalizeFirstLetter(type.value)}
+                                </button>
+                            ))}
+                        </div>
+                        <span className="text-[0.800rem] mt-1 text-gray-600">
+                            {
+                                NOTIF_TYPES.find(
+                                    (t) => t.value === selectedType,
+                                )?.label
+                            }
+                        </span>
                     </div>
 
                     <label className="flex flex-col w-full">
                         <span className="text-sm text-gray-700 font-semibold">
-                            TEMPLATE CONTENT
+                            NOTIFICATION MESSAGE
                         </span>
                         <div className="w-full relative">
                             <textarea
@@ -221,17 +224,17 @@ export default function MessageTemplateForm({
                                 onChange={(e) => {
                                     const nextValue = e.target.value.slice(
                                         0,
-                                        150,
+                                        MESSAGE_LENGTH,
                                     );
                                     setTemplateContent(nextValue);
                                 }}
                                 rows={5}
-                                maxLength={150}
+                                maxLength={MESSAGE_LENGTH}
                                 placeholder="Enter your message here"
                                 className="border rounded-md p-2.5 w-full text-sm border-gray-400 focus:outline-none focus:border-gray-500 mt-2"
                             ></textarea>
                         </div>
-                        <p className="self-end text-xs text-gray-700">{`${templateContent.length}/150 characters`}</p>
+                        <p className="self-end text-xs text-gray-700">{`${templateContent.length}/${MESSAGE_LENGTH} characters`}</p>
                     </label>
 
                     {error && (
@@ -250,7 +253,7 @@ export default function MessageTemplateForm({
                         </button>
                         <button
                             disabled={
-                                !templateName.trim() ||
+                                !templateTitle.trim() ||
                                 !templateContent.trim() ||
                                 isSaving
                             }

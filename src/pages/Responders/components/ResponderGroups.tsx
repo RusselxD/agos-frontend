@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useResponders } from "../context/RespondersPageContext";
 import Container from "../../../components/ui/Container";
-import { responderAPI, responderGroupAPI } from "../../../lib/api/responder";
+import { responderAPI } from "../../../lib/api/responder";
 import type { ResponderGroup, ResponderListItem } from "../../../types/responder";
 import { Pencil, Send, Trash, Users } from "lucide-react";
 import DeleteConfirmationModal from "./modals/DeleteConfirmationModal";
 import GroupDetailsModal from "./modals/GroupDetailsModal";
 import GroupForm from "./modals/GroupForm";
-import SendSMSModal from "./modals/SendSMSModal";
+// import SendSMSModal from "./modals/SendSMSModal";
 import { useToast } from "../../../context/ToastContext";
+import { responderGroupAPI } from "../../../lib/api/responderGroup";
 
 const ResponderGroupCard = ({
     responderGroup,
@@ -28,23 +29,23 @@ const ResponderGroupCard = ({
 
     const { cache, setCache } = useResponders();
 
-    const selectedResponderIds = useMemo(() => {
-        const activeResponderIdsSet = new Set(
-            (cache.responders ?? [])
-                .filter(
-                    (responder) => responder.status.toLowerCase() === "active",
-                )
-                .map((responder) => responder.id),
-        );
+    // const selectedResponderIds = useMemo(() => {
+    //     const activeResponderIdsSet = new Set(
+    //         (cache.responders ?? [])
+    //             .filter(
+    //                 (responder) => responder.status.toLowerCase() === "active",
+    //             )
+    //             .map((responder) => responder.id),
+    //     );
 
-        return [
-            ...new Set(
-                responderGroup.member_ids.filter((memberId) =>
-                    activeResponderIdsSet.has(memberId),
-                ),
-            ),
-        ];
-    }, [cache.responders, responderGroup.member_ids]);
+    //     return [
+    //         ...new Set(
+    //             responderGroup.member_ids.filter((memberId) =>
+    //                 activeResponderIdsSet.has(memberId),
+    //             ),
+    //         ),
+    //     ];
+    // }, [cache.responders, responderGroup.member_ids]);
 
     const groupMembers = useMemo<ResponderListItem[]>(() => {
         const respondersById = new Map(
@@ -84,7 +85,7 @@ const ResponderGroupCard = ({
 
             toastSuccess("Responder group deleted successfully.");
             setDeleteModalIsOpen(false);
-        } catch {
+        } catch (error) {
             toastError("Failed to delete responder group. Please try again.");
         }
     };
@@ -149,11 +150,11 @@ const ResponderGroupCard = ({
                 />
             )}
 
-            {sendSMSModalIsOpen && (
-                <SendSMSModal
-                    setModalOpen={setSendSMSModalIsOpen}
-                    selectedResponderIds={selectedResponderIds}
-                />
+            {sendSMSModalIsOpen && ( null
+                // <SendSMSModal
+                //     setModalOpen={setSendSMSModalIsOpen}
+                //     selectedResponderIds={selectedResponderIds}
+                // />
             )}
 
             {deleteModalIsOpen && (

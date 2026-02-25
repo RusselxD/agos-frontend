@@ -7,13 +7,13 @@ import {
     type SetStateAction,
 } from "react";
 import type {
-    MessageTemplate,
+    NotificationTemplate,
     ResponderGroup,
     ResponderListItem,
 } from "../../../types/responder";
 
 interface TabsCache {
-    templates: MessageTemplate[] | undefined;
+    templates: NotificationTemplate[] | undefined;
     send_sms: any;
     groups: ResponderGroup[] | undefined;
     responders: ResponderListItem[] | undefined;

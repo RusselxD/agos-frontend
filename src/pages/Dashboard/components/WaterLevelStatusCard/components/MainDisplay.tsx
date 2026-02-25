@@ -1,11 +1,10 @@
 import "../style.css";
 import { ArrowDown, ArrowRight, ArrowUp, type LucideIcon } from "lucide-react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
-import { getTimeAgo } from "../../../../../lib/utils/formatter";
-
-const capitalizeFirstLetter = (str: string): string => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-};
+import {
+    capitalizeFirstLetter,
+    getTimeAgo,
+} from "../../../../../lib/utils/formatter";
 
 const AlertCategory = () => {
     const { sensorData } = useWaterLevel();
@@ -146,7 +145,7 @@ export default function MainDisplay() {
                 <p>
                     <span className="text-3xl font-semibold">
                         {`${(sensorData?.water_level.current_cm || 0).toFixed(
-                            1
+                            1,
                         )} `}
                     </span>
                     <span>cm</span>

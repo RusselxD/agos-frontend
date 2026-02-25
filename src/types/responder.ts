@@ -10,24 +10,7 @@ export interface ResponderListItem {
     last_name: string;
     phone_number: string;
     status: string;
-}
-
-export interface ResponderVerifyRequest {
-    first_name: string;
-    last_name: string;
-    phone_number: string;
-    status: "pending" | "active";
-}
-
-export interface ResponderOTPVerifyRequest {
-    responder_id: string;
-    otp: string;
-}
-
-export interface ResponderOTPVerifyResponse {
-    success: boolean;
-    message: string;
-    requires_resend: boolean;
+    has_push_subscription: boolean;
 }
 
 export interface SendSMSRequest {
@@ -44,16 +27,23 @@ export interface ResponderAdditionalDetails {
 export interface ResponderAllDetails
     extends ResponderListItem, ResponderAdditionalDetails {}
 
-export interface MessageTemplate extends MessageTemplateCreateRequest {
+export type NotificationType =
+    | "critical"
+    | "warning"
+    | "blockage"
+    | "announcement";
+
+export interface NotificationTemplate {
     id: number;
+    type: NotificationType;
+    title: string;
+    message: string;
 }
 
-export interface MessageTemplateCreateRequest {
-    template_name: string;
-    template_content: string;
-    auto_send_on_critical: boolean | null;
-    auto_send_on_warning: boolean | null;
-    auto_send_on_blocked: boolean | null;
+export interface NotificationTemplateCreateRequest {
+    type: NotificationType;
+    title: string;
+    message: string;
 }
 
 export interface ResponderGroup extends ResponderGroupCreateRequest {
@@ -63,4 +53,9 @@ export interface ResponderGroup extends ResponderGroupCreateRequest {
 export interface ResponderGroupCreateRequest {
     group_name: string;
     member_ids: string[];
+}
+
+export interface SendNotificationRequest {
+    notif_template: NotificationTemplate;
+    responder_ids: string[];
 }

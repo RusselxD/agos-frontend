@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ModalContainer from "../../../../components/common/ModalContainer";
 import TextInputField from "../../../../components/common/auth/TextInputField";
 import { useResponders } from "../../context/RespondersPageContext";
-import { responderAPI, responderGroupAPI } from "../../../../lib/api/responder";
+import { responderAPI } from "../../../../lib/api/responder";
 import { formatPHNumber } from "../../../../lib/utils/formatter";
 import { useToast } from "../../../../context/ToastContext";
 import ResponderPageModalContainer from "./ResponderPageModalContainer";
@@ -12,6 +12,7 @@ import type {
     ResponderGroupCreateRequest,
 } from "../../../../types/responder";
 import axios from "axios";
+import { responderGroupAPI } from "../../../../lib/api/responderGroup";
 
 const MembersSkeleton = () => {
     return (

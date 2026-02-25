@@ -40,11 +40,14 @@ export default function LoginForm() {
                 setErrorMessage(
                     error.response?.data?.detail ||
                         error.message ||
-                        "Login failed. Please try again."
+                        "Login failed. Please try again.",
                 );
-                setPassword("");
-                setPhoneNumber("");
-                setNormalizedPhoneNumber("");
+
+                if (error.response?.status === 401) {
+                    setPassword("");
+                    setPhoneNumber("");
+                    setNormalizedPhoneNumber("");
+                }
             } else {
                 setErrorMessage("An unexpected error occurred.");
             }
@@ -84,7 +87,6 @@ export default function LoginForm() {
                 {isLoading && <div className="spinner w-5 h-5"></div>}
                 <span>LOGIN</span>
             </button>
-            
         </form>
     );
 }
