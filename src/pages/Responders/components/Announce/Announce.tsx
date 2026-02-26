@@ -1,203 +1,132 @@
-// import { useEffect, useMemo, useState } from "react";
-// import { CircleAlert } from "lucide-react";
-// import Container from "../../../../components/ui/Container";
-// import { responderAPI, responderGroupAPI } from "../../../../lib/api/responder";
-// import { useResponders } from "../../context/RespondersPageContext";
-// import RecipientsTable from "./components/RecipientsTable";
-// import SelectedRespondersBar from "./components/SelectedRespondersBar";
+import { useEffect, useMemo, useState } from "react";
+import Container from "../../../../components/ui/Container";
+import { responderAPI } from "../../../../lib/api/responder";
+import { useResponders } from "../../context/RespondersPageContext";
+import RecipientsTable from "./components/RecipientsTable";
+import RecipientSelectionHeader from "./components/RecipientSelectionHeader";
+import SelectionInfoBanner from "./components/SelectionInfoBanner";
+import RecipientsLoadingSkeleton from "./components/RecipientsLoadingSkeleton";
+import SelectedRespondersBar from "./components/SelectedRespondersBar";
+import { responderGroupAPI } from "../../../../lib/api/responderGroup";
 
-// export interface SendSMSResponderRow {
-//     id: string;
-//     first_name: string;
-//     last_name: string;
-//     phone_number: string;
-//     groups: string[];
-// }
+export interface AnnounceResponderRow {
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    groups: string[];
+}
 
-// export default function Announce() {
-//     const { cache, setCache } = useResponders();
-//     const [isFetching, setIsFetching] = useState(false);
-//     const [selectedResponderIds, setSelectedResponderIds] = useState<
-//         Set<string>
-//     >(new Set());
+export default function Announce() {
+    const { cache, setCache, getActiveResponders } = useResponders();
+    const [isFetching, setIsFetching] = useState(false);
+    const [selectedResponderIds, setSelectedResponderIds] = useState<string[]>(
+        [],
+    );
 
-//     const activeResponders = useMemo<SendSMSResponderRow[]>(() => {
-//         const groupsByResponderId = new Map<string, string[]>();
+    const activeResponders = getActiveResponders() ?? [];
 
-//         for (const group of cache.groups ?? []) {
-//             for (const memberId of group.member_ids) {
-//                 const existingGroups = groupsByResponderId.get(memberId) ?? [];
-//                 existingGroups.push(group.group_name);
-//                 groupsByResponderId.set(memberId, existingGroups);
-//             }
-//         }
+    useEffect(() => {
+        if (cache.responders !== undefined && cache.groups !== undefined) {
+            return;
+        }
 
-//         return (cache.responders ?? [])
-//             .filter((responder) => responder.status.toLowerCase() === "active")
-//             .map((responder) => {
-//                 const responderGroups = [
-//                     ...new Set(groupsByResponderId.get(responder.id) ?? []),
-//                 ].sort((a, b) => a.localeCompare(b));
+        setIsFetching(true);
+        (async () => {
+            try {
+                const [respondersRes, groupsRes] = await Promise.all([
+                    cache.responders === undefined
+                        ? responderAPI.getAllResponders()
+                        : Promise.resolve(undefined),
+                    cache.groups === undefined
+                        ? responderGroupAPI.getAllGroups()
+                        : Promise.resolve(undefined),
+                ]);
 
-//                 return {
-//                     id: responder.id,
-//                     first_name: responder.first_name,
-//                     last_name: responder.last_name,
-//                     phone_number: responder.phone_number,
-//                     groups: responderGroups,
-//                 };
-//             });
-//     }, [cache.groups, cache.responders]);
+                setCache((prev) => ({
+                    ...prev,
+                    responders: respondersRes ?? prev.responders,
+                    groups: groupsRes ?? prev.groups,
+                }));
+            } finally {
+                setIsFetching(false);
+            }
+        })();
+    }, [cache.groups, cache.responders, setCache]);
 
-//     useEffect(() => {
-//         const fetchSendSMSData = async () => {
-//             if (cache.responders !== undefined && cache.groups !== undefined) {
-//                 return;
-//             }
+    // Ensure selected responders are still valid when responders or groups data changes
+    useEffect(() => {
+        const validIds = new Set(activeResponders.map((r) => r.id));
+        setSelectedResponderIds((prev) => {
+            const next = prev.filter((id) => validIds.has(id));
+            if (next.length === prev.length) return prev;
+            return next;
+        });
+    }, [activeResponders]);
 
-//             setIsFetching(true);
-//             try {
-//                 const [respondersRes, groupsRes] = await Promise.all([
-//                     cache.responders === undefined
-//                         ? responderAPI.getAllResponders()
-//                         : Promise.resolve(undefined),
-//                     cache.groups === undefined
-//                         ? responderGroupAPI.getAllGroups()
-//                         : Promise.resolve(undefined),
-//                 ]);
+    const allSelected =
+        activeResponders.length > 0 &&
+        selectedResponderIds.length === activeResponders.length;
 
-//                 setCache((prevCache) => ({
-//                     ...prevCache,
-//                     responders: respondersRes ?? prevCache.responders,
-//                     groups: groupsRes ?? prevCache.groups,
-//                 }));
-//             } finally {
-//                 setIsFetching(false);
-//             }
-//         };
+    const responderRows = useMemo<AnnounceResponderRow[]>(
+        () =>
+            activeResponders.map((r) => ({
+                ...r,
+                groups: (cache.groups ?? []).filter((g) =>
+                    g.member_ids.includes(r.id),
+                ).map((g) => g.group_name),
+            })),
+        [activeResponders, cache.groups],
+    );
 
-//         fetchSendSMSData();
-//     }, [cache.groups, cache.responders, setCache]);
+    const handleToggleResponder = (responderId: string) => {
+        setSelectedResponderIds((prev) =>
+            prev.includes(responderId)
+                ? prev.filter((id) => id !== responderId)
+                : [...prev, responderId],
+        );
+    };
 
-//     useEffect(() => {
-//         setSelectedResponderIds((prev) => {
-//             const validIds = new Set(
-//                 activeResponders.map((responder) => responder.id),
-//             );
-//             const next = new Set(
-//                 [...prev].filter((responderId) => validIds.has(responderId)),
-//             );
+    const handleSelectAll = () => {
+        setSelectedResponderIds(activeResponders.map((r) => r.id));
+    };
 
-//             if (next.size === prev.size) {
-//                 return prev;
-//             }
+    const handleDeselectAll = () => setSelectedResponderIds([]);
 
-//             return next;
-//         });
-//     }, [activeResponders]);
+    return (
+        <>
+            <Container className="flex-1 h-full overflow-auto pb-20">
+                <RecipientSelectionHeader
+                    onSelectAll={handleSelectAll}
+                    onDeselectAll={handleDeselectAll}
+                    selectAllDisabled={activeResponders.length === 0}
+                    deselectAllDisabled={selectedResponderIds.length === 0}
+                />
 
-//     const selectedCount = selectedResponderIds.size;
-//     const allSelected =
-//         activeResponders.length > 0 &&
-//         selectedResponderIds.size === activeResponders.length;
+                <SelectionInfoBanner />
 
-//     const handleToggleResponder = (responderId: string) => {
-//         setSelectedResponderIds((prev) => {
-//             const next = new Set(prev);
+                {isFetching ? (
+                    <RecipientsLoadingSkeleton />
+                ) : (
+                    <RecipientsTable
+                        responders={responderRows}
+                        selectedResponderIds={selectedResponderIds}
+                        allSelected={allSelected}
+                        onToggleResponder={handleToggleResponder}
+                        onToggleSelectAll={() =>
+                            allSelected ? handleDeselectAll() : handleSelectAll()
+                        }
+                    />
+                )}
+            </Container>
 
-//             if (next.has(responderId)) {
-//                 next.delete(responderId);
-//             } else {
-//                 next.add(responderId);
-//             }
-
-//             return next;
-//         });
-//     };
-
-//     const handleSelectAll = () => {
-//         setSelectedResponderIds(
-//             new Set(activeResponders.map((responder) => responder.id)),
-//         );
-//     };
-
-//     const handleDeselectAll = () => {
-//         setSelectedResponderIds(new Set());
-//     };
-
-//     const handleToggleSelectAllFromHeader = () => {
-//         if (allSelected) {
-//             handleDeselectAll();
-//             return;
-//         }
-
-//         handleSelectAll();
-//     };
-
-//     return (
-//         <>
-//             <Container className="flex-1 h-full overflow-auto pb-20">
-//                 <div className="mb-3 flex items-center justify-between">
-//                     <h2 className="w-full border-l-4 border-primary pl-2 font-semibold text-gray-600">
-//                         SELECT RECIPIENTS
-//                     </h2>
-
-//                     <div className="flex items-center gap-2">
-//                         <button
-//                             type="button"
-//                             onClick={handleSelectAll}
-//                             disabled={activeResponders.length === 0}
-//                             className="btn-custom whitespace-nowrap rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50"
-//                         >
-//                             Select All
-//                         </button>
-//                         <button
-//                             type="button"
-//                             onClick={handleDeselectAll}
-//                             disabled={selectedCount === 0}
-//                             className="btn-custom whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-//                         >
-//                             Deselect All
-//                         </button>
-//                     </div>
-//                 </div>
-
-//                 <div className="mb-4 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-4 text-blue-700">
-//                     <CircleAlert className="mt-0.5 h-5 w-5 shrink-0" />
-//                     <p className="text-sm leading-7">
-//                         Select individual responders below to send SMS messages.
-//                         You can select multiple recipients and choose a template
-//                         or write a custom message.
-//                     </p>
-//                 </div>
-
-//                 {isFetching && (
-//                     <div className="space-y-2">
-//                         <div className="skeleton h-12 w-full rounded-md"></div>
-//                         <div className="skeleton h-12 w-full rounded-md"></div>
-//                         <div className="skeleton h-12 w-full rounded-md"></div>
-//                         <div className="skeleton h-12 w-full rounded-md"></div>
-//                     </div>
-//                 )}
-
-//                 {!isFetching && (
-//                     <RecipientsTable
-//                         responders={activeResponders}
-//                         selectedResponderIds={selectedResponderIds}
-//                         allSelected={allSelected}
-//                         onToggleResponder={handleToggleResponder}
-//                         onToggleSelectAll={handleToggleSelectAllFromHeader}
-//                     />
-//                 )}
-//             </Container>
-
-//             {selectedCount > 0 && (
-//                 <SelectedRespondersBar
-//                     selectedCount={selectedCount}
-//                     selectedResponderIds={[...selectedResponderIds]}
-//                     onSendSuccess={handleDeselectAll}
-//                 />
-//             )}
-//         </>
-//     );
-// }
+            {selectedResponderIds.length > 0 && (
+                <SelectedRespondersBar
+                    selectedCount={selectedResponderIds.length}
+                    selectedResponderIds={selectedResponderIds}
+                    onSendSuccess={handleDeselectAll}
+                />
+            )}
+        </>
+    );
+}

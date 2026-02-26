@@ -12,7 +12,7 @@ import type {
     ResponderListItem,
 } from "../../../types/responder";
 
-interface TabsCache {
+export interface TabsCache {
     templates: NotificationTemplate[] | undefined;
     send_sms: any;
     groups: ResponderGroup[] | undefined;
@@ -21,6 +21,7 @@ interface TabsCache {
 interface RespondersPageContextValue {
     cache: TabsCache;
     setCache: Dispatch<SetStateAction<TabsCache>>;
+    getActiveResponders: () => ResponderListItem[] | undefined;
 }
 
 const RespondersPageContext = createContext<
@@ -39,10 +40,25 @@ export function RespondersPageProvider({
         responders: undefined,
     });
 
+    const getActiveResponders = () => {
+        const activeResponderIdsSet = new Set(
+            cache.responders
+                ?.filter(
+                    (responder) => responder.status.toLowerCase() === "active",
+                )
+                .map((responder) => responder.id),
+        );
+
+        return cache.responders?.filter((responder) =>
+            activeResponderIdsSet.has(responder.id),
+        );
+    };
+
     const contextValue = useMemo(
         () => ({
             cache,
             setCache,
+            getActiveResponders,
         }),
         [cache],
     );

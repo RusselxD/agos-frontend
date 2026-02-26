@@ -2,12 +2,11 @@ import { useState } from "react";
 import type { NotificationTemplate } from "../../../../../types/responder";
 import { Megaphone, Pencil, Trash } from "lucide-react";
 import NotificationTemplateForm from "../../modals/NotificationTemplateForm";
-import AnnounceModal from "../../modals/AnnounceModal";
-
-// import DeleteConfirmationModal from "./modals/DeleteConfirmationModal";
-// import MessageTemplateForm from "./modals/MessageTemplateForm";
-// import QuickSendModal from "./modals/QuickSendModal";
-// import { useToast } from "../../../context/ToastContext";
+import AnnounceModal from "../../modals/AnnouncementModal";
+import { useResponders } from "../../../context/RespondersPageContext";
+import { useToast } from "../../../../../context/ToastContext";
+import { notificationTemplatesAPI } from "../../../../../lib/api/notificationTemplate";
+import DeleteConfirmationModal from "../../modals/DeleteConfirmationModal";
 
 export default function NotificationTemplateCard({
     notificationTemplate,
@@ -16,28 +15,30 @@ export default function NotificationTemplateCard({
 }) {
     const [templateFormIsOpen, setTemplateFormIsOpen] = useState(false);
     const [announceModalIsOpen, setAnnounceModalIsOpen] = useState(false);
-    // const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-    // const { toastSuccess, toastError } = useToast();
-    // const { setCache } = useResponders();
+    const { toastSuccess, toastError } = useToast();
+    const { setCache } = useResponders();
 
-    // const handleConfirmDelete = async () => {
-    //     try {
-    //         await messageTemplateAPI.deleteMessageTemplate(messageTemplate.id);
+    const handleConfirmDelete = async () => {
+        try {
+            await notificationTemplatesAPI.deleteNotificationTemplate(
+                notificationTemplate.id,
+            );
 
-    //         setCache((prevCache) => ({
-    //             ...prevCache,
-    //             templates: prevCache.templates?.filter(
-    //                 (template) => template.id !== messageTemplate.id,
-    //             ),
-    //         }));
+            setCache((prevCache) => ({
+                ...prevCache,
+                templates: prevCache.templates?.filter(
+                    (template) => template.id !== notificationTemplate.id,
+                ),
+            }));
 
-    //         toastSuccess("Message template deleted successfully.");
-    //         setDeleteModalIsOpen(false);
-    //     } catch (error) {
-    //         toastError("Failed to delete message template. Please try again.");
-    //     }
-    // };
+            toastSuccess("Template deleted successfully.");
+            setDeleteModalIsOpen(false);
+        } catch (error) {
+            toastError("Failed to delete template. Please try again.");
+        }
+    };
 
     return (
         <div className="p-3 border border-gray-300 bg-gray-100 rounded-lg flex flex-col justify-between relative overflow-hidden">
@@ -68,12 +69,14 @@ export default function NotificationTemplateCard({
                         >
                             <Pencil className="w-4 h-4" />
                         </button>
-                        <button
-                            // onClick={() => setDeleteModalIsOpen(true)}
-                            className="flex items-center gap-2 btn-custom bg-red-500 hover:bg-red-600 transition-colors text-white py-2.5 px-3"
-                        >
-                            <Trash className="w-4 h-4" />
-                        </button>
+                        {notificationTemplate.type === "announcement" && (
+                            <button
+                                onClick={() => setDeleteModalIsOpen(true)}
+                                className="flex items-center gap-2 btn-custom bg-red-500 hover:bg-red-600 transition-colors text-white py-2.5 px-3"
+                            >
+                                <Trash className="w-4 h-4" />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -113,14 +116,14 @@ export default function NotificationTemplateCard({
                 />
             )}
 
-            {/* {deleteModalIsOpen && (
+            {deleteModalIsOpen && (
                 <DeleteConfirmationModal
                     setModalOpen={setDeleteModalIsOpen}
-                    title="Delete Message Template"
-                    description={`Are you sure you want to delete "${messageTemplate.template_name}"? This action cannot be undone.`}
+                    title="Delete Notification Template"
+                    description={`Are you sure you want to delete "${notificationTemplate.title}"? This action cannot be undone.`}
                     onConfirm={handleConfirmDelete}
                 />
-            )} */}
+            )}
         </div>
     );
 }

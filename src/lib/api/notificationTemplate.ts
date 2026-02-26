@@ -43,12 +43,11 @@ export const notificationTemplatesAPI = {
         }
     },
 
-
-    // deleteMessageTemplate: async (templateId: number): Promise<void> => {
-    //     try {
-    //         await apiClient.delete(`/message-templates/${templateId}`);
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // },
+    deleteNotificationTemplate: async (templateId: number): Promise<void> => {
+        try {
+            await apiClient.delete(`/notification-templates/${templateId}`);
+        } catch (error) {
+            throw error;
+        }
+    },
 };

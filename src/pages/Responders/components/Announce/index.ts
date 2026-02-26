@@ -1,1 +1,1 @@
-// export { default } from "./Announce";
+export { default } from "./Announce";

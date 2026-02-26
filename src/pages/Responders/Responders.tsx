@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { RespondersPageProvider } from "./context/RespondersPageContext";
 import ResponderList from "./components/ResponderList/ResponderList";
 import ResponderGroups from "./components/ResponderGroups";
-// import Announce from "./components/SendSMS";
+import Announce from "./components/Announce";
 import { Bell, ChevronDown, Plus, Users } from "lucide-react";
 // import MessageTemplateForm from "./components/modals/MessageTemplateForm";
 import GroupForm from "./components/modals/GroupForm";
@@ -104,7 +104,7 @@ export default function Responders() {
                 </div>
 
                 {chosenTab === "notif_templates" && <NotificationTemplates />}
-                {/* {chosenTab === "announce" && <Announce />} */}
+                {chosenTab === "announce" && <Announce />}
                 {chosenTab === "groups" && <ResponderGroups />}
                 {chosenTab === "responders" && <ResponderList />}
             </div>
