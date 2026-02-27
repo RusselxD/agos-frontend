@@ -5,6 +5,8 @@ interface AnnounceModalFormProps {
     selectedTemplateId: string;
     onTemplateChange: (templateId: string) => void;
     isFetchingTemplates: boolean;
+    title: string;
+    onTitleChange: (title: string) => void;
     message: string;
     onMessageChange: (message: string) => void;
     hasSelectedTemplate: boolean;
@@ -22,6 +24,8 @@ export default function AnnounceModalForm({
     selectedTemplateId,
     onTemplateChange,
     isFetchingTemplates,
+    title,
+    onTitleChange,
     message,
     onMessageChange,
     hasSelectedTemplate,
@@ -56,6 +60,25 @@ export default function AnnounceModalForm({
 
             <div className="flex flex-col gap-1">
                 <label className="text-sm font-semibold text-gray-700">
+                    TITLE
+                </label>
+                <input
+                    value={title}
+                    onChange={(e) => onTitleChange(e.target.value)}
+                    readOnly={hasSelectedTemplate}
+                    placeholder={
+                        hasSelectedTemplate
+                            ? ""
+                            : "Select a template or write a custom title"
+                    }
+                    className={`w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-blue-400 ${
+                        hasSelectedTemplate ? "cursor-not-allowed bg-gray-100" : ""
+                    }`}
+                />
+            </div>
+
+            <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-700">
                     MESSAGE
                 </label>
                 <textarea
@@ -63,6 +86,7 @@ export default function AnnounceModalForm({
                     onChange={(e) =>
                         onMessageChange(e.target.value.slice(0, MESSAGE_LENGTH))
                     }
+                    readOnly={hasSelectedTemplate}
                     placeholder={
                         hasSelectedTemplate
                             ? ""
@@ -70,7 +94,9 @@ export default function AnnounceModalForm({
                     }
                     maxLength={MESSAGE_LENGTH}
                     rows={5}
-                    className="w-full rounded-lg border border-gray-300 p-3 text-sm text-gray-800 outline-none focus:border-blue-400"
+                    className={`w-full rounded-lg border border-gray-300 p-3 text-sm text-gray-800 outline-none focus:border-blue-400 ${
+                        hasSelectedTemplate ? "cursor-not-allowed bg-gray-100" : ""
+                    }`}
                 />
                 <p className="self-end text-xs text-gray-500">
                     {message.length}/{MESSAGE_LENGTH} characters
@@ -94,7 +120,9 @@ export default function AnnounceModalForm({
                     className="btn-custom rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:hover:bg-emerald-600"
                 >
                     {isSending && <div className="spinner h-4 w-4"></div>}
-                    <span>{isSending ? "Sending..." : "Send SMS"}</span>
+                    <span>
+                        {isSending ? "Sending..." : "Send Announcement"}
+                    </span>
                 </button>
             </div>
         </>

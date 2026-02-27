@@ -2,11 +2,15 @@ import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import ModalContainer from "../../../../../components/common/ModalContainer";
 import { useToast } from "../../../../../context/ToastContext";
-import { responderAPI } from "../../../../../lib/api/responder";
 import { useResponders } from "../../../context/RespondersPageContext";
 import ResponderPageModalContainer from "../ResponderPageModalContainer";
 import AnnounceModalForm from "./components/AnnounceModalForm";
 import useAnnounceTemplates from "./hooks/useAnnounceTemplates";
+import { notificationAPI } from "../../../../../lib/api/notification";
+import type {
+    CustomNotificationRequest,
+    SendNotificationRequest,
+} from "../../../../../types/responder";
 
 export default function AnnounceModal({
     setModalOpen,
@@ -20,6 +24,7 @@ export default function AnnounceModal({
     const { cache, setCache } = useResponders();
     const { toastSuccess, toastError } = useToast();
     const [selectedTemplateId, setSelectedTemplateId] = useState("");
+    const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
     const [error, setError] = useState("");
@@ -38,6 +43,7 @@ export default function AnnounceModal({
         setSelectedTemplateId(templateId);
 
         if (!templateId) {
+            setTitle("");
             setMessage("");
             return;
         }
@@ -45,13 +51,17 @@ export default function AnnounceModal({
         const nextTemplate = templates.find(
             (template) => String(template.id) === templateId,
         );
+        setTitle(nextTemplate?.title ?? "");
         setMessage(nextTemplate?.message ?? "");
     };
 
+    const hasSelectedTemplate = Boolean(selectedTemplate);
     const isSendDisabled =
-        !message.trim() || selectedResponderIds.length === 0 || isSending;
+        selectedResponderIds.length === 0 ||
+        isSending ||
+        (!hasSelectedTemplate && (!title.trim() || !message.trim()));
 
-    const handleSendSMS = async () => {
+    const handleAnnounce = async () => {
         if (isSendDisabled) {
             return;
         }
@@ -59,16 +69,27 @@ export default function AnnounceModal({
         setError("");
         setIsSending(true);
         try {
-            await responderAPI.sendSMS({
-                responder_ids: selectedResponderIds,
-                message: message.trim(),
-            });
+            const payload = hasSelectedTemplate
+                ? null
+                : ({
+                      title: title.trim(),
+                      message: message.trim(),
+                      type: "announcement",
+                  } as CustomNotificationRequest);
 
-            toastSuccess("SMS sent successfully.");
+            await notificationAPI.sendAnnouncement({
+                responder_ids: selectedResponderIds,
+                template_id: hasSelectedTemplate
+                    ? Number(selectedTemplateId)
+                    : null,
+                custom_notification: payload ?? null,
+            } as SendNotificationRequest);
+
+            toastSuccess("Announcement sent successfully.");
             onSendSuccess?.();
             setModalOpen(false);
-        } catch {
-            setError("Failed to send SMS. Please try again.");
+        } catch (error) {
+            setError("Failed to send announcement. Please try again.");
         } finally {
             setIsSending(false);
         }
@@ -77,7 +98,7 @@ export default function AnnounceModal({
     return (
         <ModalContainer setModalOpen={setModalOpen}>
             <ResponderPageModalContainer
-                headerText="Send SMS Message"
+                headerText="Send Announcement"
                 setModalOpen={setModalOpen}
             >
                 <AnnounceModalForm
@@ -85,14 +106,16 @@ export default function AnnounceModal({
                     selectedTemplateId={selectedTemplateId}
                     onTemplateChange={handleTemplateChange}
                     isFetchingTemplates={isFetchingTemplates}
+                    title={title}
+                    onTitleChange={setTitle}
                     message={message}
                     onMessageChange={setMessage}
-                    hasSelectedTemplate={Boolean(selectedTemplate)}
+                    hasSelectedTemplate={hasSelectedTemplate}
                     error={error}
                     isSending={isSending}
                     isSendDisabled={isSendDisabled}
                     onCancel={() => setModalOpen(false)}
-                    onSend={handleSendSMS}
+                    onSend={handleAnnounce}
                 />
             </ResponderPageModalContainer>
         </ModalContainer>

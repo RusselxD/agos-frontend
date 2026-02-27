@@ -2,8 +2,10 @@ import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import ModalContainer from "../../../../../components/common/ModalContainer";
 import { useToast } from "../../../../../context/ToastContext";
-import type { NotificationTemplate } from "../../../../../types/responder";
-import { useResponders } from "../../../context/RespondersPageContext";
+import type {
+    NotificationTemplate,
+    SendNotificationRequest,
+} from "../../../../../types/responder";
 import ResponderPageModalContainer from "../ResponderPageModalContainer";
 import { notificationAPI } from "../../../../../lib/api/notification";
 import useAnnounceRecipients from "./hooks/useAnnounceRecipients";
@@ -18,7 +20,6 @@ export default function AnnounceModal({
     setModalOpen,
     notificationTemplate,
 }: AnnounceModalProps) {
-    const { cache } = useResponders();
     const { toastSuccess } = useToast();
     const [confirmSend, setConfirmSend] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -49,15 +50,13 @@ export default function AnnounceModal({
         try {
             await notificationAPI.sendAnnouncement({
                 responder_ids: responderIds,
-                notif_template:
-                    cache.templates?.find(
-                        (t) => t.id === notificationTemplate.id,
-                    ) ?? notificationTemplate,
-            });
+                template_id: notificationTemplate.id,
+                custom_notification: null,
+            } as SendNotificationRequest);
 
             toastSuccess("Announcement sent successfully.");
             setModalOpen(false);
-        } catch {
+        } catch (error) {
             setError("Failed to send announcement. Please try again.");
         } finally {
             setIsSending(false);

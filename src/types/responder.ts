@@ -55,7 +55,14 @@ export interface ResponderGroupCreateRequest {
     member_ids: string[];
 }
 
+export interface CustomNotificationRequest {
+    title: string;
+    message: string;
+    type: NotificationType;
+}
+
 export interface SendNotificationRequest {
-    notif_template: NotificationTemplate;
     responder_ids: string[];
+    template_id: number | null;
+    custom_notification: CustomNotificationRequest | null;
 }
