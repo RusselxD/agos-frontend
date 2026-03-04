@@ -13,11 +13,6 @@ export interface ResponderListItem {
     has_push_subscription: boolean;
 }
 
-export interface SendSMSRequest {
-    responder_ids: string[];
-    message: string;
-}
-
 export interface ResponderAdditionalDetails {
     created_at: string;
     created_by: string;
