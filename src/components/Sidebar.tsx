@@ -9,6 +9,7 @@ import {
     PanelLeftClose,
     PanelLeftOpen,
     CloudSunRain,
+    BellRing,
 } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { NavLink } from "react-router-dom";
@@ -49,6 +50,11 @@ const tabs = [
         name: "Reading Logs",
         path: "/admin/reading-logs",
         icon: FileCheck,
+    },
+    {
+        name: "Notif Logs",
+        path: "/admin/notification-logs",
+        icon: BellRing,
     },
     {
         name: "Admins",

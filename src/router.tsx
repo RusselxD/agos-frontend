@@ -29,6 +29,7 @@ import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
 import Weather from "./pages/Weather/Weather";
 import ReadingLogs from "./pages/ReadingLogs";
+import NotificationLogs from "./pages/NotificationLogs";
 
 export const router = createBrowserRouter([
     // {
@@ -150,6 +151,10 @@ export const router = createBrowserRouter([
             {
                 path: "reading-logs",
                 element: <ReadingLogs />,
+            },
+            {
+                path: "notification-logs",
+                element: <NotificationLogs />,
             },
             {
                 path: "admins",
