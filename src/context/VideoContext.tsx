@@ -57,6 +57,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   const [isSyncing, setIsSyncing] = useState(false); // New state
   const [error, setError] = useState<string | null>(null);
   const [liveFrame, setLiveFrame] = useState<string | null>(null);
+  const hasLiveFrameRef = useRef(false);
   const liveFrameTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -78,12 +79,14 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     if (!frame) return;
 
     setLiveFrame(frame);
+    hasLiveFrameRef.current = true;
     if (liveFrameTimeoutRef.current) {
       clearTimeout(liveFrameTimeoutRef.current);
     }
     // Fall back to HLS after 3s of no new frames
     liveFrameTimeoutRef.current = setTimeout(() => {
       setLiveFrame(null);
+      hasLiveFrameRef.current = false;
     }, 3000);
   });
 
@@ -107,6 +110,12 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         setIsLoading(true);
       }
 
+      if (hasLiveFrameRef.current) {
+        setIsLoading(false);
+        setIsSyncing(false);
+        return;
+      }
+
       // --- STEP 1: Check Status & Start if needed ---
       let isReady = false;
       try {
@@ -128,9 +137,14 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       // --- STEP 2: The "Availability" Loop (The most important part) ---
       // We poll until the .m3u8 file actually exists on the disk.
       let retries = 0;
-      const maxPollRetries = 20; // 20 * 1.5s = 30 seconds max wait
+      const maxPollRetries = 5;
 
       while (!isReady && retries < maxPollRetries) {
+        if (hasLiveFrameRef.current) {
+          setIsLoading(false);
+          setIsSyncing(false);
+          return;
+        }
         try {
           // HEAD request checks if file exists without downloading the whole body
           await axios.head(HLS_STREAM_URL);
@@ -148,9 +162,13 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       }
 
       if (!isReady) {
-        throw new Error(
-          "Stream timed out. Backend could not generate video files.",
+        console.warn(
+          "HLS stream not available. Falling back to WebSocket frames.",
         );
+        setError(null);
+        setIsSyncing(false);
+        setIsLoading(!hasLiveFrameRef.current);
+        return;
       }
 
       // --- STEP 3: Initialize Player (Only safe after Step 2) ---
