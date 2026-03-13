@@ -31,6 +31,12 @@ const VideoPlaceholder = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (liveFrame) {
+      console.log("[VideoContainer] displaying WebSocket frame");
+    }
+  }, [liveFrame]);
+
+  useEffect(() => {
     if (containerRef.current) {
       attachVideoContainer(containerRef.current);
     }
