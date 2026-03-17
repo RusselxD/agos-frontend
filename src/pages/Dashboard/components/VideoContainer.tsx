@@ -49,7 +49,7 @@ const VideoPlaceholder = () => {
       {/* RPi WebSocket frames — overlays HLS when RPi is actively sending */}
       {liveFrame && (
         <img
-          src={`data:image/jpeg;base64,${liveFrame}`}
+          src={liveFrame}
           className="absolute inset-0 w-full h-full object-cover z-20"
           alt="Live feed"
         />

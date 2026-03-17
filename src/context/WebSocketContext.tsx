@@ -42,8 +42,8 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     let wsUrl: string;
     try {
       const url = new URL(websocketUrl);
-      if (!url.pathname || url.pathname === "/" || url.pathname === "/ws") {
-        url.pathname = "/ws/rpi";
+      if (!url.pathname || url.pathname === "/" || url.pathname === "/ws/rpi") {
+        url.pathname = "/ws";
       }
 
       if (!url.searchParams.has("location_id")) {
@@ -52,11 +52,8 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
           String(locationDetails.location_id),
         );
       }
-      if (!url.searchParams.has("camera_device_id")) {
-        url.searchParams.set(
-          "camera_device_id",
-          String(cameraDeviceDetails.camera_device_id),
-        );
+      if (url.searchParams.has("camera_device_id")) {
+        url.searchParams.delete("camera_device_id");
       }
       if (!url.searchParams.has("token")) {
         url.searchParams.set("token", encodeURIComponent(token));
@@ -90,6 +87,10 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
           const message: WebSocketMessage = JSON.parse(e.data);
           console.log("Message received:", message);
           emit(message.type, message.data);
+
+          if (message.type === "camera_update") {
+            emit("camera_update", message.data);
+          }
         } catch {
           console.log("Message received (raw string)");
           emit("camera_update", e.data);

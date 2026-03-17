@@ -37,7 +37,7 @@ interface VideoContextValue {
   error: string | null;
   reloadStream: () => void;
 
-  // Latest base64 JPEG frame from RPi via WebSocket (null = fall back to HLS)
+  // Latest live frame from WebSocket as a data URL (null = fall back to HLS)
   liveFrame: string | null;
 }
 
@@ -59,6 +59,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [liveFrame, setLiveFrame] = useState<string | null>(null);
   const hasLiveFrameRef = useRef(false);
+  const lastFrameAtRef = useRef<number | null>(null);
   const liveFrameTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -76,16 +77,31 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const normalizeFrameData = (value: string) => {
+    if (value.startsWith("data:image")) {
+      return value;
+    }
+    return `data:image/jpeg;base64,${value}`;
+  };
+
   useWebSocketMessage("camera_update", (data: any) => {
-    // Handle both { image: "..." } and bare base64 string formats
-    const frame: string | undefined =
-      typeof data === "string"
-        ? data
-        : (data?.image ?? data?.frame ?? data?.data);
+    // Expect payload shape: { image: "..." }
+    const frameValue: string | undefined = data?.image;
 
-    if (!frame) return;
+    if (!frameValue) return;
 
+    const frame = normalizeFrameData(frameValue);
+    lastFrameAtRef.current = Date.now();
     setLiveFrame(frame);
+    setError(null);
+    setIsLoading(false);
+    setIsSyncing(false);
+    retryCountRef.current = 0;
+    if (retryTimeoutRef.current !== null) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+
     hasLiveFrameRef.current = true;
     if (liveFrameTimeoutRef.current) {
       clearTimeout(liveFrameTimeoutRef.current);
@@ -112,6 +128,16 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       const video = videoRef.current;
       if (!video) return;
       const hasLiveFrame = hasLiveFrameRef.current;
+      const lastFrameAt = lastFrameAtRef.current;
+      const hasRecentFrame =
+        lastFrameAt !== null && Date.now() - lastFrameAt < 3000;
+
+      if (hasLiveFrame || hasRecentFrame) {
+        setError(null);
+        setIsLoading(false);
+        setIsSyncing(false);
+        return;
+      }
 
       setError(null);
       if (!hasLiveFrame) {
@@ -255,6 +281,12 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   };
 
   const handleStreamFailure = () => {
+    if (hasLiveFrameRef.current) {
+      setError(null);
+      setIsLoading(false);
+      setIsSyncing(false);
+      return;
+    }
     if (retryCountRef.current < MAX_RETRIES) {
       retryCountRef.current += 1;
       const msg = `Stream connection lost. Retrying in ${
