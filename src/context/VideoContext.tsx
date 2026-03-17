@@ -52,6 +52,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   const hiddenContainerRef = useRef<HTMLDivElement>(null);
   const hlsRef = useRef<Hls | null>(null);
   const retryCountRef = useRef(0);
+  const retryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false); // New state
@@ -62,6 +63,19 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     null,
   );
 
+  useEffect(() => {
+    return () => {
+      if (liveFrameTimeoutRef.current !== null) {
+        clearTimeout(liveFrameTimeoutRef.current);
+        liveFrameTimeoutRef.current = null;
+      }
+      if (retryTimeoutRef.current !== null) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   useWebSocketMessage("camera_update", (data: any) => {
     // Handle both { image: "..." } and bare base64 string formats
     const frame: string | undefined =
@@ -69,24 +83,19 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         ? data
         : (data?.image ?? data?.frame ?? data?.data);
 
-    console.log(
-      "[camera_update] received, data keys:",
-      typeof data === "object" ? Object.keys(data ?? {}) : typeof data,
-      "frame defined:",
-      !!frame,
-    );
-
     if (!frame) return;
 
     setLiveFrame(frame);
     hasLiveFrameRef.current = true;
     if (liveFrameTimeoutRef.current) {
       clearTimeout(liveFrameTimeoutRef.current);
+      liveFrameTimeoutRef.current = null;
     }
     // Fall back to HLS after 3s of no new frames
     liveFrameTimeoutRef.current = setTimeout(() => {
       setLiveFrame(null);
       hasLiveFrameRef.current = false;
+      liveFrameTimeoutRef.current = null;
     }, 3000);
   });
 
@@ -102,18 +111,15 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     try {
       const video = videoRef.current;
       if (!video) return;
+      const hasLiveFrame = hasLiveFrameRef.current;
 
       setError(null);
-      if (isResync) {
-        setIsSyncing(true);
-      } else {
-        setIsLoading(true);
-      }
-
-      if (hasLiveFrameRef.current) {
-        setIsLoading(false);
-        setIsSyncing(false);
-        return;
+      if (!hasLiveFrame) {
+        if (isResync) {
+          setIsSyncing(true);
+        } else {
+          setIsLoading(true);
+        }
       }
 
       // --- STEP 1: Check Status & Start if needed ---
@@ -132,6 +138,9 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         console.warn("Status check failed (Backend might be down):", err);
         setError("Server is unreachable. Please try again later.");
+        setIsLoading(false);
+        setIsSyncing(false);
+        return;
       }
 
       // --- STEP 2: The "Availability" Loop (The most important part) ---
@@ -165,9 +174,15 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         console.warn(
           "HLS stream not available. Falling back to WebSocket frames.",
         );
-        setError(null);
+        if (hasLiveFrameRef.current) {
+          setError(null);
+          setIsLoading(false);
+        } else {
+          setError("Live stream is not currently available. Retrying shortly.");
+          setIsLoading(false);
+          handleStreamFailure();
+        }
         setIsSyncing(false);
-        setIsLoading(!hasLiveFrameRef.current);
         return;
       }
 
@@ -247,7 +262,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       }s... (Attempt ${retryCountRef.current}/${MAX_RETRIES})`;
       console.log(msg);
       setError(msg);
-      setTimeout(() => {
+      if (retryTimeoutRef.current !== null) {
+        clearTimeout(retryTimeoutRef.current);
+      }
+      retryTimeoutRef.current = setTimeout(() => {
         loadStream();
       }, RETRY_DELAY_MS);
     } else {
@@ -272,6 +290,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
       setIsSyncing(false); // Ensure syncing is cleared
       retryCountRef.current = 0;
+      if (retryTimeoutRef.current !== null) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
     };
 
     video.addEventListener("loadeddata", handleLoadedData);

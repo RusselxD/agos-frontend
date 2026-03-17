@@ -42,7 +42,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     let wsUrl: string;
     try {
       const url = new URL(websocketUrl);
-      if (!url.pathname || url.pathname === "/") {
+      if (!url.pathname || url.pathname === "/" || url.pathname === "/ws") {
         url.pathname = "/ws/rpi";
       }
 
@@ -57,6 +57,9 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
           "camera_device_id",
           String(cameraDeviceDetails.camera_device_id),
         );
+      }
+      if (!url.searchParams.has("token")) {
+        url.searchParams.set("token", encodeURIComponent(token));
       }
 
       wsUrl = url.toString();
@@ -108,12 +111,16 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
       }
 
       if (e.data instanceof ArrayBuffer) {
-        const bytes = new Uint8Array(e.data);
-        let binary = "";
-        bytes.forEach((b) => {
-          binary += String.fromCharCode(b);
-        });
-        emit("camera_update", btoa(binary));
+        const blob = new Blob([e.data]);
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result;
+          if (typeof result === "string") {
+            const base64 = result.split(",")[1] ?? "";
+            emit("camera_update", base64 || result);
+          }
+        };
+        reader.readAsDataURL(blob);
       }
     };
 
