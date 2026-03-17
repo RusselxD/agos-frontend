@@ -17,7 +17,6 @@ export default defineConfig({
                         "react-toastify",
                         "lucide-react",
                     ],
-                    hls: ["hls.js"],
                 },
             },
         },

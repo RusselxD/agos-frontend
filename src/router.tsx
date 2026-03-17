@@ -20,158 +20,110 @@ import { BlockageProvider } from "./context/BlockageContext";
 import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
 import { VideoProvider } from "./context/VideoContext";
 import { WebSocketProvider } from "./context/WebSocketContext";
-// import { RespondersRegisterProvider } from "./pages/RespondersRegister/context/RespondersRegisterContext";
-// import VerifyOTP from "./pages/RespondersRegister/pages/VerifyOTP";
-// import ResponderRegistrationGuard from "./guards/ResponderRegistrationGuard";
-// import UploadID from "./pages/RespondersRegister/pages/UploadID";
-// import RegistrationComplete from "./pages/RespondersRegister/pages/RegistrationComplete";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
 import Weather from "./pages/Weather/Weather";
 import ReadingLogs from "./pages/ReadingLogs";
 import NotificationLogs from "./pages/NotificationLogs";
+import DetectionLogs from "./pages/DetectionLogs";
 
 export const router = createBrowserRouter([
-    // {
-    //     path: "responder",
-    //     element: (
-
-    //             <AuthLayout />
-
-    //     ),
-    //     children: [
-    //         {
-    //             index: true,
-    //             element: <Navigate to="register" replace />,
-    //         },
-    //         {
-    //             path: "register",
-    //             element: (
-    //                 <ResponderRegistrationGuard>
-    //                     <Register />
-    //                 </ResponderRegistrationGuard>
-    //             ),
-    //         },
-    //         {
-    //             path: "verify-otp",
-    //             element: (
-    //                 <ResponderRegistrationGuard requireInitialData={true}>
-    //                     <VerifyOTP />
-    //                 </ResponderRegistrationGuard>
-    //             ),
-    //         },
-    //         {
-    //             path: "upload-id-photo",
-    //             element: (
-    //                 <ResponderRegistrationGuard requireOTPVerified={true}>
-    //                     <UploadID />
-    //                 </ResponderRegistrationGuard>
-    //             ),
-    //         },
-    //         {
-    //             path: "registration-complete",
-    //             element: (
-    //                 <ResponderRegistrationGuard
-    //                     requireRegistrationCompleted={true}
-    //                 >
-    //                     <RegistrationComplete />
-    //                 </ResponderRegistrationGuard>
-    //             ),
-    //         },
-    //     ],
-    // },
-    {
-        path: "auth",
-        element: <AuthLayout />,
-        children: [
-            {
-                index: true,
-                element: <Navigate to="login" replace />,
-            },
-            {
-                path: "login",
-                element: <Login />,
-            },
-            {
-                path: "force-password-change",
-                element: <ForcePasswordChange />,
-            },
-        ],
-    },
-    {
-        path: "admin",
+  {
+    path: "auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="login" replace />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "force-password-change",
+        element: <ForcePasswordChange />,
+      },
+    ],
+  },
+  {
+    path: "admin",
+    element: (
+      // BlockageProvider = for blockage detection AI status
+      // WeatherProvider = for weather condition data
+      // WaterLevelProvider = for water level sensor data
+      //
+      // FusionAnalysisProvider = for fusion analysis data
+      //
+      // WebSocketProvider = for websocket connection
+      // LocationAndDevicesProvider = for location ID and device IDs
+      <ProtectedRoute>
+        <CoreProvider>
+          <WebSocketProvider>
+            <BlockageProvider>
+              <VideoProvider>
+                <WeatherProvider>
+                  <WaterLevelProvider>
+                    <FusionAnalysisProvider>
+                      <MainLayout />
+                    </FusionAnalysisProvider>
+                  </WaterLevelProvider>
+                </WeatherProvider>
+              </VideoProvider>
+            </BlockageProvider>
+          </WebSocketProvider>
+        </CoreProvider>
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="dashboard" replace />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "weather",
+        element: <Weather />,
+      },
+      {
+        path: "sensor",
+        element: <Sensor />,
+      },
+      {
+        path: "responders",
+        element: <Responders />,
+      },
+      {
+        path: "reading-logs",
+        element: <ReadingLogs />,
+      },
+      {
+        path: "notification-logs",
+        element: <NotificationLogs />,
+      },
+      {
+        path: "detection-logs",
+        element: <DetectionLogs />,
+      },
+      {
+        path: "admins",
         element: (
-            // BlockageProvider = for blockage detection AI status
-            // WeatherProvider = for weather condition data
-            // WaterLevelProvider = for water level sensor data
-            //
-            // FusionAnalysisProvider = for fusion analysis data
-            //
-            // WebSocketProvider = for websocket connection
-            // LocationAndDevicesProvider = for location ID and device IDs
-            <ProtectedRoute>
-                <CoreProvider>
-                    <WebSocketProvider>
-                        <BlockageProvider>
-                            <VideoProvider>
-                                <WeatherProvider>
-                                    <WaterLevelProvider>
-                                        <FusionAnalysisProvider>
-                                            <MainLayout />
-                                        </FusionAnalysisProvider>
-                                    </WaterLevelProvider>
-                                </WeatherProvider>
-                            </VideoProvider>
-                        </BlockageProvider>
-                    </WebSocketProvider>
-                </CoreProvider>
-            </ProtectedRoute>
+          <AdminsPageProvider>
+            <Admins />
+          </AdminsPageProvider>
         ),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="dashboard" replace />,
-            },
-            {
-                path: "dashboard",
-                element: <Dashboard />,
-            },
-            {
-                path: "weather",
-                element: <Weather />,
-            },
-            {
-                path: "sensor",
-                element: <Sensor />,
-            },
-            {
-                path: "responders",
-                element: <Responders />,
-            },
-            {
-                path: "reading-logs",
-                element: <ReadingLogs />,
-            },
-            {
-                path: "notification-logs",
-                element: <NotificationLogs />,
-            },
-            {
-                path: "admins",
-                element: (
-                    <AdminsPageProvider>
-                        <Admins />
-                    </AdminsPageProvider>
-                ),
-            },
-            {
-                path: "settings",
-                element: <Settings />,
-            },
-        ],
-    },
-    {
-        path: "/",
-        element: <Navigate to="admin" replace />,
-    },
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <Navigate to="admin" replace />,
+  },
 ]);
