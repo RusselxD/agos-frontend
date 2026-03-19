@@ -8,8 +8,8 @@ export interface DailySummary {
     max_debris_count: number;
     min_debris_timestamp: string;
     max_debris_timestamp: string;
-    least_severe_blockage: string;
-    most_severe_blockage: string;
+    least_severe_blockage: string | null;
+    most_severe_blockage: string | null;
     min_water_level_cm: number;
     max_water_level_cm: number;
     min_water_timestamp: string;

@@ -124,16 +124,16 @@ export default function DecisionFactorsGrid() {
     const { fusionAnalysis } = useFusionAnalysis();
 
     const WaterLevelTrendIcon = getWaterLevelTrendIcon(
-        fusionAnalysis?.water_level_status.trend || ""
+        fusionAnalysis?.water_level_status?.trend || ""
     );
 
     const { sensorConfig } = useWaterLevel();
 
-    const blockageStatus = fusionAnalysis?.blockage_status.status || "N/A";
-    const precipitation = fusionAnalysis?.weather_status.precipitation_mm;
-    const waterLevelCm = fusionAnalysis?.water_level_status.water_level_cm || 0;
+    const blockageStatus = fusionAnalysis?.blockage_status?.status || "N/A";
+    const precipitation = fusionAnalysis?.weather_status?.precipitation_mm;
+    const waterLevelCm = fusionAnalysis?.water_level_status?.water_level_cm || 0;
 
-    const changeRate = fusionAnalysis?.water_level_status.change_rate;
+    const changeRate = fusionAnalysis?.water_level_status?.change_rate;
 
     return (
         <div className="flex flex-col gap-2 w-1/3">
@@ -141,7 +141,7 @@ export default function DecisionFactorsGrid() {
                 title="Visual Status"
                 value={capitalizeFirstLetter(blockageStatus)}
                 className={getBlockageColors(blockageStatus)}
-                timestamp={fusionAnalysis?.blockage_status.timestamp}
+                timestamp={fusionAnalysis?.blockage_status?.timestamp}
             />
             <StatCard
                 title="Water Level"
@@ -157,19 +157,19 @@ export default function DecisionFactorsGrid() {
                         ? `${changeRate} cm/min`
                         : undefined
                 }
-                timestamp={fusionAnalysis?.water_level_status.timestamp}
+                timestamp={fusionAnalysis?.water_level_status?.timestamp}
             />
             <StatCard
                 title="Weather"
                 value={
-                    fusionAnalysis?.weather_status.weather_condition || "N/A"
+                    fusionAnalysis?.weather_status?.weather_condition || "N/A"
                 }
                 desc={
                     precipitation !== undefined
                         ? `${precipitation.toFixed(1)} mm/h`
                         : undefined
                 }
-                timestamp={fusionAnalysis?.weather_status.timestamp}
+                timestamp={fusionAnalysis?.weather_status?.timestamp}
                 className={getWeatherColors(precipitation)}
             />
         </div>

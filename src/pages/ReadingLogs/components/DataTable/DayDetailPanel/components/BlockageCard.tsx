@@ -1,6 +1,7 @@
 import { ArrowRight, ShieldAlert } from "lucide-react";
 
-const getBlockageConfig = (status: string) => {
+const getBlockageConfig = (status: string | null) => {
+    if (!status) return { textClass: "text-gray-500", bg: "bg-gray-50", border: "border-gray-200" };
     const normalized = status.toLowerCase();
     if (normalized === "clear")
         return {
@@ -25,8 +26,8 @@ export default function BlockageCard({
     leastSevere,
     mostSevere,
 }: {
-    leastSevere: string;
-    mostSevere: string;
+    leastSevere: string | null;
+    mostSevere: string | null;
 }) {
     const leastConfig = getBlockageConfig(leastSevere);
     const mostConfig = getBlockageConfig(mostSevere);
@@ -50,8 +51,8 @@ export default function BlockageCard({
                         Least Severe
                     </p>
                     <p className={`text-sm font-bold ${leastConfig.textClass}`}>
-                        {leastSevere.charAt(0).toUpperCase() +
-                            leastSevere.slice(1)}
+                        {leastSevere ? leastSevere.charAt(0).toUpperCase() +
+                            leastSevere.slice(1) : "N/A"}
                     </p>
                 </div>
 
@@ -64,8 +65,8 @@ export default function BlockageCard({
                         Most Severe
                     </p>
                     <p className={`text-sm font-bold ${mostConfig.textClass}`}>
-                        {mostSevere.charAt(0).toUpperCase() +
-                            mostSevere.slice(1)}
+                        {mostSevere ? mostSevere.charAt(0).toUpperCase() +
+                            mostSevere.slice(1) : "N/A"}
                     </p>
                 </div>
             </div>

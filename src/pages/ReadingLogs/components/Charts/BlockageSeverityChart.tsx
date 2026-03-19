@@ -18,7 +18,7 @@ export default function BlockageSeverityChart() {
         };
 
         summaries.forEach((s) => {
-            const severity = s.most_severe_blockage.toLowerCase();
+            const severity = s.most_severe_blockage?.toLowerCase();
             if (severity === "clear") distribution.clear++;
             else if (severity === "partial") distribution.partial++;
             else if (severity === "blocked") distribution.blocked++;

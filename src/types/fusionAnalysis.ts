@@ -6,9 +6,9 @@ export interface FusionAnalysisSummaryResponse extends SummaryResponse{
 
 export interface FusionAnalysisData {
     fusion_data: FusionData;
-    blockage_status : BlockageStatus;
-    water_level_status : WaterLevelStatus;
-    weather_status : WeatherStatus;
+    blockage_status: BlockageStatus | null;
+    water_level_status: WaterLevelStatus | null;
+    weather_status: WeatherStatus | null;
 }
 
 interface FusionData {

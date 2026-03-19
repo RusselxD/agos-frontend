@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { modelReadingLogAPI } from "../../lib/api/modelReadingLog";
 import type { BlockageStatus, ModelReadingListItem } from "../../types/modelReadingLog";
 import ReadingListItem from "./components/ReadingListItem";
@@ -21,6 +21,7 @@ export default function DetectionLogs() {
     const [page, setPage] = useState(1);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [statusFilter, setStatusFilter] = useState<BlockageStatus | "all">("all");
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         document.title = "Detection Logs - AGOS";
@@ -76,6 +77,23 @@ export default function DetectionLogs() {
         }
     };
 
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+                    loadMore();
+                }
+            },
+            { threshold: 0.1 },
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [hasMore, isLoadingMore]);
+
     return (
         <div className="flex flex-1 h-full overflow-hidden gap-2">
             {/* Left panel - Readings list */}
@@ -125,15 +143,11 @@ export default function DetectionLogs() {
                             />
                         ))}
 
-                        {hasMore && (
-                            <button
-                                onClick={loadMore}
-                                disabled={isLoadingMore}
-                                className="w-full py-2 text-sm text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors disabled:opacity-50"
-                            >
-                                {isLoadingMore ? "Loading..." : "Load more"}
-                            </button>
-                        )}
+                        <div ref={sentinelRef} className="py-2 flex justify-center">
+                            {isLoadingMore && (
+                                <div className="spinner w-5 h-5 border-primary border-t-transparent" />
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

@@ -12,6 +12,9 @@ import { useCoreHook } from "./CoreContext";
 
 const websocketUrl = import.meta.env.VITE_API_WS_URL;
 
+const MAX_BACKOFF_MS = 30_000;
+const BASE_BACKOFF_MS = 1_000;
+
 type WebSocketMessage = { type: string; data: any };
 
 interface WSContextValue {
@@ -26,14 +29,28 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     const [isConnected, setIsConnected] = useState(false);
     const { locationDetails } = useCoreHook();
 
+    const mountedRef = useRef(true);
+    const intentionalCloseRef = useRef(false);
+    const retryCountRef = useRef(0);
+    const retryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
     // Storage box that keeps track of event listeners for different message types
     const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(
         new Map(),
     );
 
-    useEffect(() => {
+    const connect = useCallback(() => {
         const token = localStorage.getItem("authToken");
-        if (!token || !locationDetails.location_id) return;
+        if (!token || !locationDetails.location_id || !mountedRef.current) return;
+
+        if (socketRef.current) {
+            const oldSocket = socketRef.current;
+            socketRef.current = null;
+            oldSocket.onclose = null;
+            oldSocket.onerror = null;
+            oldSocket.onmessage = null;
+            oldSocket.close();
+        }
 
         const ws = new WebSocket(
             `${websocketUrl}/ws?location_id=${locationDetails.location_id}`,
@@ -43,6 +60,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         ws.onopen = () => {
             console.log("WebSocket connected");
             setIsConnected(true);
+            retryCountRef.current = 0;
         };
 
         ws.onmessage = (e) => {
@@ -63,16 +81,39 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         ws.onclose = () => {
             console.log("WebSocket disconnected");
             setIsConnected(false);
+
+            if (!intentionalCloseRef.current && mountedRef.current) {
+                const delay = Math.min(
+                    BASE_BACKOFF_MS * 2 ** retryCountRef.current,
+                    MAX_BACKOFF_MS,
+                );
+                console.log(`Reconnecting in ${delay}ms...`);
+                retryTimeoutRef.current = setTimeout(() => {
+                    retryCountRef.current += 1;
+                    connect();
+                }, delay);
+            }
         };
 
         ws.onerror = (error) => {
             console.error("WebSocket error:", error);
         };
+    }, [locationDetails.location_id]);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        intentionalCloseRef.current = false;
+        connect();
 
         return () => {
-            ws.close();
+            mountedRef.current = false;
+            intentionalCloseRef.current = true;
+            if (retryTimeoutRef.current) {
+                clearTimeout(retryTimeoutRef.current);
+            }
+            socketRef.current?.close();
         };
-    }, [locationDetails.location_id]);
+    }, [connect]);
 
     // Function to subscribe to messages of a specific type
     // useCallback memoizes a function definition between component re-renders

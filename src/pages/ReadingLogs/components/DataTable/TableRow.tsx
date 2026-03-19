@@ -7,7 +7,8 @@ interface TableRowProps {
     onSelect: (summary: DailySummary) => void;
 }
 
-const BlockageBadge = ({ status }: { status: string }) => {
+const BlockageBadge = ({ status }: { status: string | null }) => {
+    if (!status) return <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">N/A</span>;
     const normalized = status.toLowerCase();
     let bgColor = "bg-gray-100 text-gray-600";
 
