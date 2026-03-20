@@ -153,7 +153,7 @@ const CriticalThresholdCard = () => {
 };
 
 export default function SensorConfiguration() {
-    const { isFetching, isEditing, setIsEditing, handleSaveChanges } =
+    const { isFetching, isSaving, isEditing, setIsEditing, handleSaveChanges } =
         useCalibrationCard();
 
     if (isFetching) {
@@ -182,15 +182,17 @@ export default function SensorConfiguration() {
                         <>
                             <button
                                 onClick={() => setIsEditing(false)}
+                                disabled={isSaving}
                                 className="btn-cancel"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => handleSaveChanges()}
+                                disabled={isSaving}
                                 className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary"
                             >
-                                Save Changes
+                                {isSaving ? "Saving..." : "Save Changes"}
                             </button>
                         </>
                     ) : (

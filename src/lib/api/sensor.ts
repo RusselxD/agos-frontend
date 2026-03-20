@@ -66,6 +66,17 @@ export const sensorAPI = {
         return res.data as string[];
     },
 
+    updateSensorConfig: async (
+        sensor_device_id: number,
+        config: SensorConfig,
+    ): Promise<SensorConfig> => {
+        const res = await apiClient.put(
+            `sensor-devices/${sensor_device_id}/config`,
+            config,
+        );
+        return res.data as SensorConfig;
+    },
+
     getSensorReadingsForExport: async (
         start_datetime: string,
         end_datetime: string,
