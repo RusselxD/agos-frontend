@@ -1,6 +1,6 @@
 # AGOS Admin Frontend
 
-Admin dashboard for AGOS (Advanced Governance and Operations System) — a real-time water management and flood monitoring platform.
+Admin dashboard for AGOS — a real-time water management and flood monitoring platform.
 
 ## Stack
 
