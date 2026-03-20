@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# AGOS Admin Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Admin dashboard for AGOS (Advanced Governance and Operations System) — a real-time water management and flood monitoring platform.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: React 19 + TypeScript
+- **Build**: Vite 7
+- **Styling**: Tailwind CSS (primary: #0A3D62, accent: #1ABC9C, font: Poppins)
+- **Routing**: React Router 7
+- **HTTP**: Axios (JWT auto-refresh interceptor)
+- **Charts**: Chart.js + react-chartjs-2
+- **Export**: ExcelJS, PapaParse
+- **Icons**: Lucide React
+- **State**: Context API (no Redux/Zustand)
+- **Real-time**: WebSocket
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+
+- Running AGOS backend
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Install dependencies
+npm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Create .env file
+echo 'VITE_API_BASE_URL=http://localhost:8000' > .env
+echo 'VITE_API_WS_URL=ws://localhost:8000/ws' >> .env
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_BASE_URL` | Backend API URL (e.g., `http://localhost:8000`) |
+| `VITE_API_WS_URL` | Backend WebSocket URL (e.g., `ws://localhost:8000/ws`) |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server with HMR |
+| `npm run build` | Type-check and build for production |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview production build |
+
+## Pages
+
+| Route | Page | Description |
+|-------|------|-------------|
+| `/admin/dashboard` | Dashboard | Fusion risk score, water level, weather, blockage status, HLS video |
+| `/admin/weather` | Weather | Weather conditions from OpenMeteo |
+| `/admin/sensor` | Sensor | Sensor config, readings table, water level trend chart, data export |
+| `/admin/responders` | Responders | Responder list, groups, notification templates, announcements |
+| `/admin/reading-logs` | Reading Logs | Daily summaries, charts, AI analysis (SSE streaming) |
+| `/admin/notification-logs` | Notification Logs | Per-responder notification delivery history |
+| `/admin/detection-logs` | Detection Logs | AI blockage detection image history |
+| `/admin/admins` | Admins | Admin user management and audit logs |
+| `/admin/settings` | Settings | Data retention, sensor configuration |
+
+## Project Structure
+
 ```
+src/
+├── components/          # Shared components (Sidebar, MainLayout, etc.)
+├── context/             # Global context providers
+│   ├── AuthContext       # JWT auth state + auto-refresh
+│   ├── CoreContext        # Location and device data
+│   ├── WebSocketContext   # WS connection + message subscription
+│   ├── BlockageContext    # Blockage detection state
+│   ├── WeatherContext     # Weather data state
+│   ├── WaterLevelContext  # Sensor data state
+│   ├── FusionAnalysisContext  # Fusion risk score state
+│   ├── VideoContext       # HLS video stream state
+│   └── ToastContext       # Toast notifications
+├── hooks/               # Custom hooks (useAnalysisStream)
+├── lib/api/             # API client modules (one per domain)
+├── pages/               # Page components (folder per page)
+└── types/               # TypeScript interfaces (one per domain)
+```
+
+## Auth
+
+JWT-based with access + refresh tokens. The axios interceptor automatically refreshes expired tokens. Admin login at `/auth/login`.
