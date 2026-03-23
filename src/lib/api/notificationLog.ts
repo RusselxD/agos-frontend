@@ -1,6 +1,7 @@
 import type { NotificationType } from "../../types/responder";
 import type {
     DeliveryLogPaginatedResponse,
+    NotificationAnalyticsResponse,
     ResponderNotificationSummary,
 } from "../../types/notificationLog";
 import apiClient from "./axiosConfig";
@@ -34,5 +35,27 @@ export const notificationLogAPI = {
         } catch (error) {
             throw error;
         }
+    },
+
+    getAnalytics: async (
+        dateFrom?: string,
+        dateTo?: string,
+    ): Promise<NotificationAnalyticsResponse> => {
+        const params: Record<string, string> = {};
+        if (dateFrom) params.date_from = dateFrom;
+        if (dateTo) params.date_to = dateTo;
+        const res = await apiClient.get("/notification-logs/analytics", { params });
+        return res.data as NotificationAnalyticsResponse;
+    },
+
+    exportDeliveries: async (
+        dateFrom?: string,
+        dateTo?: string,
+    ): Promise<Record<string, unknown>[]> => {
+        const params: Record<string, string> = {};
+        if (dateFrom) params.date_from = dateFrom;
+        if (dateTo) params.date_to = dateTo;
+        const res = await apiClient.get("/notification-logs/export", { params });
+        return res.data as Record<string, unknown>[];
     },
 };

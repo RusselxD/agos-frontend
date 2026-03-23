@@ -19,6 +19,14 @@ export const adminUsersAPI = {
         return res.data as AdminUserResponse[];
     },
 
+    deactivateAdmin: async (userId: string, reason: string): Promise<void> => {
+        await apiClient.put(`admin-users/${userId}/deactivate`, { reason });
+    },
+
+    reactivateAdmin: async (userId: string): Promise<void> => {
+        await apiClient.put(`admin-users/${userId}/reactivate`);
+    },
+
     getAdminLogs: async (
         page: number,
         pageSize: number

@@ -12,6 +12,7 @@ interface AdminsPageContextValue {
     addNewAdmin: (newAdmin: AdminUserResponse) => void;
     logRefetchTrigger: number;
     triggerLogRefetch: () => void;
+    refetchAdmins: () => void;
 }
 
 const AdminsPageContext = createContext<AdminsPageContextValue | undefined>(
@@ -53,6 +54,16 @@ export function AdminsPageProvider({ children }: { children: ReactNode }) {
         setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
     };
 
+    const refetchAdmins = async () => {
+        try {
+            const res = await adminUsersAPI.getAllAdmins();
+            setAdmins(res);
+            triggerLogRefetch();
+        } catch {
+            toastError("Failed to refresh admin users");
+        }
+    };
+
     const contextValue = useMemo(
         () => ({
             admins,
@@ -62,6 +73,7 @@ export function AdminsPageProvider({ children }: { children: ReactNode }) {
             addNewAdmin,
             logRefetchTrigger,
             triggerLogRefetch,
+            refetchAdmins,
         }),
         [admins, isFetchingAdmins, createNewAdminIsOpen, logRefetchTrigger]
     );

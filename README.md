@@ -59,16 +59,16 @@ npm run dev
 | `/admin/sensor` | Sensor | Sensor config, readings table, water level trend chart, data export |
 | `/admin/responders` | Responders | Responder list, groups, notification templates, announcements |
 | `/admin/reading-logs` | Reading Logs | Daily summaries, charts, AI analysis (SSE streaming) |
-| `/admin/notification-logs` | Notification Logs | Per-responder notification delivery history |
+| `/admin/notification-logs` | Notification Logs | Per-responder delivery history, analytics cards, Excel export |
 | `/admin/detection-logs` | Detection Logs | AI blockage detection image history |
-| `/admin/admins` | Admins | Admin user management and audit logs |
+| `/admin/admins` | Admins | Admin user management (create, deactivate/reactivate), audit logs |
 | `/admin/settings` | Settings | Data retention, sensor configuration |
 
 ## Project Structure
 
 ```
 src/
-├── components/          # Shared components (Sidebar, MainLayout, etc.)
+├── components/          # Shared components (Sidebar, MainLayout, ErrorBoundary, etc.)
 ├── context/             # Global context providers
 │   ├── AuthContext       # JWT auth state + auto-refresh
 │   ├── CoreContext        # Location and device data

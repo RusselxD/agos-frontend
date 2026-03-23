@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -82,43 +83,45 @@ export const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: <ErrorBoundary><Dashboard /></ErrorBoundary>,
       },
       {
         path: "weather",
-        element: <Weather />,
+        element: <ErrorBoundary><Weather /></ErrorBoundary>,
       },
       {
         path: "sensor",
-        element: <Sensor />,
+        element: <ErrorBoundary><Sensor /></ErrorBoundary>,
       },
       {
         path: "responders",
-        element: <Responders />,
+        element: <ErrorBoundary><Responders /></ErrorBoundary>,
       },
       {
         path: "reading-logs",
-        element: <ReadingLogs />,
+        element: <ErrorBoundary><ReadingLogs /></ErrorBoundary>,
       },
       {
         path: "notification-logs",
-        element: <NotificationLogs />,
+        element: <ErrorBoundary><NotificationLogs /></ErrorBoundary>,
       },
       {
         path: "detection-logs",
-        element: <DetectionLogs />,
+        element: <ErrorBoundary><DetectionLogs /></ErrorBoundary>,
       },
       {
         path: "admins",
         element: (
-          <AdminsPageProvider>
-            <Admins />
-          </AdminsPageProvider>
+          <ErrorBoundary>
+            <AdminsPageProvider>
+              <Admins />
+            </AdminsPageProvider>
+          </ErrorBoundary>
         ),
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: <ErrorBoundary><Settings /></ErrorBoundary>,
       },
     ],
   },

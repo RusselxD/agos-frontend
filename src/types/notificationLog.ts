@@ -35,3 +35,27 @@ export interface DeliveryLogPaginatedResponse {
     items: DeliveryLogItem[];
     has_more: boolean;
 }
+
+export interface TypeBreakdown {
+    type: string;
+    total: number;
+    acknowledged: number;
+    avg_response_time_seconds: number | null;
+}
+
+export interface ResponderRanking {
+    responder_id: string;
+    first_name: string;
+    last_name: string;
+    avg_response_time_seconds: number;
+    total_acknowledged: number;
+}
+
+export interface NotificationAnalyticsResponse {
+    total_sent: number;
+    total_acknowledged: number;
+    acknowledgement_rate: number;
+    avg_response_time_seconds: number | null;
+    per_type_breakdown: TypeBreakdown[];
+    top_responders: ResponderRanking[];
+}
