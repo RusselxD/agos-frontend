@@ -24,10 +24,17 @@ interface WSContextValue {
 
 const WSContext = createContext<WSContextValue | undefined>(undefined);
 
-export function WebSocketProvider({ children }: { children: ReactNode }) {
+export function WebSocketProvider({
+    children,
+    locationId: locationIdProp,
+}: {
+    children: ReactNode;
+    locationId?: number;
+}) {
     const socketRef = useRef<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
-    const { locationDetails } = useCoreHook();
+    const coreContext = locationIdProp ? null : useCoreHook();
+    const locationId = locationIdProp || coreContext?.locationDetails.location_id || 0;
 
     const mountedRef = useRef(true);
     const intentionalCloseRef = useRef(false);
@@ -40,8 +47,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
     );
 
     const connect = useCallback(() => {
-        const token = localStorage.getItem("authToken");
-        if (!token || !locationDetails.location_id || !mountedRef.current) return;
+        if (!locationId || !mountedRef.current) return;
 
         if (socketRef.current) {
             const oldSocket = socketRef.current;
@@ -53,7 +59,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         }
 
         const ws = new WebSocket(
-            `${websocketUrl}/ws?location_id=${locationDetails.location_id}`,
+            `${websocketUrl}/ws?location_id=${locationId}`,
         );
         socketRef.current = ws;
 
@@ -98,7 +104,7 @@ export function WebSocketProvider({ children }: { children: ReactNode }) {
         ws.onerror = (error) => {
             console.error("WebSocket error:", error);
         };
-    }, [locationDetails.location_id]);
+    }, [locationId]);
 
     useEffect(() => {
         mountedRef.current = true;

@@ -28,7 +28,13 @@ const FusionAnalysisContext = createContext<
     FusionAnalysisContextValue | undefined
 >(undefined);
 
-export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
+export function FusionAnalysisProvider({
+    children,
+    isPublic = false,
+}: {
+    children: ReactNode;
+    isPublic?: boolean;
+}) {
     const [alertThresholds, setAlertThresholds] =
         useState<AlertThresholds | null>(null);
 
@@ -41,9 +47,9 @@ export function FusionAnalysisProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const fetchAlertThresholds = async () => {
             try {
-                const res: AlertThresholds = await settingsAPI.getSettingValue(
-                    "alert_thresholds"
-                );
+                const res: AlertThresholds = isPublic
+                    ? await settingsAPI.getPublicAlertThresholds()
+                    : await settingsAPI.getSettingValue("alert_thresholds");
                 setAlertThresholds(res);
             } catch (error) {
                 setError("Failed to fetch alert thresholds");

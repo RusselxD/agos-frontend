@@ -8,7 +8,7 @@ export default function FusionAnalysis() {
     return (
         <Container headerTitle="FUSION ANALYSIS" className="space-y-5 relative">
             <AlertTierContainer />
-            <div className="flex gap-3">
+            <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex-1 flex flex-col gap-5">
                     <RiskScore />
                     <TriggeredConditions />

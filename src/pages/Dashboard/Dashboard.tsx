@@ -18,12 +18,12 @@ export default function Dashboard() {
     return (
         <div className="flex flex-col gap-2">
             <Header />
-            <div className="flex w-full gap-2">
+            <div className="flex flex-col xl:flex-row w-full gap-2">
                 <VideoContainer />
-                <div className="grid gap-2 grid-rows-[0.5fr_1fr_1.3fr] w-2/6">
+                <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 xl:grid-rows-[0.5fr_1fr_1.3fr] xl:w-2/6">
                     <BlockageStatusCard />
                     <WeatherConditionCard />
-                    <WaterLevelStatusCard />
+                    <WaterLevelStatusCard className="sm:col-span-2 xl:col-span-1" />
                 </div>
             </div>
             <FusionAnalysis />

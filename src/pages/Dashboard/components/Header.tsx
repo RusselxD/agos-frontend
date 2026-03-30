@@ -25,11 +25,11 @@ const Location = () => {
     const { locationDetails } = useCoreHook();
 
     return (
-        <div className="flex -ml-1 items-center gap-2 border-r-2 border-gray-400 pr-4 mr-4">
+        <div className="flex -ml-1 items-center gap-2 md:border-r-2 md:border-gray-400 md:pr-4 md:mr-4">
             <div className="bg-red-100 p-1.5 rounded-lg">
                 <MapPinFilled className="text-red-500" />
             </div>
-            <span className="font-semibold">
+            <span className="font-semibold text-sm md:text-base truncate">
                 {locationDetails.location_name}
             </span>
         </div>
@@ -68,7 +68,7 @@ const TimeAndDate = () => {
 
 const TimeDisplay = () => {
     return (
-        <div className="flex items-center gap-2 text-sm border border-gray-300 px-3 py-2 rounded-lg bg-gray-50">
+        <div className="hidden sm:flex items-center gap-2 text-sm border border-gray-300 px-3 py-2 rounded-lg bg-gray-50">
             <div className="border-r-2 border-gray-400 pr-3 mr-3">
                 <Clock />
             </div>
@@ -79,18 +79,18 @@ const TimeDisplay = () => {
 
 const ConnectingStatus = () => {
     return (
-        <div className="flex items-center gap-2 border-amber-400 border bg-amber-100 py-2 px-3 rounded-md">
+        <div className="flex items-center gap-2 border-amber-400 border bg-amber-100 py-1.5 px-2.5 md:py-2 md:px-3 rounded-md">
             <div className="bg-amber-500 rounded-full w-3 h-3 pulse-circle"></div>
-            <p className="text-amber-600 text-sm font-semibold">Connecting</p>
+            <p className="text-amber-600 text-xs md:text-sm font-semibold">Connecting</p>
         </div>
     );
 };
 
 const Status = () => {
     return (
-        <div className="flex items-center gap-2 border-green-400 border bg-green-100 py-2 px-3 rounded-md">
+        <div className="flex items-center gap-2 border-green-400 border bg-green-100 py-1.5 px-2.5 md:py-2 md:px-3 rounded-md">
             <div className="bg-emerald-500 rounded-full w-3 h-3"></div>
-            <p className="text-emerald-600 text-sm font-semibold">Connected</p>
+            <p className="text-emerald-600 text-xs md:text-sm font-semibold">Connected</p>
         </div>
     );
 };
@@ -99,8 +99,8 @@ export default function Header() {
     const { isConnected } = useWebSocket();
 
     return (
-        <div className="bg-white custom-shadow rounded-xl pl-5 pr-3 py-2 flex items-center justify-between">
-            <div className="flex items-center">
+        <div className="bg-white custom-shadow rounded-xl px-3 md:pl-5 md:pr-3 py-2 flex items-center justify-between gap-2">
+            <div className="flex items-center min-w-0">
                 <Location />
                 {isConnected ? <Status /> : <ConnectingStatus />}
             </div>

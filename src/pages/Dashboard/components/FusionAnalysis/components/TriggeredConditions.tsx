@@ -26,7 +26,7 @@ export default function TriggeredConditions() {
 
     return (
         <div>
-            <p className="font-medium text-sm text-gray-500 mb-1">
+            <p className="font-medium text-xs md:text-sm text-gray-500 mb-1">
                 Triggered Conditions:
             </p>
             <ul className="space-y-1">
@@ -34,10 +34,9 @@ export default function TriggeredConditions() {
                     return (
                         <li key={i} className="flex items-center gap-1">
                             <CircleCheck
-                                size={18}
-                                className={getIconColor(alertName)}
+                                className={`w-4 h-4 md:w-[18px] md:h-[18px] shrink-0 ${getIconColor(alertName)}`}
                             />
-                            <span className="text-gray-900">{condition}</span>
+                            <span className="text-sm md:text-base text-gray-900">{condition}</span>
                         </li>
                     );
                 })}

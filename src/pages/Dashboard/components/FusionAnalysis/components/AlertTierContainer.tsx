@@ -58,14 +58,14 @@ export default function AlertTierContainer() {
 
     return (
         <div
-            className={`px-4 py-4 flex rounded-lg transition-colors duration-300 ease-in-out border-2 items-center ${tierDetails.borderColor} ${tierDetails.bgColor} ${tierDetails.color}`}
+            className={`px-3 py-3 md:px-4 md:py-4 flex rounded-lg transition-colors duration-300 ease-in-out border-2 items-center ${tierDetails.borderColor} ${tierDetails.bgColor} ${tierDetails.color}`}
         >
-            <tierDetails.icon size={45} />
-            <div className="ml-4">
-                <p className="transition-colors duration-300 ease-in-out text-gray-500 font-medium">
+            <tierDetails.icon className="w-8 h-8 md:w-11 md:h-11 flex-shrink-0" />
+            <div className="ml-3 md:ml-4">
+                <p className="transition-colors duration-300 ease-in-out text-gray-500 font-medium text-sm md:text-base">
                     Alert Tier
                 </p>
-                <p className="transition-colors duration-300 ease-in-out font-semibold text-2xl">{`${alert_name}`}</p>
+                <p className="transition-colors duration-300 ease-in-out font-semibold text-xl md:text-2xl">{`${alert_name}`}</p>
             </div>
         </div>
     );

@@ -21,13 +21,13 @@ export default function StatusText() {
     const levelCount: number = status ? getLevelCount(status) : 0;
 
     return (
-        <div className="flex items-center gap-3 my-2">
+        <div className="flex items-center gap-2 md:gap-3 my-1.5 md:my-2">
             <span
-                className={`w-4 h-4 rounded-full ${barColors[levelCount]} ${
+                className={`w-3.5 h-3.5 md:w-4 md:h-4 rounded-full ${barColors[levelCount]} ${
                     levelCount === 2 && "pulse-circle"
                 }`}
             ></span>
-            <span className={`font-bold text-3xl ${getStatusColor(status)}`}>
+            <span className={`font-bold text-2xl md:text-3xl ${getStatusColor(status)}`}>
                 {status}
             </span>
         </div>

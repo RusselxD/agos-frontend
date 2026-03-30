@@ -5,11 +5,11 @@ import MetricCards from "./components/MetricCards";
 import { useWaterLevel } from "../../../../context/WaterLevelContext";
 import WaterLevelStatusCardSkeleton from "./components/WaterLevelStatusCardSkeleton";
 
-export default function WaterLevelStatusCard() {
+export default function WaterLevelStatusCard({ className }: { className?: string }) {
     const { isFetching, isFetchingConfig, error, warning } = useWaterLevel();
 
     if (isFetchingConfig || isFetching) {
-        return <WaterLevelStatusCardSkeleton />;
+        return <WaterLevelStatusCardSkeleton className={className} />;
     }
 
     if (error) {
@@ -17,7 +17,7 @@ export default function WaterLevelStatusCard() {
     }
 
     return (
-        <Card className="!justify-start bg-white" warning={warning}>
+        <Card className={`!justify-start bg-white ${className || ""}`} warning={warning}>
             <CardHeaderText label="WATER LEVEL STATUS" />
             <div className="flex h-full justify-between">
                 <MainDisplay />

@@ -8,12 +8,12 @@ interface CardProps {
 }
 
 export const CardHeaderText = ({ label }: { label: string }) => {
-    return <p className="text-sm text-gray-500 font-semibold">{label}</p>;
+    return <p className="text-xs md:text-sm text-gray-500 font-semibold">{label}</p>;
 };
 
 export const ErrorCard = ({ message }: { message: string }) => {
     return (
-        <div className="shadow-md shadow-red-200 border rounded-xl p-4 flex gap-2 bg-red-50 border-red-400">
+        <div className="shadow-md shadow-red-200 border rounded-xl p-3 md:p-4 flex gap-2 bg-red-50 border-red-400">
             <CircleAlert className="w-6 h-6 text-red-500 mt-0.5" />
             <div className="space-y-1">
                 <p className="font-medium text-red-800">Error Loading Data</p>
@@ -26,7 +26,7 @@ export const ErrorCard = ({ message }: { message: string }) => {
 export default function Card({ children, className, warning }: CardProps) {
     return (
         <div
-            className={`custom-shadow border border-gray-300 rounded-xl p-4 flex flex-col justify-between ${warning ? "!border-amber-400 !bg-amber-50 group relative" : ""} ${
+            className={`custom-shadow border border-gray-300 rounded-xl p-3 md:p-4 flex flex-col justify-between ${warning ? "!border-amber-400 !bg-amber-50 group relative" : ""} ${
                 className || "bg-white"
             }`}
         >

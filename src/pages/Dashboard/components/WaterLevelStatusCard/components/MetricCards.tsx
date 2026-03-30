@@ -11,11 +11,11 @@ const StatCard = ({ title, data, desc }: StatCardProps) => {
 
     return (
         <div
-            className={`border w-full h-full flex flex-col justify-between rounded-md px-4 py-3 ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
+            className={`border w-full h-full flex flex-col justify-between rounded-md px-3 py-2 md:px-4 md:py-3 ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
         >
-            <p className="text-sm font-medium text-gray-700">{title}</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700">{title}</p>
             <p>
-                <span className="text-2xl font-semibold">{data}</span>
+                <span className="text-xl md:text-2xl font-semibold">{data}</span>
                 <span className="text-xs ml-1 text-gray-700">{desc}</span>
             </p>
         </div>
@@ -69,7 +69,7 @@ export default function MetricCards() {
         changeRateData > 0 ? `+${changeRateData}` : `${changeRateData}`;
 
     return (
-        <div className="flex flex-col justify-between ml-10 gap-3 flex-1">
+        <div className="flex flex-col justify-between ml-4 lg:ml-10 gap-3 flex-1">
             <StatCard
                 title="Change Rate"
                 data={changeRateDisplay}

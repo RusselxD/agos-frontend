@@ -8,6 +8,7 @@ import Sensor from "./pages/Sensor";
 import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
 import ProtectedRoute from "./guards/ProtectedRoute";
+import Public from "./pages/Public";
 
 import Admins from "./pages/Admins";
 import Login from "./pages/Login";
@@ -127,6 +128,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Navigate to="admin" replace />,
+    element: <ErrorBoundary><Public /></ErrorBoundary>,
   },
 ]);

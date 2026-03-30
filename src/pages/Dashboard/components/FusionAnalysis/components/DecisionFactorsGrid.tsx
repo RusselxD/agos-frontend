@@ -94,7 +94,7 @@ const LastUpdatedInfo = ({ timestamp }: { timestamp?: string }) => {
     }, [timestamp]);
 
     return (
-        <p className="absolute font-medium top-2 right-2 text-sm text-gray-500">{`${
+        <p className="absolute font-medium top-1.5 right-1.5 md:top-2 md:right-2 text-[0.65rem] md:text-xs text-gray-500">{`${
             timeAgo || "N/A"
         }`}</p>
     );
@@ -109,11 +109,11 @@ const StatCard = ({
 }: StatCardProps) => {
     return (
         <div
-            className={`border-l-4 border relative p-4 h-fit rounded-md ${className}`}
+            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md ${className}`}
         >
-            <p className="text-sm text-gray-600">{title}</p>
-            <div className="font-semibold text-xl">{value}</div>
-            {desc && <p className="text-sm text-gray-600">{desc}</p>}
+            <p className="text-xs md:text-sm text-gray-600">{title}</p>
+            <div className="font-semibold text-lg md:text-xl">{value}</div>
+            {desc && <p className="text-xs md:text-sm text-gray-600">{desc}</p>}
 
             <LastUpdatedInfo timestamp={timestamp} />
         </div>
@@ -136,7 +136,7 @@ export default function DecisionFactorsGrid() {
     const changeRate = fusionAnalysis?.water_level_status?.change_rate;
 
     return (
-        <div className="flex flex-col gap-2 w-1/3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2 lg:w-1/3">
             <StatCard
                 title="Visual Status"
                 value={capitalizeFirstLetter(blockageStatus)}

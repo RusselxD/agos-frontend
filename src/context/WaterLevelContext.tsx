@@ -32,8 +32,10 @@ const WaterLevelContext = createContext<WaterLevelContextValue | undefined>(
 
 export function WaterLevelProvider({
     children,
+    locationId: locationIdProp,
 }: {
     children: ReactNode;
+    locationId?: number;
 }): React.JSX.Element {
     const [sensorData, setSensorData] = useState<SensorData | null>(null);
     const [sensorConfig, setSensorConfig] = useState<SensorConfig | null>(null);
@@ -44,16 +46,18 @@ export function WaterLevelProvider({
     const [warning, setWarning] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const { sensorDeviceDetails } = useCoreHook();
+    const coreContext = locationIdProp ? null : useCoreHook();
 
     // Fetch config data on mount
     useEffect(() => {
         const fetchSensorConfig = async () => {
             try {
                 setIsFetchingConfig(true);
-                const config = await sensorAPI.getSensorConfig(
-                    sensorDeviceDetails.sensor_device_id,
-                );
+                const config = locationIdProp
+                    ? await sensorAPI.getSensorConfigByLocation(locationIdProp)
+                    : await sensorAPI.getSensorConfig(
+                          coreContext!.sensorDeviceDetails.sensor_device_id,
+                      );
                 setSensorConfig(config);
             } catch (error) {
                 console.log(error);

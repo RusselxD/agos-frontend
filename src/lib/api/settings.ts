@@ -7,6 +7,11 @@ export const settingsAPI = {
         return res.data as any;
     },
 
+    getPublicAlertThresholds: async (): Promise<any> => {
+        const res = await apiClient.get("/system-settings/public/alert-thresholds");
+        return res.data as any;
+    },
+
     updateSetting: async (update: SystemSettingsUpdate): Promise<any> => {
         const res = await apiClient.put(
             `/system-settings/${update.key}`,

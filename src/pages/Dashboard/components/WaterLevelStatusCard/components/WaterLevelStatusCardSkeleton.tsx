@@ -1,9 +1,9 @@
 import Card from "../../ui/Card";
 import { CardHeaderText } from "../../ui/Card";
 
-export default function WaterLevelStatusCardSkeleton() {
+export default function WaterLevelStatusCardSkeleton({ className }: { className?: string }) {
     return (
-        <Card className=" bg-white">
+        <Card className={`bg-white ${className || ""}`}>
             <CardHeaderText label="WATER LEVEL STATUS" />
             <div className="flex flex-1">
                 {/* Main Display */}

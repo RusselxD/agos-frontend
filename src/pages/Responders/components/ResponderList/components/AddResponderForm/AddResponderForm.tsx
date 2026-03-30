@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, Dispatch, SetStateAction } from "react";
-import { FileSpreadsheet, Plus } from "lucide-react";
+import { Download, FileSpreadsheet, Plus } from "lucide-react";
 import { useResponderList } from "../../context/ResponderListContext";
 import { normalizeNumberInput } from "../../../../../../lib/utils/formatter";
 import Papa from "papaparse";
@@ -115,6 +115,14 @@ export default function AddResponderForm() {
         }
     };
 
+    const handleDownloadTemplate = async () => {
+        try {
+            await responderAPI.downloadTemplate();
+        } catch {
+            toastError("Failed to download template.");
+        }
+    };
+
     const handleFileImport = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -204,6 +212,17 @@ export default function AddResponderForm() {
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Another</span>
+                    </button>
+
+                    <span className="text-gray-300">|</span>
+
+                    <button
+                        type="button"
+                        onClick={handleDownloadTemplate}
+                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 btn-custom"
+                    >
+                        <Download className="w-4 h-4" />
+                        <span>Download Template</span>
                     </button>
 
                     <span className="text-gray-300">|</span>

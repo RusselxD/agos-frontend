@@ -32,9 +32,9 @@ const HeadLabels = () => {
 
     return (
         <div className="flex items-center justify-between">
-            <p className="font-medium text-gray-800">Combined Risk Score</p>
+            <p className="font-medium text-sm md:text-base text-gray-800">Combined Risk Score</p>
             <p
-                className={`font-bold text-2xl ${getTextColor(
+                className={`font-bold text-xl md:text-2xl ${getTextColor(
                     combined_risk_score
                 )}`}
             >
@@ -48,9 +48,9 @@ const ProgressBarSegment = () => {
     const { combined_risk_score, getBarColor } = getData();
 
     return (
-        <div className="relative bg-gray-300 rounded-full w-full h-5">
+        <div className="relative bg-gray-300 rounded-full w-full h-4 md:h-5">
             <div
-                className={`absolute transition-[width] duration-500 ease-in-out top-0 left-0 rounded-full h-5 ${getBarColor(
+                className={`absolute transition-[width] duration-500 ease-in-out top-0 left-0 rounded-full h-4 md:h-5 ${getBarColor(
                     combined_risk_score
                 )}`}
                 style={{ width: `${combined_risk_score}%` }}
@@ -63,7 +63,7 @@ const Labels = () => {
     const { alertThresholds } = useFusionAnalysis();
 
     return (
-        <div className="flex items-center justify-between text-sm mt-1 font-semibold">
+        <div className="flex items-center justify-between text-xs sm:text-sm mt-1 font-semibold flex-wrap gap-y-1">
             <p className="text-gray-800">0</p>
             <p className="text-emerald-600">{`Safe (0-${alertThresholds?.tier_1_max})`}</p>
             <p className="text-yellow-600">{`Warning (${alertThresholds?.tier_2_min}-${alertThresholds?.tier_2_max})`}</p>

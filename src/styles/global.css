@@ -26,6 +26,10 @@ body {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     }
 
+    .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
     .btn-submit {
         @apply w-full flex items-center justify-center gap-5 rounded-xl py-3 transition-colors;
         @apply bg-primary text-gray-100;

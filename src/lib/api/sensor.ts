@@ -18,6 +18,15 @@ export const sensorAPI = {
         return res.data as SensorConfig;
     },
 
+    getSensorConfigByLocation: async (
+        locationId: number,
+    ): Promise<SensorConfig> => {
+        const res = await apiClient.get(
+            `sensor-devices/${locationId}/config/by-location`,
+        );
+        return res.data as SensorConfig;
+    },
+
     getLatestSensorReadings: async (
         page: number,
         page_size: number,

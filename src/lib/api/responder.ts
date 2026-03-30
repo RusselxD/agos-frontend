@@ -40,4 +40,19 @@ export const responderAPI = {
             throw error;
         }
     },
+
+    downloadTemplate: async (): Promise<void> => {
+        const res = await apiClient.get("/responders/template", {
+            responseType: "blob",
+        });
+        const blob = new Blob([res.data], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "responder_template.xlsx";
+        link.click();
+        window.URL.revokeObjectURL(url);
+    },
 };

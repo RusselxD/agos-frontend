@@ -20,10 +20,10 @@ export default function LastUpdatedInfo({ timestamp }: { timestamp: string }) {
 
     return (
         <div
-            className={`rounded-lg p-2.5 border ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
+            className={`rounded-lg p-2 md:p-2.5 border ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
         >
-            <p className="text-sm text-gray-500">Last Updated</p>
-            <p className="text-sm">{timeAgo}</p>
+            <p className="text-xs md:text-sm text-gray-500">Last Updated</p>
+            <p className="text-xs md:text-sm">{timeAgo}</p>
         </div>
     );
 }
