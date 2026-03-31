@@ -36,6 +36,12 @@ const tierConfig: TierConfig = {
         borderColor: "border-red-400",
         icon: AlertCircle,
     },
+    unavailable: {
+        color: "text-gray-600",
+        bgColor: "bg-gray-50",
+        borderColor: "border-gray-300",
+        icon: AlertCircle,
+    },
     "n/a": {
         color: "text-gray-600",
         bgColor: "bg-gray-50",
