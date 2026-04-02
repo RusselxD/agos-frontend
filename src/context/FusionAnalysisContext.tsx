@@ -47,9 +47,9 @@ export function FusionAnalysisProvider({
     useEffect(() => {
         const fetchAlertThresholds = async () => {
             try {
-                const res: AlertThresholds = isPublic
+                const res = (isPublic
                     ? await settingsAPI.getPublicAlertThresholds()
-                    : await settingsAPI.getSettingValue("alert_thresholds");
+                    : await settingsAPI.getSettingValue("alert_thresholds")) as AlertThresholds;
                 setAlertThresholds(res);
             } catch (error) {
                 setError("Failed to fetch alert thresholds");
@@ -58,7 +58,7 @@ export function FusionAnalysisProvider({
         };
 
         fetchAlertThresholds();
-    }, []);
+    }, [isPublic]);
 
     useWebSocketMessage(
         "fusion_analysis_update",

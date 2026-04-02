@@ -25,6 +25,7 @@ export default function LoginForm() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrorMessage("");
 
         // Remove focus from any input fields
         if (document.activeElement instanceof HTMLElement) {

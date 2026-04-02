@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../lib/api/auth";
+import { resetRefreshState } from "../lib/api/axiosConfig";
 import type { LoginCredentials, TokenResponse } from "../types/auth";
 import axios from "axios";
 
@@ -143,6 +144,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             localStorage.removeItem("refreshToken");
             setIsAuthenticated(false);
             setUser(null);
+            resetRefreshState();
         } catch (error) {}
     };
 

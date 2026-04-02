@@ -15,11 +15,12 @@ const websocketUrl = import.meta.env.VITE_API_WS_URL;
 const MAX_BACKOFF_MS = 30_000;
 const BASE_BACKOFF_MS = 1_000;
 
-type WebSocketMessage = { type: string; data: any };
+type WebSocketMessage = { type: string; data: unknown };
 
 interface WSContextValue {
     isConnected: boolean;
-    subscribe: (type: string, callback: (data: any) => void) => () => void;
+    disconnectedSince: Date | null;
+    subscribe: (type: string, callback: (data: unknown) => void) => () => void;
 }
 
 const WSContext = createContext<WSContextValue | undefined>(undefined);
@@ -33,6 +34,7 @@ export function WebSocketProvider({
 }) {
     const socketRef = useRef<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
+    const [disconnectedSince, setDisconnectedSince] = useState<Date | null>(null);
     const coreContext = locationIdProp ? null : useCoreHook();
     const locationId = locationIdProp || coreContext?.locationDetails.location_id || 0;
 
@@ -42,7 +44,7 @@ export function WebSocketProvider({
     const retryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Storage box that keeps track of event listeners for different message types
-    const listenersRef = useRef<Map<string, Set<(data: any) => void>>>(
+    const listenersRef = useRef<Map<string, Set<(data: unknown) => void>>>(
         new Map(),
     );
 
@@ -64,15 +66,16 @@ export function WebSocketProvider({
         socketRef.current = ws;
 
         ws.onopen = () => {
-            console.log("WebSocket connected");
+            if (import.meta.env.DEV) console.log("WebSocket connected");
             setIsConnected(true);
+            setDisconnectedSince(null);
             retryCountRef.current = 0;
         };
 
         ws.onmessage = (e) => {
             try {
                 const message: WebSocketMessage = JSON.parse(e.data);
-                console.log("Message received: ", message);
+                if (import.meta.env.DEV) console.log("Message received: ", message);
 
                 // Call function subscribers for this message type
                 const callbacks = listenersRef.current.get(message.type);
@@ -80,20 +83,21 @@ export function WebSocketProvider({
                     callbacks.forEach((callback) => callback(message.data));
                 }
             } catch (error) {
-                console.error("Failed to parse WebSocket message:", error);
+                if (import.meta.env.DEV) console.error("Failed to parse WebSocket message:", error);
             }
         };
 
         ws.onclose = () => {
-            console.log("WebSocket disconnected");
+            if (import.meta.env.DEV) console.log("WebSocket disconnected");
             setIsConnected(false);
+            setDisconnectedSince(new Date());
 
             if (!intentionalCloseRef.current && mountedRef.current) {
                 const delay = Math.min(
                     BASE_BACKOFF_MS * 2 ** retryCountRef.current,
                     MAX_BACKOFF_MS,
                 );
-                console.log(`Reconnecting in ${delay}ms...`);
+                if (import.meta.env.DEV) console.log(`Reconnecting in ${delay}ms...`);
                 retryTimeoutRef.current = setTimeout(() => {
                     retryCountRef.current += 1;
                     connect();
@@ -102,7 +106,7 @@ export function WebSocketProvider({
         };
 
         ws.onerror = (error) => {
-            console.error("WebSocket error:", error);
+            if (import.meta.env.DEV) console.error("WebSocket error:", error);
         };
     }, [locationId]);
 
@@ -124,7 +128,7 @@ export function WebSocketProvider({
     // Function to subscribe to messages of a specific type
     // useCallback memoizes a function definition between component re-renders
     const subscribe = useCallback(
-        (type: string, callback: (data: any) => void) => {
+        (type: string, callback: (data: unknown) => void) => {
             // If no one is listening to this type yet, create a new set
             if (!listenersRef.current.has(type)) {
                 listenersRef.current.set(type, new Set());
@@ -153,9 +157,10 @@ export function WebSocketProvider({
     const contextValue = useMemo(
         () => ({
             isConnected,
+            disconnectedSince,
             subscribe,
         }),
-        [isConnected, subscribe],
+        [isConnected, disconnectedSince, subscribe],
     );
 
     return (
@@ -175,7 +180,7 @@ export const useWebSocket = () => {
 // ===========================================
 // Custom hook to listen for specific messages
 // ===========================================
-export function useWebSocketMessage<T = any>(
+export function useWebSocketMessage<T = unknown>(
     messageType: string,
     onMessage: (data: T) => void,
 ) {
@@ -192,7 +197,7 @@ export function useWebSocketMessage<T = any>(
 
     useEffect(() => {
         const unsubscribe = subscribe(messageType, (data) => {
-            callbackRef.current(data); // Call the latest onMessage
+            callbackRef.current(data as T); // Call the latest onMessage
         });
 
         return unsubscribe; // Cleanup function on unmount

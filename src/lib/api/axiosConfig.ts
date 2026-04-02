@@ -1,6 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
 let refreshPromise: Promise<{ accessToken: string; refreshToken: string } | null> | null = null;
+let refreshFailed = false;
 
 const apiClient = axios.create({
     baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
@@ -33,6 +34,14 @@ apiClient.interceptors.response.use(
         if (error.response?.status === 401 && !original._retry) {
             original._retry = true;
 
+            if (refreshFailed) {
+                localStorage.clear();
+                if (!window.location.pathname.includes("/auth/login")) {
+                    window.location.href = "/auth/login";
+                }
+                return Promise.reject(error);
+            }
+
             const refreshToken = localStorage.getItem("refreshToken");
             if (!refreshToken) {
                 localStorage.clear();
@@ -52,6 +61,7 @@ apiClient.interceptors.response.use(
                             );
                             localStorage.setItem("authToken", data.access_token);
                             localStorage.setItem("refreshToken", data.refresh_token);
+                            refreshFailed = false;
                             return {
                                 accessToken: data.access_token,
                                 refreshToken: data.refresh_token,
@@ -68,6 +78,7 @@ apiClient.interceptors.response.use(
                     return apiClient(original);
                 }
             } catch {
+                refreshFailed = true;
                 localStorage.clear();
                 if (!window.location.pathname.includes("/auth/login")) {
                     window.location.href = "/auth/login";
@@ -78,5 +89,9 @@ apiClient.interceptors.response.use(
         return Promise.reject(error);
     },
 );
+
+export function resetRefreshState() {
+    refreshFailed = false;
+}
 
 export default apiClient;

@@ -2,22 +2,22 @@ import type { SystemSettingsUpdate } from "../../types/system_settings";
 import apiClient from "./axiosConfig";
 
 export const settingsAPI = {
-    getSettingValue: async (key: string): Promise<any> => {
+    getSettingValue: async (key: string): Promise<unknown> => {
         const res = await apiClient.get(`/system-settings/${key}/value`);
-        return res.data as any;
+        return res.data;
     },
 
-    getPublicAlertThresholds: async (): Promise<any> => {
+    getPublicAlertThresholds: async (): Promise<unknown> => {
         const res = await apiClient.get("/system-settings/public/alert-thresholds");
-        return res.data as any;
+        return res.data;
     },
 
-    updateSetting: async (update: SystemSettingsUpdate): Promise<any> => {
+    updateSetting: async (update: SystemSettingsUpdate): Promise<unknown> => {
         const res = await apiClient.put(
             `/system-settings/${update.key}`,
             update,
         );
-        return res.data as any;
+        return res.data;
     },
 
     updateDataRetention: async (

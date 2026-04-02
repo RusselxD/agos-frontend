@@ -1,7 +1,20 @@
+import type { ReactNode } from "react";
+
 type Props = {
     text: string;
     showCursor?: boolean;
 };
+
+function renderInline(text: string): ReactNode[] {
+    const parts = text.split(/\*\*(.*?)\*\*/g);
+    return parts.map((part, idx) =>
+        idx % 2 === 1 ? (
+            <strong key={idx} className="font-semibold text-gray-900">{part}</strong>
+        ) : (
+            <span key={idx}>{part}</span>
+        )
+    );
+}
 
 export default function MarkdownText({ text, showCursor = false }: Props) {
     const lines = text.split("\n");
@@ -14,52 +27,42 @@ export default function MarkdownText({ text, showCursor = false }: Props) {
 
                 const isBullet = line.trim().startsWith("- ");
 
-                // Convert **bold** to <strong>
-                const toHtml = (raw: string) =>
-                    raw.replace(
-                        /\*\*(.*?)\*\*/g,
-                        (_, m) =>
-                            `<strong class="font-semibold text-gray-900">${m}</strong>`,
-                    );
-
                 // Heading: lines like "**Some Title**" that are the entire line
                 const isHeading =
                     /^\*\*(.+)\*\*$/.test(line.trim()) && !isBullet;
                 if (isHeading) {
-                    const html = toHtml(line.trim());
                     return (
                         <p
                             key={i}
                             className="text-sm font-semibold text-gray-900 mt-2"
-                            dangerouslySetInnerHTML={{ __html: html }}
-                        />
+                        >
+                            {renderInline(line.trim())}
+                        </p>
                     );
                 }
 
                 // Bullet point
                 if (isBullet) {
-                    const html = toHtml(line.replace(/^- /, ""));
                     return (
                         <div key={i} className="flex gap-2 items-start pl-1">
                             <span className="text-sky-500 mt-[7px] text-[6px] shrink-0">
                                 ●
                             </span>
-                            <span
-                                className="text-sm text-gray-600 leading-relaxed"
-                                dangerouslySetInnerHTML={{ __html: html }}
-                            />
+                            <span className="text-sm text-gray-600 leading-relaxed">
+                                {renderInline(line.replace(/^- /, ""))}
+                            </span>
                         </div>
                     );
                 }
 
                 // Regular paragraph
-                const html = toHtml(line);
                 return (
                     <p
                         key={i}
                         className="text-sm text-gray-600 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: html }}
-                    />
+                    >
+                        {renderInline(line)}
+                    </p>
                 );
             })}
 

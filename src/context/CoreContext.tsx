@@ -63,6 +63,7 @@ interface CoreContextValue {
 const CoreContext = createContext<CoreContextValue | undefined>(undefined);
 
 export function CoreProvider({ children }: { children: React.ReactNode }) {
+    const [coreError, setCoreError] = useState<string | null>(null);
     const [locationDetails, setLocationDetails] = useState<LocationDetails>(
         () =>
             getObjectFromStorage<LocationDetails>(STORAGE_KEYS.LOCATION) ?? {
@@ -125,7 +126,7 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
                     setCameraDeviceDetails(camera);
                 }
             } catch (error) {
-                toastError("Failed to fetch location and device details");
+                setCoreError("Failed to load system configuration. Please refresh the page.");
             }
         };
 
@@ -187,6 +188,23 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
             exportingToExcelInProgress,
         ],
     );
+
+    if (coreError) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-4 p-8">
+                <div className="text-center">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-2">Unable to Connect</h2>
+                    <p className="text-sm text-gray-500 mb-4">{coreError}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:opacity-90 transition-opacity"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <CoreContext.Provider value={contextValue}>

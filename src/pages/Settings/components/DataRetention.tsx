@@ -38,7 +38,6 @@ export default function DataRetention() {
                 setOriginalValue(Number(res));
                 setNewValue(Number(res));
             } catch (error) {
-                console.log("here");
                 toastError(
                     "Failed to fetch data retention period. Please try again.",
                 );

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export type AnalysisStatus =
     | "idle"
@@ -17,13 +17,23 @@ export function useAnalysisStream() {
     const [text, setText] = useState("");
     const [status, setStatus] = useState<AnalysisStatus>("idle");
     const abortRef = useRef<AbortController | null>(null);
+    const isMountedRef = useRef(true);
+
+    useEffect(() => {
+        return () => {
+            isMountedRef.current = false;
+            abortRef.current?.abort();
+        };
+    }, []);
 
     const analyze = async (payload: AnalysisPayload) => {
         abortRef.current?.abort();
         abortRef.current = new AbortController();
 
-        setText("");
-        setStatus("loading");
+        if (isMountedRef.current) {
+            setText("");
+            setStatus("loading");
+        }
 
         try {
             const res = await fetch(
@@ -43,7 +53,7 @@ export function useAnalysisStream() {
 
             const reader = res.body!.getReader();
             const decoder = new TextDecoder();
-            setStatus("streaming");
+            if (isMountedRef.current) setStatus("streaming");
 
             while (true) {
                 const { done, value } = await reader.read();
@@ -59,14 +69,14 @@ export function useAnalysisStream() {
                         line.replace("data: ", "").trim(),
                     );
                     if (parsed.done) {
-                        setStatus("done");
+                        if (isMountedRef.current) setStatus("done");
                         return;
                     }
-                    if (parsed.text) setText((prev) => prev + parsed.text);
+                    if (parsed.text && isMountedRef.current) setText((prev) => prev + parsed.text);
                 }
             }
         } catch (err: any) {
-            if (err.name !== "AbortError") setStatus("error");
+            if (err.name !== "AbortError" && isMountedRef.current) setStatus("error");
         }
     };
 

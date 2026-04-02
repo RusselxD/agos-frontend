@@ -40,7 +40,6 @@ export const sensorAPI = {
             },
         });
 
-        console.log(res);
         return res.data as SensorReadingResponse;
     },
 
