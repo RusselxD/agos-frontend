@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { modelReadingLogAPI } from "../../lib/api/modelReadingLog";
 import type { BlockageStatus, ModelReadingListItem } from "../../types/modelReadingLog";
 import ReadingListItem from "./components/ReadingListItem";
-import ReadingDetailDrawer from "./components/ReadingDetailDrawer";
+import ReadingDetailModal from "./components/ReadingDetailModal";
 import { useCoreHook } from "../../context/CoreContext";
 
 const STATUS_FILTERS: { label: string; value: BlockageStatus | "all" }[] = [
@@ -95,8 +95,7 @@ export default function DetectionLogs() {
     }, [hasMore, isLoadingMore]);
 
     return (
-        <div className="flex flex-1 h-full overflow-hidden gap-2">
-            {/* Left panel - Readings list */}
+        <div className="flex flex-1 h-full overflow-hidden">
             <div className="bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
@@ -152,11 +151,13 @@ export default function DetectionLogs() {
                 )}
             </div>
 
-            {/* Right panel - Detail drawer */}
-            <ReadingDetailDrawer
-                reading={selectedReading}
-                onClose={() => setSelectedReading(null)}
-            />
+            {/* Detail modal */}
+            {selectedReading && (
+                <ReadingDetailModal
+                    reading={selectedReading}
+                    onClose={() => setSelectedReading(null)}
+                />
+            )}
         </div>
     );
 }
