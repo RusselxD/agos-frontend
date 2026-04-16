@@ -41,8 +41,8 @@ export default function WaterLevelChart() {
 
     const options = useMemo(() => {
         const allLevels = [...chartData.minLevels, ...chartData.maxLevels];
-        const minLevel = Math.min(...allLevels);
-        const maxLevel = Math.max(...allLevels);
+        const minLevel = allLevels.length > 0 ? Math.min(...allLevels) : 0;
+        const maxLevel = allLevels.length > 0 ? Math.max(...allLevels) : 100;
         const range = maxLevel - minLevel;
         const yMin = Math.max(0, Math.floor(minLevel - range * 0.1));
         const yMax = Math.ceil(maxLevel + range * 0.1);

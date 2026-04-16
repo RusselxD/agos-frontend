@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 import { coreAPI } from "../../lib/api/core";
 import type { LocationDetails } from "../../types/core";
 import { WebSocketProvider } from "../../context/WebSocketContext";
@@ -15,6 +16,7 @@ import WaterLevelStatusCard from "../Dashboard/components/WaterLevelStatusCard";
 import FusionAnalysis from "../Dashboard/components/FusionAnalysis";
 
 export default function Public() {
+    const { isAuthenticated, isAuthChecking } = useAuth();
     const [location, setLocation] = useState<LocationDetails | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +31,18 @@ export default function Public() {
             document.title = "AGOS";
         };
     }, []);
+
+    if (isAuthChecking) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="spinner w-6 h-6" />
+            </div>
+        );
+    }
+
+    if (isAuthenticated) {
+        return <Navigate to="/admin" replace />;
+    }
 
     if (error) {
         return (

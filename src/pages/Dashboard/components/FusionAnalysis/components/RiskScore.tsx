@@ -65,9 +65,9 @@ const Labels = () => {
     return (
         <div className="flex items-center justify-between text-xs sm:text-sm mt-1 font-semibold flex-wrap gap-y-1">
             <p className="text-gray-800">0</p>
-            <p className="text-emerald-600">{`Safe (0-${alertThresholds?.tier_1_max})`}</p>
-            <p className="text-yellow-600">{`Warning (${alertThresholds?.tier_2_min}-${alertThresholds?.tier_2_max})`}</p>
-            <p className="text-red-600">{`Critical (${alertThresholds?.tier_3_min}+)`}</p>
+            <p className="text-emerald-600">{`Safe (0-${alertThresholds?.tier_1_max ?? "--"})`}</p>
+            <p className="text-yellow-600">{`Warning (${alertThresholds?.tier_2_min ?? "--"}-${alertThresholds?.tier_2_max ?? "--"})`}</p>
+            <p className="text-red-600">{`Critical (${alertThresholds?.tier_3_min ?? "--"}+)`}</p>
             <p className="text-gray-800">100</p>
         </div>
     );

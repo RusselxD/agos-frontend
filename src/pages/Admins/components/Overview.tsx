@@ -5,7 +5,8 @@ import { Star } from "lucide-react";
 
 const getSuperAdminName = (admins: AdminUserResponse[]): string => {
     const super_admin = admins.find((a) => a.is_superuser);
-    return `${super_admin?.first_name} ${super_admin?.last_name}`;
+    if (!super_admin) return "No Super Admin";
+    return `${super_admin.first_name} ${super_admin.last_name}`;
 };
 
 const getAdminCount = (admins: AdminUserResponse[]): string => {

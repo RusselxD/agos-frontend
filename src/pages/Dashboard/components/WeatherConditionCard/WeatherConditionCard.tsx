@@ -22,15 +22,19 @@ export default function WeatherConditionCard() {
         return <ErrorCard message={error} />;
     }
 
+    if (!weatherData) {
+        return <WeatherConditionCardSkeleton />;
+    }
+
     return (
         <Card warning={warning}>
             <CardHeaderText label="WEATHER CONDITION" />
-            <WeatherCondition weather={weatherData!} />
+            <WeatherCondition weather={weatherData} />
             <div className="grid grid-cols-2 gap-2">
                 <PrecipitationInfo
-                    precipitation_mm={weatherData!.precipitation_mm}
+                    precipitation_mm={weatherData.precipitation_mm}
                 />
-                <LastUpdatedInfo timestamp={weatherData!.timestamp} />
+                <LastUpdatedInfo timestamp={weatherData.timestamp} />
             </div>
         </Card>
     );

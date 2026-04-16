@@ -154,7 +154,7 @@ export default function MainDisplay() {
                 <LevelInfo />
             </div>
             <span className="absolute left-0 bottom-0 text-[0.7rem] md:text-[0.800rem] text-gray-900">
-                {`Updated ${getTimeAgo(sensorData?.timestamp || "")}`}
+                {sensorData?.timestamp ? `Updated ${getTimeAgo(sensorData.timestamp)}` : "No data"}
             </span>
         </div>
     );

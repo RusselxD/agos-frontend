@@ -52,7 +52,7 @@ const tierConfig: TierConfig = {
 
 const getTierConfig = (tier: string) => {
     tier = tier?.toLowerCase();
-    return tierConfig[tier];
+    return tierConfig[tier] || tierConfig["n/a"];
 };
 
 export default function AlertTierContainer() {

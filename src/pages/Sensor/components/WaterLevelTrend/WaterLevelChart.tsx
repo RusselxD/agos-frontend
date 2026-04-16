@@ -42,8 +42,8 @@ export default function WaterLevelChart({
     const { labels, levels } = trendData;
 
     // Calculate min and max for y-axis with padding
-    const minLevel = Math.min(...levels);
-    const maxLevel = Math.max(...levels);
+    const minLevel = levels.length > 0 ? Math.min(...levels) : 0;
+    const maxLevel = levels.length > 0 ? Math.max(...levels) : 100;
     const range = maxLevel - minLevel;
     const yMin = Math.max(0, Math.floor(minLevel - range * 0.1)); // 10% padding below
     const yMax = Math.ceil(maxLevel + range * 0.1); // 10% padding above
