@@ -6,7 +6,6 @@ import { useReadingLogs } from "../../context/ReadingLogsContext";
 import TableRow from "./TableRow";
 // import ExportButton from "./ExportButton";
 import DayDetailPanel from "./DayDetailPanel/DayDetailPanel";
-import DateRangePicker from "./DateRangePicker";
 import { FileText } from "lucide-react";
 import type { DailySummary } from "../../../../types/readingLogs";
 
@@ -48,10 +47,6 @@ export default function DataTableContainer() {
             headerTitle="DAILY SUMMARIES"
             className="flex-1 flex flex-col min-h-[400px] relative"
         >
-            <div className="absolute top-4 right-4">
-                <DateRangePicker />
-            </div>
-
             <div className="flex-1 overflow-y-auto rounded-md border border-gray-200 max-h-[500px]">
                 {summaries.length > 0 ? (
                     <>
