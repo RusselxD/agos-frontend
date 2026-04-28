@@ -1,4 +1,4 @@
-import { AlertTriangle, Droplets, CloudRain, Trash2 } from "lucide-react";
+import { AlertTriangle, Droplets, CloudRain } from "lucide-react";
 import type { DailySummary } from "../../../../../types/readingLogs";
 import HeroMetricCard from "./components/HeroMetricCard";
 import Header from "./components/Header";
@@ -144,15 +144,6 @@ export default function DayDetailPanel({
                             iconColor="bg-primary"
                         />
                     </div>
-
-                    <CompactMetricCard
-                        icon={Trash2}
-                        label="Debris Count"
-                        minValue={summary.min_debris_count}
-                        maxValue={summary.max_debris_count}
-                        unit="items"
-                        iconColor="bg-gray-500"
-                    />
 
                     <BlockageCard
                         leastSevere={summary.least_severe_blockage}

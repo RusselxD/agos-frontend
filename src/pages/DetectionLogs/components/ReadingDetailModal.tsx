@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, ImageOff, CircleCheck, TriangleAlert, CircleAlert, Droplets, Camera, Clock } from "lucide-react";
+import { X, ImageOff, CircleCheck, TriangleAlert, CircleAlert, Camera, Clock } from "lucide-react";
 import { createPortal } from "react-dom";
 import type { ModelReadingListItem, ModelReadingDetailResponse } from "../../../types/modelReadingLog";
 import { modelReadingLogAPI } from "../../../lib/api/modelReadingLog";
@@ -126,17 +126,11 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                         {/* Content */}
                         <div className="p-5 space-y-5">
                             {/* Metrics grid */}
-                            <div className="grid grid-cols-3 gap-3">
+                            <div className="grid grid-cols-2 gap-3">
                                 <MetricCard
                                     label="Blockage Level"
                                     value={`${detail.blockage_percentage.toFixed(1)}%`}
                                     icon={<ProgressRing percentage={detail.blockage_percentage} color={config.bg} />}
-                                />
-                                <MetricCard
-                                    label="Debris Detected"
-                                    value={String(detail.total_debris_count)}
-                                    icon={<Droplets className={`w-5 h-5 ${config.accent}`} />}
-                                    subtitle={detail.total_debris_count === 0 ? "No debris found" : `${detail.total_debris_count} object${detail.total_debris_count > 1 ? "s" : ""}`}
                                 />
                                 <MetricCard
                                     label="Camera"
@@ -235,8 +229,8 @@ function ModalSkeleton({ onClose }: { onClose: () => void }) {
                 </button>
             </div>
             <div className="p-5 space-y-5">
-                <div className="grid grid-cols-3 gap-3">
-                    {[...Array(3)].map((_, i) => (
+                <div className="grid grid-cols-2 gap-3">
+                    {[...Array(2)].map((_, i) => (
                         <div key={i} className="skeleton h-24 rounded-xl" />
                     ))}
                 </div>

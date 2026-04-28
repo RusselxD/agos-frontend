@@ -89,11 +89,6 @@ export default function TableRow({ summary, index, onSelect }: TableRowProps) {
                     )}
                 </div>
             </td>
-            <td className="px-5 py-4 text-left whitespace-nowrap">
-                <span className="text-sm text-gray-600">
-                    {summary.min_debris_count} - {summary.max_debris_count}
-                </span>
-            </td>
         </tr>
     );
 }

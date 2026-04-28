@@ -4,7 +4,6 @@ export interface ModelReadingListItem {
     id: number;
     blockage_status: BlockageStatus;
     blockage_percentage: number;
-    total_debris_count: number;
     timestamp: string;
 }
 
@@ -19,7 +18,6 @@ export interface ModelReadingDetailResponse {
     image_path: string;
     blockage_status: BlockageStatus;
     blockage_percentage: number;
-    total_debris_count: number;
     timestamp: string;
     created_at: string;
 }

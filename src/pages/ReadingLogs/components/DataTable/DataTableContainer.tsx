@@ -25,11 +25,8 @@ const TableHeader = () => (
             <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
                 Precipitation
             </th>
-            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
-                Blockage
-            </th>
             <th className="px-5 py-4 font-medium text-left bg-background rounded-tr-md text-xs uppercase tracking-wide text-gray-600">
-                Debris Count
+                Blockage
             </th>
         </tr>
     </thead>

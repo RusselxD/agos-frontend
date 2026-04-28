@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck, TriangleAlert, Trash2 } from "lucide-react";
+import { CircleAlert, CircleCheck, TriangleAlert } from "lucide-react";
 import type { ModelReadingListItem } from "../../../types/modelReadingLog";
 import { format } from "date-fns";
 
@@ -38,10 +38,6 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
             </div>
 
             <div className="flex items-center gap-3 text-xs text-gray-500">
-                <span className="flex items-center gap-1">
-                    <Trash2 className="w-3 h-3" />
-                    {reading.total_debris_count} debris
-                </span>
                 <span className="text-[0.68rem] text-gray-400">
                     {format(new Date(reading.timestamp), "MMM d, yyyy 'at' h:mm a")}
                 </span>
