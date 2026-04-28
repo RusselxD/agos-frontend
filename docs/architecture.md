@@ -27,7 +27,7 @@ CoreProvider → WebSocketProvider → BlockageProvider → VideoProvider → We
 | `CoreContext` | `useCoreHook()` | Location + device details (REST on mount) |
 | `WebSocketContext` | `useWebSocket()`, `useWebSocketMessage()` | WS connection + pub/sub |
 | `BlockageContext` | `useWaterwayContext()` | `blockage_detection_update` via WS |
-| `VideoContext` | `useVideoContext()` | Camera status + HLS stream |
+| `VideoContext` | `useVideoContext()` | Latest live camera frame via `camera_update` WS messages |
 | `WeatherContext` | `useWeather()` | `weather_update` via WS |
 | `WaterLevelContext` | `useWaterLevel()` | `sensor_update` via WS |
 | `FusionAnalysisContext` | `useFusionAnalysis()` | `fusion_analysis_update` via WS |
@@ -44,12 +44,12 @@ CoreProvider → WebSocketProvider → BlockageProvider → VideoProvider → We
 
 JWT-based with automatic token refresh:
 
-1. Login → `POST /auth/login` → stores access + refresh tokens in memory
+1. Login → `POST /auth/login` → stores access + refresh tokens in `localStorage`
 2. Axios request interceptor injects `Authorization: Bearer <token>`
 3. On 401 response → interceptor calls `POST /auth/refresh` → retries original request
 4. Refresh failure → redirect to `/auth/login`
 
-Tokens stored in AuthContext state (not localStorage). `force_password_change` flag redirects to `/auth/force-password-change` on first login.
+`AuthContext` decodes the access token into in-memory user state, but token persistence is in `localStorage` so refresh survives page reloads. `force_password_change` redirects to `/auth/force-password-change`.
 
 ## API Layer (`src/lib/api/`)
 
@@ -87,6 +87,7 @@ Key types:
 
 ```
 /
+├── /                          → Public dashboard; authenticated admins redirect to /admin
 ├── /auth
 │   ├── /login                    → Login
 │   └── /force-password-change    → ForcePasswordChange
@@ -94,15 +95,15 @@ Key types:
     ├── /dashboard                → Dashboard
     ├── /weather                  → Weather
     ├── /sensor                   → Sensor
-    ├── /responders               → Responders (with RespondersPageProvider)
-    ├── /reading-logs             → ReadingLogs (with ReadingLogsProvider)
+    ├── /responders               → Responders
+    ├── /reading-logs             → ReadingLogs
     ├── /notification-logs        → NotificationLogs
     ├── /detection-logs           → DetectionLogs
     ├── /admins                   → Admins (with AdminsPageProvider)
     └── /settings                 → Settings
 ```
 
-`/` redirects to `/admin`. `/admin` redirects to `/admin/dashboard`.
+`/` shows the public dashboard for unauthenticated visitors and redirects authenticated admins to `/admin`. `/admin` redirects to `/admin/dashboard`.
 
 ## Page Architecture
 
@@ -120,7 +121,12 @@ src/pages/PageName/
 - **BlockageStatusCard** — Clear/partial/blocked with percentage bar
 - **WaterLevelCard** — Current level, trend, alert distances
 - **WeatherCard** — Conditions, precipitation, temperature
-- **VideoPlayer** — HLS live stream from camera
+- **VideoContainer** — latest base64 JPEG frame from `camera_update`
+
+### Public
+- Unauthenticated, read-only dashboard at `/`
+- Uses `GET /core/public/location-details`, public alert thresholds, and the same WebSocket stream scoped by location
+- Authenticated admins are redirected to `/admin`
 
 ### Sensor
 - **SensorStatus** — Device connection state, signal strength

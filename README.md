@@ -28,7 +28,7 @@ npm install
 
 # Create .env file
 echo 'VITE_API_BASE_URL=http://localhost:8000' > .env
-echo 'VITE_API_WS_URL=ws://localhost:8000/ws' >> .env
+echo 'VITE_API_WS_URL=ws://localhost:8000' >> .env
 
 # Start dev server
 npm run dev
@@ -39,7 +39,7 @@ npm run dev
 | Variable | Description |
 |----------|-------------|
 | `VITE_API_BASE_URL` | Backend API URL (e.g., `http://localhost:8000`) |
-| `VITE_API_WS_URL` | Backend WebSocket URL (e.g., `ws://localhost:8000/ws`) |
+| `VITE_API_WS_URL` | Backend WebSocket origin (e.g., `ws://localhost:8000`; app appends `/ws`) |
 
 ## Scripts
 
@@ -54,7 +54,8 @@ npm run dev
 
 | Route | Page | Description |
 |-------|------|-------------|
-| `/admin/dashboard` | Dashboard | Fusion risk score, water level, weather, blockage status, HLS video |
+| `/` | Public Dashboard | Read-only live status cards for unauthenticated visitors; authenticated admins redirect to `/admin` |
+| `/admin/dashboard` | Dashboard | Fusion risk score, water level, weather, blockage status, live camera frames |
 | `/admin/weather` | Weather | Weather conditions from OpenMeteo |
 | `/admin/sensor` | Sensor | Sensor config, readings table, water level trend chart, data export |
 | `/admin/responders` | Responders | Responder list, groups, notification templates, announcements |
@@ -77,7 +78,7 @@ src/
 │   ├── WeatherContext     # Weather data state
 │   ├── WaterLevelContext  # Sensor data state
 │   ├── FusionAnalysisContext  # Fusion risk score state
-│   ├── VideoContext       # HLS video stream state
+│   ├── VideoContext       # Latest live camera frame from WebSocket
 │   └── ToastContext       # Toast notifications
 ├── hooks/               # Custom hooks (useAnalysisStream)
 ├── lib/api/             # API client modules (one per domain)
