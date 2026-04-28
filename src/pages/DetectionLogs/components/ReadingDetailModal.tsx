@@ -70,7 +70,7 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl shadow-2xl w-full max-w-[44rem] max-h-[90vh] overflow-hidden"
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 {isFetching ? (
@@ -84,43 +84,43 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                     </div>
                 ) : (
                     <>
-                        {/* Image section */}
-                        <div className="relative">
-                            {imageError ? (
-                                <div className="w-full h-64 bg-gray-100 flex flex-col items-center justify-center text-gray-400">
-                                    <ImageOff className="w-10 h-10 mb-2" />
-                                    <span className="text-sm">Image unavailable</span>
-                                </div>
-                            ) : (
-                                <img
-                                    src={detail.image_path}
-                                    alt={`Detection #${detail.id}`}
-                                    className="w-full h-64 object-cover"
-                                    onError={() => setImageError(true)}
-                                />
-                            )}
-
-                            {/* Overlay gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                            {/* Close button */}
-                            <button
-                                onClick={onClose}
-                                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
-
-                            {/* Status badge on image */}
-                            <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        {/* Header */}
+                        <div className="flex items-center justify-between gap-3 px-5 pt-5">
+                            <div className="flex items-center gap-2 min-w-0">
                                 <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ${config.badge}`}>
                                     <StatusIcon className="w-3.5 h-3.5" />
                                     {config.label}
                                 </span>
-                                <span className="text-xs text-white/80 font-medium">
+                                <span className="text-sm font-medium text-gray-500">
                                     Detection #{detail.id}
                                 </span>
                             </div>
+                            <button
+                                onClick={onClose}
+                                className="shrink-0 p-1.5 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                                aria-label="Close detection detail"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+
+                        {/* Image section */}
+                        <div className="px-5 pt-4">
+                            {imageError ? (
+                                <div className="w-full min-h-72 bg-gray-100 flex flex-col items-center justify-center text-gray-400">
+                                    <ImageOff className="w-10 h-10 mb-2" />
+                                    <span className="text-sm">Image unavailable</span>
+                                </div>
+                            ) : (
+                                <div className="w-full bg-gray-100 flex items-center justify-center overflow-auto">
+                                    <img
+                                        src={detail.image_path}
+                                        alt={`Detection #${detail.id}`}
+                                        className="max-h-[58vh] w-full object-contain"
+                                        onError={() => setImageError(true)}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         {/* Content */}
@@ -219,14 +219,18 @@ function ProgressRing({ percentage, color }: { percentage: number; color: string
 function ModalSkeleton({ onClose }: { onClose: () => void }) {
     return (
         <>
-            <div className="relative">
-                <div className="skeleton w-full h-64 rounded-none" />
+            <div className="flex items-center justify-between gap-3 px-5 pt-5">
+                <div className="skeleton h-8 w-44 rounded-full" />
                 <button
                     onClick={onClose}
-                    className="absolute top-3 right-3 p-1.5 rounded-full bg-black/30 text-white hover:bg-black/50 transition-colors"
+                    className="shrink-0 p-1.5 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                    aria-label="Close detection detail"
                 >
                     <X className="w-4 h-4" />
                 </button>
+            </div>
+            <div className="px-5 pt-4">
+                <div className="skeleton w-full h-[58vh] max-h-[34rem] rounded-none" />
             </div>
             <div className="p-5 space-y-5">
                 <div className="grid grid-cols-2 gap-3">
