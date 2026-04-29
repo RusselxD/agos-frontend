@@ -32,15 +32,15 @@ export default function Settings() {
             </SensorConfigurationProvider>
 
             <Container headerTitle="ACCOUNT">
-                <div className="flex items-center justify-between">
-                    <div>
+                <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
                         <p className="text-sm font-medium text-gray-700">Sign out</p>
                         <p className="text-xs text-gray-500">End your current session</p>
                     </div>
                     <button
                         onClick={handleLogout}
                         disabled={isLoggingOut}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-50 disabled:opacity-50 transition-colors"
+                        className="flex shrink-0 items-center gap-2 rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50 sm:px-4"
                     >
                         <LogOut size={16} />
                         {isLoggingOut ? "Signing out..." : "Sign out"}

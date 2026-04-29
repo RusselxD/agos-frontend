@@ -6,14 +6,16 @@ export default function Header() {
     const { setAnalyzeDrawerIsOpen } = useReadingLogs();
 
     return (
-        <div className="flex items-center justify-between bg-white py-3 px-5 rounded-md custom-shadow">
-            <h2 className="font-semibold text-lg">Daily Summaries</h2>
+        <div className="custom-shadow flex min-w-0 flex-col gap-3 rounded-md bg-white px-3 py-3 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
+            <h2 className="text-lg font-semibold leading-tight">
+                Daily Summaries
+            </h2>
 
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
                 <DateRangePicker />
-                <div className="h-6 w-px bg-gray-200" />
+                <div className="hidden h-6 w-px bg-gray-200 sm:block" />
                 <button
-                    className="gemini-btn"
+                    className="gemini-btn w-full justify-center sm:w-auto"
                     onClick={() => setAnalyzeDrawerIsOpen(true)}
                 >
                     <Sparkles className="gemini-btn-icon w-4 h-4" />

@@ -182,11 +182,11 @@ export default function AddResponderForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className={`bg-gray-50 rounded-lg border border-gray-200 overflow-hidden transition-all duration-200 flex flex-col ${
-                addResponderFormOpen ? "flex-1 p-4" : "max-h-0 p-0 border-0"
+            className={`flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-gray-50 transition-all duration-200 ${
+                addResponderFormOpen ? "flex-1 p-3 sm:p-4" : "max-h-0 border-0 p-0"
             }`}
         >
-            <div className="space-y-3 flex-1 overflow-y-auto pr-1">
+            <div className="flex-1 space-y-3 overflow-y-auto pr-1">
                 {responders.map((responder, index) => (
                     <ResponderEntryRow
                         key={index}
@@ -203,34 +203,34 @@ export default function AddResponderForm() {
                 ))}
             </div>
 
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200">
-                <div className="flex items-center gap-2">
+            <div className="mt-4 flex flex-col gap-3 border-t border-gray-200 pt-3 lg:flex-row lg:items-center lg:justify-between">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:items-center">
                     <button
                         type="button"
                         onClick={addResponder}
-                        className="text-gray-600 hover:text-blue-600 font-medium hover:bg-blue-50 btn-custom"
+                        className="btn-custom text-gray-600 hover:bg-blue-50 hover:text-blue-600"
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Another</span>
                     </button>
 
-                    <span className="text-gray-300">|</span>
+                    <span className="hidden text-gray-300 lg:inline">|</span>
 
                     <button
                         type="button"
                         onClick={handleDownloadTemplate}
-                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 btn-custom"
+                        className="btn-custom text-gray-600 hover:bg-blue-50 hover:text-blue-600"
                     >
                         <Download className="w-4 h-4" />
                         <span>Download Template</span>
                     </button>
 
-                    <span className="text-gray-300">|</span>
+                    <span className="hidden text-gray-300 lg:inline">|</span>
 
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="text-gray-600 hover:text-green-600 hover:bg-green-50 btn-custom"
+                        className="btn-custom text-gray-600 hover:bg-green-50 hover:text-green-600"
                     >
                         <FileSpreadsheet className="w-4 h-4" />
                         <span>Import from File</span>
@@ -245,18 +245,18 @@ export default function AddResponderForm() {
                     />
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col-reverse gap-2 sm:flex-row lg:shrink-0">
                     <button
                         type="button"
                         onClick={handleCancel}
-                        className="btn-cancel text-sm py-2"
+                        className="btn-cancel py-2 text-sm"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
                         disabled={!isFormValid || isLoading}
-                        className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm py-2 disabled:hover:bg-blue-600"
+                        className="btn-custom bg-blue-600 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:hover:bg-blue-600"
                     >
                         {isLoading && <div className="spinner w-4 h-4"></div>}
                         <span>

@@ -52,7 +52,7 @@ export default function DateDropdown({
     };
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative min-w-0" ref={dropdownRef}>
             {/* Label */}
             {label && (
                 <span className="text-[10px] text-gray-400 uppercase tracking-wide mb-1 block">
@@ -65,7 +65,7 @@ export default function DateDropdown({
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
-                    flex items-center justify-between gap-2 min-w-[140px]
+                    flex w-full min-w-0 items-center justify-between gap-2 sm:min-w-[140px]
                     bg-white border rounded-lg px-3 py-2
                     text-sm font-medium text-neutral
                     transition-all duration-200
@@ -74,7 +74,9 @@ export default function DateDropdown({
                     ${isOpen ? "border-primary shadow-sm ring-2 ring-primary/20" : "border-gray-200"}
                 `}
             >
-                <span>{value ? formatDate(value) : "Select date"}</span>
+                <span className="min-w-0 truncate">
+                    {value ? formatDate(value) : "Select date"}
+                </span>
                 <ChevronDown
                     className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
                         isOpen ? "rotate-180" : ""
@@ -86,7 +88,7 @@ export default function DateDropdown({
             {isOpen && (
                 <div
                     className="
-                        absolute right-0 z-50 mt-1 w-full min-w-[180px]
+                        absolute left-0 z-50 mt-1 w-full min-w-[160px] sm:right-0 sm:left-auto sm:min-w-[180px]
                         bg-white border border-gray-200 rounded-xl shadow-lg
                         overflow-hidden animate-dropdown-in
                     "

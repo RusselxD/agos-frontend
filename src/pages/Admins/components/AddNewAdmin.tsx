@@ -156,15 +156,15 @@ export default function AddNewAdmin() {
             onChange={() => handleFormFieldsChange()}
             ref={containerRef}
             id="new-admin-container"
-            className={`w-full bg-white rounded-lg overflow-hidden transition-all text-sm duration-200 ${
-                createNewAdminIsOpen ? "max-h-[600px] mb-3 p-6" : "max-h-0 p-0"
+            className={`w-full overflow-hidden rounded-lg bg-white text-sm transition-all duration-200 ${
+                createNewAdminIsOpen ? "mb-3 max-h-[72rem] p-4 sm:p-6" : "max-h-0 p-0"
             }`}
         >
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800 sm:text-xl">
                 Add New Admin
             </h2>
 
-            <div className="flex flex-col lg:flex-row gap-10">
+            <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
                 {/* Left Column */}
                 <div className="flex-1 space-y-4">
                     <TextInputField
@@ -193,8 +193,8 @@ export default function AddNewAdmin() {
                         <label className="block text-xs font-medium text-gray-700 mb-2">
                             TEMPORARY PASSWORD
                         </label>
-                        <div className="flex items-center gap-3">
-                            <div className="flex-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 font-mono text-sm min-h-[42px] flex items-center">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <div className="flex min-h-[42px] min-w-0 flex-1 items-center break-all rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 font-mono text-sm text-gray-800">
                                 {temporaryPassword || (
                                     <span className="text-gray-400">
                                         Click generate to create password
@@ -205,7 +205,7 @@ export default function AddNewAdmin() {
                                 <button
                                     type="button"
                                     onClick={() => handleCopyPassword()}
-                                    className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
+                                    className={`flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm transition-colors ${
                                         copied
                                             ? "bg-green-600 text-white"
                                             : "bg-gray-200 hover:bg-gray-300 text-gray-700"
@@ -245,20 +245,20 @@ export default function AddNewAdmin() {
 
             {/* Action Buttons */}
             <div
-                className={`flex items-end gap-3 text-sm ${
-                    error ? "justify-between" : "justify-end"
+                className={`mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-end ${
+                    error ? "sm:justify-between" : "sm:justify-end"
                 }`}
             >
                 {error && (
-                    <div className="border border-red-600 bg-red-100 text-red-800 px-5 py-2 rounded-md font-medium">
+                    <div className="rounded-md border border-red-600 bg-red-100 px-5 py-2 font-medium text-red-800">
                         {error}
                     </div>
                 )}
 
-                <div className="flex gap-2">
+                <div className="flex flex-col-reverse gap-2 sm:flex-row">
                     <button
                         type="button"
-                        className="btn-cancel"
+                        className="btn-cancel w-full sm:w-auto"
                         onClick={handleCancel}
                     >
                         Cancel
@@ -271,7 +271,7 @@ export default function AddNewAdmin() {
                             normalizedPhoneNumber.length <= 12 ||
                             !temporaryPassword
                         }
-                        className="btn-submit px-4 w-fit rounded-md"
+                        className="btn-submit w-full rounded-md px-4 sm:w-fit"
                     >
                         {isSubmitting && (
                             <div className="spinner w-5 h-5"></div>

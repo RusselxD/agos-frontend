@@ -121,19 +121,19 @@ export default function ChooseDateRangeModal({
         return (
             <ModalContainer setModalOpen={setModalIsOpen}>
                 <div
-                    className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4"
+                    className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-white p-4 shadow-xl sm:p-6"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="w-2/4 skeleton h-8 rounded-md"></div>
                     <div className="w-2/4 skeleton h-5 rounded-md -mb-2"></div>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         <div className="skeleton w-full h-10 rounded-md"></div>
                         <div className="skeleton w-full h-10 rounded-md"></div>
                     </div>
                     <div className="w-2/4 skeleton h-3 rounded-md -mt-1"></div>
-                    <div className="flex items-center justify-end gap-2">
-                        <div className="h-10 skeleton w-1/4 rounded-md"></div>
-                        <div className="h-10 skeleton w-1/4 rounded-md"></div>
+                    <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end">
+                        <div className="h-10 skeleton w-full rounded-md sm:w-24"></div>
+                        <div className="h-10 skeleton w-full rounded-md sm:w-24"></div>
                     </div>
                 </div>
             </ModalContainer>
@@ -143,10 +143,10 @@ export default function ChooseDateRangeModal({
     return (
         <ModalContainer setModalOpen={setModalIsOpen}>
             <div
-                className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4"
+                className="flex max-h-[92vh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-lg bg-white p-4 shadow-xl sm:p-6"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
                     Select Time Range
                 </h2>
 
@@ -159,7 +159,7 @@ export default function ChooseDateRangeModal({
                         </label>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                         {/* Start Date */}
                         <Dropdown
                             value={startDate}
@@ -198,7 +198,7 @@ export default function ChooseDateRangeModal({
                             </label>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                             {/* Start Hour */}
                             <Dropdown
                                 value={startHour}
@@ -241,22 +241,22 @@ export default function ChooseDateRangeModal({
 
                 {/* Selected Range Display */}
                 {isDateRangeValid && (
-                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 sm:p-4">
                         <p className="text-xs text-gray-600 mb-1 font-semibold">
                             SELECTED RANGE
                         </p>
-                        <p className="text-sm font-medium text-blue-900">
+                        <p className="break-words text-sm font-medium text-blue-900">
                             {getSelectedRangeText()}
                         </p>
                     </div>
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex justify-end items-center gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:justify-end sm:gap-3">
                     <button
                         type="button"
                         onClick={() => setModalIsOpen(false)}
-                        className="btn-cancel"
+                        className="btn-cancel py-2.5 sm:py-3"
                     >
                         Cancel
                     </button>
@@ -267,7 +267,7 @@ export default function ChooseDateRangeModal({
                             !isDateRangeValid ||
                             (startDate === endDate && startHour >= endHour)
                         }
-                        className="btn-custom bg-primary text-white hover:bg-primary/90 px-6"
+                        className="btn-custom bg-primary px-6 py-2.5 text-white hover:bg-primary/90 sm:py-3"
                     >
                         Export
                     </button>

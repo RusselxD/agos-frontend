@@ -68,7 +68,7 @@ export default function Public() {
                         <FusionAnalysisProvider isPublic>
                             <div className="min-h-screen bg-gray-50">
                                 <Header locationName={location.location_name} />
-                                <main className="max-w-7xl mx-auto px-4 py-6">
+                                <main className="mx-auto max-w-7xl px-3 py-4 sm:px-4 sm:py-6">
                                     <ErrorBoundary>
                                         <StatusCards />
                                     </ErrorBoundary>
@@ -85,11 +85,11 @@ export default function Public() {
 function Header({ locationName }: { locationName: string }) {
     return (
         <header className="bg-white border-b border-gray-200 px-4 py-3">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <h1 className="text-xl font-bold text-primary">AGOS</h1>
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                    <h1 className="text-lg font-bold text-primary sm:text-xl">AGOS</h1>
                     <span className="text-gray-400">|</span>
-                    <span className="text-sm text-gray-500">
+                    <span className="min-w-0 truncate text-sm text-gray-500">
                         {locationName}
                     </span>
                 </div>
@@ -109,7 +109,7 @@ function StatusCards() {
     return (
         <div className="flex flex-col gap-4">
             <FusionAnalysis />
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
                 <BlockageStatusCard />
                 <WeatherConditionCard />
                 <WaterLevelStatusCard />

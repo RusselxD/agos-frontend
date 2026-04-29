@@ -9,7 +9,7 @@ import { useToast } from "../../../context/ToastContext";
 
 const AccountStatusBadge = ({ isEnabled }: { isEnabled: boolean }) => {
     return (
-        <div className="flex items-center gap-2 text-sm mt-0.5">
+        <div className="mt-0.5 flex items-center gap-2 text-sm">
             <span className="text-gray-600">Status:</span>
             <span
                 className={`font-semibold ${
@@ -30,12 +30,12 @@ interface DetailsProps {
 
 const Details = ({ label, value, customValue }: DetailsProps) => {
     return (
-        <div className="flex flex-col">
+        <div className="min-w-0">
             <p className="text-gray-500 text-xs">{label}</p>
             {customValue ? (
                 customValue
             ) : (
-                <p className="font-medium text-sm">{value}</p>
+                <p className="break-words text-sm font-medium">{value}</p>
             )}
         </div>
     );
@@ -116,13 +116,13 @@ export default function UserCard({
     return (
         <>
             <div
-                className={`bg-white w-full h-fit p-5 rounded-lg border-b-4 ${
+                className={`h-fit w-full rounded-lg bg-white p-4 shadow-sm sm:p-5 border-b-4 ${
                     user.is_enabled ? "border-green-500" : "border-gray-300"
                 }`}
             >
-                <div className="flex justify-between items-start">
-                    <div>
-                        <p className="font-semibold">{`${user.first_name} ${user.last_name}`}</p>
+                <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                        <p className="break-words font-semibold">{`${user.first_name} ${user.last_name}`}</p>
                         <AccountStatusBadge isEnabled={user.is_enabled} />
                     </div>
                     {isSuperuser && !isSelf && (
@@ -168,7 +168,7 @@ export default function UserCard({
                         </div>
                     )}
                 </div>
-                <div className="grid grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 rounded-lg relative text-sm">
+                <div className="relative mt-3 grid grid-cols-1 gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-3 text-sm sm:grid-cols-2 sm:gap-5 sm:bg-white sm:px-4 sm:py-4">
                     <Details
                         label="Phone Number"
                         value={formatPHNumber(user.phone_number)}

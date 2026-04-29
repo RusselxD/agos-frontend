@@ -7,7 +7,7 @@ export default function AddNewAdminButton() {
     return (
         <button
             onClick={() => setCreateNewAdminIsOpen((prev) => !prev)}
-            className={`btn-custom text-sm text-white ${
+            className={`btn-custom w-full text-sm text-white sm:w-auto ${
                 createNewAdminIsOpen
                     ? "bg-emerald-500 hover:bg-emerald-600"
                     : "bg-primary hover:bg-primary/90"

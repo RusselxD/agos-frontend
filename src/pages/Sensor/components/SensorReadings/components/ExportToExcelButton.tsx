@@ -13,15 +13,18 @@ export default function ExportToExcelButton() {
             <button
                 onClick={() => setModalIsOpen(true)}
                 disabled={isExportingToExcel}
-                className="absolute top-3 right-3 btn-custom py-2 text-emerald-600 hover:text-emerald-700"
+                className="btn-custom absolute right-3 top-2.5 px-2 py-2 text-sm text-emerald-600 hover:text-emerald-700 sm:px-4"
             >
                 {isExportingToExcel ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                     <Download className="w-5 h-5" />
                 )}
-                <span>
+                <span className="hidden sm:inline">
                     {isExportingToExcel ? "Exporting..." : "Export Excel"}
+                </span>
+                <span className="sm:hidden">
+                    {isExportingToExcel ? "Exporting" : "Export"}
                 </span>
             </button>
             {modalIsOpen && (

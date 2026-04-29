@@ -7,7 +7,7 @@ interface TableRowProps {
     onSelect: (summary: DailySummary) => void;
 }
 
-const BlockageBadge = ({ status }: { status: string | null }) => {
+export const BlockageBadge = ({ status }: { status: string | null }) => {
     if (!status) return <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">N/A</span>;
     const normalized = status.toLowerCase();
     let bgColor = "bg-gray-100 text-gray-600";
@@ -29,7 +29,7 @@ const BlockageBadge = ({ status }: { status: string | null }) => {
     );
 };
 
-const RiskBadge = ({ score }: { score: number }) => {
+export const RiskBadge = ({ score }: { score: number }) => {
     let bgColor = "bg-clear/15 text-clear";
 
     if (score >= 70) {

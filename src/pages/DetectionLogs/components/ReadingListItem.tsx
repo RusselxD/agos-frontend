@@ -21,13 +21,13 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
     return (
         <button
             onClick={onClick}
-            className={`w-full text-left p-3.5 rounded-lg border transition-colors ${
+            className={`w-full rounded-lg border p-3 text-left transition-colors sm:p-3.5 ${
                 isSelected
                     ? "border-primary bg-primary/5 ring-1 ring-primary/20"
                     : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
             }`}
         >
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between gap-3">
                 <span className={`text-[0.65rem] font-semibold uppercase px-2 py-0.5 rounded-full ${config.badge}`}>
                     {config.label}
                 </span>
@@ -37,8 +37,8 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
                 </span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-gray-500">
-                <span className="text-[0.68rem] text-gray-400">
+            <div className="flex min-w-0 items-center gap-3 text-xs text-gray-500">
+                <span className="min-w-0 truncate text-[0.68rem] text-gray-400">
                     {format(new Date(reading.timestamp), "MMM d, yyyy 'at' h:mm a")}
                 </span>
             </div>

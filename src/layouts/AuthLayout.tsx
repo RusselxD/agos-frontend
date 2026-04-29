@@ -5,7 +5,7 @@ import SmallScreenLoginFrame from "../components/SmallScreenLoginFrame";
 
 export default function AuthLayout(): React.JSX.Element {
     return (
-        <div className="flex flex-col min-h-[100dvh] min-w-screen bg-white">
+        <div className="flex min-h-[100dvh] min-w-0 flex-col bg-white">
             {/* For small screens */}
             <SmallScreenLoginFrame />
             <div className="flex-1 flex px-2 sm:px-7 md:px-24 lg:hidden">

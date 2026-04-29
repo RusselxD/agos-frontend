@@ -12,38 +12,67 @@ import { useAdmins } from "../context/AdminsPageContext";
 
 const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
     return (
-        <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
-            <thead className="sticky top-0 z-10">
-                <tr className="rounded-t-md">
-                    <th className="px-4 py-3 font-medium text-left bg-background rounded-tl-md">
-                        Admin
-                    </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
-                        Details
-                    </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
-                        Timestamp
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+        <>
+            <div className="space-y-2 md:hidden">
                 {logs.map((log, index) => (
-                    <tr
-                        key={index}
-                        className={index % 2 !== 0 ? "bg-gray-100" : "bg-white"}
+                    <article
+                        key={`${log.created_at}-${index}`}
+                        className="rounded-lg border border-gray-200 bg-white p-3"
                     >
-                        <td className="px-4 py-3 text-left">
-                            {log.admin_name}
-                        </td>
-
-                        <td className="px-4 py-3 text-left">{log.action}</td>
-                        <td className="px-4 py-3 text-left">
-                            {formatTimestamp(log.created_at)}
-                        </td>
-                    </tr>
+                        <div className="flex items-start justify-between gap-3">
+                            <p className="min-w-0 font-medium text-gray-900">
+                                {log.admin_name}
+                            </p>
+                            <p className="shrink-0 text-xs text-gray-400">
+                                {formatTimestamp(log.created_at)}
+                            </p>
+                        </div>
+                        <p className="mt-2 text-sm leading-5 text-gray-600">
+                            {log.action}
+                        </p>
+                    </article>
                 ))}
-            </tbody>
-        </table>
+            </div>
+
+            <div className="hidden overflow-x-auto md:block">
+                <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
+                    <thead className="sticky top-0 z-10">
+                        <tr className="rounded-t-md">
+                            <th className="rounded-tl-md bg-background px-4 py-3 text-left font-medium">
+                                Admin
+                            </th>
+                            <th className="bg-background px-4 py-3 text-left font-medium">
+                                Details
+                            </th>
+                            <th className="bg-background px-4 py-3 text-left font-medium">
+                                Timestamp
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {logs.map((log, index) => (
+                            <tr
+                                key={index}
+                                className={
+                                    index % 2 !== 0 ? "bg-gray-100" : "bg-white"
+                                }
+                            >
+                                <td className="px-4 py-3 text-left">
+                                    {log.admin_name}
+                                </td>
+
+                                <td className="px-4 py-3 text-left">
+                                    {log.action}
+                                </td>
+                                <td className="px-4 py-3 text-left">
+                                    {formatTimestamp(log.created_at)}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
     );
 };
 

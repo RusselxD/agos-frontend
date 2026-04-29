@@ -76,10 +76,10 @@ export default function BlockageSeverityChart() {
     const total = chartData.clear + chartData.partial + chartData.blocked;
 
     return (
-        <Container headerTitle="BLOCKAGE DISTRIBUTION" className="h-80">
-            <div className="flex flex-1 items-center justify-center gap-10">
-                <div className="h-44 flex items-center justify-center mt-5">
-                    <div className="relative w-44 h-44">
+        <Container headerTitle="BLOCKAGE DISTRIBUTION" className="h-auto overflow-hidden sm:h-80">
+            <div className="flex min-w-0 flex-col items-center justify-center gap-5 sm:flex-row sm:gap-10">
+                <div className="mt-2 flex h-40 items-center justify-center sm:mt-5 sm:h-44">
+                    <div className="relative h-40 w-40 sm:h-44 sm:w-44">
                         <Doughnut data={data} options={options} />
                         {/* Center text */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
@@ -91,22 +91,22 @@ export default function BlockageSeverityChart() {
                     </div>
                 </div>
                 {/* Custom legend */}
-                <div className="flex flex-col justify-center gap-6 text-sm font-semibold">
+                <div className="grid w-full grid-cols-3 gap-2 text-xs font-semibold sm:flex sm:w-auto sm:flex-col sm:justify-center sm:gap-6 sm:text-sm">
                     <div className="flex items-center gap-2">
-                        <span className="w-3 h-3 rounded-full bg-clear"></span>
-                        <span className="text-gray-600">
+                        <span className="h-3 w-3 shrink-0 rounded-full bg-clear"></span>
+                        <span className="min-w-0 truncate text-gray-600">
                             Clear ({chartData.clear})
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="w-3 h-3 rounded-full bg-partial"></span>
-                        <span className="text-gray-600">
+                        <span className="h-3 w-3 shrink-0 rounded-full bg-partial"></span>
+                        <span className="min-w-0 truncate text-gray-600">
                             Partial ({chartData.partial})
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="w-3 h-3 rounded-full bg-blocked"></span>
-                        <span className="text-gray-600">
+                        <span className="h-3 w-3 shrink-0 rounded-full bg-blocked"></span>
+                        <span className="min-w-0 truncate text-gray-600">
                             Blocked ({chartData.blocked})
                         </span>
                     </div>

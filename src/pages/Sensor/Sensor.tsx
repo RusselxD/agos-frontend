@@ -15,7 +15,7 @@ export default function Sensor() {
     return (
         <div className="flex min-w-0 flex-col gap-2">
             <WaterLevelTrendContainer />
-            <div className="flex min-w-0 flex-col gap-2 xl:h-[30rem] xl:flex-row">
+            <div className="flex min-w-0 flex-col gap-2 lg:h-[30rem] lg:flex-row">
                 <SensorReadings />
                 <SensorStatus />
             </div>

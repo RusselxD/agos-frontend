@@ -55,7 +55,8 @@ export default function WaterLevelChart() {
                     position: "top" as const,
                     labels: {
                         usePointStyle: true,
-                        padding: 15,
+                        padding: 10,
+                        boxWidth: 8,
                         font: { size: 11 },
                     },
                 },
@@ -87,7 +88,7 @@ export default function WaterLevelChart() {
                 x: {
                     ticks: {
                         font: { size: 10 },
-                        maxTicksLimit: 8,
+                        maxTicksLimit: 5,
                         maxRotation: 45,
                     },
                 },
@@ -99,7 +100,7 @@ export default function WaterLevelChart() {
             },
             elements: {
                 line: { tension: 0.4 },
-                point: { radius: 3, hoverRadius: 5 },
+                point: { radius: 2, hoverRadius: 5 },
             },
         };
     }, [chartData]);
@@ -135,8 +136,8 @@ export default function WaterLevelChart() {
     };
 
     return (
-        <Container headerTitle="WATER LEVEL RANGE" className="h-80">
-            <div className="h-60">
+        <Container headerTitle="WATER LEVEL RANGE" className="h-72 overflow-hidden sm:h-80">
+            <div className="h-52 min-w-0 sm:h-60">
                 <Line data={data} options={options} />
             </div>
         </Container>
