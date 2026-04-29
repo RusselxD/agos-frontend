@@ -96,11 +96,11 @@ export default function SensorReadings() {
     return (
         <Container
             headerTitle="SENSOR READINGS"
-            className="flex-1 flex flex-col relative"
+            className="relative flex min-h-[24rem] flex-1 flex-col xl:min-h-0"
         >
             {sensorReadings.length > 0 && <ExportToExcelButton />}
 
-            <div ref={containerRef} className="flex-1 overflow-y-auto">
+            <div ref={containerRef} className="flex-1 overflow-auto">
                 <Table sensorReadings={sensorReadings} />
 
                 {/* Loading indicator for fetching more data */}

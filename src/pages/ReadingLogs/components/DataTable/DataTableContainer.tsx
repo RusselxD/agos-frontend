@@ -47,10 +47,10 @@ export default function DataTableContainer() {
             headerTitle="DAILY SUMMARIES"
             className="flex-1 flex flex-col min-h-[400px] relative"
         >
-            <div className="flex-1 overflow-y-auto rounded-md border border-gray-200 max-h-[500px]">
+            <div className="max-h-[500px] flex-1 overflow-auto rounded-md border border-gray-200">
                 {summaries.length > 0 ? (
                     <>
-                        <table className="w-full text-left border-collapse text-sm">
+                        <table className="w-full min-w-[46rem] border-collapse text-left text-sm">
                             <TableHeader />
                             <tbody>
                                 {summaries.map((summary, index) => (

@@ -14,7 +14,7 @@ export default function ResponderPageModalContainer({
 }: ResponderPageModalContainerProps) {
     return (
         <div
-            className="flex w-[36rem] max-w-[95vw] flex-col gap-4 rounded-lg bg-white p-5 shadow-xl"
+            className="flex max-h-[92vh] w-full flex-col gap-4 overflow-y-auto rounded-lg bg-white p-4 shadow-xl sm:w-[36rem] sm:max-w-[95vw] sm:p-5"
             onClick={(e) => e.stopPropagation()}
         >
             <div className="flex items-center justify-between">

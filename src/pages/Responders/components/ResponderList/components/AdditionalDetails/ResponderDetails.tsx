@@ -169,9 +169,11 @@ export default function ResponderDetails() {
 
     return (
         <div
-            className={`h-full rounded-lg border border-gray-200 bg-white transition-[width] duration-300 ease-in-out overflow-hidden ${sideDrawerOpen ? "w-[22rem]" : "w-0 "}`}
+            className={`overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-300 ease-in-out xl:h-full xl:transition-[width] ${
+                sideDrawerOpen ? "max-h-[42rem] w-full xl:w-[22rem]" : "max-h-0 w-full border-0 xl:max-h-none xl:w-0"
+            }`}
         >
-            <div className="flex h-full flex-col gap-3 p-4">
+            <div className="flex max-h-[42rem] flex-col gap-3 overflow-y-auto p-4 xl:h-full">
                 {isFetching && <ResponderDetailsSkeleton />}
 
                 {!isFetching && responder === null && (

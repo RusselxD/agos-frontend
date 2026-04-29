@@ -49,7 +49,7 @@ export default function SensorStatus() {
         return (
             <Container
                 headerTitle="SENSOR STATUS"
-                className="w-1/4 flex flex-col justify-between"
+                className="flex flex-col justify-between xl:w-1/4"
             >
                 <div className="space-y-3">
                     <div className="rounded-md skeleton w-full h-24"></div>
@@ -67,16 +67,16 @@ export default function SensorStatus() {
     return (
         <Container
             headerTitle="SENSOR STATUS"
-            className="w-1/4 flex flex-col justify-between"
+            className="flex flex-col justify-between xl:w-1/4"
         >
-            <div className="grid grid-rows-3 gap-3 flex-1">
+            <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-3 xl:grid-cols-1 xl:grid-rows-3">
                 <ConnectionContainer value={sensorStatus?.connection || ""} />
                 <LastUpdatedContainer
                     value={sensorStatus?.last_updated || ""}
                 />
                 <SignalContainer value={sensorStatus?.signal || ""} />
             </div>
-            <div className="border-t mt-5 pt-3 space-y-1">
+            <div className="mt-5 space-y-1 border-t pt-3">
                 <Details
                     label="Device:"
                     value={sensorStatus?.device_name || ""}

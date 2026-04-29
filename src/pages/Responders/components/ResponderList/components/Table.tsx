@@ -79,8 +79,77 @@ export default function Table({
         { value: "pending", label: "Pending" },
     ] as const;
 
+    const renderStatusPill = (status: string) => (
+        <p
+            className={`${getStatusColor(status)} flex w-fit items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium sm:px-4 sm:py-2`}
+        >
+            {getStatusIcon(status)}
+            {capitalizeFirstLetter(status)}
+        </p>
+    );
+
     return (
-        <table className="w-full text-left border-collapse text-sm table-fixed flex-1">
+        <>
+            <div className="space-y-2 md:hidden">
+                <div className="flex gap-1.5 overflow-x-auto pb-1">
+                    {statusOptions.map((option) => (
+                        <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => setStatusFilter(option.value)}
+                            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                                statusFilter === option.value
+                                    ? "bg-primary text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            }`}
+                        >
+                            {option.label}
+                        </button>
+                    ))}
+                </div>
+
+                {filteredResponders.map((responder) => {
+                    const isSelected =
+                        responder === chosenResponder && sideDrawerOpen;
+
+                    return (
+                        <button
+                            key={responder.id}
+                            type="button"
+                            onClick={() => handleChooseResponder(responder)}
+                            className={`w-full rounded-lg border p-3 text-left transition-colors ${
+                                isSelected
+                                    ? "border-blue-300 bg-blue-50"
+                                    : "border-gray-200 bg-white hover:bg-gray-50"
+                            }`}
+                        >
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0">
+                                    <p className="truncate font-medium text-gray-800">
+                                        {responder.first_name} {responder.last_name}
+                                    </p>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        {formatPHNumber(responder.phone_number)}
+                                    </p>
+                                </div>
+                                <ChevronRight className="h-5 w-5 shrink-0 text-blue-600" />
+                            </div>
+                            <div className="mt-3">
+                                {renderStatusPill(responder.status)}
+                            </div>
+                        </button>
+                    );
+                })}
+
+                {filteredResponders.length === 0 && (
+                    <div className="rounded-lg border border-gray-200 px-4 py-6 text-center text-sm text-gray-500">
+                        No responders found.
+                    </div>
+                )}
+            </div>
+
+            <div className="hidden overflow-x-auto md:block">
+                <table className="w-full min-w-[48rem] table-fixed border-collapse text-left text-sm">
             <colgroup>
                 <col className="w-[17%]" />
                 <col className="w-[17%]" />
@@ -176,12 +245,7 @@ export default function Table({
                                 {formatPHNumber(responder.phone_number)}
                             </td>
                             <td className="px-4 py-3 text-left">
-                                <p
-                                    className={`${getStatusColor(responder.status)} px-4 py-2 rounded-full text-xs font-medium flex items-center gap-1 w-fit`}
-                                >
-                                    {getStatusIcon(responder.status)}
-                                    {capitalizeFirstLetter(responder.status)}
-                                </p>
+                                {renderStatusPill(responder.status)}
                             </td>
                             <td className="px-4 py-3 text-left">
                                 <button
@@ -209,6 +273,8 @@ export default function Table({
                     </tr>
                 )}
             </tbody>
-        </table>
+                </table>
+            </div>
+        </>
     );
 }

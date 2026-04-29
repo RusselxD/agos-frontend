@@ -7,8 +7,8 @@ import type { SystemSettingsUpdate } from "../../../types/system_settings";
 
 const InfoBox = () => {
     return (
-        <div className="flex items-center text-sm gap-2 bg-primary p-3 text-white rounded-md">
-            <Info />
+        <div className="flex items-start gap-2 rounded-md bg-primary p-3 text-sm text-white sm:items-center">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 sm:mt-0" />
             <span>
                 Auto-deletion is always active to ensure system stability and
                 optimal performance.
@@ -95,7 +95,7 @@ export default function DataRetention() {
                         <div className="skeleton rounded-md h-4 w-24"></div>
                         <div className="skeleton rounded-md h-4 w-24"></div>
                     </div>
-                    <div className="space-x-2 font-medium flex items-center">
+                    <div className="flex flex-col gap-2 font-medium sm:flex-row sm:items-center">
                         <div className="skeleton rounded-md h-10 w-40"></div>
                         <div className="skeleton rounded-md h-10 w-24"></div>
                     </div>
@@ -122,7 +122,7 @@ export default function DataRetention() {
                             <p>{`30 days (Max)`}</p>
                         </div>
                     </div>
-                    <div className="space-x-2 font-medium flex items-center">
+                    <div className="flex flex-col gap-2 font-medium sm:flex-row sm:items-center">
                         <button
                             className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary flex items-center"
                             disabled={!isEditing || isUpdating}

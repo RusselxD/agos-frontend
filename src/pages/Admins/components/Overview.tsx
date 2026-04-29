@@ -18,25 +18,25 @@ export default function Overview() {
     const { admins, isFetchingAdmins } = useAdmins();
 
     if (isFetchingAdmins) {
-        return <div className="rounded-xl skeleton h-full aspect-square"></div>;
+        return <div className="skeleton min-h-[17rem] rounded-xl lg:h-full"></div>;
     }
     
     if (admins.length === 0) {
-        return <div className="rounded-xl h-full aspect-square bg-red-50 border border-red-400"></div>;
+        return <div className="min-h-[17rem] rounded-xl border border-red-400 bg-red-50 lg:h-full"></div>;
     }
 
     return (
-        <div className="gradient-bg rounded-xl py-7 px-8 text-white relative flex flex-col justify-center">
+        <div className="gradient-bg relative flex min-h-[17rem] flex-col justify-center overflow-hidden rounded-xl px-5 py-6 text-white sm:px-8 lg:h-full">
             <p className="text-gray-200 font-semibold mb-3 text-sm">OVERVIEW</p>
 
-            <p className="font-bold text-6xl">
+            <p className="text-5xl font-bold sm:text-6xl">
                 {getAdminCount(admins.filter((a) => a.is_enabled))}
             </p>
             <p className="text-sm text-gray-200 font-light">
                 Active System Admins
             </p>
 
-            <div className="shadow-bottom flex py-3 pl-4 pr-24 items-center gap-3 my-4 rounded-lg bg-white/10 backdrop-blur-md border border-white/20">
+            <div className="shadow-bottom my-4 flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 py-3 pl-4 pr-4 backdrop-blur-md sm:pr-12 lg:pr-16">
                 <div className="bg-amber-400 flex items-center justify-center p-2.5 rounded-lg">
                     <Star fill="#FFFFFF" size={20} />
                 </div>
@@ -57,7 +57,7 @@ export default function Overview() {
                 </p>
             </div>
 
-            <Star className="absolute bottom-16 text-gray-100/15 rotate-45 right-10 w-48 h-48" />
+            <Star className="absolute bottom-10 right-4 h-36 w-36 rotate-45 text-gray-100/15 sm:right-10 sm:h-48 sm:w-48" />
         </div>
     );
 }

@@ -79,10 +79,10 @@ export default function NotificationLogs() {
     };
 
     return (
-        <div className="flex flex-col flex-1 h-full overflow-hidden gap-2">
+        <div className="flex h-full min-w-0 flex-1 flex-col gap-2">
             {/* Analytics summary cards */}
             {analytics && (
-                <div className="flex gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                     <div className="bg-white custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1">
                         <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                             <BarChart3 className="w-5 h-5 text-primary" />
@@ -113,10 +113,10 @@ export default function NotificationLogs() {
                 </div>
             )}
 
-            <div className="flex flex-1 overflow-hidden gap-2">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 xl:flex-row xl:overflow-hidden">
                 {/* Left panel - Responder list */}
-                <div className="bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col">
-                    <div className="flex items-center justify-between mb-4">
+                <div className="custom-shadow flex min-h-[28rem] min-w-0 flex-1 flex-col overflow-auto rounded-xl bg-white p-3 sm:p-5 xl:h-full">
+                    <div className="mb-4 flex items-center justify-between gap-3">
                         <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
                             NOTIFICATION LOGS
                         </h2>

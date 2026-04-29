@@ -1,4 +1,5 @@
-import ExcelJS from "exceljs";
+import * as XLSX from "xlsx";
+import type { WorkBook } from "xlsx";
 
 interface Column {
     header: string;
@@ -10,9 +11,9 @@ export interface ExportOptions {
     sheetName?: string;
     columns?: Column[];
     headerStyle?: {
-        font?: Partial<ExcelJS.Font>;
-        fill?: Partial<ExcelJS.Fill>;
-        alignment?: Partial<ExcelJS.Alignment>;
+        font?: Record<string, unknown>;
+        fill?: Record<string, unknown>;
+        alignment?: Record<string, unknown>;
     };
     autoFilter?: boolean;
     freezeHeader?: boolean;
@@ -39,81 +40,53 @@ const formatColumnHeader = (key: string): string => {
 export const exportToExcel = async (
     data: any[],
     options: ExportOptions
-): Promise<ExcelJS.Workbook> => {
+): Promise<WorkBook> => {
     const {
         sheetName = "Sheet1",
         columns,
-        headerStyle = {},
         autoFilter = true,
         freezeHeader = true,
     } = options;
 
     try {
-        // Create workbook and worksheet
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet(sheetName);
+        const resolvedColumns =
+            columns ??
+            (data.length > 0
+                ? Object.keys(data[0]).map((key) => ({
+                      header: formatColumnHeader(key),
+                      key,
+                      width: 15,
+                  }))
+                : []);
 
-        // Set columns
-        if (columns) {
-            worksheet.columns = columns;
-        } else if (data.length > 0) {
-            // Auto-generate columns from first data object
-            const firstRow = data[0];
-            worksheet.columns = Object.keys(firstRow).map((key) => ({
-                header: formatColumnHeader(key),
-                key: key,
-                width: 15,
-            }));
-        }
+        const rows = [
+            resolvedColumns.map((column) => column.header),
+            ...data.map((item) =>
+                resolvedColumns.map((column) => item[column.key] ?? ""),
+            ),
+        ];
 
-        // Add data rows
-        worksheet.addRows(data);
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.aoa_to_sheet(rows);
 
-        // Style header row
-        const headerRow = worksheet.getRow(1);
-        headerRow.font = { bold: true, ...headerStyle.font };
-        headerRow.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FFE0E0E0" },
-            ...headerStyle.fill,
-        } as ExcelJS.Fill;
-        headerRow.alignment = {
-            vertical: "middle",
-            horizontal: "center",
-            ...headerStyle.alignment,
-        };
-        headerRow.height = 25;
+        worksheet["!cols"] = resolvedColumns.map((column) => ({
+            wch: column.width ?? 15,
+        }));
 
-        // Add borders and alignment to all cells
-        worksheet.eachRow((row) => {
-            row.eachCell((cell) => {
-                cell.border = {
-                    top: { style: "thin" },
-                    left: { style: "thin" },
-                    bottom: { style: "thin" },
-                    right: { style: "thin" },
-                };
-                cell.alignment = {
-                    vertical: "middle",
-                    horizontal: "center",
-                };
-            });
-        });
-
-        // Enable auto filter
-        if (autoFilter && data.length > 0) {
-            worksheet.autoFilter = {
-                from: { row: 1, column: 1 },
-                to: { row: 1, column: worksheet.columns.length },
+        if (autoFilter && resolvedColumns.length > 0 && rows.length > 1) {
+            worksheet["!autofilter"] = {
+                ref: XLSX.utils.encode_range({
+                    s: { r: 0, c: 0 },
+                    e: { r: rows.length - 1, c: resolvedColumns.length - 1 },
+                }),
             };
         }
 
-        // Freeze header row
         if (freezeHeader) {
-            worksheet.views = [{ state: "frozen", ySplit: 1 }];
+            worksheet["!freeze"] = { xSplit: 0, ySplit: 1 };
         }
 
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
         return workbook;
     } catch (error) {
         console.error("Error processing Excel file:", error);
@@ -122,11 +95,13 @@ export const exportToExcel = async (
 };
 
 export const downloadExcelFile = async (
-    workbook: ExcelJS.Workbook,
+    workbook: WorkBook,
     fileName: string
 ) => {
-    // Generate buffer and download
-    const buffer = await workbook.xlsx.writeBuffer();
+    const buffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+    });
     const blob = new Blob([buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });

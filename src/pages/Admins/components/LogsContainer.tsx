@@ -12,7 +12,7 @@ import { useAdmins } from "../context/AdminsPageContext";
 
 const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
     return (
-        <table className="w-full text-left border-collapse text-sm">
+        <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
             <thead className="sticky top-0 z-10">
                 <tr className="rounded-t-md">
                     <th className="px-4 py-3 font-medium text-left bg-background rounded-tl-md">
@@ -155,8 +155,8 @@ export default function LogsContainer() {
     }
 
     return (
-        <Container headerTitle="AUDIT LOGS" className="flex-1 flex flex-col">
-            <div ref={containerRef} className="overflow-y-auto">
+        <Container headerTitle="AUDIT LOGS" className="flex min-h-[17rem] flex-1 flex-col lg:h-full">
+            <div ref={containerRef} className="overflow-auto">
                 <Table logs={logs} />
 
                 {/* Loading indicator for fetching more data */}

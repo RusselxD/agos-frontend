@@ -159,7 +159,7 @@ export default function SensorConfiguration() {
     if (isFetching) {
         return (
             <Container headerTitle="SENSOR CONFIGURATION">
-                <div className="grid grid-cols-3 gap-3 mt-3">
+                <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
                     <div className="skeleton rounded-md w-full h-28"></div>
                     <div className="skeleton rounded-md w-full h-28"></div>
                     <div className="skeleton rounded-md w-full h-28"></div>
@@ -173,11 +173,11 @@ export default function SensorConfiguration() {
 
     return (
         <Container headerTitle="SENSOR CONFIGURATION">
-            <div className=" grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <InstallationHeightCard />
                 <WarningThresholdCard />
                 <CriticalThresholdCard />
-                <div className="flex gap-2 font-medium col-span-3 justify-end">
+                <div className="flex flex-col gap-2 font-medium md:col-span-3 md:flex-row md:justify-end">
                     {isEditing ? (
                         <>
                             <button

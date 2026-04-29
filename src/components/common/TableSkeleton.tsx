@@ -8,7 +8,7 @@ export default function TableSkeleton({
     rows: number;
 }) {
     return (
-        <Container headerTitle={title} className="flex-1 flex flex-col">
+        <Container headerTitle={title} className="flex min-w-0 flex-1 flex-col">
             <div className="space-y-3">
                 {Array.from({ length: rows }).map((_, index) => {
                     return (

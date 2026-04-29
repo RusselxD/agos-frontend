@@ -6,17 +6,41 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                manualChunks: {
-                    react: ["react", "react-dom", "react-router-dom"],
-                    charts: ["chart.js", "react-chartjs-2"],
-                    excel: ["exceljs", "xlsx"],
-                    utils: [
-                        "axios",
-                        "date-fns",
-                        "papaparse",
-                        "react-toastify",
-                        "lucide-react",
-                    ],
+                manualChunks(id) {
+                    if (!id.includes("node_modules")) return;
+
+                    if (id.includes("/react/") || id.includes("/react-dom/")) {
+                        return "react";
+                    }
+
+                    if (id.includes("/react-router-dom/") || id.includes("/@remix-run/")) {
+                        return "router";
+                    }
+
+                    if (id.includes("/chart.js/") || id.includes("/react-chartjs-2/")) {
+                        return "charts";
+                    }
+
+                    if (id.includes("/exceljs/")) {
+                        return "exceljs";
+                    }
+
+                    if (id.includes("/xlsx/")) {
+                        return "xlsx";
+                    }
+
+                    if (id.includes("/lucide-react/")) {
+                        return "icons";
+                    }
+
+                    if (
+                        id.includes("/axios/") ||
+                        id.includes("/date-fns/") ||
+                        id.includes("/papaparse/") ||
+                        id.includes("/react-toastify/")
+                    ) {
+                        return "utils";
+                    }
                 },
             },
         },

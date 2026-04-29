@@ -83,11 +83,11 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
 
     return (
         <div
-            className={`h-full rounded-lg border border-gray-200 bg-white transition-[width] duration-300 ease-in-out overflow-hidden ${
-                isOpen ? "w-[24rem]" : "w-0"
+            className={`overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-300 ease-in-out xl:h-full xl:transition-[width] ${
+                isOpen ? "max-h-[42rem] w-full xl:w-[24rem]" : "max-h-0 w-full border-0 xl:max-h-none xl:w-0"
             }`}
         >
-            <div className="flex h-full flex-col w-[24rem]">
+            <div className="flex max-h-[42rem] w-full flex-col xl:h-full xl:w-[24rem]">
                 {/* Header */}
                 <div className="flex items-start justify-between p-4 border-b border-gray-200">
                     <div>
