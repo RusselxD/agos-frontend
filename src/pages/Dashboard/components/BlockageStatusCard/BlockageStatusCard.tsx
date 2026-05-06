@@ -5,6 +5,8 @@ import ProgressBar from "./components/ProgressBar";
 import StatusText from "./components/StatusText";
 import { useWaterwayContext } from "../../../../context/BlockageContext";
 import BlockageStatusCardSkeleton from "./components/BlockageStatusCardSkeleton";
+import { useFusionAnalysis } from "../../../../context/FusionAnalysisContext";
+import { AnomalyType } from "../../../../types/fusionAnalysis";
 
 export const barColors = ["bg-clear", "bg-partial", "bg-blocked"];
 
@@ -22,7 +24,11 @@ export const getLevelCount = (status: Status | null): number => {
 };
 
 export default function BlockageStatusCard() {
-    const { isFetching, error, warning } = useWaterwayContext();
+    const { isFetching, error, warning: contextWarning } = useWaterwayContext();
+    const { fusionAnalysis } = useFusionAnalysis();
+
+    const isBlindCamera = fusionAnalysis?.fusion_data?.anomalies?.includes(AnomalyType.BLIND_CAMERA);
+    const anomalyWarning = isBlindCamera ? "⚠️ Suspected Camera Blindness/Obscured Lens" : null;
 
     if (isFetching) {
         return <BlockageStatusCardSkeleton />;
@@ -33,7 +39,7 @@ export default function BlockageStatusCard() {
     }
 
     return (
-        <Card warning={warning}>
+        <Card warning={anomalyWarning || contextWarning}>
             <CardHeaderText label="BLOCKAGE STATUS" />
             <StatusText />
             <ProgressBar />

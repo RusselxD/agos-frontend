@@ -58,7 +58,7 @@ const getTierConfig = (tier: string) => {
 export default function AlertTierContainer() {
     const { fusionAnalysis } = useFusionAnalysis();
 
-    const alert_name = fusionAnalysis?.fusion_data.alert_name || "N/A";
+    const alert_name = fusionAnalysis?.fusion_data?.alert_name || "N/A";
 
     const tierDetails = getTierConfig(alert_name);
 

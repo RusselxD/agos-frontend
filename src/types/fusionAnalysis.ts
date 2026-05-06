@@ -11,10 +11,21 @@ export interface FusionAnalysisData {
     weather_status: WeatherStatus | null;
 }
 
-interface FusionData {
+export const AnomalyType = {
+    OBSTRUCTED_SENSOR: "OBSTRUCTED_SENSOR",
+    BLIND_CAMERA: "BLIND_CAMERA",
+    STALE_SENSOR: "STALE_SENSOR",
+    GHOST_FLOOD: "GHOST_FLOOD",
+    CONFIDENCE_THRASHING: "CONFIDENCE_THRASHING",
+} as const;
+
+export type AnomalyType = typeof AnomalyType[keyof typeof AnomalyType];
+
+export interface FusionData {
     alert_name: string;
     combined_risk_score: number;
     triggered_conditions: string[];
+    anomalies: AnomalyType[];
 }
 interface StatusBase{
     timestamp: string;

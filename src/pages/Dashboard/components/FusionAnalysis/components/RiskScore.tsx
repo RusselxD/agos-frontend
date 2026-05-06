@@ -8,7 +8,7 @@ const getData = () => {
     const warningThresholdMax = alertThresholds?.tier_2_max || 74;
 
     const combined_risk_score =
-        fusionAnalysis?.fusion_data.combined_risk_score || 0;
+        fusionAnalysis?.fusion_data?.combined_risk_score || 0;
 
     const getBarColor = (score: number): string => {
         if (score <= normalThreshold) return "bg-emerald-500";

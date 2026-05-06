@@ -17,8 +17,8 @@ const getIconColor = (alert_name: string): string => {
 export default function TriggeredConditions() {
     const { fusionAnalysis } = useFusionAnalysis();
 
-    const conditions = fusionAnalysis?.fusion_data.triggered_conditions || [];
-    const alertName = fusionAnalysis?.fusion_data.alert_name || "normal";
+    const conditions = fusionAnalysis?.fusion_data?.triggered_conditions || [];
+    const alert_name = fusionAnalysis?.fusion_data?.alert_name || "normal";
 
     if (conditions.length === 0) {
         return null;
@@ -30,11 +30,11 @@ export default function TriggeredConditions() {
                 Triggered Conditions:
             </p>
             <ul className="space-y-1">
-                {conditions.map((condition, i) => {
+                {conditions.map((condition: string, i: number) => {
                     return (
                         <li key={i} className="flex items-center gap-1">
                             <CircleCheck
-                                className={`w-4 h-4 md:w-[18px] md:h-[18px] shrink-0 ${getIconColor(alertName)}`}
+                                className={`w-4 h-4 md:w-[18px] md:h-[18px] shrink-0 ${getIconColor(alert_name)}`}
                             />
                             <span className="text-sm md:text-base text-gray-900">{condition}</span>
                         </li>
