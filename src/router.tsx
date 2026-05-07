@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 import Responders from "./pages/Responders";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import Public from "./pages/Public";
+import Landing from "./pages/Landing";
 
 import Admins from "./pages/Admins";
 import Login from "./pages/Login";
@@ -128,6 +129,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
+    element: <ErrorBoundary><Landing /></ErrorBoundary>,
+  },
+  {
+    path: "/public",
     element: <ErrorBoundary><Public /></ErrorBoundary>,
   },
 ]);
