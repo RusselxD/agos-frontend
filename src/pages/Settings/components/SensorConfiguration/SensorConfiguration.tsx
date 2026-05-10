@@ -21,16 +21,12 @@ const ThresholdCard = ({
 }: ThresholdCardProps) => {
     return (
         <div
-            className={`flex items-start gap-3 rounded-md border p-3 sm:items-center sm:gap-5 ${className}`}
+            className={`rounded-md p-3 flex items-center gap-5 border ${className}`}
         >
             {icon}
-            <div className="min-w-0 flex-1 space-y-1">
-                <h2 className="text-sm font-semibold leading-tight sm:text-base">
-                    {title}
-                </h2>
-                <p className="text-xs leading-5 text-gray-600 sm:text-sm">
-                    {desc}
-                </p>
+            <div className="space-y-1 flex-1">
+                <h2 className="font-semibold">{title}</h2>
+                <p className="text-sm text-gray-600">{desc}</p>
                 {children}
             </div>
         </div>
@@ -47,10 +43,10 @@ const HeightInput = ({
     const { handleUpdateConfig } = useCalibrationCard();
 
     return (
-        <div className="flex w-full items-center gap-2">
+        <div className="flex items-center w-full gap-2">
             <input
                 type="number"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm sm:text-base"
+                className="px-3 py-2 w-full rounded-md border border-gray-300"
                 value={height ?? ""}
                 onChange={(e) =>
                     handleUpdateConfig(config, e.target.valueAsNumber)
@@ -63,7 +59,7 @@ const HeightInput = ({
 
 const HeightDisplay = ({ height }: { height: number | undefined }) => {
     return (
-        <p className="w-full max-w-56 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm sm:text-base">{`${height} cm`}</p>
+        <p className="px-3 py-2 w-3/4 rounded-md bg-white border border-gray-300">{`${height} cm`}</p>
     );
 };
 
@@ -83,7 +79,7 @@ const InstallationHeightCard = () => {
             title="Installation Height"
             desc="Distance from sensor to the bottom"
             icon={
-                <Gauge className="h-10 w-10 shrink-0 rounded-md bg-blue-100 p-2.5 text-blue-600 sm:h-14 sm:w-14 sm:p-4" />
+                <Gauge className="p-4 rounded-md bg-blue-100 text-blue-600 w-14 h-14" />
             }
         >
             <div>
@@ -111,7 +107,7 @@ const WarningThresholdCard = () => {
             title="Warning Threshold"
             desc="Early warning water level depth"
             icon={
-                <Bell className="h-10 w-10 shrink-0 rounded-md bg-yellow-100 p-2.5 text-yellow-600 sm:h-14 sm:w-14 sm:p-4" />
+                <Bell className="p-4 rounded-md bg-yellow-100 text-yellow-600 w-14 h-14" />
             }
         >
             <div>
@@ -137,7 +133,7 @@ const CriticalThresholdCard = () => {
             title="Critical Threshold"
             desc="Maximum safe water level depth"
             icon={
-                <AlertTriangle className="h-10 w-10 shrink-0 rounded-md bg-red-100 p-2.5 text-red-600 sm:h-14 sm:w-14 sm:p-4" />
+                <AlertTriangle className="p-4 rounded-md bg-red-100 text-red-600 w-14 h-14" />
             }
         >
             <div>
@@ -163,13 +159,13 @@ export default function SensorConfiguration() {
     if (isFetching) {
         return (
             <Container headerTitle="SENSOR CONFIGURATION">
-                <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
-                    <div className="skeleton h-24 w-full rounded-md sm:h-28"></div>
-                    <div className="skeleton h-24 w-full rounded-md sm:h-28"></div>
-                    <div className="skeleton h-24 w-full rounded-md sm:h-28"></div>
+                <div className="grid grid-cols-3 gap-3 mt-3">
+                    <div className="skeleton rounded-md w-full h-28"></div>
+                    <div className="skeleton rounded-md w-full h-28"></div>
+                    <div className="skeleton rounded-md w-full h-28"></div>
                 </div>
                 <div className="flex justify-end">
-                    <div className="skeleton mt-3 h-10 w-full rounded-md sm:h-12 sm:w-40"></div>
+                    <div className="skeleton rounded-md w-40 h-12 mt-3"></div>
                 </div>
             </Container>
         );
@@ -177,24 +173,24 @@ export default function SensorConfiguration() {
 
     return (
         <Container headerTitle="SENSOR CONFIGURATION">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className=" grid grid-cols-3 gap-3">
                 <InstallationHeightCard />
                 <WarningThresholdCard />
                 <CriticalThresholdCard />
-                <div className="flex flex-col gap-2 text-sm font-medium md:col-span-3 md:flex-row md:justify-end">
+                <div className="flex gap-2 font-medium col-span-3 justify-end">
                     {isEditing ? (
                         <>
                             <button
                                 onClick={() => setIsEditing(false)}
                                 disabled={isSaving}
-                                className="btn-cancel py-2.5 sm:py-3"
+                                className="btn-cancel"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => handleSaveChanges()}
                                 disabled={isSaving}
-                                className="btn-custom bg-primary py-2.5 text-white hover:bg-primary/90 disabled:hover:bg-primary sm:py-3"
+                                className="btn-custom bg-primary text-white hover:bg-primary/90 disabled:hover:bg-primary"
                             >
                                 {isSaving ? "Saving..." : "Save Changes"}
                             </button>
@@ -202,7 +198,7 @@ export default function SensorConfiguration() {
                     ) : (
                         <button
                             onClick={() => setIsEditing(true)}
-                            className="btn-custom bg-primary py-2.5 text-white hover:bg-primary/90 sm:py-3"
+                            className="btn-custom bg-primary text-white hover:bg-primary/90"
                         >
                             Edit Configuration
                         </button>

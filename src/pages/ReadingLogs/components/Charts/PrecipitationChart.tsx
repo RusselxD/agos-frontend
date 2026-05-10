@@ -44,8 +44,7 @@ export default function PrecipitationChart() {
                     position: "top" as const,
                     labels: {
                         usePointStyle: true,
-                        padding: 10,
-                        boxWidth: 8,
+                        padding: 15,
                         font: { size: 11 },
                     },
                 },
@@ -76,7 +75,7 @@ export default function PrecipitationChart() {
                 x: {
                     ticks: {
                         font: { size: 10 },
-                        maxTicksLimit: 5,
+                        maxTicksLimit: 8,
                         maxRotation: 45,
                     },
                 },
@@ -108,8 +107,8 @@ export default function PrecipitationChart() {
     };
 
     return (
-        <Container headerTitle="PRECIPITATION LEVELS" className="h-72 overflow-hidden sm:h-80">
-            <div className="h-52 min-w-0 sm:h-60">
+        <Container headerTitle="PRECIPITATION LEVELS" className="h-80">
+            <div className="h-60">
                 <Bar data={data} options={options} />
             </div>
         </Container>

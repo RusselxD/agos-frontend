@@ -65,7 +65,7 @@ export default function WaterLevelChart({
                     display: true,
                     text: `Water Level Trend (Last ${duration})`,
                     font: {
-                        size: 14,
+                        size: 16,
                         weight: "bold" as const,
                     },
                     padding: {
@@ -98,14 +98,14 @@ export default function WaterLevelChart({
                             return `${value} cm`;
                         },
                         font: {
-                            size: 11,
+                            size: 12,
                         },
                     },
                     title: {
                         display: true,
                         text: "Water Level (cm)",
                         font: {
-                            size: 11,
+                            size: 12,
                             weight: "bold" as const,
                         },
                     },
@@ -113,17 +113,16 @@ export default function WaterLevelChart({
                 x: {
                     ticks: {
                         font: {
-                            size: 11,
+                            size: 12,
                         },
-                        maxTicksLimit: 8, // Prevent x-axis clutter
+                        maxTicksLimit: 12, // Prevent x-axis clutter
                         autoSkip: true,
-                        maxRotation: 50,
                     },
                     title: {
                         display: true,
                         text: granularity,
                         font: {
-                            size: 11,
+                            size: 12,
                             weight: "bold" as const,
                         },
                     },
@@ -139,7 +138,7 @@ export default function WaterLevelChart({
                     tension: 0.4, // Smooth line for water level trends
                 },
                 point: {
-                    radius: 2,
+                    radius: 3,
                     hoverRadius: 6,
                 },
             },
@@ -161,7 +160,7 @@ export default function WaterLevelChart({
                 tension: 0.4,
                 pointBackgroundColor: "rgb(59, 130, 246)",
                 pointBorderColor: "white",
-                pointBorderWidth: 1.5,
+                pointBorderWidth: 2,
             },
         ],
     };
@@ -169,7 +168,7 @@ export default function WaterLevelChart({
     const chartId = useId();
 
     return (
-        <div className="relative z-10 mt-2 h-full w-full overflow-hidden">
+        <div className="h-full mt-2 relative w-full overflow-hidden z-10">
             <Line data={data} options={options} id={chartId} key={chartId} />
         </div>
     );

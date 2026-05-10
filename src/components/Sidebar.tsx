@@ -156,23 +156,23 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             </div>
 
             {/* Mobile/Tablet bottom navigation (below lg) */}
-            <nav className="safe-bottom fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white lg:hidden">
-                <ul className="flex snap-x items-stretch gap-1 overflow-x-auto px-2 py-2 sm:justify-around sm:gap-0">
+            <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-bottom">
+                <ul className="flex items-center justify-around px-1 py-1.5 overflow-x-auto">
                     {tabs.map((tab: Tab, index: number) => (
-                        <li key={index} className="shrink-0 snap-start sm:flex-1">
+                        <li key={index} className="flex-shrink-0">
                             <NavLink
                                 to={tab.path}
                                 end
                                 className={({ isActive }) =>
-                                    `flex min-w-14 flex-col items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 text-[0.62rem] transition-colors sm:min-w-0 ${
+                                    `flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[0.6rem] ${
                                         isActive
-                                            ? "bg-primary/10 text-primary font-semibold"
-                                            : "text-gray-500 hover:bg-gray-50"
+                                            ? "text-primary font-semibold"
+                                            : "text-gray-500"
                                     }`
                                 }
                             >
-                                <tab.icon className="h-5 w-5 shrink-0" />
-                                <span className="hidden whitespace-nowrap sm:block">{tab.name}</span>
+                                <tab.icon className="w-5 h-5" />
+                                <span className="hidden sm:block whitespace-nowrap">{tab.name}</span>
                             </NavLink>
                         </li>
                     ))}

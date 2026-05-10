@@ -65,7 +65,7 @@ export default function WaterLevelTrendContainer() {
     }
 
     return (
-        <Container className="relative h-[24rem] w-full overflow-hidden sm:h-[28rem] lg:h-[30rem] xl:h-[32rem]">
+        <Container className="h-[32rem] w-full relative overflow-hidden">
             <FilterDropDown
                 selectedRange={chosenRange}
                 setSelectedRange={setChosenRange}

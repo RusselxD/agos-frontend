@@ -102,7 +102,7 @@ export default function DayDetailPanel({
                 onClick={onClose}
             />
 
-            <div className="fixed right-0 top-0 z-50 h-full w-full overflow-y-auto bg-gradient-to-b from-gray-50 to-white shadow-2xl animate-slide-in-right sm:max-w-md">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white shadow-2xl z-50 overflow-y-auto animate-slide-in-right">
                 <Header
                     maxRiskLevel={maxRiskLevel}
                     summary={summary}
@@ -110,7 +110,7 @@ export default function DayDetailPanel({
                 />
 
                 {/* Content */}
-                <div className="space-y-2 p-2">
+                <div className="p-2 space-y-2">
                     <HeroMetricCard
                         icon={AlertTriangle}
                         label="Risk Score"
@@ -126,7 +126,7 @@ export default function DayDetailPanel({
                         blurClass={maxRiskLevel.blurClass}
                     />
 
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-2">
                         <CompactMetricCard
                             icon={Droplets}
                             label="Water Level"

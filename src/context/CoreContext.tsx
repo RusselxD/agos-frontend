@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import ExcelJS from "exceljs";
 import { useToast } from "./ToastContext";
 import { downloadExcelFile, exportToExcel } from "../lib/utils/export";
 import { coreAPI } from "../lib/api/core";
@@ -152,9 +153,10 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
                 mainMessage: "Generating Excel file...",
                 subMessage: `Processing ${res.readings.length.toLocaleString()} rows`,
             });
-            const workBook = await exportToExcel(res.readings, {
-                columns: sensor_readings_export_columns,
-            });
+            const workBook: ExcelJS.Workbook = await exportToExcel(
+                res.readings,
+                { columns: sensor_readings_export_columns },
+            );
 
             setExportingToExcelInProgress({
                 mainMessage: "Downloading Excel file...",

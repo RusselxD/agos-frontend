@@ -22,14 +22,14 @@ const DetailCard = ({ title, icon, value, tone = "default" }: DetailCardProps) =
               : "text-gray-800";
 
     return (
-        <div className="w-full min-w-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+        <div className="w-full rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
             <div className="mb-2 flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-gray-500">
                 <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-100 text-gray-600">
                     {icon}
                 </div>
-                <span className="min-w-0 truncate">{title}</span>
+                <span>{title}</span>
             </div>
-            <p className={`break-words text-sm font-semibold ${valueColor}`}>{value}</p>
+            <p className={`text-sm font-semibold ${valueColor}`}>{value}</p>
         </div>
     );
 };
@@ -50,7 +50,7 @@ export default function ResponderAdditionalDetails({
 
     return (
         <div className="space-y-2.5 text-sm">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1">
+            <div className="grid grid-cols-2 gap-2">
                 <DetailCard
                     title="Phone Number"
                     icon={<Phone className="h-3.5 w-3.5" />}
@@ -68,7 +68,7 @@ export default function ResponderAdditionalDetails({
                 icon={<UserRound className="h-3.5 w-3.5" />}
                 value={createdBy}
             />
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1">
+            <div className="grid grid-cols-2 gap-2">
                 <DetailCard
                     title="Created On"
                     icon={<CalendarDays className="h-3.5 w-3.5" />}

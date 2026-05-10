@@ -14,12 +14,10 @@ function QuickStat({
     value: string;
 }) {
     return (
-        <div className="flex min-w-0 items-center gap-2 text-sm">
-            <Icon className="h-4 w-4 shrink-0 text-gray-400" />
-            <span className="min-w-0 flex-1 truncate text-gray-500">
-                {label}
-            </span>
-            <span className="shrink-0 font-medium text-gray-700">{value}</span>
+        <div className="flex items-center gap-2 text-sm">
+            <Icon className="w-4 h-4 text-gray-400" />
+            <span className="text-gray-500">{label}</span>
+            <span className="font-medium text-gray-700">{value}</span>
         </div>
     );
 }
@@ -53,24 +51,24 @@ export default function MainDisplay({
     }, [weatherData]);
 
     return (
-        <div className="custom-shadow overflow-hidden rounded-xl bg-white p-4 sm:p-6">
-            <div className="mb-5 flex items-start justify-between sm:mb-6">
-                <div className="min-w-0">
+        <div className="bg-white rounded-xl custom-shadow p-6">
+            <div className="flex items-start justify-between mb-6">
+                <div>
                     <p className="text-sm text-gray-500">{locationName}</p>
                     <p className="text-xs text-gray-400">Updated {timeAgo}</p>
                 </div>
             </div>
 
-            <div className="flex items-center gap-4 sm:gap-6">
-                <WeatherIcon className="h-20 w-20 shrink-0 text-primary sm:h-24 sm:w-24" />
-                <div className="min-w-0">
-                    <p className="text-5xl font-light leading-none text-gray-800 sm:text-6xl">
+            <div className="flex items-center gap-6">
+                <WeatherIcon className="w-24 h-24 text-primary" />
+                <div>
+                    <p className="text-6xl font-light text-gray-800">
                         {Math.round(weatherData.temperature_c)}°
                     </p>
-                    <p className="mt-1 truncate text-xl font-medium text-gray-700 sm:text-2xl">
+                    <p className="text-2xl font-medium text-gray-700 mt-1">
                         {weatherData.condition}
                     </p>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 mt-1">
                         {weatherData.temperature_description} ·{" "}
                         {weatherData.cloudiness}
                     </p>
@@ -78,7 +76,7 @@ export default function MainDisplay({
             </div>
 
             {/* Quick Stats */}
-            <div className="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 pt-5 sm:mt-6 sm:grid-cols-3 sm:gap-4 sm:pt-6">
+            <div className="flex gap-4 mt-6 pt-6 border-t border-gray-100">
                 <QuickStat
                     icon={Droplets}
                     label="Precipitation"

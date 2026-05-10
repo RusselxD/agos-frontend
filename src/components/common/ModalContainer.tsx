@@ -28,7 +28,7 @@ export default function ModalContainer({ children, setModalOpen }: ModalProps) {
 
     return createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black bg-opacity-40 p-3 sm:items-center"
+            className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
             onClick={() => setModalOpen(false)}
         >
             {children}

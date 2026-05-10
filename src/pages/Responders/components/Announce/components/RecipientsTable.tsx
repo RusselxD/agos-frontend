@@ -42,106 +42,7 @@ export default function RecipientsTable({
 
     return (
         <>
-            <div className="space-y-2 md:hidden">
-                <label className="flex items-center gap-2 rounded-lg border border-gray-200 bg-background px-3 py-2 text-sm font-medium">
-                    <input
-                        type="checkbox"
-                        checked={allSelected}
-                        onChange={onToggleSelectAll}
-                        className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-blue-600"
-                    />
-                    Select all active responders
-                </label>
-
-                {responders.map((responder) => {
-                    const isSelected = selectedResponderIds.includes(
-                        responder.id,
-                    );
-                    const previewGroups = responder.groups.slice(
-                        0,
-                        GROUP_PREVIEW_COUNT,
-                    );
-                    const hiddenGroupsCount = Math.max(
-                        responder.groups.length - GROUP_PREVIEW_COUNT,
-                        0,
-                    );
-
-                    return (
-                        <label
-                            key={responder.id}
-                            className={`block rounded-lg border p-3 ${
-                                isSelected
-                                    ? "border-blue-300 bg-blue-50"
-                                    : "border-gray-200 bg-white"
-                            }`}
-                        >
-                            <div className="flex items-start gap-3">
-                                <input
-                                    type="checkbox"
-                                    checked={isSelected}
-                                    onChange={() =>
-                                        onToggleResponder(responder.id)
-                                    }
-                                    className="mt-1 h-4 w-4 cursor-pointer rounded border-gray-300 accent-blue-600"
-                                />
-                                <div className="min-w-0 flex-1">
-                                    <p className="font-medium text-gray-800">
-                                        {responder.first_name} {responder.last_name}
-                                    </p>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                        {formatPHNumber(responder.phone_number)}
-                                    </p>
-
-                                    <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                                        {responder.groups.length === 0 ? (
-                                            <p className="text-sm text-gray-500">
-                                                No groups
-                                            </p>
-                                        ) : (
-                                            <>
-                                                {previewGroups.map((groupName) => (
-                                                    <span
-                                                        key={`${responder.id}-${groupName}`}
-                                                        className="max-w-full truncate rounded-full border border-gray-200 bg-white px-2 py-0.5 text-xs text-gray-700"
-                                                        title={groupName}
-                                                    >
-                                                        {groupName}
-                                                    </span>
-                                                ))}
-                                                {hiddenGroupsCount > 0 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={(event) => {
-                                                            event.preventDefault();
-                                                            event.stopPropagation();
-                                                            handleOpenGroupsModal(
-                                                                `${responder.first_name} ${responder.last_name}`,
-                                                                responder.groups,
-                                                            );
-                                                        }}
-                                                        className="btn-custom rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
-                                                    >
-                                                        +{hiddenGroupsCount} more
-                                                    </button>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
-                    );
-                })}
-
-                {responders.length === 0 && (
-                    <div className="rounded-lg border border-gray-200 px-4 py-6 text-center text-sm text-gray-500">
-                        No active responders available.
-                    </div>
-                )}
-            </div>
-
-            <div className="hidden overflow-x-auto md:block">
-            <table className="w-full min-w-[52rem] table-fixed border-collapse text-left text-sm">
+            <table className="w-full table-fixed border-collapse text-left text-sm">
                 <colgroup>
                     <col className="w-[5%]" />
                     <col className="w-[20%]" />
@@ -262,7 +163,6 @@ export default function RecipientsTable({
                     )}
                 </tbody>
             </table>
-            </div>
 
             {groupsModalIsOpen && (
                 <ResponderGroupsModal

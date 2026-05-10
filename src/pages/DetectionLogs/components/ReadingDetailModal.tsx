@@ -66,11 +66,11 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
 
     return createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-2 backdrop-blur-sm sm:items-center sm:p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={onClose}
         >
             <div
-                className="max-h-[94vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 {isFetching ? (
@@ -85,13 +85,13 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                 ) : (
                     <>
                         {/* Header */}
-                        <div className="flex items-start justify-between gap-3 px-3 pt-3 sm:px-5 sm:pt-5">
-                            <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center">
+                        <div className="flex items-center justify-between gap-3 px-5 pt-5">
+                            <div className="flex items-center gap-2 min-w-0">
                                 <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ring-1 ${config.badge}`}>
                                     <StatusIcon className="w-3.5 h-3.5" />
                                     {config.label}
                                 </span>
-                                <span className="truncate text-sm font-medium text-gray-500">
+                                <span className="text-sm font-medium text-gray-500">
                                     Detection #{detail.id}
                                 </span>
                             </div>
@@ -105,18 +105,18 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                         </div>
 
                         {/* Image section */}
-                        <div className="px-3 pt-3 sm:px-5 sm:pt-4">
+                        <div className="px-5 pt-4">
                             {imageError ? (
-                                <div className="flex min-h-56 w-full flex-col items-center justify-center bg-gray-100 text-gray-400 sm:min-h-72">
+                                <div className="w-full min-h-72 bg-gray-100 flex flex-col items-center justify-center text-gray-400">
                                     <ImageOff className="w-10 h-10 mb-2" />
                                     <span className="text-sm">Image unavailable</span>
                                 </div>
                             ) : (
-                                <div className="flex w-full items-center justify-center overflow-auto bg-gray-100">
+                                <div className="w-full bg-gray-100 flex items-center justify-center overflow-auto">
                                     <img
                                         src={detail.image_path}
                                         alt={`Detection #${detail.id}`}
-                                        className="max-h-[48vh] w-full object-contain sm:max-h-[58vh]"
+                                        className="max-h-[58vh] w-full object-contain"
                                         onError={() => setImageError(true)}
                                     />
                                 </div>
@@ -124,9 +124,9 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                         </div>
 
                         {/* Content */}
-                        <div className="space-y-3 p-3 sm:space-y-5 sm:p-5">
+                        <div className="p-5 space-y-5">
                             {/* Metrics grid */}
-                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div className="grid grid-cols-2 gap-3">
                                 <MetricCard
                                     label="Blockage Level"
                                     value={`${detail.blockage_percentage.toFixed(1)}%`}
@@ -140,7 +140,7 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                             </div>
 
                             {/* Timestamps */}
-                            <div className="flex flex-col gap-3 sm:flex-row">
+                            <div className="flex gap-3">
                                 <TimestampCard
                                     label="Detected"
                                     timestamp={detail.timestamp}
@@ -163,12 +163,12 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
 
 function MetricCard({ label, value, icon, subtitle }: { label: string; value: string; icon: React.ReactNode; subtitle?: string }) {
     return (
-        <div className="flex min-w-0 flex-col gap-2 rounded-xl bg-gray-50 p-3 sm:p-3.5">
+        <div className="bg-gray-50 rounded-xl p-3.5 flex flex-col gap-2">
             <div className="flex items-center justify-between">
                 <span className="text-[0.68rem] font-medium text-gray-400 uppercase tracking-wide">{label}</span>
                 {icon}
             </div>
-            <span className="break-words text-lg font-bold text-gray-800 sm:text-xl">{value}</span>
+            <span className="text-xl font-bold text-gray-800">{value}</span>
             {subtitle && <span className="text-[0.68rem] text-gray-400 -mt-1">{subtitle}</span>}
         </div>
     );
@@ -176,13 +176,13 @@ function MetricCard({ label, value, icon, subtitle }: { label: string; value: st
 
 function TimestampCard({ label, timestamp, icon }: { label: string; timestamp: string; icon: React.ReactNode }) {
     return (
-        <div className="flex flex-1 items-center gap-3 rounded-xl bg-gray-50 px-3 py-3 sm:px-3.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200/70 text-gray-500">
+        <div className="flex-1 bg-gray-50 rounded-xl px-3.5 py-3 flex items-center gap-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200/70 text-gray-500">
                 {icon}
             </div>
-            <div className="min-w-0">
+            <div>
                 <p className="text-[0.68rem] font-medium text-gray-400 uppercase tracking-wide">{label}</p>
-                <p className="truncate text-sm font-semibold text-gray-700">
+                <p className="text-sm font-semibold text-gray-700">
                     {format(new Date(timestamp), "MMM d, yyyy")}
                 </p>
                 <p className="text-xs text-gray-400">
@@ -219,7 +219,7 @@ function ProgressRing({ percentage, color }: { percentage: number; color: string
 function ModalSkeleton({ onClose }: { onClose: () => void }) {
     return (
         <>
-            <div className="flex items-center justify-between gap-3 px-3 pt-3 sm:px-5 sm:pt-5">
+            <div className="flex items-center justify-between gap-3 px-5 pt-5">
                 <div className="skeleton h-8 w-44 rounded-full" />
                 <button
                     onClick={onClose}
@@ -229,16 +229,16 @@ function ModalSkeleton({ onClose }: { onClose: () => void }) {
                     <X className="w-4 h-4" />
                 </button>
             </div>
-            <div className="px-3 pt-3 sm:px-5 sm:pt-4">
-                <div className="skeleton h-[48vh] max-h-[34rem] w-full rounded-none sm:h-[58vh]" />
+            <div className="px-5 pt-4">
+                <div className="skeleton w-full h-[58vh] max-h-[34rem] rounded-none" />
             </div>
-            <div className="space-y-3 p-3 sm:space-y-5 sm:p-5">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="p-5 space-y-5">
+                <div className="grid grid-cols-2 gap-3">
                     {[...Array(2)].map((_, i) => (
                         <div key={i} className="skeleton h-24 rounded-xl" />
                     ))}
                 </div>
-                <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex gap-3">
                     <div className="skeleton flex-1 h-16 rounded-xl" />
                     <div className="skeleton flex-1 h-16 rounded-xl" />
                 </div>

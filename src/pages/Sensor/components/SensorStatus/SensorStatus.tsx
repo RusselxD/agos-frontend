@@ -13,9 +13,9 @@ export interface CardProps {
 
 const Details = ({ label, value }: { label: string; value: string }) => {
     return (
-        <div className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-2">
-            <p className="text-sm text-gray-700">{label}</p>
-            <p className="break-words text-sm font-medium">{value}</p>
+        <div className="flex items-center">
+            <p className="text-sm min-w-[4.5rem] text-gray-700">{label}</p>
+            <p className="text-sm font-medium">{value}</p>
         </div>
     );
 };
@@ -49,7 +49,7 @@ export default function SensorStatus() {
         return (
             <Container
                 headerTitle="SENSOR STATUS"
-                className="flex flex-col justify-between lg:w-[16rem] xl:w-1/4"
+                className="w-1/4 flex flex-col justify-between"
             >
                 <div className="space-y-3">
                     <div className="rounded-md skeleton w-full h-24"></div>
@@ -67,16 +67,16 @@ export default function SensorStatus() {
     return (
         <Container
             headerTitle="SENSOR STATUS"
-            className="flex flex-col justify-between lg:w-[16rem] xl:w-1/4"
+            className="w-1/4 flex flex-col justify-between"
         >
-            <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1 lg:grid-rows-3">
+            <div className="grid grid-rows-3 gap-3 flex-1">
                 <ConnectionContainer value={sensorStatus?.connection || ""} />
                 <LastUpdatedContainer
                     value={sensorStatus?.last_updated || ""}
                 />
                 <SignalContainer value={sensorStatus?.signal || ""} />
             </div>
-            <div className="mt-4 grid gap-1 border-t pt-3 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="border-t mt-5 pt-3 space-y-1">
                 <Details
                     label="Device:"
                     value={sensorStatus?.device_name || ""}

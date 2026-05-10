@@ -20,100 +20,47 @@ export default function Table({
     sensorReadings: SensorReading[];
 }) {
     return (
-        <>
-            <div className="space-y-2 md:hidden">
-                {sensorReadings.map((reading) => (
-                    <div
+        <table className="w-full text-left border-collapse text-sm">
+            <thead className="sticky top-0 z-10">
+                <tr className="rounded-t-md">
+                    <th className="px-4 py-3 font-medium text-center bg-background rounded-tl-md">
+                        Water Level (cm)
+                    </th>
+                    <th className="px-4 py-3 font-medium text-center bg-background">
+                        Change Rate (cm)
+                    </th>
+                    <th className="px-4 py-3 font-medium text-center bg-background">
+                        Status
+                    </th>
+                    <th className="px-4 py-3 font-medium text-center bg-background rounded-tr-md">
+                        Timestamp
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {sensorReadings.map((reading, index) => (
+                    <tr
                         key={reading.id}
-                        className="rounded-lg border border-gray-200 bg-white p-3"
+                        className={index % 2 !== 0 ? "bg-gray-100" : "bg-white"}
                     >
-                        <div className="flex items-start justify-between gap-3">
-                            <div>
-                                <p className="text-xs text-gray-500">
-                                    Water Level
-                                </p>
-                                <p className="text-lg font-semibold text-gray-900">
-                                    {reading.water_level_cm} cm
-                                </p>
-                            </div>
-                            <p
-                                className={`rounded-full bg-gray-50 px-2.5 py-1 text-xs font-semibold ${getTextColor(
-                                    reading.status,
-                                )}`}
-                            >
-                                {reading.status}
-                            </p>
-                        </div>
-
-                        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                                <p className="text-xs text-gray-500">
-                                    Change Rate
-                                </p>
-                                <p className="font-medium text-gray-800">{`${
-                                    reading.change_rate > 0 ? "+" : ""
-                                }${reading.change_rate} cm`}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-500">
-                                    Timestamp
-                                </p>
-                                <p className="font-medium text-gray-800">
-                                    {formatTimestamp(reading.timestamp)}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        {/* <td className="px-4 py-3">{reading.device_name}</td> */}
+                        <td className="px-4 py-3 text-center">{reading.water_level_cm}</td>
+                        <td className="px-4 py-3 text-center">{`${
+                            reading.change_rate > 0 ? "+" : ""
+                        }${reading.change_rate}`}</td>
+                        <td
+                            className={`px-4 py-3 font-medium text-center ${getTextColor(
+                                reading.status
+                            )}`}
+                        >
+                            {reading.status}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                            {formatTimestamp(reading.timestamp)}
+                        </td>
+                    </tr>
                 ))}
-            </div>
-
-            <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
-                    <thead className="sticky top-0 z-10">
-                        <tr className="rounded-t-md">
-                            <th className="rounded-tl-md bg-background px-4 py-3 text-center font-medium">
-                                Water Level (cm)
-                            </th>
-                            <th className="bg-background px-4 py-3 text-center font-medium">
-                                Change Rate (cm)
-                            </th>
-                            <th className="bg-background px-4 py-3 text-center font-medium">
-                                Status
-                            </th>
-                            <th className="rounded-tr-md bg-background px-4 py-3 text-center font-medium">
-                                Timestamp
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sensorReadings.map((reading, index) => (
-                            <tr
-                                key={reading.id}
-                                className={
-                                    index % 2 !== 0 ? "bg-gray-100" : "bg-white"
-                                }
-                            >
-                                <td className="px-4 py-3 text-center">
-                                    {reading.water_level_cm}
-                                </td>
-                                <td className="px-4 py-3 text-center">{`${
-                                    reading.change_rate > 0 ? "+" : ""
-                                }${reading.change_rate}`}</td>
-                                <td
-                                    className={`px-4 py-3 text-center font-medium ${getTextColor(
-                                        reading.status,
-                                    )}`}
-                                >
-                                    {reading.status}
-                                </td>
-                                <td className="px-4 py-3 text-center">
-                                    {formatTimestamp(reading.timestamp)}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </>
+            </tbody>
+        </table>
     );
 }

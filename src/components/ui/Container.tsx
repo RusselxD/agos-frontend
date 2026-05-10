@@ -8,7 +8,7 @@ interface ContainerProps {
 
 const ContainerHeader = ({ title }: { title: string }) => {
     return (
-        <h2 className="mb-2 w-full border-l-4 border-primary pl-2 text-sm font-semibold text-gray-600 md:mb-3 md:text-base">
+        <h2 className="pl-2 border-l-4 font-semibold text-sm md:text-base text-gray-600 border-primary w-full mb-2 md:mb-3">
             {title}
         </h2>
     );
@@ -20,9 +20,9 @@ export default function Container({
     children,
 }: ContainerProps) {
     return (
-        <section className={`custom-shadow min-w-0 rounded-xl bg-white p-3 md:p-5 ${className ?? ""}`}>
+        <div className={`bg-white custom-shadow rounded-xl p-3 md:p-5 ${className}`}>
             {headerTitle && <ContainerHeader title={headerTitle} />}
             {children}
-        </section>
+        </div>
     );
 }

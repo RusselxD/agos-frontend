@@ -27,8 +27,8 @@ export default function ResponderEntryRow({
     canRemove,
 }: ResponderEntryRowProps) {
     return (
-        <div className="space-y-3 rounded-lg border border-gray-100 bg-white p-3">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="bg-white p-3 rounded-lg border border-gray-100 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
                 <TextInputField
                     value={firstName}
                     setValue={setFirstName}
@@ -44,8 +44,8 @@ export default function ResponderEntryRow({
                 />
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div className="w-full sm:w-1/2">
+            <div className="flex items-end justify-between gap-3">
+                <div className="w-1/2">
                     <PhoneNumberInput
                         phoneNumber={phoneNumber}
                         handleInputNumber={handlePhoneNumberChange}
@@ -57,7 +57,7 @@ export default function ResponderEntryRow({
                     <button
                         type="button"
                         onClick={onRemove}
-                        className="self-end rounded p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded transition-colors"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>

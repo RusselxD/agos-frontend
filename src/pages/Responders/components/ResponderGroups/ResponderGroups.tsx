@@ -49,7 +49,7 @@ export default function ResponderGroups() {
 
     return (
         <Container headerTitle="RESPONDER GROUPS" className="flex-1">
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:gap-5">
+            <div className="grid grid-cols-2 gap-5">
                 {cache.groups?.map((group) => (
                     <ResponderGroupCard
                         key={group.id}

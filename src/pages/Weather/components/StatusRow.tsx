@@ -21,14 +21,12 @@ function StatusCard({
     };
 
     return (
-        <div className={`custom-shadow min-w-0 rounded-xl border p-4 ${colors[type]}`}>
-            <div className="mb-1 flex min-w-0 items-center gap-2">
-                <Icon className="h-4 w-4 shrink-0" />
-                <span className="min-w-0 truncate text-sm font-medium opacity-80">
-                    {title}
-                </span>
+        <div className={`custom-shadow rounded-xl p-4 border ${colors[type]}`}>
+            <div className="flex items-center gap-2 mb-1">
+                <Icon className="w-4 h-4" />
+                <span className="text-sm font-medium opacity-80">{title}</span>
             </div>
-            <p className="break-words text-lg font-semibold">{value}</p>
+            <p className="text-lg font-semibold">{value}</p>
         </div>
     );
 }
@@ -39,7 +37,7 @@ interface StatusRowProps {
 
 export default function StatusRow({ weatherData }: StatusRowProps) {
     return (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-3">
             <StatusCard
                 icon={Smile}
                 title="Comfort Level"

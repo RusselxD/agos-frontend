@@ -49,25 +49,25 @@ export default function Responders() {
 
     return (
         <RespondersPageProvider>
-            <div className="flex h-full min-w-0 flex-1 flex-col space-y-2">
-                <div className="custom-shadow flex flex-col gap-2 rounded-lg bg-white px-2 py-2 text-sm sm:flex-row sm:justify-between sm:px-3">
-                    <div className="flex gap-2 overflow-x-auto">
+            <div className="space-y-2 flex flex-col flex-1 h-full">
+                <div className="bg-white rounded-lg py-2 px-3 text-sm flex justify-between custom-shadow">
+                    <div className="flex gap-2">
                         {TABS.map((tab) => {
                             return (
                                 <button
                                     key={tab.value}
                                     onClick={() => setChosenTab(tab.value)}
-                                    className={`btn-custom shrink-0 rounded-lg px-3 py-2.5 sm:px-4 ${chosenTab === tab.value ? "bg-primary font-medium text-white" : "text-gray-700 border-transparent hover:text-black"}`}
+                                    className={`btn-custom py-2.5 px-4 rounded-lg ${chosenTab === tab.value ? "bg-primary font-medium text-white" : "text-gray-700 border-transparent hover:text-black"}`}
                                 >
                                     {tab.name}
                                 </button>
                             );
                         })}
                     </div>
-                    <div className="relative sm:shrink-0" ref={dropdownRef}>
+                    <div className="relative" ref={dropdownRef}>
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="btn-custom w-full bg-blue-600 font-medium text-white hover:bg-blue-700 sm:w-auto"
+                            className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium"
                         >
                             <Plus className="w-5 h-5" />
                             <span>New</span>

@@ -18,15 +18,15 @@ export default function StatCard({
     bgColorClass,
 }: StatCardProps) {
     return (
-        <div className="custom-shadow flex min-w-0 items-center gap-3 rounded-xl bg-white p-3 sm:gap-4 sm:p-4">
-            <div className={`shrink-0 rounded-lg p-3 ${bgColorClass}`}>
-                <Icon className={`h-6 w-6 ${colorClass}`} />
+        <div className="bg-white custom-shadow rounded-xl p-4 flex items-center gap-4">
+            <div className={`p-3 rounded-lg ${bgColorClass}`}>
+                <Icon className={`w-6 h-6 ${colorClass}`} />
             </div>
-            <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+            <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
                     {label}
                 </p>
-                <p className={`break-words text-xl font-bold leading-tight ${colorClass}`}>
+                <p className={`text-xl font-bold ${colorClass} truncate`}>
                     {value}
                 </p>
                 {subValue && (

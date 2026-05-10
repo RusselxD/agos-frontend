@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { modelReadingLogAPI } from "../../lib/api/modelReadingLog";
 import type { BlockageStatus, ModelReadingListItem } from "../../types/modelReadingLog";
 import ReadingListItem from "./components/ReadingListItem";
@@ -21,6 +21,7 @@ export default function DetectionLogs() {
     const [page, setPage] = useState(1);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [statusFilter, setStatusFilter] = useState<BlockageStatus | "all">("all");
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         document.title = "Detection Logs - AGOS";
@@ -76,17 +77,34 @@ export default function DetectionLogs() {
         }
     };
 
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+                    loadMore();
+                }
+            },
+            { threshold: 0.1 },
+        );
+
+        observer.observe(sentinel);
+        return () => observer.disconnect();
+    }, [hasMore, isLoadingMore]);
+
     return (
-        <div className="flex min-w-0 flex-1">
-            <div className="custom-shadow flex min-h-[28rem] min-w-0 flex-1 flex-col overflow-auto rounded-xl bg-white p-3 sm:p-5">
-                <div className="mb-4 flex items-center justify-between">
+        <div className="flex flex-1 h-full overflow-hidden">
+            <div className="bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col">
+                <div className="flex items-center justify-between mb-4">
                     <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
                         DETECTION LOGS
                     </h2>
                 </div>
 
                 {/* Status filter chips */}
-                <div className="mb-4 flex gap-1.5 overflow-x-auto pb-1">
+                <div className="flex gap-1.5 mb-4">
                     {STATUS_FILTERS.map((f) => (
                         <button
                             key={f.value}
@@ -114,7 +132,7 @@ export default function DetectionLogs() {
                         No detection readings found.
                     </div>
                 ) : (
-                    <div className="flex-1 space-y-2 overflow-auto">
+                    <div className="space-y-2 overflow-auto flex-1">
                         {readings.map((reading) => (
                             <ReadingListItem
                                 key={reading.id}
@@ -124,16 +142,11 @@ export default function DetectionLogs() {
                             />
                         ))}
 
-                        {hasMore && (
-                            <button
-                                type="button"
-                                onClick={loadMore}
-                                disabled={isLoadingMore}
-                                className="w-full rounded-lg border border-primary/30 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                {isLoadingMore ? "Loading..." : "Load more detections"}
-                            </button>
-                        )}
+                        <div ref={sentinelRef} className="py-2 flex justify-center">
+                            {isLoadingMore && (
+                                <div className="spinner w-5 h-5 border-primary border-t-transparent" />
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
