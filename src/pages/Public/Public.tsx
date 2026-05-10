@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { coreAPI } from "../../lib/api/core";
@@ -16,7 +16,7 @@ import WaterLevelStatusCard from "../Dashboard/components/WaterLevelStatusCard";
 import FusionAnalysis from "../Dashboard/components/FusionAnalysis";
 
 export default function Public() {
-    const { isAuthenticated, isAuthChecking } = useAuth();
+    const { isAuthChecking } = useAuth();
     const [location, setLocation] = useState<LocationDetails | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -40,9 +40,7 @@ export default function Public() {
         );
     }
 
-    if (isAuthenticated) {
-        return <Navigate to="/admin" replace />;
-    }
+    // Removed redirect: allow authenticated admins to view the public dashboard
 
     if (error) {
         return (
@@ -86,13 +84,13 @@ function Header({ locationName }: { locationName: string }) {
     return (
         <header className="bg-white border-b border-gray-200 px-4 py-3">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
-                <div className="flex items-center gap-3">
+                <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                     <h1 className="text-xl font-bold text-primary">AGOS</h1>
                     <span className="text-gray-400">|</span>
                     <span className="text-sm text-gray-500">
                         {locationName}
                     </span>
-                </div>
+                </Link>
                 <Link
                     to="/auth/login"
                     className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors"
@@ -109,7 +107,7 @@ function StatusCards() {
     return (
         <div className="flex flex-col gap-4">
             <FusionAnalysis />
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                 <BlockageStatusCard />
                 <WeatherConditionCard />
                 <WaterLevelStatusCard />

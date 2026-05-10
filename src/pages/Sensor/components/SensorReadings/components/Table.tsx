@@ -20,7 +20,7 @@ export default function Table({
     sensorReadings: SensorReading[];
 }) {
     return (
-        <table className="w-full text-left border-collapse text-sm">
+        <table className="w-full text-left border-collapse text-sm whitespace-nowrap">
             <thead className="sticky top-0 z-10">
                 <tr className="rounded-t-md">
                     <th className="px-4 py-3 font-medium text-center bg-background rounded-tl-md">

@@ -64,7 +64,7 @@ function ResponderListContent({
                 </div>
 
                 <div
-                    className={`overflow-hidden flex-1 transition-all duration-300 ${
+                    className={`overflow-auto flex-1 transition-all duration-300 ${
                         addResponderFormOpen
                             ? "max-h-0 opacity-0 pointer-events-none -translate-y-1"
                             : "max-h-[200rem] opacity-100 translate-y-0"

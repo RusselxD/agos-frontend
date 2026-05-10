@@ -24,13 +24,13 @@ export default function NotificationTypeSelector({
             <span className="text-sm font-semibold text-gray-700">
                 NOTIFICATION TYPE
             </span>
-            <div>
+            <div className="flex flex-wrap gap-2">
                 {options.map((option) => (
                     <button
                         type="button"
                         key={option.value}
                         onClick={() => onSelect(option.value)}
-                        className={`mr-2 rounded-md px-4 py-2 text-sm ${
+                        className={`rounded-md px-4 py-2 text-sm ${
                             selectedType === option.value
                                 ? "bg-blue-500 text-white"
                                 : "bg-gray-200 text-gray-700"

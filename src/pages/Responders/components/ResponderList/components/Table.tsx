@@ -80,7 +80,7 @@ export default function Table({
     ] as const;
 
     return (
-        <table className="w-full text-left border-collapse text-sm table-fixed flex-1">
+        <table className="w-full text-left border-collapse text-sm whitespace-nowrap flex-1">
             <colgroup>
                 <col className="w-[17%]" />
                 <col className="w-[17%]" />

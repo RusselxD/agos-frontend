@@ -79,7 +79,7 @@ const InstallationHeightCard = () => {
             title="Installation Height"
             desc="Distance from sensor to the bottom"
             icon={
-                <Gauge className="p-4 rounded-md bg-blue-100 text-blue-600 w-14 h-14" />
+                <Gauge className="shrink-0 p-4 rounded-md bg-blue-100 text-blue-600 w-14 h-14" />
             }
         >
             <div>
@@ -107,7 +107,7 @@ const WarningThresholdCard = () => {
             title="Warning Threshold"
             desc="Early warning water level depth"
             icon={
-                <Bell className="p-4 rounded-md bg-yellow-100 text-yellow-600 w-14 h-14" />
+                <Bell className="shrink-0 p-4 rounded-md bg-yellow-100 text-yellow-600 w-14 h-14" />
             }
         >
             <div>
@@ -133,7 +133,7 @@ const CriticalThresholdCard = () => {
             title="Critical Threshold"
             desc="Maximum safe water level depth"
             icon={
-                <AlertTriangle className="p-4 rounded-md bg-red-100 text-red-600 w-14 h-14" />
+                <AlertTriangle className="shrink-0 p-4 rounded-md bg-red-100 text-red-600 w-14 h-14" />
             }
         >
             <div>
@@ -159,7 +159,7 @@ export default function SensorConfiguration() {
     if (isFetching) {
         return (
             <Container headerTitle="SENSOR CONFIGURATION">
-                <div className="grid grid-cols-3 gap-3 mt-3">
+                <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div className="skeleton rounded-md w-full h-28"></div>
                     <div className="skeleton rounded-md w-full h-28"></div>
                     <div className="skeleton rounded-md w-full h-28"></div>
@@ -173,11 +173,11 @@ export default function SensorConfiguration() {
 
     return (
         <Container headerTitle="SENSOR CONFIGURATION">
-            <div className=" grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <InstallationHeightCard />
                 <WarningThresholdCard />
                 <CriticalThresholdCard />
-                <div className="flex gap-2 font-medium col-span-3 justify-end">
+                <div className="flex flex-col md:flex-row gap-2 font-medium md:col-span-3 md:justify-end">
                     {isEditing ? (
                         <>
                             <button

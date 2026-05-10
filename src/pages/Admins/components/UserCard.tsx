@@ -30,12 +30,12 @@ interface DetailsProps {
 
 const Details = ({ label, value, customValue }: DetailsProps) => {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
             <p className="text-gray-500 text-xs">{label}</p>
             {customValue ? (
-                customValue
+                <div className="truncate">{customValue}</div>
             ) : (
-                <p className="font-medium text-sm">{value}</p>
+                <p className="font-medium text-sm break-words">{value}</p>
             )}
         </div>
     );
@@ -168,7 +168,7 @@ export default function UserCard({
                         </div>
                     )}
                 </div>
-                <div className="grid grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 rounded-lg relative text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 rounded-lg relative text-sm">
                     <Details
                         label="Phone Number"
                         value={formatPHNumber(user.phone_number)}

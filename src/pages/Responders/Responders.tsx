@@ -50,8 +50,24 @@ export default function Responders() {
     return (
         <RespondersPageProvider>
             <div className="space-y-2 flex flex-col flex-1 h-full">
-                <div className="bg-white rounded-lg py-2 px-3 text-sm flex justify-between custom-shadow">
-                    <div className="flex gap-2">
+                <div className="bg-white rounded-lg py-2 px-3 text-sm flex items-center justify-between gap-3 custom-shadow">
+                    {/* Mobile Dropdown */}
+                    <div className="lg:hidden flex-1 min-w-0">
+                        <select
+                            value={chosenTab}
+                            onChange={(e) => setChosenTab(e.target.value)}
+                            className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm font-medium rounded-lg focus:ring-primary focus:border-primary block p-2.5 outline-none cursor-pointer truncate"
+                        >
+                            {TABS.map((tab) => (
+                                <option key={tab.value} value={tab.value}>
+                                    {tab.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Desktop Tabs */}
+                    <div className="hidden lg:flex flex-wrap gap-2 flex-1">
                         {TABS.map((tab) => {
                             return (
                                 <button
@@ -64,7 +80,7 @@ export default function Responders() {
                             );
                         })}
                     </div>
-                    <div className="relative" ref={dropdownRef}>
+                    <div className="relative shrink-0" ref={dropdownRef}>
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                             className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium"

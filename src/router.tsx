@@ -15,8 +15,6 @@ import Admins from "./pages/Admins";
 import Login from "./pages/Login";
 import ForcePasswordChange from "./pages/ForcePasswordChange";
 
-// import Register from "./pages/RespondersRegister/pages/Register";
-
 import { WeatherProvider } from "./context/WeatherContext";
 import { WaterLevelProvider } from "./context/WaterLevelContext";
 import { BlockageProvider } from "./context/BlockageContext";

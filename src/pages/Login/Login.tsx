@@ -22,7 +22,7 @@ export default function Login() {
         >
             <LoginForm />
             <Link
-                to="/"
+                to="/public"
                 className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors"
             >
                 <LayoutDashboard className="w-4 h-4" />

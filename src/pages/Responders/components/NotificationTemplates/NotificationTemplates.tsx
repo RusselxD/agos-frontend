@@ -51,7 +51,7 @@ export default function NotificationTemplates() {
                 {cache.templates?.length ?? 0} templates
             </p>
 
-            <div className="grid grid-cols-2 gap-5 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
                 {cache.templates?.map((template) => (
                     <NotificationTemplateCard
                         key={template.id}

@@ -28,7 +28,7 @@ export default function GroupMembersSelector({
     return (
         <div className="space-y-1">
             <span className="text-sm font-semibold text-gray-700">
-                SELECT ACIVE MEMBERS
+                SELECT ACTIVE MEMBERS
             </span>
             <div className="flex max-h-40 flex-col overflow-auto rounded-lg border border-gray-400 p-3">
                 {isFetching && <MembersSkeleton />}
@@ -46,6 +46,12 @@ export default function GroupMembersSelector({
                         </span>
                     </label>
                 ))}
+                
+                {responders.length === 0 && !isFetching && (
+                    <div className="text-sm text-gray-500 py-4 text-center">
+                        No active responders available.
+                    </div>
+                )}
             </div>
         </div>
     );

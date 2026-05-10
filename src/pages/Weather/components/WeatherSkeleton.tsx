@@ -1,22 +1,22 @@
 export default function WeatherSkeleton() {
     return (
         <div className="space-y-4">
-            <div className="bg-white rounded-xl p-6">
-                <div className="flex items-start justify-between mb-6">
+            <div className="rounded-xl bg-white p-4 sm:p-6 custom-shadow">
+                <div className="mb-5 flex items-start justify-between sm:mb-6">
                     <div className="space-y-1">
                         <div className="skeleton h-4 w-32 rounded" />
                         <div className="skeleton h-3 w-24 rounded" />
                     </div>
                 </div>
-                <div className="flex items-center gap-6">
-                    <div className="skeleton w-24 h-24 rounded-full" />
-                    <div className="space-y-2">
-                        <div className="skeleton h-14 w-32 rounded" />
+                <div className="flex items-center gap-4 sm:gap-6">
+                    <div className="skeleton h-20 w-20 rounded-full sm:h-24 sm:w-24 shrink-0" />
+                    <div className="space-y-2 min-w-0 flex-1">
+                        <div className="skeleton h-12 w-28 rounded sm:h-14 sm:w-32" />
                         <div className="skeleton h-7 w-24 rounded" />
                         <div className="skeleton h-4 w-40 rounded" />
                     </div>
                 </div>
-                <div className="flex gap-4 mt-6 pt-6 border-t border-gray-100">
+                <div className="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 pt-5 sm:mt-6 sm:grid-cols-3 sm:gap-4 sm:pt-6">
                     <div className="skeleton h-5 w-28 rounded" />
                     <div className="skeleton h-5 w-24 rounded" />
                     <div className="skeleton h-5 w-28 rounded" />
@@ -31,7 +31,7 @@ export default function WeatherSkeleton() {
                     </div>
                 ))}
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="skeleton rounded-xl h-20" />
                 <div className="skeleton rounded-xl h-20" />
             </div>

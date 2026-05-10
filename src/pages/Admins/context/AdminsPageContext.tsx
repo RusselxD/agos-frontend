@@ -6,6 +6,9 @@ import { useToast } from "../../../context/ToastContext";
 
 interface AdminsPageContextValue {
     admins: AdminUserResponse[];
+    filteredAdmins: AdminUserResponse[];
+    searchQuery: string;
+    setSearchQuery: Dispatch<SetStateAction<string>>;
     isFetchingAdmins: boolean;
     createNewAdminIsOpen: boolean;
     setCreateNewAdminIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -21,6 +24,7 @@ const AdminsPageContext = createContext<AdminsPageContextValue | undefined>(
 
 export function AdminsPageProvider({ children }: { children: ReactNode }) {
     const [admins, setAdmins] = useState<AdminUserResponse[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
     const [isFetchingAdmins, setIsFetchingAdmins] = useState<boolean>(true);
 
     const [createNewAdminIsOpen, setCreateNewAdminIsOpen] =
@@ -64,9 +68,22 @@ export function AdminsPageProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const filteredAdmins = useMemo(() => {
+        if (!searchQuery.trim()) return admins;
+        const q = searchQuery.toLowerCase();
+        return admins.filter(
+            (a) =>
+                `${a.first_name} ${a.last_name}`.toLowerCase().includes(q) ||
+                (a.phone_number && a.phone_number.toLowerCase().includes(q))
+        );
+    }, [admins, searchQuery]);
+
     const contextValue = useMemo(
         () => ({
             admins,
+            filteredAdmins,
+            searchQuery,
+            setSearchQuery,
             isFetchingAdmins,
             createNewAdminIsOpen,
             setCreateNewAdminIsOpen,
@@ -75,7 +92,7 @@ export function AdminsPageProvider({ children }: { children: ReactNode }) {
             triggerLogRefetch,
             refetchAdmins,
         }),
-        [admins, isFetchingAdmins, createNewAdminIsOpen, logRefetchTrigger]
+        [admins, filteredAdmins, searchQuery, isFetchingAdmins, createNewAdminIsOpen, logRefetchTrigger]
     );
 
     return (

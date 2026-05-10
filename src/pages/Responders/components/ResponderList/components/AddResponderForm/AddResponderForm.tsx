@@ -203,8 +203,8 @@ export default function AddResponderForm() {
                 ))}
             </div>
 
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-200">
-                <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 pt-3 border-t border-gray-200 gap-4">
+                <div className="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
                         onClick={addResponder}

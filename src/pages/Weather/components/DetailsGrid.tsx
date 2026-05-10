@@ -21,13 +21,13 @@ function DetailCard({
     subtitle: string;
 }) {
     return (
-        <div className="bg-white rounded-xl p-4 custom-shadow">
-            <div className="flex items-center gap-2 mb-2">
-                <Icon className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-500">{title}</span>
+        <div className="bg-white rounded-xl p-4 custom-shadow min-w-0">
+            <div className="flex items-center gap-2 mb-2 min-w-0">
+                <Icon className="h-4 w-4 shrink-0 text-gray-400" />
+                <span className="truncate text-sm text-gray-500">{title}</span>
             </div>
-            <p className="text-xl font-semibold text-gray-800">{value}</p>
-            <p className="text-sm text-gray-500">{subtitle}</p>
+            <p className="break-words text-xl font-semibold text-gray-800">{value}</p>
+            <p className="truncate text-sm text-gray-500">{subtitle}</p>
         </div>
     );
 }

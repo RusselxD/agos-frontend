@@ -7,9 +7,11 @@ import AddNewAdminButton from "./components/AddNewAdminButton";
 import AddNewAdmin from "./components/AddNewAdmin";
 import SearchBar from "../../components/common/SearchBar";
 import { useEffect } from "react";
+import { useAdmins } from "./context/AdminsPageContext";
 
 export default function Admins() {
     const { user } = useAuth();
+    const { searchQuery, setSearchQuery } = useAdmins();
 
     useEffect(() => {
         document.title = "Admins - AGOS";
@@ -22,15 +24,19 @@ export default function Admins() {
     return (
         <div className="flex h-full flex-col gap-3">
             {/* Top Part (Overview and Logs) */}
-            <div className="flex h-[19rem] gap-3 w-full">
+            <div className="flex flex-col xl:flex-row h-auto xl:h-[19rem] gap-3 w-full">
                 <Overview />
                 <LogsContainer />
             </div>
 
             <div className="flex flex-col flex-1">
                 {/* Search Bar and New Admin Button */}
-                <div className="flex items-center justify-between mb-3">
-                    <SearchBar placeholder="Search Admins..." />
+                <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between mb-3">
+                    <SearchBar 
+                        placeholder="Search Admins..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                     {user?.is_superuser && <AddNewAdminButton />}
                 </div>
 

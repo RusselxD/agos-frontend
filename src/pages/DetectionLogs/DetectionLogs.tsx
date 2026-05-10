@@ -104,7 +104,7 @@ export default function DetectionLogs() {
                 </div>
 
                 {/* Status filter chips */}
-                <div className="flex gap-1.5 mb-4">
+                <div className="flex gap-2 mb-4 overflow-x-auto whitespace-nowrap pb-1">
                     {STATUS_FILTERS.map((f) => (
                         <button
                             key={f.value}
