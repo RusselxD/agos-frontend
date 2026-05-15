@@ -27,12 +27,16 @@ export default {
             colors: {
                 primary: "#0A3D62",
                 accent: "#1ABC9C",
-                background: "#F8F8F8",
-                "background-dark": "#0f172a",
+                background: "#F0F4F8",
+                "background-dark": "#050B14",
                 neutral: "#2C3E50",
                 clear: "#2ECC71",
                 partial: "#F39C12",
                 blocked: "#E74C3C",
+            },
+            backgroundImage: {
+                'dark-gradient': 'radial-gradient(circle at top, #111828 0%, #050B14 100%)',
+                'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%)',
             },
             keyframes: {
                 "slide-in-right": {

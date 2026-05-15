@@ -64,7 +64,7 @@ export default function Public() {
                 <WeatherProvider>
                     <WaterLevelProvider locationId={location.location_id}>
                         <FusionAnalysisProvider isPublic>
-                            <div className="min-h-screen bg-background dark:bg-background-dark text-slate-900 dark:text-slate-200 transition-colors duration-300">
+                            <div className="min-h-screen bg-background dark:bg-dark-gradient bg-fixed text-slate-900 dark:text-slate-200 transition-colors duration-300">
                                 <Header locationName={location.location_name} />
                                 <main className="max-w-7xl mx-auto px-4 py-6">
                                     <ErrorBoundary>
@@ -103,6 +103,8 @@ function Header({ locationName }: { locationName: string }) {
     );
 }
 
+import PublicInsights from "./components/PublicInsights";
+
 function StatusCards() {
     return (  
         <div className="flex flex-col gap-4">
@@ -112,6 +114,7 @@ function StatusCards() {
                 <WeatherConditionCard />
                 <WaterLevelStatusCard />
             </div>
+            <PublicInsights />
         </div>
     );
 }

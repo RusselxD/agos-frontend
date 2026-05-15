@@ -8,16 +8,16 @@ interface CardProps {
 }
 
 export const CardHeaderText = ({ label }: { label: string }) => {
-    return <p className="text-xs md:text-sm text-gray-500 dark:text-slate-400 font-semibold">{label}</p>;
+    return <p className="text-[0.65rem] md:text-xs tracking-widest uppercase text-slate-500 dark:text-slate-400 font-bold mb-2 md:mb-3 block">{label}</p>;
 };
 
 export const ErrorCard = ({ message }: { message: string }) => {
     return (
-        <div className="shadow-md shadow-red-200 dark:shadow-none border rounded-xl p-3 md:p-4 flex gap-2 bg-red-50 dark:bg-red-900/10 border-red-400 dark:border-red-800/50">
-            <CircleAlert className="w-6 h-6 text-red-500 dark:text-red-400 mt-0.5" />
+        <div className="shadow-lg shadow-red-200 dark:shadow-none border rounded-xl p-4 flex gap-3 bg-red-50 dark:bg-red-900/20 border-red-400 dark:border-red-800/50 backdrop-blur-md">
+            <CircleAlert className="w-6 h-6 text-red-500 dark:text-red-400 mt-0.5 shrink-0" />
             <div className="space-y-1">
-                <p className="font-medium text-red-800 dark:text-red-400">Error Loading Data</p>
-                <p className="text-red-500 dark:text-red-400">{message}</p>
+                <p className="font-bold text-red-800 dark:text-red-400">Error Loading Data</p>
+                <p className="text-sm text-red-600 dark:text-red-300">{message}</p>
             </div>
         </div>
     );
@@ -26,17 +26,18 @@ export const ErrorCard = ({ message }: { message: string }) => {
 export default function Card({ children, className, warning }: CardProps) {
     return (
         <div
-            className={`custom-shadow border border-gray-300 dark:border-slate-700 rounded-xl p-3 md:p-4 flex flex-col justify-between text-slate-900 dark:text-slate-200 ${warning ? "!border-amber-400 dark:!border-amber-700/50 !bg-amber-50 dark:!bg-amber-900/20 group relative" : ""} ${
-                className || "bg-white dark:bg-slate-800"
+            className={`relative overflow-hidden bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-white/50 dark:border-white/5 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col justify-between text-slate-900 dark:text-slate-200 transition-all duration-300 hover:shadow-xl hover:dark:border-white/10 ${warning ? "!border-amber-400/50 dark:!border-amber-500/50 !bg-amber-50/80 dark:!bg-amber-900/30 group" : ""} ${
+                className || ""
             }`}
         >
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent"></div>
             {warning && (
-                <div className="absolute transition-all duration-300 hidden group-hover:block bottom-full mb-1 left-0 bg-amber-100 dark:bg-amber-900/50 border border-amber-400 dark:border-amber-700 text-sm text-amber-800 dark:text-amber-300 px-3 py-2 rounded-t-lg">
+                <div className="absolute transition-all duration-300 hidden group-hover:block bottom-full mb-1 left-0 bg-amber-100 dark:bg-amber-900/80 border border-amber-400 dark:border-amber-600 shadow-xl backdrop-blur-md text-xs font-semibold tracking-wide uppercase text-amber-800 dark:text-amber-200 px-3 py-2 rounded-t-lg z-20">
                     {warning}
                 </div>
             )}
 
-            {children}
+            <div className="relative z-10 flex flex-col h-full">{children}</div>
         </div>
     );
 }

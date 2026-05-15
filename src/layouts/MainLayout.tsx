@@ -8,7 +8,7 @@ export default function MainLayout(): React.JSX.Element {
     const { isConnected, disconnectedSince } = useWebSocket();
 
     return (
-        <div className="min-h-screen flex bg-background dark:bg-background-dark text-slate-900 dark:text-slate-200 transition-colors duration-300">
+        <div className="min-h-screen flex bg-background dark:bg-dark-gradient bg-fixed text-slate-900 dark:text-slate-200 transition-colors duration-300">
             <Sidebar
                 isCollapsed={isSidebarCollapsed}
                 onToggle={() => setIsSidebarCollapsed((prev) => !prev)}
