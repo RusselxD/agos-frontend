@@ -25,7 +25,7 @@ export default function TriggeredConditions() {
     }
 
     return (
-        <div>
+        <div className="rounded-md bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-700/50 p-3 md:p-4">
             <p className="font-medium text-xs md:text-sm text-gray-500 dark:text-slate-400 mb-1">
                 Triggered Conditions:
             </p>

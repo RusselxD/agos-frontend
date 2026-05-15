@@ -75,7 +75,7 @@ const InstallationHeightCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-gray-50 dark:bg-slate-800/50 border-gray-300 dark:border-slate-700"
+            className="bg-gray-50 dark:bg-slate-900/50 border-gray-300 dark:border-slate-700/50"
             title="Installation Height"
             desc="Distance from sensor to the bottom"
             icon={
@@ -103,7 +103,7 @@ const WarningThresholdCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-yellow-50 dark:bg-amber-900/10 border-yellow-300 dark:border-amber-800/50"
+            className="bg-yellow-50 dark:bg-amber-900/20 border-yellow-300 dark:border-amber-700/50"
             title="Warning Threshold"
             desc="Early warning water level depth"
             icon={
@@ -129,7 +129,7 @@ const CriticalThresholdCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800/50"
+            className="bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700/50"
             title="Critical Threshold"
             desc="Maximum safe water level depth"
             icon={

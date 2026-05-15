@@ -156,7 +156,7 @@ export default function LogsContainer() {
 
     return (
         <Container headerTitle="AUDIT LOGS" className="flex-1 flex flex-col">
-            <div ref={containerRef} className="overflow-y-auto">
+            <div ref={containerRef} className="overflow-y-auto custom-scrollbar">
                 <Table logs={logs} />
 
                 {/* Loading indicator for fetching more data */}

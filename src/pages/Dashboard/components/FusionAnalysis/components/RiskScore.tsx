@@ -75,7 +75,7 @@ const Labels = () => {
 
 export default function RiskScore() {
     return (
-        <div className="rounded-lg bg-white dark:bg-slate-800 flex flex-col gap-1">
+        <div className="rounded-md bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-700/50 p-3 md:p-4 flex flex-col gap-1">
             <HeadLabels />
             <ProgressBarSegment />
             <Labels />

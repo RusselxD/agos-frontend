@@ -87,7 +87,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                 isOpen ? "w-full md:w-[24rem]" : "w-0"
             }`}
         >
-            <div className="flex h-full flex-col w-[100vw] md:w-[24rem]">
+            <div className="flex h-full flex-col w-full md:w-[24rem]">
                 {/* Header */}
                 <div className="flex items-start justify-between p-4 border-b border-gray-200 dark:border-slate-700/50">
                     <div>
@@ -107,7 +107,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                 </div>
 
                 {/* Type filter chips */}
-                <div className="flex gap-1.5 px-4 py-3 border-b border-gray-100 dark:border-slate-700/50 overflow-x-auto">
+                <div className="flex gap-1.5 px-4 py-3 border-b border-gray-100 dark:border-slate-700/50 overflow-x-auto custom-scrollbar">
                     {TYPE_FILTERS.map((f) => (
                         <button
                             key={f.value}
@@ -124,7 +124,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                 </div>
 
                 {/* Delivery list */}
-                <div className="flex-1 overflow-auto p-4 space-y-2">
+                <div className="flex-1 overflow-auto custom-scrollbar p-4 space-y-2">
                     {isFetching ? (
                         <div className="space-y-3">
                             {[...Array(4)].map((_, i) => (

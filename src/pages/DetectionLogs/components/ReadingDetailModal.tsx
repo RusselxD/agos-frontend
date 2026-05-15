@@ -70,7 +70,7 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
             onClick={onClose}
         >
             <div
-                className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto border border-white/10 dark:border-slate-800 transition-colors"
+                className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto custom-scrollbar border border-white/10 dark:border-slate-800 transition-colors"
                 onClick={(e) => e.stopPropagation()}
             >
                 {isFetching ? (

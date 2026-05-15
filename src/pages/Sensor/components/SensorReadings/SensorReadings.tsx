@@ -100,7 +100,7 @@ export default function SensorReadings() {
         >
             {sensorReadings.length > 0 && <ExportToExcelButton />}
 
-            <div ref={containerRef} className="flex-1 overflow-auto">
+            <div ref={containerRef} className="flex-1 overflow-auto custom-scrollbar">
                 <Table sensorReadings={sensorReadings} />
 
                 {/* Loading indicator for fetching more data */}

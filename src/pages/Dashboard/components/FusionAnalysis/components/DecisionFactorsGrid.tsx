@@ -24,31 +24,31 @@ const getWaterLevelTrendIcon = (trend: string): LucideIcon => {
 const getBlockageColors = (status: string) => {
     switch (status.toLowerCase()) {
         case "blocked":
-            return "border-red-500 dark:border-red-800";
+            return "border-red-500 dark:border-red-800/50 dark:border-l-red-500";
         case "partial":
-            return "border-yellow-500 dark:border-yellow-700";
+            return "border-yellow-500 dark:border-yellow-700/50 dark:border-l-yellow-500";
         case "clear":
-            return "border-green-500 dark:border-emerald-800";
+            return "border-green-500 dark:border-emerald-800/50 dark:border-l-emerald-500";
         default:
-            return "border-gray-500 dark:border-slate-700";
+            return "border-gray-500 dark:border-slate-700/50 dark:border-l-slate-500";
     }
 };
 
 const getWeatherColors = (precipitation: number | undefined): string => {
     if (precipitation === undefined || precipitation === null) {
-        return "border-gray-500 dark:border-slate-700";
+        return "border-gray-500 dark:border-slate-700/50 dark:border-l-slate-500";
     }
 
     if (precipitation === 0) {
-        return "border-green-500 dark:border-emerald-800";
+        return "border-green-500 dark:border-emerald-800/50 dark:border-l-emerald-500";
     } else if (precipitation <= 2.5) {
-        return "border-blue-400 dark:border-blue-800";
+        return "border-blue-400 dark:border-blue-800/50 dark:border-l-blue-400";
     } else if (precipitation <= 10) {
-        return "border-yellow-500 dark:border-yellow-700";
+        return "border-yellow-500 dark:border-yellow-700/50 dark:border-l-yellow-500";
     } else if (precipitation <= 50) {
-        return "border-orange-500 dark:border-orange-800";
+        return "border-orange-500 dark:border-orange-800/50 dark:border-l-orange-500";
     } else {
-        return "border-red-500 dark:border-red-800";
+        return "border-red-500 dark:border-red-800/50 dark:border-l-red-500";
     }
 };
 
@@ -57,15 +57,15 @@ const getWaterLevelColors = (
     sensorConfig: SensorConfig | null
 ): string => {
     if (!sensorConfig || waterLevelCm === 0) {
-        return "border-gray-500 dark:border-slate-700";
+        return "border-gray-500 dark:border-slate-700/50 dark:border-l-slate-500";
     }
 
     if (waterLevelCm < sensorConfig.warning_threshold) {
-        return "border-green-500 dark:border-emerald-800";
+        return "border-green-500 dark:border-emerald-800/50 dark:border-l-emerald-500";
     } else if (waterLevelCm < sensorConfig.critical_threshold) {
-        return "border-yellow-500 dark:border-yellow-700";
+        return "border-yellow-500 dark:border-yellow-700/50 dark:border-l-yellow-500";
     } else {
-        return "border-red-500 dark:border-red-800";
+        return "border-red-500 dark:border-red-800/50 dark:border-l-red-500";
     }
 };
 
@@ -109,7 +109,7 @@ const StatCard = ({
 }: StatCardProps) => {
     return (
         <div
-            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md ${className} dark:border-slate-700 dark:bg-slate-800/50`}
+            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md bg-gray-50 dark:bg-slate-900/50 ${className}`}
         >
             <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400">{title}</p>
             <div className="font-semibold text-lg md:text-xl">{value}</div>
