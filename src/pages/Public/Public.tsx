@@ -10,7 +10,6 @@ import { WeatherProvider } from "../../context/WeatherContext";
 import { WaterLevelProvider } from "../../context/WaterLevelContext";
 import { FusionAnalysisProvider } from "../../context/FusionAnalysisContext";
 import ErrorBoundary from "../../components/common/ErrorBoundary";
-import BlockageStatusCard from "../Dashboard/components/BlockageStatusCard";
 import WeatherConditionCard from "../Dashboard/components/WeatherConditionCard";
 import WaterLevelStatusCard from "../Dashboard/components/WaterLevelStatusCard";
 import FusionAnalysis from "../Dashboard/components/FusionAnalysis";
@@ -103,6 +102,7 @@ function Header({ locationName }: { locationName: string }) {
     );
 }
 
+import PublicBlockageStatusCard from "./components/PublicBlockageStatusCard";
 import PublicInsights from "./components/PublicInsights";
 
 function StatusCards() {
@@ -110,7 +110,7 @@ function StatusCards() {
         <div className="flex flex-col gap-4">
             <FusionAnalysis />
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 h-full">
-                <BlockageStatusCard />
+                <PublicBlockageStatusCard />
                 <WeatherConditionCard />
                 <WaterLevelStatusCard />
             </div>
