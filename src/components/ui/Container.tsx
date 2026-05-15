@@ -23,7 +23,7 @@ export default function Container({
     children,
 }: ContainerProps) {
     return (
-        <div className={`relative overflow-hidden bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl border border-white/40 dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-black/50 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:dark:border-white/10 ${className}`}>
+        <div className={`relative overflow-hidden bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl border border-slate-200/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-black/50 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:dark:border-white/20 ${className}`}>
             {headerTitle && <ContainerHeader title={headerTitle} />}
             {children}
             {/* Subtle inner top highlight */}

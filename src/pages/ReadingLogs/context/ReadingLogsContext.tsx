@@ -22,6 +22,8 @@ interface ReadingLogsContextValue {
     setStartDate: (date: string) => void;
     setEndDate: (date: string) => void;
     setAnalyzeDrawerIsOpen: (isOpen: boolean) => void;
+    selectedSummary: DailySummary | null;
+    setSelectedSummary: (summary: DailySummary | null) => void;
 }
 
 const ReadingLogsContext = createContext<ReadingLogsContextValue | undefined>(
@@ -47,6 +49,7 @@ export function ReadingLogsProvider({
     const { toastError } = useToast();
 
     const [analyzeDrawerIsOpen, setAnalyzeDrawerIsOpen] = useState(false);
+    const [selectedSummary, setSelectedSummary] = useState<DailySummary | null>(null);
 
     // Initial fetch to get available days and set default date range
     useEffect(() => {
@@ -130,11 +133,13 @@ export function ReadingLogsProvider({
             isLoading,
             startDate,
             endDate,
-            analyzeDrawerIsOpen,
             availableDays,
+            analyzeDrawerIsOpen,
+            selectedSummary,
             setStartDate,
             setEndDate,
             setAnalyzeDrawerIsOpen,
+            setSelectedSummary,
         }),
         [
             summaries,
@@ -143,6 +148,7 @@ export function ReadingLogsProvider({
             endDate,
             availableDays,
             analyzeDrawerIsOpen,
+            selectedSummary,
         ],
     );
 

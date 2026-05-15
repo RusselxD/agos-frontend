@@ -122,7 +122,7 @@ const VideoPlaceholder = () => {
 
 export default function VideoContainer() {
     return (
-        <div className="bg-white dark:bg-slate-800 custom-shadow p-3 md:p-5 flex-1 rounded-xl">
+        <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl p-3 md:p-5 flex-1 rounded-2xl border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl">
             <Header />
             <VideoPlaceholder />
         </div>

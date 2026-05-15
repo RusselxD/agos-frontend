@@ -26,7 +26,7 @@ export const ErrorCard = ({ message }: { message: string }) => {
 export default function Card({ children, className, warning }: CardProps) {
     return (
         <div
-            className={`relative overflow-hidden bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-white/50 dark:border-white/5 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col justify-between text-slate-900 dark:text-slate-200 transition-all duration-300 hover:shadow-xl hover:dark:border-white/10 ${warning ? "!border-amber-400/50 dark:!border-amber-500/50 !bg-amber-50/80 dark:!bg-amber-900/30 group" : ""} ${
+            className={`relative overflow-hidden bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl border border-slate-200/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl p-4 md:p-5 flex flex-col justify-between text-slate-900 dark:text-slate-200 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:dark:border-white/20 ${warning ? "!border-amber-400/50 dark:!border-amber-500/50 !bg-amber-50/80 dark:!bg-amber-900/30 group" : ""} ${
                 className || ""
             }`}
         >

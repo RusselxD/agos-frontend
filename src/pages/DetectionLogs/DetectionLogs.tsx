@@ -96,7 +96,7 @@ export default function DetectionLogs() {
 
     return (
         <div className="flex flex-1 h-full overflow-hidden">
-            <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-gray-100 dark:border-slate-700/50 transition-colors">
+            <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl p-6 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary dark:border-blue-500">
                         DETECTION LOGS
@@ -109,10 +109,10 @@ export default function DetectionLogs() {
                         <button
                             key={f.value}
                             onClick={() => setStatusFilter(f.value)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                            className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 uppercase tracking-widest ${
                                 statusFilter === f.value
-                                    ? "bg-primary dark:bg-blue-600 text-white shadow-sm"
-                                    : "bg-gray-100 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-700"
+                                    ? "bg-primary dark:bg-blue-600 text-white shadow-lg scale-105"
+                                    : "bg-white/40 dark:bg-white/5 text-gray-600 dark:text-slate-400 border border-gray-200/50 dark:border-white/5 hover:bg-white/60 dark:hover:bg-white/10"
                             }`}
                         >
                             {f.label}

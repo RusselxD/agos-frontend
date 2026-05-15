@@ -51,7 +51,7 @@ export default function MainDisplay({
     }, [weatherData]);
 
     return (
-        <div className="custom-shadow overflow-hidden rounded-xl bg-white dark:bg-slate-800 p-4 sm:p-6 border border-gray-100 dark:border-slate-700">
+        <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl overflow-hidden rounded-2xl p-6 sm:p-8 border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl hover:dark:border-white/20">
             <div className="mb-5 flex items-start justify-between sm:mb-6">
                 <div className="min-w-0">
                     <p className="truncate text-sm text-gray-500 dark:text-slate-400">{locationName}</p>
@@ -76,7 +76,7 @@ export default function MainDisplay({
             </div>
 
             {/* Quick Stats */}
-            <div className="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 dark:border-slate-700 pt-5 sm:mt-6 sm:grid-cols-3 sm:gap-4 sm:pt-6">
+            <div className="mt-8 grid grid-cols-1 gap-4 border-t border-gray-100 dark:border-white/5 pt-8 sm:grid-cols-3 sm:gap-6">
                 <QuickStat
                     icon={Droplets}
                     label="Precipitation"

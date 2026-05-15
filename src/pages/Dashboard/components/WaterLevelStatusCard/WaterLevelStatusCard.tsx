@@ -31,7 +31,7 @@ export default function WaterLevelStatusCard({ className }: { className?: string
     }
 
     return (
-        <Card className={`!justify-start bg-white dark:bg-slate-800 ${className || ""}`} warning={anomalyWarning || contextWarning}>
+        <Card className={`!justify-start ${className || ""}`} warning={anomalyWarning || contextWarning}>
             <CardHeaderText label="WATER LEVEL STATUS" />
             <div className="flex h-full justify-between">
                 <MainDisplay />

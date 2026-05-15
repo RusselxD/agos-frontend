@@ -10,9 +10,10 @@ import {
 } from "./components";
 import Header from "./components/Header";
 import AnalyzePanel from "./components/Analyze/AnalyzePanel";
+import DayDetailPanel from "./components/DataTable/DayDetailPanel/DayDetailPanel";
 
 function ReadingLogsContent() {
-    const { analyzeDrawerIsOpen } = useReadingLogs();
+    const { analyzeDrawerIsOpen, selectedSummary, setSelectedSummary } = useReadingLogs();
 
     return (
         <div className="">
@@ -24,6 +25,12 @@ function ReadingLogsContent() {
             </div>
 
             {analyzeDrawerIsOpen && <AnalyzePanel />}
+            {selectedSummary && (
+                <DayDetailPanel
+                    summary={selectedSummary}
+                    onClose={() => setSelectedSummary(null)}
+                />
+            )}
         </div>
     );
 }

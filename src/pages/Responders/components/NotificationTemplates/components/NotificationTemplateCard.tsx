@@ -41,7 +41,7 @@ export default function NotificationTemplateCard({
     };
 
     return (
-        <div className="p-3 border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-700/30 rounded-lg flex flex-col justify-between relative overflow-hidden transition-colors">
+        <div className="p-4 border border-white/50 dark:border-white/10 bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:dark:border-white/20">
             <div className="flex flex-col gap-2">
                 <h3 className="font-medium dark:text-slate-200">{notificationTemplate.title}</h3>
                 <p className="text-gray-700 dark:text-slate-400 text-sm">

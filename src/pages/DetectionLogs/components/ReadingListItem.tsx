@@ -21,10 +21,10 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
     return (
         <button
             onClick={onClick}
-            className={`w-full text-left p-3.5 rounded-lg border transition-all ${
+            className={`w-full text-left p-4 rounded-xl border transition-all duration-300 ${
                 isSelected
-                    ? "border-primary dark:border-blue-500 bg-primary/5 dark:bg-blue-500/10 ring-1 ring-primary/20 dark:ring-blue-500/20"
-                    : "border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-800/50"
+                    ? "border-primary dark:border-blue-500 bg-primary/10 dark:bg-blue-500/10 ring-1 ring-primary/20 dark:ring-blue-500/20 shadow-lg scale-[1.01]"
+                    : "border-gray-200/50 dark:border-white/5 bg-white/40 dark:bg-white/[0.02] hover:border-gray-300 dark:hover:border-white/20 hover:bg-white/60 dark:hover:bg-white/[0.05] hover:shadow-md"
             }`}
         >
             <div className="flex items-center justify-between mb-2">

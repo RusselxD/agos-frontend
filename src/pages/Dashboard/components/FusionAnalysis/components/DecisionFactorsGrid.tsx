@@ -109,10 +109,10 @@ const StatCard = ({
 }: StatCardProps) => {
     return (
         <div
-            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md bg-gray-50 dark:bg-slate-900/50 ${className}`}
+            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-xl bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm shadow-sm ${className}`}
         >
-            <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400">{title}</p>
-            <div className="font-semibold text-lg md:text-xl">{value}</div>
+            <p className="text-xs md:text-sm font-medium uppercase tracking-wider text-gray-500 dark:text-slate-400">{title}</p>
+            <div className="font-bold text-lg md:text-xl mt-1">{value}</div>
             {desc && <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400">{desc}</p>}
 
             <LastUpdatedInfo timestamp={timestamp} />

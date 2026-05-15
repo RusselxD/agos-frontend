@@ -51,7 +51,7 @@ export default function TableRow({ summary, index, onSelect }: TableRowProps) {
     return (
         <tr
             onClick={() => onSelect(summary)}
-            className={`${index % 2 !== 0 ? "bg-gray-50 dark:bg-slate-800/50" : "bg-white dark:bg-slate-800"} hover:bg-primary/5 dark:hover:bg-blue-500/10 cursor-pointer transition-colors`}
+            className={`${index % 2 !== 0 ? "bg-gray-50/50 dark:bg-white/[0.01]" : "bg-white/40 dark:bg-transparent"} text-gray-700 dark:text-slate-200 transition-colors hover:bg-gray-100/50 dark:hover:bg-white/[0.03] cursor-pointer`}
         >
             <td className="px-5 py-4 text-left font-medium text-neutral dark:text-slate-200 whitespace-nowrap">
                 {formatDate(summary.summary_date)}

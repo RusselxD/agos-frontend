@@ -116,7 +116,7 @@ export default function UserCard({
     return (
         <>
             <div
-                className={`bg-white dark:bg-slate-800 w-full h-fit p-5 rounded-lg border-b-4 transition-colors ${
+                className={`w-full h-fit p-6 rounded-2xl border-b-4 bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:dark:border-white/20 ${
                     user.is_enabled ? "border-green-500 dark:border-emerald-500" : "border-gray-300 dark:border-slate-700"
                 }`}
             >
@@ -168,7 +168,7 @@ export default function UserCard({
                         </div>
                     )}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 dark:border-slate-700 rounded-lg relative text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-4 py-5 px-5 border border-white/50 dark:border-white/10 bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm rounded-xl relative text-sm shadow-inner transition-all duration-300">
                     <Details
                         label="Phone Number"
                         value={formatPHNumber(user.phone_number)}

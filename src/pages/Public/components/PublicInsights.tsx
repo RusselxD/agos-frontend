@@ -154,7 +154,7 @@ export default function PublicInsights() {
             {/* Advice for Residents Card */}
             <Container className={`flex items-center justify-between gap-4 transition-all duration-300 h-full ${adviceBg}`}>
                 <div className="flex items-start gap-4 flex-1">
-                    <div className={`shrink-0 p-3.5 rounded-2xl bg-white dark:bg-slate-800/80 shadow-md ${adviceColor}`}>
+                    <div className={`shrink-0 p-3.5 rounded-2xl bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-md ${adviceColor}`}>
                         {riskScore >= 76 ? <ShieldAlert className="w-8 h-8" /> : <Home className="w-8 h-8" />}
                     </div>
                     <div className="flex flex-col justify-center">

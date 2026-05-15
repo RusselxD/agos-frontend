@@ -14,14 +14,14 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
     return (
         <table className="w-full text-left border-collapse text-sm">
             <thead className="sticky top-0 z-10">
-                <tr className="rounded-t-md">
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark rounded-tl-md">
+                <tr className="rounded-t-xl text-gray-700 dark:text-slate-200">
+                    <th className="px-5 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Admin
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark">
+                    <th className="px-5 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Details
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark">
+                    <th className="px-5 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Timestamp
                     </th>
                 </tr>
@@ -30,7 +30,7 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
                 {logs.map((log, index) => (
                     <tr
                         key={index}
-                        className={index % 2 !== 0 ? "bg-gray-100 dark:bg-slate-800/50" : "bg-white dark:bg-slate-900"}
+                        className={`${index % 2 !== 0 ? "bg-gray-50/50 dark:bg-white/[0.01]" : "bg-white/40 dark:bg-transparent"} text-gray-700 dark:text-slate-200 transition-colors hover:bg-gray-100/50 dark:hover:bg-white/[0.03]`}
                     >
                         <td className="px-4 py-3 text-left">
                             {log.admin_name}

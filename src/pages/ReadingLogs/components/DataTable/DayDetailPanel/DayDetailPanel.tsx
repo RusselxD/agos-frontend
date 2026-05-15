@@ -102,7 +102,7 @@ export default function DayDetailPanel({
                 onClick={onClose}
             />
 
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 border-l border-white/10 dark:border-slate-800 shadow-2xl z-50 overflow-y-auto animate-slide-in-right">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl border-l border-white/50 dark:border-white/10 shadow-2xl z-50 overflow-y-auto animate-slide-in-right">
                 <Header
                     maxRiskLevel={maxRiskLevel}
                     summary={summary}

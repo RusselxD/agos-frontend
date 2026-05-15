@@ -39,10 +39,12 @@ export default function BlockageStatusCard() {
     }
 
     return (
-        <Card warning={anomalyWarning || contextWarning}>
+        <Card warning={anomalyWarning || contextWarning} className="min-h-[180px]">
             <CardHeaderText label="BLOCKAGE STATUS" />
-            <StatusText />
-            <ProgressBar />
+            <div className="flex flex-col justify-between h-full py-1">
+                <StatusText />
+                <ProgressBar />
+            </div>
         </Card>
     );
 }

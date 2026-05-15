@@ -83,7 +83,7 @@ export default function NotificationLogs() {
             {/* Analytics summary cards */}
             {analytics && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 shrink-0 overflow-y-auto max-h-[30rem] md:max-h-none md:overflow-visible pr-1 md:pr-0">
-                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
+                    <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl px-5 py-4 flex items-center gap-4 flex-1 border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl">
                         <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                             <BarChart3 className="w-5 h-5 text-primary" />
                         </div>
@@ -92,7 +92,7 @@ export default function NotificationLogs() {
                             <p className="font-bold text-lg dark:text-slate-200">{analytics.total_sent}</p>
                         </div>
                     </div>
-                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
+                    <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl px-5 py-4 flex items-center gap-4 flex-1 border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl">
                         <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-emerald-900/20 flex items-center justify-center">
                             <BarChart3 className="w-5 h-5 text-green-600 dark:text-emerald-400" />
                         </div>
@@ -101,7 +101,7 @@ export default function NotificationLogs() {
                             <p className="font-bold text-lg dark:text-slate-200">{analytics.total_acknowledged} <span className="text-sm font-normal text-gray-400 dark:text-slate-500">({(analytics.acknowledgement_rate * 100).toFixed(1)}%)</span></p>
                         </div>
                     </div>
-                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
+                    <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl px-5 py-4 flex items-center gap-4 flex-1 border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300 hover:shadow-2xl">
                         <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
                             <BarChart3 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                         </div>
@@ -115,7 +115,7 @@ export default function NotificationLogs() {
 
             <div className="relative flex flex-1 overflow-hidden gap-2">
                 {/* Left panel - Responder list */}
-                <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-gray-100 dark:border-slate-700/50 transition-colors">
+                <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl p-6 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary dark:border-blue-500">
                             NOTIFICATION LOGS
@@ -138,7 +138,7 @@ export default function NotificationLogs() {
                             placeholder="Search by name or phone number..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 text-sm bg-white dark:bg-slate-900/50 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:ring-blue-500/20 focus:border-primary dark:focus:border-blue-500 transition-colors"
+                            className="w-full pl-10 pr-4 py-3 text-sm bg-white/40 dark:bg-white/[0.02] text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200/50 dark:border-white/5 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:ring-blue-500/20 focus:border-primary dark:focus:border-blue-500 transition-all duration-300"
                         />
                     </div>
 

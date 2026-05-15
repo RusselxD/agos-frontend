@@ -18,8 +18,8 @@ export default function StatCard({
     bgColorClass,
 }: StatCardProps) {
     return (
-        <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-4 flex items-center gap-4 border border-gray-100 dark:border-slate-700/50 transition-colors">
-            <div className={`p-3 rounded-lg ${bgColorClass} dark:bg-opacity-20`}>
+        <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl shadow-lg rounded-2xl p-5 flex items-center gap-5 border border-white/50 dark:border-white/10 transition-all duration-300 hover:shadow-xl hover:dark:border-white/20">
+            <div className={`p-3.5 rounded-xl ${bgColorClass} dark:bg-opacity-20 shadow-inner`}>
                 <Icon className={`w-6 h-6 ${colorClass} dark:opacity-90`} />
             </div>
             <div className="flex-1 min-w-0">

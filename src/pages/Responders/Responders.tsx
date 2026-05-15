@@ -49,14 +49,14 @@ export default function Responders() {
 
     return (
         <RespondersPageProvider>
-            <div className="space-y-2 flex flex-col flex-1 h-full">
-                <div className="bg-white dark:bg-slate-800 rounded-lg py-2 px-3 text-sm flex items-center justify-between gap-3 custom-shadow border border-gray-100 dark:border-slate-700/50 transition-colors">
+            <div className="space-y-3 flex flex-col flex-1 h-full">
+                <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl py-3 px-4 text-sm flex items-center justify-between gap-3 shadow-xl border border-white/50 dark:border-white/10 transition-all duration-300 hover:shadow-2xl">
                     {/* Mobile Dropdown */}
                     <div className="lg:hidden flex-1 min-w-0">
                         <select
                             value={chosenTab}
                             onChange={(e) => setChosenTab(e.target.value)}
-                            className="w-full bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-slate-200 text-sm font-medium rounded-lg focus:ring-primary focus:border-primary block p-2.5 outline-none cursor-pointer truncate transition-colors"
+                            className="w-full bg-white/40 dark:bg-white/[0.02] border border-gray-200/50 dark:border-white/5 text-gray-900 dark:text-slate-200 text-sm font-medium rounded-xl focus:ring-primary focus:border-primary block p-2.5 outline-none cursor-pointer truncate transition-colors"
                         >
                             {TABS.map((tab) => (
                                 <option key={tab.value} value={tab.value}>
@@ -73,7 +73,7 @@ export default function Responders() {
                                 <button
                                     key={tab.value}
                                     onClick={() => setChosenTab(tab.value)}
-                                    className={`btn-custom py-2.5 px-4 rounded-lg transition-colors ${chosenTab === tab.value ? "bg-primary dark:bg-blue-600 font-medium text-white shadow-sm" : "text-gray-700 dark:text-slate-300 border-transparent hover:text-black dark:hover:text-white dark:hover:bg-slate-700/50"}`}
+                                    className={`py-2.5 px-5 rounded-xl transition-all duration-200 ${chosenTab === tab.value ? "bg-primary dark:bg-blue-600 font-bold text-white shadow-lg scale-105" : "text-gray-600 dark:text-slate-400 font-medium hover:text-black dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5"}`}
                                 >
                                     {tab.name}
                                 </button>
@@ -93,7 +93,7 @@ export default function Responders() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 py-1 z-50">
+                            <div className="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                                 <button
                                     onClick={() => {
                                         setGroupFormModalIsOpen(true);

@@ -15,7 +15,7 @@ export default function Header({
     onClose,
 }: HeaderProps) {
     return (
-        <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
+        <div className="sticky top-0 z-10 bg-white/40 dark:bg-white/[0.02] backdrop-blur-xl border-b border-white/50 dark:border-white/10 transition-all duration-300">
             <div className="px-6 py-4">
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">

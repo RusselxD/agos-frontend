@@ -15,20 +15,20 @@ function StatusCard({
     type: "good" | "moderate" | "bad";
 }) {
     const colors = {
-        good: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
-        moderate: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
-        bad: "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50",
+        good: "bg-emerald-500/10 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20 dark:border-emerald-500/30",
+        moderate: "bg-amber-500/10 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 dark:border-amber-500/30",
+        bad: "bg-red-500/10 dark:bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20 dark:border-red-500/30",
     };
 
     return (
-        <div className={`custom-shadow min-w-0 rounded-xl border p-4 ${colors[type]}`}>
-            <div className="mb-1 flex min-w-0 items-center gap-2">
-                <Icon className="h-4 w-4 shrink-0" />
-                <span className="min-w-0 truncate text-sm font-medium opacity-80">
+        <div className={`backdrop-blur-md shadow-lg min-w-0 rounded-2xl border p-5 transition-all duration-300 ${colors[type]}`}>
+            <div className="mb-2 flex min-w-0 items-center gap-2.5">
+                <Icon className="h-5 w-5 shrink-0" />
+                <span className="min-w-0 truncate text-xs font-bold uppercase tracking-widest opacity-70">
                     {title}
                 </span>
             </div>
-            <p className="break-words text-lg font-semibold">{value}</p>
+            <p className="break-words text-xl font-bold tracking-tight">{value}</p>
         </div>
     );
 }

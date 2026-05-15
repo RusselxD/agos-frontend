@@ -25,8 +25,8 @@ export default function TriggeredConditions() {
     }
 
     return (
-        <div className="rounded-md bg-gray-50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-700/50 p-3 md:p-4">
-            <p className="font-medium text-xs md:text-sm text-gray-500 dark:text-slate-400 mb-1">
+        <div className="rounded-xl bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm shadow-sm border border-gray-200/50 dark:border-white/5 p-3 md:p-4">
+            <p className="font-medium text-xs md:text-sm uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-2">
                 Triggered Conditions:
             </p>
             <ul className="space-y-1">

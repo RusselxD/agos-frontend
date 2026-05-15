@@ -89,17 +89,17 @@ export default function Table({
                 <col className="w-[22%]" />
             </colgroup>
             <thead className="sticky top-0 z-10">
-                <tr className="rounded-t-md text-neutral dark:text-slate-200">
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 rounded-tl-md transition-colors">
+                <tr className="rounded-t-md text-gray-700 dark:text-slate-200">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         First Name
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Last Name
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Phone Number
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() =>
@@ -117,10 +117,10 @@ export default function Table({
                                 />
                             </button>
                             <div
-                                className={`absolute top-full left-0 mt-1 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 min-w-[120px] overflow-hidden transition-all duration-200 ${
+                                className={`absolute top-full left-0 mt-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 min-w-[140px] overflow-hidden transition-all duration-300 z-50 ${
                                     statusDropdownOpen
-                                        ? "opacity-100 visible"
-                                        : "opacity-0 invisible h-0"
+                                        ? "opacity-100 translate-y-0"
+                                        : "opacity-0 -translate-y-2 pointer-events-none"
                                 }`}
                             >
                                 {statusOptions.map((option) => (
@@ -145,7 +145,7 @@ export default function Table({
                             </div>
                         </div>
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 rounded-tr-md transition-colors">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         <span className="sr-only">Actions</span>
                     </th>
                 </tr>
@@ -161,9 +161,10 @@ export default function Table({
                         <tr
                             key={responder.id}
                             className={`
-                                    border-l-4 transition-colors
-                                    ${isSelected ? "border-blue-600 !bg-blue-50 dark:!bg-blue-500/10" : "border-transparent"}
-                                    ${isEvenRow ? "bg-white dark:bg-slate-800" : "bg-gray-50 dark:bg-slate-800/50"}
+                                    border-l-4 transition-all duration-200
+                                    ${isSelected ? "border-blue-600 bg-blue-50/50 dark:bg-blue-500/10" : "border-transparent"}
+                                    ${isEvenRow ? "bg-white/40 dark:bg-transparent" : "bg-gray-50/50 dark:bg-white/[0.01]"}
+                                    text-gray-700 dark:text-slate-200 hover:bg-gray-100/50 dark:hover:bg-white/[0.03]
                                 `}
                         >
                             <td className="px-4 py-3 text-left font-medium text-neutral dark:text-slate-200">

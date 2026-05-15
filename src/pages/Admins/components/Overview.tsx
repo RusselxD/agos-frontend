@@ -26,8 +26,8 @@ export default function Overview() {
     }
 
     return (
-        <div className="gradient-bg rounded-xl py-7 px-8 text-white relative flex flex-col justify-center">
-            <p className="text-gray-200 font-semibold mb-3 text-sm">OVERVIEW</p>
+        <div className="gradient-bg rounded-2xl py-8 px-8 text-white relative flex flex-col justify-center shadow-xl border border-white/20 overflow-hidden min-w-[20rem]">
+            <p className="text-white/70 font-bold mb-4 text-xs tracking-widest uppercase">OVERVIEW</p>
 
             <p className="font-bold text-6xl">
                 {getAdminCount(admins.filter((a) => a.is_enabled))}

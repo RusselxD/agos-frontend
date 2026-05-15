@@ -53,7 +53,7 @@ export default function RecipientsTable({
                     </colgroup>
                     <thead>
                         <tr className="rounded-t-md text-neutral dark:text-slate-200">
-                            <th className="bg-background dark:bg-slate-700/50 rounded-tl-md px-4 py-3 text-left font-medium transition-colors">
+                            <th className="bg-gray-100/80 dark:bg-white/[0.05] rounded-tl-xl px-4 py-3 text-left font-bold transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                                 <input
                                     type="checkbox"
                                     checked={allSelected}
@@ -61,16 +61,16 @@ export default function RecipientsTable({
                                     className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-blue-600"
                                 />
                             </th>
-                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
+                            <th className="bg-gray-100/80 dark:bg-white/[0.05] px-4 py-3 text-left font-bold transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                                 First Name
                             </th>
-                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
+                            <th className="bg-gray-100/80 dark:bg-white/[0.05] px-4 py-3 text-left font-bold transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                                 Last Name
                             </th>
-                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
+                            <th className="bg-gray-100/80 dark:bg-white/[0.05] px-4 py-3 text-left font-bold transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                                 Phone Number
                             </th>
-                            <th className="bg-background dark:bg-slate-700/50 rounded-tr-md px-4 py-3 text-left font-medium transition-colors">
+                            <th className="bg-gray-100/80 dark:bg-white/[0.05] rounded-tr-xl px-4 py-3 text-left font-bold transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                                 Groups
                             </th>
                         </tr>
@@ -93,7 +93,7 @@ export default function RecipientsTable({
                             return (
                                 <tr
                                     key={responder.id}
-                                    className={`${index % 2 === 0 ? "bg-white dark:bg-slate-800" : "bg-gray-50 dark:bg-slate-800/50"} ${isSelected ? "!bg-blue-50 dark:!bg-blue-500/10" : ""} transition-colors text-neutral dark:text-slate-200`}
+                                    className={`${index % 2 === 0 ? "bg-white/40 dark:bg-transparent" : "bg-gray-50/50 dark:bg-white/[0.01]"} ${isSelected ? "!bg-blue-50/80 dark:!bg-blue-500/10" : ""} transition-colors text-neutral dark:text-slate-200 hover:bg-gray-100/50 dark:hover:bg-white/[0.03]`}
                                 >
                                     <td className="px-4 py-3">
                                         <input

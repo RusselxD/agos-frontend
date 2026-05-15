@@ -19,7 +19,7 @@ export default function StatusCard({
 }: StatusCardProps) {
     return (
         <div
-            className={`border-l-4 rounded-lg px-4 py-4 h-full flex flex-col gap-1 transition-colors ${className ? className : "bg-gray-50 dark:bg-slate-700/30 dark:border-slate-600"}`}
+            className={`border-l-4 rounded-2xl px-5 py-5 h-full flex flex-col gap-2 backdrop-blur-md shadow-lg transition-all duration-300 ${className ? className : "bg-white/40 dark:bg-white/[0.02] dark:border-white/10"}`}
         >
             <div className="flex items-center gap-4">
                 {icon}

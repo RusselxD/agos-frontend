@@ -35,7 +35,7 @@ function ResponderListContent({
     return (
         <div className="flex flex-1 overflow-hidden">
             <div
-                className={`bg-white dark:bg-slate-800 custom-shadow border border-gray-100 dark:border-slate-700/50 rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col transition-colors ${sideDrawerOpen ? "mr-2" : ""}`}
+                className={`bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-xl rounded-2xl p-6 flex-1 h-full overflow-auto min-w-0 flex flex-col transition-all duration-300 ${sideDrawerOpen ? "mr-2" : ""}`}
             >
                 <div className="flex items-center justify-between mb-3">
                     <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary">
