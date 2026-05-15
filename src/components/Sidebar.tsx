@@ -119,7 +119,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     className={({ isActive }) =>
                                         `flex items-center justify-center rounded-xl p-3 ${
                                             isActive
-                                                ? "bg-gray-200 dark:bg-slate-800 text-primary"
+                                                ? "bg-primary/10 dark:bg-blue-500/10 text-primary dark:text-blue-400"
                                                 : "text-neutral dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                                         }`
                                     }
@@ -139,7 +139,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     className={({ isActive }) =>
                                         `flex gap-2 rounded-xl py-3.5 px-3 ${
                                             isActive
-                                                ? "border-l-[4px] bg-gray-100 dark:bg-slate-800 border-primary font-semibold cursor-default"
+                                                ? "border-l-[4px] bg-primary/5 dark:bg-blue-500/10 border-primary dark:border-blue-500 text-primary dark:text-blue-400 font-semibold cursor-default"
                                                 : "text-neutral dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                                         }`
                                     }
@@ -166,7 +166,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                 className={({ isActive }) =>
                                     `flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[0.6rem] ${
                                         isActive
-                                            ? "text-primary font-semibold"
+                                            ? "text-primary dark:text-blue-400 font-semibold"
                                             : "text-gray-500 dark:text-slate-400"
                                     }`
                                 }

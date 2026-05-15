@@ -23,16 +23,16 @@ export default function Table({
         <table className="w-full text-left border-collapse text-sm whitespace-nowrap">
             <thead className="sticky top-0 z-10 text-neutral dark:text-slate-200">
                 <tr className="rounded-t-md">
-                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700/50 rounded-tl-md transition-colors">
+                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700 rounded-tl-md transition-colors">
                         Water Level (cm)
                     </th>
-                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700/50 transition-colors">
+                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700 transition-colors">
                         Change Rate (cm)
                     </th>
-                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700/50 transition-colors">
+                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700 transition-colors">
                         Status
                     </th>
-                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700/50 rounded-tr-md transition-colors">
+                    <th className="px-4 py-3 font-medium text-center bg-background dark:bg-slate-700 rounded-tr-md transition-colors">
                         Timestamp
                     </th>
                 </tr>
