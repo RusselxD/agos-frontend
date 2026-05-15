@@ -14,8 +14,8 @@ export interface CardProps {
 const Details = ({ label, value }: { label: string; value: string }) => {
     return (
         <div className="flex items-center">
-            <p className="text-sm min-w-[4.5rem] text-gray-700">{label}</p>
-            <p className="text-sm font-medium">{value}</p>
+            <p className="text-sm min-w-[4.5rem] text-gray-700 dark:text-slate-400 transition-colors">{label}</p>
+            <p className="text-sm font-medium text-neutral dark:text-slate-200 transition-colors">{value}</p>
         </div>
     );
 };
@@ -76,7 +76,7 @@ export default function SensorStatus() {
                 />
                 <SignalContainer value={sensorStatus?.signal || ""} />
             </div>
-            <div className="border-t mt-5 pt-3 space-y-1">
+            <div className="border-t border-gray-200 dark:border-slate-700/50 mt-5 pt-3 space-y-1 transition-colors">
                 <Details
                     label="Device:"
                     value={sensorStatus?.device_name || ""}

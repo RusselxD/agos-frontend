@@ -3,9 +3,9 @@ import type { ModelReadingListItem } from "../../../types/modelReadingLog";
 import { format } from "date-fns";
 
 const STATUS_CONFIG: Record<string, { icon: typeof CircleCheck; className: string; label: string; badge: string }> = {
-    clear: { icon: CircleCheck, className: "text-emerald-600", label: "Clear", badge: "bg-emerald-100 text-emerald-700" },
-    partial: { icon: TriangleAlert, className: "text-amber-500", label: "Partial", badge: "bg-amber-100 text-amber-700" },
-    blocked: { icon: CircleAlert, className: "text-red-500", label: "Blocked", badge: "bg-red-100 text-red-700" },
+    clear: { icon: CircleCheck, className: "text-emerald-600 dark:text-emerald-400", label: "Clear", badge: "bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800/50" },
+    partial: { icon: TriangleAlert, className: "text-amber-500 dark:text-amber-400", label: "Partial", badge: "bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-800/50" },
+    blocked: { icon: CircleAlert, className: "text-red-500 dark:text-red-400", label: "Blocked", badge: "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-800/50" },
 };
 
 interface Props {
@@ -21,10 +21,10 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
     return (
         <button
             onClick={onClick}
-            className={`w-full text-left p-3.5 rounded-lg border transition-colors ${
+            className={`w-full text-left p-3.5 rounded-lg border transition-all ${
                 isSelected
-                    ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                    : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                    ? "border-primary dark:border-blue-500 bg-primary/5 dark:bg-blue-500/10 ring-1 ring-primary/20 dark:ring-blue-500/20"
+                    : "border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-800/50"
             }`}
         >
             <div className="flex items-center justify-between mb-2">
@@ -37,8 +37,8 @@ export default function ReadingListItem({ reading, isSelected, onClick }: Props)
                 </span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-gray-500">
-                <span className="text-[0.68rem] text-gray-400">
+            <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-slate-400">
+                <span className="text-[0.68rem] text-gray-400 dark:text-slate-500 font-medium">
                     {format(new Date(reading.timestamp), "MMM d, yyyy 'at' h:mm a")}
                 </span>
             </div>

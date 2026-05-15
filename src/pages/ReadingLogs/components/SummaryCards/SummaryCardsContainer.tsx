@@ -56,7 +56,7 @@ export default function SummaryCardsContainer() {
                 {Array.from({ length: 4 }).map((_, i) => (
                     <div
                         key={i}
-                        className="bg-white custom-shadow rounded-xl p-4 h-24"
+                        className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-4 h-24 border border-gray-100 dark:border-slate-700/50"
                     >
                         <div className="skeleton h-full rounded-md"></div>
                     </div>

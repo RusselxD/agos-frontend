@@ -13,6 +13,7 @@ import {
 import { useReadingLogs } from "../../context/ReadingLogsContext";
 import Container from "../../../../components/ui/Container";
 import { formatDate } from "../../../../lib/utils/formatter";
+import { useTheme } from "../../../../context/ThemeContext";
 
 ChartJS.register(
     CategoryScale,
@@ -35,6 +36,12 @@ export default function PrecipitationChart() {
         };
     }, [summaries]);
 
+    const { isDark } = useTheme();
+
+    const textColor = isDark ? "#cbd5e1" : "#4b5563";
+    const titleColor = isDark ? "#e2e8f0" : "#1f2937";
+    const gridColor = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
+
     const options = useMemo(
         () => ({
             responsive: true,
@@ -43,6 +50,7 @@ export default function PrecipitationChart() {
                 legend: {
                     position: "top" as const,
                     labels: {
+                        color: textColor,
                         usePointStyle: true,
                         padding: 15,
                         font: { size: 11 },
@@ -62,18 +70,27 @@ export default function PrecipitationChart() {
             scales: {
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        color: gridColor,
+                    },
                     ticks: {
+                        color: textColor,
                         font: { size: 11 },
                         callback: (value: string | number) => `${value} mm`,
                     },
                     title: {
                         display: true,
                         text: "Precipitation (mm)",
+                        color: titleColor,
                         font: { size: 11, weight: "bold" as const },
                     },
                 },
                 x: {
+                    grid: {
+                        color: gridColor,
+                    },
                     ticks: {
+                        color: textColor,
                         font: { size: 10 },
                         maxTicksLimit: 8,
                         maxRotation: 45,
@@ -81,7 +98,7 @@ export default function PrecipitationChart() {
                 },
             },
         }),
-        [],
+        [textColor, titleColor, gridColor],
     );
 
     const data = {

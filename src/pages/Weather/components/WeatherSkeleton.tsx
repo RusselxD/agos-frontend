@@ -1,7 +1,7 @@
 export default function WeatherSkeleton() {
     return (
         <div className="space-y-4">
-            <div className="rounded-xl bg-white p-4 sm:p-6 custom-shadow">
+            <div className="rounded-xl bg-white dark:bg-slate-800 p-4 sm:p-6 custom-shadow border border-gray-100 dark:border-slate-700">
                 <div className="mb-5 flex items-start justify-between sm:mb-6">
                     <div className="space-y-1">
                         <div className="skeleton h-4 w-32 rounded" />
@@ -16,7 +16,7 @@ export default function WeatherSkeleton() {
                         <div className="skeleton h-4 w-40 rounded" />
                     </div>
                 </div>
-                <div className="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 pt-5 sm:mt-6 sm:grid-cols-3 sm:gap-4 sm:pt-6">
+                <div className="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 dark:border-slate-700 pt-5 sm:mt-6 sm:grid-cols-3 sm:gap-4 sm:pt-6">
                     <div className="skeleton h-5 w-28 rounded" />
                     <div className="skeleton h-5 w-24 rounded" />
                     <div className="skeleton h-5 w-28 rounded" />
@@ -24,7 +24,7 @@ export default function WeatherSkeleton() {
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="bg-white rounded-xl p-4">
+                    <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-100 dark:border-slate-700">
                         <div className="skeleton h-4 w-20 rounded mb-2" />
                         <div className="skeleton h-6 w-16 rounded mb-1" />
                         <div className="skeleton h-4 w-24 rounded" />

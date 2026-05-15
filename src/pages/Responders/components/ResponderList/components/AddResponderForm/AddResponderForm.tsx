@@ -182,7 +182,7 @@ export default function AddResponderForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className={`bg-gray-50 rounded-lg border border-gray-200 overflow-hidden transition-all duration-200 flex flex-col ${
+            className={`bg-gray-50 dark:bg-slate-800/50 rounded-lg border border-gray-200 dark:border-slate-700/50 overflow-hidden transition-all duration-200 flex flex-col ${
                 addResponderFormOpen ? "flex-1 p-4" : "max-h-0 p-0 border-0"
             }`}
         >
@@ -203,34 +203,34 @@ export default function AddResponderForm() {
                 ))}
             </div>
 
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 pt-3 border-t border-gray-200 gap-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 pt-3 border-t border-gray-200 dark:border-slate-700/50 gap-4">
                 <div className="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
                         onClick={addResponder}
-                        className="text-gray-600 hover:text-blue-600 font-medium hover:bg-blue-50 btn-custom"
+                        className="text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 btn-custom transition-colors"
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Another</span>
                     </button>
 
-                    <span className="text-gray-300">|</span>
+                    <span className="text-gray-300 dark:text-slate-600">|</span>
 
                     <button
                         type="button"
                         onClick={handleDownloadTemplate}
-                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 btn-custom"
+                        className="text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 btn-custom transition-colors"
                     >
                         <Download className="w-4 h-4" />
                         <span>Download Template</span>
                     </button>
 
-                    <span className="text-gray-300">|</span>
+                    <span className="text-gray-300 dark:text-slate-600">|</span>
 
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="text-gray-600 hover:text-green-600 hover:bg-green-50 btn-custom"
+                        className="text-gray-600 dark:text-slate-300 hover:text-green-600 dark:hover:text-emerald-400 hover:bg-green-50 dark:hover:bg-emerald-900/20 btn-custom transition-colors"
                     >
                         <FileSpreadsheet className="w-4 h-4" />
                         <span>Import from File</span>

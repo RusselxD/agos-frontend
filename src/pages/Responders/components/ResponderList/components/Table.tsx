@@ -19,11 +19,11 @@ const getStatusColor = (status: string): string => {
     status = status.toLowerCase();
     switch (status) {
         case "pending":
-            return "bg-amber-100 text-amber-800";
+            return "bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-400";
         case "active":
-            return "bg-green-100 text-green-800";
+            return "bg-green-100 dark:bg-emerald-900/20 text-green-800 dark:text-emerald-400";
         default:
-            return "bg-gray-100 text-gray-800";
+            return "bg-gray-100 dark:bg-slate-700/50 text-gray-800 dark:text-slate-400";
     }
 };
 
@@ -89,23 +89,23 @@ export default function Table({
                 <col className="w-[22%]" />
             </colgroup>
             <thead className="sticky top-0 z-10">
-                <tr className="rounded-t-md">
-                    <th className="px-4 py-3 font-medium text-left bg-background rounded-tl-md">
+                <tr className="rounded-t-md text-neutral dark:text-slate-200">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 rounded-tl-md transition-colors">
                         First Name
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
                         Last Name
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
                         Phone Number
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 transition-colors">
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() =>
                                     setStatusDropdownOpen((prev) => !prev)
                                 }
-                                className="flex items-center gap-1 hover:text-primary transition-colors"
+                                className="flex items-center gap-1 hover:text-primary dark:hover:text-blue-400 transition-colors"
                             >
                                 <span>
                                     {statusFilter === "all"
@@ -117,7 +117,7 @@ export default function Table({
                                 />
                             </button>
                             <div
-                                className={`absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 min-w-[120px] overflow-hidden transition-all duration-200 ${
+                                className={`absolute top-full left-0 mt-1 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 min-w-[120px] overflow-hidden transition-all duration-200 ${
                                     statusDropdownOpen
                                         ? "opacity-100 visible"
                                         : "opacity-0 invisible h-0"
@@ -130,10 +130,10 @@ export default function Table({
                                             setStatusFilter(option.value);
                                             setStatusDropdownOpen(false);
                                         }}
-                                        className={`w-full px-3 py-2 text-left text-sm flex items-center justify-between hover:bg-gray-50 transition-colors ${
+                                        className={`w-full px-3 py-2 text-left text-sm flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors ${
                                             statusFilter === option.value
-                                                ? "text-primary font-medium"
-                                                : "text-gray-700"
+                                                ? "text-primary dark:text-blue-400 font-medium"
+                                                : "text-gray-700 dark:text-slate-300"
                                         }`}
                                     >
                                         <span>{option.label}</span>
@@ -145,7 +145,7 @@ export default function Table({
                             </div>
                         </div>
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background rounded-tr-md">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-slate-700/50 rounded-tr-md transition-colors">
                         <span className="sr-only">Actions</span>
                     </th>
                 </tr>
@@ -161,15 +161,15 @@ export default function Table({
                         <tr
                             key={responder.id}
                             className={`
-                                    border-l-4
-                                    ${isSelected ? "border-blue-600 !bg-blue-100" : "border-transparent"}
-                                    ${isEvenRow ? "bg-white" : "bg-gray-50"}
+                                    border-l-4 transition-colors
+                                    ${isSelected ? "border-blue-600 !bg-blue-50 dark:!bg-blue-500/10" : "border-transparent"}
+                                    ${isEvenRow ? "bg-white dark:bg-slate-800" : "bg-gray-50 dark:bg-slate-800/50"}
                                 `}
                         >
-                            <td className="px-4 py-3 text-left">
+                            <td className="px-4 py-3 text-left font-medium text-neutral dark:text-slate-200">
                                 {responder.first_name}
                             </td>
-                            <td className="px-4 py-3 text-left">
+                            <td className="px-4 py-3 text-left font-medium text-neutral dark:text-slate-200">
                                 {responder.last_name}
                             </td>
                             <td className="px-4 py-3 text-left">
@@ -188,10 +188,10 @@ export default function Table({
                                     onClick={() =>
                                         handleChooseResponder(responder)
                                     }
-                                    className={`flex items-center gap-1 text-blue-600 px-2 py-1 rounded-md whitespace-nowrap ${isSelected ? "font-semibold cursor-default" : "font-medium hover:bg-blue-50"}`}
+                                    className={`flex items-center gap-1 px-2 py-1 rounded-md whitespace-nowrap transition-colors ${isSelected ? "font-semibold cursor-default text-blue-700 dark:text-blue-400" : "font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10"}`}
                                 >
                                     <span>View Details</span>
-                                    <ChevronRight />
+                                    <ChevronRight className="w-4 h-4" />
                                 </button>
                             </td>
                         </tr>
@@ -202,7 +202,7 @@ export default function Table({
                     <tr>
                         <td
                             colSpan={5}
-                            className="px-4 py-6 text-center text-gray-500"
+                            className="px-4 py-6 text-center text-gray-500 dark:text-slate-400"
                         >
                             No responders found.
                         </td>

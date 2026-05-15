@@ -10,7 +10,7 @@ function Shimmer() {
             {[95, 75, 88, 60, 72, 83, 55].map((w, i) => (
                 <div
                     key={i}
-                    className="h-3 rounded-md bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 animate-pulse"
+                    className="h-3 rounded-md bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 animate-pulse"
                     style={{ width: `${w}%` }}
                 />
             ))}
@@ -57,11 +57,11 @@ export default function AnalyzePanel() {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-black/20 z-40 transition-opacity duration-300"
+                className="fixed inset-0 bg-black/20 dark:bg-black/60 z-40 transition-opacity duration-300"
                 onClick={handleClose}
             />
 
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white shadow-2xl z-50 flex flex-col animate-slide-in-right">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 border-l border-white/10 dark:border-slate-800 shadow-2xl z-50 flex flex-col animate-slide-in-right">
                 <Header
                     startDate={startDate}
                     endDate={endDate}
@@ -80,7 +80,7 @@ export default function AnalyzePanel() {
                     {/* AI analysis bubble */}
                     {(isStreaming || isDone) && text && (
                         <div className="flex gap-2.5 items-start">
-                            <div className="flex-1 bg-white border border-slate-200 px-4 py-2 shadow-sm">
+                            <div className="flex-1 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 px-4 py-2 shadow-sm text-gray-800 dark:text-slate-200">
                                 <MarkdownText
                                     text={text}
                                     showCursor={isStreaming}
@@ -92,7 +92,7 @@ export default function AnalyzePanel() {
                     {/* Error state */}
                     {isError && (
                         <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-slate-500 dark:text-slate-400">
                                 Failed to generate analysis.
                             </p>
                             <button

@@ -24,31 +24,31 @@ const getWaterLevelTrendIcon = (trend: string): LucideIcon => {
 const getBlockageColors = (status: string) => {
     switch (status.toLowerCase()) {
         case "blocked":
-            return "border-red-500";
+            return "border-red-500 dark:border-red-800";
         case "partial":
-            return "border-yellow-500";
+            return "border-yellow-500 dark:border-yellow-700";
         case "clear":
-            return "border-green-500";
+            return "border-green-500 dark:border-emerald-800";
         default:
-            return "border-gray-500";
+            return "border-gray-500 dark:border-slate-700";
     }
 };
 
 const getWeatherColors = (precipitation: number | undefined): string => {
     if (precipitation === undefined || precipitation === null) {
-        return "border-gray-500";
+        return "border-gray-500 dark:border-slate-700";
     }
 
     if (precipitation === 0) {
-        return "border-green-500";
+        return "border-green-500 dark:border-emerald-800";
     } else if (precipitation <= 2.5) {
-        return "border-blue-400";
+        return "border-blue-400 dark:border-blue-800";
     } else if (precipitation <= 10) {
-        return "border-yellow-500";
+        return "border-yellow-500 dark:border-yellow-700";
     } else if (precipitation <= 50) {
-        return "border-orange-500";
+        return "border-orange-500 dark:border-orange-800";
     } else {
-        return "border-red-500";
+        return "border-red-500 dark:border-red-800";
     }
 };
 
@@ -57,15 +57,15 @@ const getWaterLevelColors = (
     sensorConfig: SensorConfig | null
 ): string => {
     if (!sensorConfig || waterLevelCm === 0) {
-        return "border-gray-500";
+        return "border-gray-500 dark:border-slate-700";
     }
 
     if (waterLevelCm < sensorConfig.warning_threshold) {
-        return "border-green-500";
+        return "border-green-500 dark:border-emerald-800";
     } else if (waterLevelCm < sensorConfig.critical_threshold) {
-        return "border-yellow-500";
+        return "border-yellow-500 dark:border-yellow-700";
     } else {
-        return "border-red-500";
+        return "border-red-500 dark:border-red-800";
     }
 };
 
@@ -94,7 +94,7 @@ const LastUpdatedInfo = ({ timestamp }: { timestamp?: string }) => {
     }, [timestamp]);
 
     return (
-        <p className="absolute font-medium top-1.5 right-1.5 md:top-2 md:right-2 text-[0.65rem] md:text-xs text-gray-500">{`${
+        <p className="absolute font-medium top-1.5 right-1.5 md:top-2 md:right-2 text-[0.65rem] md:text-xs text-gray-500 dark:text-slate-400">{`${
             timeAgo || "N/A"
         }`}</p>
     );
@@ -109,11 +109,11 @@ const StatCard = ({
 }: StatCardProps) => {
     return (
         <div
-            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md ${className}`}
+            className={`border-l-4 border relative p-3 md:p-4 h-fit rounded-md ${className} dark:border-slate-700 dark:bg-slate-800/50`}
         >
-            <p className="text-xs md:text-sm text-gray-600">{title}</p>
+            <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400">{title}</p>
             <div className="font-semibold text-lg md:text-xl">{value}</div>
-            {desc && <p className="text-xs md:text-sm text-gray-600">{desc}</p>}
+            {desc && <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400">{desc}</p>}
 
             <LastUpdatedInfo timestamp={timestamp} />
         </div>

@@ -20,8 +20,8 @@ const ValueContainer = ({
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-                <Icon className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-500">{label}</span>
+                <Icon className="w-4 h-4 text-gray-400 dark:text-slate-500" />
+                <span className="text-sm text-gray-500 dark:text-slate-400">{label}</span>
             </div>
 
             <div className="text-right">
@@ -29,7 +29,7 @@ const ValueContainer = ({
                     {value}
                 </span>
 
-                <p className="text-xs text-gray-700">
+                <p className="text-xs text-gray-700 dark:text-slate-300">
                     {formatTimestamp(timestamp)}
                 </p>
             </div>
@@ -78,10 +78,10 @@ export default function HeroMetricCard({
 
             <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                    <div className={`p-2.5 rounded-xl ${bgClass}`}>
-                        <Icon className={`w-5 h-5 ${textClass}`} />
+                    <div className={`p-2.5 rounded-xl ${bgClass} dark:bg-opacity-20`}>
+                        <Icon className={`w-5 h-5 ${textClass} dark:opacity-90`} />
                     </div>
-                    <span className="text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    <span className="text-xs font-medium text-gray-900 dark:text-slate-200 uppercase tracking-wider">
                         {label}
                     </span>
                 </div>
@@ -97,7 +97,7 @@ export default function HeroMetricCard({
                     ></ValueContainer>
 
                     {/* Progress bar showing range */}
-                    <div className="relative h-2 bg-gray-200/50 rounded-full overflow-hidden">
+                    <div className="relative h-2 bg-gray-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
                         <div
                             className={`absolute left-0 top-0 h-full bg-gradient-to-r ${progressClass} rounded-full transition-all duration-500`}
                             style={{ width: `${percentage}%` }}

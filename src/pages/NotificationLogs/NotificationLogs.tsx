@@ -83,31 +83,31 @@ export default function NotificationLogs() {
             {/* Analytics summary cards */}
             {analytics && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 shrink-0 overflow-y-auto max-h-[30rem] md:max-h-none md:overflow-visible pr-1 md:pr-0">
-                    <div className="bg-white custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1">
+                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
                         <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                             <BarChart3 className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Total Sent</p>
-                            <p className="font-bold text-lg">{analytics.total_sent}</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400">Total Sent</p>
+                            <p className="font-bold text-lg dark:text-slate-200">{analytics.total_sent}</p>
                         </div>
                     </div>
-                    <div className="bg-white custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1">
-                        <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center">
-                            <BarChart3 className="w-5 h-5 text-green-600" />
+                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
+                        <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-emerald-900/20 flex items-center justify-center">
+                            <BarChart3 className="w-5 h-5 text-green-600 dark:text-emerald-400" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Acknowledged</p>
-                            <p className="font-bold text-lg">{analytics.total_acknowledged} <span className="text-sm font-normal text-gray-400">({(analytics.acknowledgement_rate * 100).toFixed(1)}%)</span></p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400">Acknowledged</p>
+                            <p className="font-bold text-lg dark:text-slate-200">{analytics.total_acknowledged} <span className="text-sm font-normal text-gray-400 dark:text-slate-500">({(analytics.acknowledgement_rate * 100).toFixed(1)}%)</span></p>
                         </div>
                     </div>
-                    <div className="bg-white custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1">
-                        <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center">
-                            <BarChart3 className="w-5 h-5 text-amber-600" />
+                    <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-4 py-3 flex items-center gap-3 flex-1 border border-gray-100 dark:border-slate-700/50 transition-colors">
+                        <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
+                            <BarChart3 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                         </div>
                         <div>
-                            <p className="text-xs text-gray-500">Avg Response Time</p>
-                            <p className="font-bold text-lg">{formatTime(analytics.avg_response_time_seconds)}</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400">Avg Response Time</p>
+                            <p className="font-bold text-lg dark:text-slate-200">{formatTime(analytics.avg_response_time_seconds)}</p>
                         </div>
                     </div>
                 </div>
@@ -115,15 +115,15 @@ export default function NotificationLogs() {
 
             <div className="relative flex flex-1 overflow-hidden gap-2">
                 {/* Left panel - Responder list */}
-                <div className="bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col">
+                <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-gray-100 dark:border-slate-700/50 transition-colors">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
+                        <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary dark:border-blue-500">
                             NOTIFICATION LOGS
                         </h2>
                         <button
                             onClick={handleExport}
                             disabled={isExporting}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary border border-primary/30 rounded-lg hover:bg-primary/5 disabled:opacity-50 transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary dark:text-blue-400 border border-primary/30 dark:border-blue-500/30 rounded-lg hover:bg-primary/5 dark:hover:bg-blue-500/10 disabled:opacity-50 transition-colors"
                         >
                             <Download className="w-4 h-4" />
                             {isExporting ? "Exporting..." : "Export"}
@@ -132,13 +132,13 @@ export default function NotificationLogs() {
 
                     {/* Search */}
                     <div className="relative mb-4">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
                         <input
                             type="text"
                             placeholder="Search by name or phone number..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                            className="w-full pl-9 pr-3 py-2.5 text-sm bg-white dark:bg-slate-900/50 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:ring-blue-500/20 focus:border-primary dark:focus:border-blue-500 transition-colors"
                         />
                     </div>
 
@@ -150,7 +150,7 @@ export default function NotificationLogs() {
                             ))}
                         </div>
                     ) : filtered.length === 0 ? (
-                        <div className="text-sm text-gray-500 text-center py-8">
+                        <div className="text-sm text-gray-500 dark:text-slate-400 text-center py-8">
                             {searchQuery ? "No responders match your search." : "No responders found."}
                         </div>
                     ) : (

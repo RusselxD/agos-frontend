@@ -9,7 +9,7 @@ function renderInline(text: string): ReactNode[] {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, idx) =>
         idx % 2 === 1 ? (
-            <strong key={idx} className="font-semibold text-gray-900">{part}</strong>
+            <strong key={idx} className="font-semibold text-gray-900 dark:text-slate-200 transition-colors">{part}</strong>
         ) : (
             <span key={idx}>{part}</span>
         )
@@ -34,7 +34,7 @@ export default function MarkdownText({ text, showCursor = false }: Props) {
                     return (
                         <p
                             key={i}
-                            className="text-sm font-semibold text-gray-900 mt-2"
+                            className="text-sm font-semibold text-gray-900 dark:text-slate-200 mt-2 transition-colors"
                         >
                             {renderInline(line.trim())}
                         </p>
@@ -48,7 +48,7 @@ export default function MarkdownText({ text, showCursor = false }: Props) {
                             <span className="text-sky-500 mt-[7px] text-[6px] shrink-0">
                                 ●
                             </span>
-                            <span className="text-sm text-gray-600 leading-relaxed">
+                            <span className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed transition-colors">
                                 {renderInline(line.replace(/^- /, ""))}
                             </span>
                         </div>
@@ -59,7 +59,7 @@ export default function MarkdownText({ text, showCursor = false }: Props) {
                 return (
                     <p
                         key={i}
-                        className="text-sm text-gray-600 leading-relaxed"
+                        className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed transition-colors"
                     >
                         {renderInline(line)}
                     </p>

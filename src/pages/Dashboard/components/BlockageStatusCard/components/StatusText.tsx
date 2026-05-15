@@ -14,7 +14,7 @@ export default function StatusText() {
             case "Blocked":
                 return "text-blocked";
             default:
-                return "text-gray-400";
+                return "text-gray-400 dark:text-slate-500";
         }
     };
 

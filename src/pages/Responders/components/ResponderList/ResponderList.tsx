@@ -35,18 +35,18 @@ function ResponderListContent({
     return (
         <div className="flex flex-1 overflow-hidden">
             <div
-                className={`bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col ${sideDrawerOpen ? "mr-2" : ""}`}
+                className={`bg-white dark:bg-slate-800 custom-shadow border border-gray-100 dark:border-slate-700/50 rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col transition-colors ${sideDrawerOpen ? "mr-2" : ""}`}
             >
                 <div className="flex items-center justify-between mb-3">
-                    <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
+                    <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary">
                         RESPONDERS
                     </h2>
                     <button
                         onClick={handleToggleAddResponderForm}
                         className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
                             addResponderFormOpen
-                                ? "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
-                                : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                ? "text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                                : "text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                         }`}
                     >
                         {addResponderFormOpen ? (

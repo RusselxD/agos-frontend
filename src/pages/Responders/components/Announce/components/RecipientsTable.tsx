@@ -52,8 +52,8 @@ export default function RecipientsTable({
                         <col className="w-[35%]" />
                     </colgroup>
                     <thead>
-                        <tr className="rounded-t-md">
-                            <th className="bg-background rounded-tl-md px-4 py-3 text-left font-medium">
+                        <tr className="rounded-t-md text-neutral dark:text-slate-200">
+                            <th className="bg-background dark:bg-slate-700/50 rounded-tl-md px-4 py-3 text-left font-medium transition-colors">
                                 <input
                                     type="checkbox"
                                     checked={allSelected}
@@ -61,16 +61,16 @@ export default function RecipientsTable({
                                     className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-blue-600"
                                 />
                             </th>
-                            <th className="bg-background px-4 py-3 text-left font-medium">
+                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
                                 First Name
                             </th>
-                            <th className="bg-background px-4 py-3 text-left font-medium">
+                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
                                 Last Name
                             </th>
-                            <th className="bg-background px-4 py-3 text-left font-medium">
+                            <th className="bg-background dark:bg-slate-700/50 px-4 py-3 text-left font-medium transition-colors">
                                 Phone Number
                             </th>
-                            <th className="bg-background rounded-tr-md px-4 py-3 text-left font-medium">
+                            <th className="bg-background dark:bg-slate-700/50 rounded-tr-md px-4 py-3 text-left font-medium transition-colors">
                                 Groups
                             </th>
                         </tr>
@@ -93,7 +93,7 @@ export default function RecipientsTable({
                             return (
                                 <tr
                                     key={responder.id}
-                                    className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${isSelected ? "!bg-blue-50" : ""}`}
+                                    className={`${index % 2 === 0 ? "bg-white dark:bg-slate-800" : "bg-gray-50 dark:bg-slate-800/50"} ${isSelected ? "!bg-blue-50 dark:!bg-blue-500/10" : ""} transition-colors text-neutral dark:text-slate-200`}
                                 >
                                     <td className="px-4 py-3">
                                         <input
@@ -114,9 +114,9 @@ export default function RecipientsTable({
                                     <td className="px-4 py-3">
                                         {formatPHNumber(responder.phone_number)}
                                     </td>
-                                    <td className="px-4 py-3 text-gray-700">
+                                    <td className="px-4 py-3 text-gray-700 dark:text-slate-300">
                                         {responder.groups.length === 0 ? (
-                                            <p className="text-gray-500">
+                                            <p className="text-gray-500 dark:text-slate-400">
                                                 No groups
                                             </p>
                                         ) : (
@@ -124,7 +124,7 @@ export default function RecipientsTable({
                                                 {previewGroups.map((groupName) => (
                                                     <span
                                                         key={`${responder.id}-${groupName}`}
-                                                        className="max-w-[9.5rem] truncate rounded-full border border-gray-200 bg-white px-2 py-0.5 text-xs text-gray-700"
+                                                        className="max-w-[9.5rem] truncate rounded-full border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 px-2 py-0.5 text-xs text-gray-700 dark:text-slate-300"
                                                         title={groupName}
                                                     >
                                                         {groupName}
@@ -140,7 +140,7 @@ export default function RecipientsTable({
                                                                 responder.groups,
                                                             )
                                                         }
-                                                        className="btn-custom rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                                                        className="btn-custom rounded-full border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                                                     >
                                                         +{hiddenGroupsCount} more
                                                     </button>
@@ -156,7 +156,7 @@ export default function RecipientsTable({
                             <tr>
                                 <td
                                     colSpan={5}
-                                    className="px-4 py-6 text-center text-gray-500"
+                                    className="px-4 py-6 text-center text-gray-500 dark:text-slate-400"
                                 >
                                     No active responders available.
                                 </td>

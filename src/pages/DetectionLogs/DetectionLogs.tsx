@@ -96,9 +96,9 @@ export default function DetectionLogs() {
 
     return (
         <div className="flex flex-1 h-full overflow-hidden">
-            <div className="bg-white custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col">
+            <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl p-5 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-gray-100 dark:border-slate-700/50 transition-colors">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="pl-2 border-l-4 font-semibold text-gray-600 border-primary">
+                    <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary dark:border-blue-500">
                         DETECTION LOGS
                     </h2>
                 </div>
@@ -111,8 +111,8 @@ export default function DetectionLogs() {
                             onClick={() => setStatusFilter(f.value)}
                             className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
                                 statusFilter === f.value
-                                    ? "bg-primary text-white"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                    ? "bg-primary dark:bg-blue-600 text-white shadow-sm"
+                                    : "bg-gray-100 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-700"
                             }`}
                         >
                             {f.label}
@@ -128,7 +128,7 @@ export default function DetectionLogs() {
                         ))}
                     </div>
                 ) : readings.length === 0 ? (
-                    <div className="text-sm text-gray-500 text-center py-8">
+                    <div className="text-sm text-gray-500 dark:text-slate-500 text-center py-8">
                         No detection readings found.
                     </div>
                 ) : (
@@ -144,7 +144,7 @@ export default function DetectionLogs() {
 
                         <div ref={sentinelRef} className="py-2 flex justify-center">
                             {isLoadingMore && (
-                                <div className="spinner w-5 h-5 border-primary border-t-transparent" />
+                                <div className="spinner w-5 h-5 border-primary dark:border-blue-400 border-t-transparent" />
                             )}
                         </div>
                     </div>

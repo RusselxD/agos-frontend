@@ -37,9 +37,9 @@ export default function DeleteConfirmationModal({
                 headerText={title}
                 setModalOpen={setModalOpen}
             >
-                <p className="text-sm text-gray-700">{description}</p>
+                <p className="text-sm text-gray-700 dark:text-slate-300">{description}</p>
 
-                <div className="flex items-center justify-end gap-2 border-t border-gray-200 pt-3 text-sm">
+                <div className="flex items-center justify-end gap-2 border-t border-gray-200 dark:border-slate-700/50 pt-3 text-sm">
                     <button
                         type="button"
                         className="btn-cancel py-2"

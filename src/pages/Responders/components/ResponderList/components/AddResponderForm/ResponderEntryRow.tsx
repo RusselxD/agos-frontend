@@ -27,7 +27,7 @@ export default function ResponderEntryRow({
     canRemove,
 }: ResponderEntryRowProps) {
     return (
-        <div className="bg-white p-3 rounded-lg border border-gray-100 space-y-3">
+        <div className="bg-white dark:bg-slate-700/30 p-3 rounded-lg border border-gray-100 dark:border-slate-600 space-y-3 transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <TextInputField
                     value={firstName}
@@ -57,7 +57,7 @@ export default function ResponderEntryRow({
                     <button
                         type="button"
                         onClick={onRemove}
-                        className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded transition-colors"
+                        className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>

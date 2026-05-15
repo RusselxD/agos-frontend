@@ -31,7 +31,7 @@ export default function FilterDropDown({
             onMouseLeave={() => setIsHovered(false)}
         >
             <button
-                className="bg-white hover:bg-gray-50 shadow-sm btn-custom rounded-md border border-gray-400 text-gray-700 px-3 py-2 text-xs flex items-center justify-center transition-all duration-200"
+                className="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm btn-custom rounded-md border border-gray-400 dark:border-slate-600 text-gray-700 dark:text-slate-200 px-3 py-2 text-xs flex items-center justify-center transition-all duration-200"
                 style={{ gap: isHovered ? "12px" : "0" }}
                 onClick={() => setOptionsVisible((prev) => !prev)}
             >
@@ -52,9 +52,9 @@ export default function FilterDropDown({
                 />
             </button>
             <div
-                className={`absolute shadow-md top-full z-40 overflow-hidden bg-white rounded-lg w-36 right-0 transition-[max-height] duration-150 ease-in-out ${optionsVisible ? "max-h-96" : "max-h-0"}`}
+                className={`absolute shadow-md top-full z-40 overflow-hidden bg-white dark:bg-slate-800 rounded-lg w-36 right-0 transition-[max-height] duration-150 ease-in-out border border-transparent dark:border-slate-700/50 mt-1 ${optionsVisible ? "max-h-96" : "max-h-0"}`}
             >
-                <div className="rounded-lg bg-white">
+                <div className="rounded-lg bg-white dark:bg-slate-800">
                     {timeRanges.map((range, i) => (
                         <div
                             key={i}
@@ -64,7 +64,7 @@ export default function FilterDropDown({
                                 setSelectedRange(range);
                                 setOptionsVisible(false);
                             }}
-                            className={`px-4 py-2 flex items-center gap-2 text-sm ${selectedRange.label === range.label ? "bg-gray-100 text-black font-medium" : "hover:text-black cursor-pointer text-gray-700"}`}
+                            className={`px-4 py-2 flex items-center gap-2 text-sm transition-colors ${selectedRange.label === range.label ? "bg-gray-100 dark:bg-slate-700 text-black dark:text-white font-medium" : "hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-700/50 cursor-pointer text-gray-700 dark:text-slate-300"}`}
                         >
                             <span>{range.label}</span>
                         </div>

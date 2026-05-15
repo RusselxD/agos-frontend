@@ -25,8 +25,8 @@ const ThresholdCard = ({
         >
             {icon}
             <div className="space-y-1 flex-1">
-                <h2 className="font-semibold">{title}</h2>
-                <p className="text-sm text-gray-600">{desc}</p>
+                <h2 className="font-semibold dark:text-slate-100">{title}</h2>
+                <p className="text-sm text-gray-600 dark:text-slate-400">{desc}</p>
                 {children}
             </div>
         </div>
@@ -46,7 +46,7 @@ const HeightInput = ({
         <div className="flex items-center w-full gap-2">
             <input
                 type="number"
-                className="px-3 py-2 w-full rounded-md border border-gray-300"
+                className="px-3 py-2 w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/50"
                 value={height ?? ""}
                 onChange={(e) =>
                     handleUpdateConfig(config, e.target.valueAsNumber)
@@ -59,7 +59,7 @@ const HeightInput = ({
 
 const HeightDisplay = ({ height }: { height: number | undefined }) => {
     return (
-        <p className="px-3 py-2 w-3/4 rounded-md bg-white border border-gray-300">{`${height} cm`}</p>
+        <p className="px-3 py-2 w-3/4 rounded-md bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 text-slate-900 dark:text-slate-200">{`${height} cm`}</p>
     );
 };
 
@@ -75,11 +75,11 @@ const InstallationHeightCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-gray-50 border-gray-300"
+            className="bg-gray-50 dark:bg-slate-800/50 border-gray-300 dark:border-slate-700"
             title="Installation Height"
             desc="Distance from sensor to the bottom"
             icon={
-                <Gauge className="shrink-0 p-4 rounded-md bg-blue-100 text-blue-600 w-14 h-14" />
+                <Gauge className="shrink-0 p-4 rounded-md bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 w-14 h-14" />
             }
         >
             <div>
@@ -103,11 +103,11 @@ const WarningThresholdCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-yellow-50 border-yellow-300"
+            className="bg-yellow-50 dark:bg-amber-900/10 border-yellow-300 dark:border-amber-800/50"
             title="Warning Threshold"
             desc="Early warning water level depth"
             icon={
-                <Bell className="shrink-0 p-4 rounded-md bg-yellow-100 text-yellow-600 w-14 h-14" />
+                <Bell className="shrink-0 p-4 rounded-md bg-yellow-100 dark:bg-amber-900/30 text-yellow-600 dark:text-amber-400 w-14 h-14" />
             }
         >
             <div>
@@ -129,11 +129,11 @@ const CriticalThresholdCard = () => {
 
     return (
         <ThresholdCard
-            className="bg-red-50 border-red-300"
+            className="bg-red-50 dark:bg-red-900/10 border-red-300 dark:border-red-800/50"
             title="Critical Threshold"
             desc="Maximum safe water level depth"
             icon={
-                <AlertTriangle className="shrink-0 p-4 rounded-md bg-red-100 text-red-600 w-14 h-14" />
+                <AlertTriangle className="shrink-0 p-4 rounded-md bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 w-14 h-14" />
             }
         >
             <div>

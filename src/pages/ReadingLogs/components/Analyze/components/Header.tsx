@@ -22,16 +22,16 @@ export default function Header({
     handleClose,
 }: HeaderProps) {
     return (
-        <div className="shrink-0 px-5 pt-4 pb-3 border-b border-slate-200 relative">
+        <div className="shrink-0 px-5 pt-4 pb-3 border-b border-slate-200 dark:border-slate-800 relative">
             <div className="flex flex-col gap-2 w-full">
                 <div className="flex items-center gap-2">
                     <div className="gemini-btn cursor-default p-2">
                         <Sparkles className="w-4 h-4" />
                     </div>
-                    <p className="font-semibold text-slate-900">AI Analysis</p>
+                    <p className="font-semibold text-slate-900 dark:text-slate-200">AI Analysis</p>
                 </div>
                 <div className="flex items-center justify-between w-full">
-                    <p className="text-xs text-slate-700">
+                    <p className="text-xs text-slate-700 dark:text-slate-400">
                         {formatDate(startDate)} – {formatDate(endDate)}
                     </p>
                     <StatusPill
@@ -45,7 +45,7 @@ export default function Header({
 
             <button
                 onClick={handleClose}
-                className="text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg p-1.5 transition-colors absolute top-3 right-3"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg p-1.5 transition-colors absolute top-3 right-3"
             >
                 <X className="w-4 h-4" />
             </button>

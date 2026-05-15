@@ -55,7 +55,7 @@ export default function DateDropdown({
         <div className="relative" ref={dropdownRef}>
             {/* Label */}
             {label && (
-                <span className="text-[10px] text-gray-400 uppercase tracking-wide mb-1 block">
+                <span className="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-1 block">
                     {label}
                 </span>
             )}
@@ -66,17 +66,17 @@ export default function DateDropdown({
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
                     flex items-center justify-between gap-2 min-w-[140px]
-                    bg-white border rounded-lg px-3 py-2
-                    text-sm font-medium text-neutral
+                    bg-white dark:bg-slate-900 border rounded-lg px-3 py-2
+                    text-sm font-medium text-neutral dark:text-slate-200
                     transition-all duration-200
-                    hover:border-primary/40 hover:shadow-sm
-                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                    ${isOpen ? "border-primary shadow-sm ring-2 ring-primary/20" : "border-gray-200"}
+                    hover:border-primary/40 dark:hover:border-blue-500/40 hover:shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:ring-blue-500/20 focus:border-primary dark:focus:border-blue-500
+                    ${isOpen ? "border-primary dark:border-blue-500 shadow-sm ring-2 ring-primary/20 dark:ring-blue-500/20" : "border-gray-200 dark:border-slate-700"}
                 `}
             >
                 <span>{value ? formatDate(value) : "Select date"}</span>
                 <ChevronDown
-                    className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-gray-400 dark:text-slate-500 transition-transform duration-200 ${
                         isOpen ? "rotate-180" : ""
                     }`}
                 />
@@ -87,13 +87,13 @@ export default function DateDropdown({
                 <div
                     className="
                         absolute right-0 z-50 mt-1 w-full min-w-[180px]
-                        bg-white border border-gray-200 rounded-xl shadow-lg
+                        bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg
                         overflow-hidden animate-dropdown-in
                     "
                 >
                     {/* Header */}
-                    <div className="px-3 py-2 bg-gray-50 border-b border-gray-100">
-                        <p className="text-[10px] text-gray-500 uppercase tracking-wide font-medium">
+                    <div className="px-3 py-2 bg-gray-50 dark:bg-slate-800/80 border-b border-gray-100 dark:border-slate-700/50">
+                        <p className="text-[10px] text-gray-500 dark:text-slate-400 uppercase tracking-wide font-medium">
                             Available Dates
                         </p>
                     </div>
@@ -113,8 +113,8 @@ export default function DateDropdown({
                                         transition-colors duration-150
                                         ${
                                             isSelected
-                                                ? "bg-primary/5 text-primary font-medium"
-                                                : "text-neutral hover:bg-gray-50"
+                                                ? "bg-primary/5 dark:bg-blue-500/10 text-primary dark:text-blue-400 font-medium"
+                                                : "text-neutral dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700/50"
                                         }
                                     `}
                                 >

@@ -8,7 +8,7 @@ interface StatusCardProps {
 }
 
 export const StatusText = ({ text }: { text: string }) => {
-    return <p className="font-semibold ml-12">{text}</p>;
+    return <p className="font-semibold ml-12 text-neutral dark:text-slate-200">{text}</p>;
 };
 
 export default function StatusCard({
@@ -19,11 +19,11 @@ export default function StatusCard({
 }: StatusCardProps) {
     return (
         <div
-            className={`border-l-4 rounded-lg px-4 py-4 h-full flex flex-col gap-1 ${className ? className : "bg-gray-50"}`}
+            className={`border-l-4 rounded-lg px-4 py-4 h-full flex flex-col gap-1 transition-colors ${className ? className : "bg-gray-50 dark:bg-slate-700/30 dark:border-slate-600"}`}
         >
             <div className="flex items-center gap-4">
                 {icon}
-                <p className="text-gray-500 text-sm font-medium">{title}</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm font-medium">{title}</p>
             </div>
             {children}
         </div>

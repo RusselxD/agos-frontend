@@ -3,7 +3,7 @@ import { CardHeaderText } from "../../ui/Card";
 
 export default function WaterLevelStatusCardSkeleton({ className }: { className?: string }) {
     return (
-        <Card className={`bg-white ${className || ""}`}>
+        <Card className={`bg-white dark:bg-slate-800 ${className || ""}`}>
             <CardHeaderText label="WATER LEVEL STATUS" />
             <div className="flex flex-1">
                 {/* Main Display */}

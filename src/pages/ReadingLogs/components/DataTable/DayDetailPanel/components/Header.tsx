@@ -15,24 +15,24 @@ export default function Header({
     onClose,
 }: HeaderProps) {
     return (
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="sticky top-0 z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 transition-colors">
             <div className="px-6 py-4">
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                         <div>
-                            <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-0.5">
+                            <p className="text-[10px] text-gray-500 dark:text-slate-400 uppercase tracking-widest mb-0.5">
                                 Daily Summary
                             </p>
-                            <h2 className="text-xl font-bold text-neutral">
+                            <h2 className="text-xl font-bold text-neutral dark:text-slate-200">
                                 {formatDate(summary.summary_date)}
                             </h2>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                        className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
                     >
-                        <X className="w-5 h-5 text-gray-400" />
+                        <X className="w-5 h-5 text-gray-400 dark:text-slate-500" />
                     </button>
                 </div>
 

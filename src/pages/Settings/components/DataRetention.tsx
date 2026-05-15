@@ -104,8 +104,8 @@ export default function DataRetention() {
                 <>
                     <div>
                         <div className="flex items-center justify-between">
-                            <p className="text-gray-700">Retention Period</p>
-                            <p className="font-semibold text-blue-700">{`${newValue} days`}</p>
+                            <p className="text-gray-700 dark:text-slate-300">Retention Period</p>
+                            <p className="font-semibold text-blue-700 dark:text-blue-400">{`${newValue} days`}</p>
                         </div>
                         <input
                             type="range"
@@ -117,7 +117,7 @@ export default function DataRetention() {
                                 handleDragRange(Number(e.target.value))
                             }
                         />
-                        <div className="flex items-center justify-between text-sm text-gray-500">
+                        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-slate-400">
                             <p>{`7 days (Min)`}</p>
                             <p>{`30 days (Max)`}</p>
                         </div>

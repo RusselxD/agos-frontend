@@ -17,7 +17,7 @@ export default function TextInputField({
 }: TextInputFieldProps) {
     return (
         <label className="flex flex-col w-full">
-            <span className="text-sm text-gray-700 font-semibold">{label}</span>
+            <span className="text-sm text-gray-700 dark:text-slate-300 font-semibold transition-colors">{label}</span>
             <div className="w-full relative">
                 <input
                     type="text"

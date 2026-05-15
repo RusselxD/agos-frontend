@@ -11,10 +11,10 @@ const Header = () => {
             <div className="bg-black/50 text-white px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm pointer-events-none truncate mr-2">
                 {`${cameraDeviceDetails.camera_device_name} | ${locationDetails.location_name}`}
             </div>
-            <div className="flex items-center gap-2 border border-red-600 bg-red-100 px-2.5 py-0.5 md:px-3.5 rounded flex-shrink-0">
+            <div className="flex items-center gap-2 border border-red-600 dark:border-red-800 bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 md:px-3.5 rounded flex-shrink-0">
                 {/* Added pulse animation for better live feel */}
                 <span className="bg-red-600 rounded-full w-2.5 h-2.5 md:w-3 md:h-3 animate-pulse"></span>
-                <span className="text-red-600 text-sm md:text-base">LIVE</span>
+                <span className="text-red-600 dark:text-red-400 text-sm md:text-base">LIVE</span>
             </div>
         </div>
     );
@@ -122,7 +122,7 @@ const VideoPlaceholder = () => {
 
 export default function VideoContainer() {
     return (
-        <div className="bg-white custom-shadow p-3 md:p-5 flex-1 rounded-xl">
+        <div className="bg-white dark:bg-slate-800 custom-shadow p-3 md:p-5 flex-1 rounded-xl">
             <Header />
             <VideoPlaceholder />
         </div>

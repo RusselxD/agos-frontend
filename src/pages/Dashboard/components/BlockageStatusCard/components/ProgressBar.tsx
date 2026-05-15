@@ -14,12 +14,12 @@ export default function ProgressBar() {
                         className={`w-full rounded-md h-1.5 md:h-2 ${
                             barCount >= index
                                 ? barColors[barCount]
-                                : "bg-gray-200"
+                                : "bg-gray-200 dark:bg-slate-700"
                         }`}
                     ></span>
                 );
             })}
-            <div className="absolute bottom-0 flex items-center justify-between text-gray-500 text-xs md:text-sm w-full">
+            <div className="absolute bottom-0 flex items-center justify-between text-gray-500 dark:text-slate-400 text-xs md:text-sm w-full">
                 <span>Clear</span>
                 <span>Blocked</span>
             </div>

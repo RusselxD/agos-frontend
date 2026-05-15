@@ -9,7 +9,7 @@ export default function UserCardsContainer() {
     if (filteredAdmins.length === 0) {
         const emptyTitle = searchQuery ? `No admins found matching "${searchQuery}"` : "No admins available.";
         return (
-            <div className="flex-1 bg-white custom-shadow rounded-lg flex items-center justify-center h-full">
+            <div className="flex-1 bg-white dark:bg-slate-800 custom-shadow rounded-lg flex items-center justify-center h-full transition-colors border border-gray-100 dark:border-slate-700/50">
                 <EmptyList icon={SearchX} title={emptyTitle} />
             </div>
         );

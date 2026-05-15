@@ -14,6 +14,7 @@ import {
     TimeScale,
 } from "chart.js";
 import type { SensorReadingTrendResponse } from "../../../../types/sensor";
+import { useTheme } from "../../../../context/ThemeContext";
 
 // Register Chart.js components
 ChartJS.register(
@@ -48,6 +49,12 @@ export default function WaterLevelChart({
     const yMin = Math.max(0, Math.floor(minLevel - range * 0.1)); // 10% padding below
     const yMax = Math.ceil(maxLevel + range * 0.1); // 10% padding above
 
+    const { isDark } = useTheme();
+
+    const textColor = isDark ? "#cbd5e1" : "#4b5563"; // slate-300 : gray-600
+    const titleColor = isDark ? "#e2e8f0" : "#1f2937"; // slate-200 : gray-800
+    const gridColor = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
+
     // Chart.js configuration options
     const options = useMemo(
         () => ({
@@ -57,6 +64,7 @@ export default function WaterLevelChart({
                 legend: {
                     position: "top" as const,
                     labels: {
+                        color: textColor,
                         usePointStyle: true,
                         padding: 10,
                     },
@@ -64,6 +72,7 @@ export default function WaterLevelChart({
                 title: {
                     display: true,
                     text: `Water Level Trend (Last ${duration})`,
+                    color: titleColor,
                     font: {
                         size: 16,
                         weight: "bold" as const,
@@ -93,7 +102,11 @@ export default function WaterLevelChart({
                 y: {
                     min: yMin,
                     max: yMax,
+                    grid: {
+                        color: gridColor,
+                    },
                     ticks: {
+                        color: textColor,
                         callback: function (value: string | number) {
                             return `${value} cm`;
                         },
@@ -104,6 +117,7 @@ export default function WaterLevelChart({
                     title: {
                         display: true,
                         text: "Water Level (cm)",
+                        color: titleColor,
                         font: {
                             size: 12,
                             weight: "bold" as const,
@@ -111,7 +125,11 @@ export default function WaterLevelChart({
                     },
                 },
                 x: {
+                    grid: {
+                        color: gridColor,
+                    },
                     ticks: {
+                        color: textColor,
                         font: {
                             size: 12,
                         },
@@ -121,6 +139,7 @@ export default function WaterLevelChart({
                     title: {
                         display: true,
                         text: granularity,
+                        color: titleColor,
                         font: {
                             size: 12,
                             weight: "bold" as const,
@@ -143,7 +162,7 @@ export default function WaterLevelChart({
                 },
             },
         }),
-        [duration, granularity, yMin, yMax],
+        [duration, granularity, yMin, yMax, textColor, titleColor, gridColor],
     );
 
     // Chart data structure

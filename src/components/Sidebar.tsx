@@ -79,7 +79,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         <>
             {/* Desktop sidebar (lg and up) */}
             <div
-                className={`hidden lg:flex fixed border px-5 top-0 bottom-0 left-0 flex-col items-center bg-white transition-all duration-200 overflow-hidden ${
+                className={`hidden lg:flex fixed border-r px-5 top-0 bottom-0 left-0 flex-col items-center bg-white dark:bg-slate-800/30 dark:backdrop-blur-xl dark:border-slate-700/50 transition-all duration-200 overflow-hidden ${
                     isCollapsed ? "w-20" : "w-56"
                 }`}
             >
@@ -99,7 +99,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                         aria-label="Toggle sidebar"
                         title="Toggle sidebar"
                         onClick={onToggle}
-                        className="flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 transition-colors text-gray-500"
+                        className="flex items-center justify-center rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-slate-400"
                     >
                         {isCollapsed ? (
                             <PanelLeftOpen className="w-5 h-5" />
@@ -119,8 +119,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     className={({ isActive }) =>
                                         `flex items-center justify-center rounded-xl p-3 ${
                                             isActive
-                                                ? "bg-gray-200 text-primary"
-                                                : "text-neutral hover:bg-gray-100 transition-colors"
+                                                ? "bg-gray-200 dark:bg-slate-800 text-primary"
+                                                : "text-neutral dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                                         }`
                                     }
                                 >
@@ -139,8 +139,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     className={({ isActive }) =>
                                         `flex gap-2 rounded-xl py-3.5 px-3 ${
                                             isActive
-                                                ? "border-l-[4px] bg-gray-100 border-primary font-semibold cursor-default"
-                                                : "text-neutral hover:bg-gray-100 transition-colors"
+                                                ? "border-l-[4px] bg-gray-100 dark:bg-slate-800 border-primary font-semibold cursor-default"
+                                                : "text-neutral dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                                         }`
                                     }
                                 >
@@ -156,7 +156,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             </div>
 
             {/* Mobile/Tablet bottom navigation (below lg) */}
-            <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-bottom">
+            <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-800/60 dark:backdrop-blur-xl border-t border-gray-200 dark:border-slate-700/50 safe-bottom">
                 <ul className="flex items-center justify-around px-1 py-1.5 overflow-x-auto">
                     {tabs.map((tab: Tab, index: number) => (
                         <li key={index} className="flex-shrink-0">
@@ -167,7 +167,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     `flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[0.6rem] ${
                                         isActive
                                             ? "text-primary font-semibold"
-                                            : "text-gray-500"
+                                            : "text-gray-500 dark:text-slate-400"
                                     }`
                                 }
                             >

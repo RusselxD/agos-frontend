@@ -19,11 +19,11 @@ interface DropdownProps {
 const Dropdown = ({ value, onChange, options, label }: DropdownProps) => {
     return (
         <div>
-            <label className="text-xs text-gray-600 mb-1 block">{label}</label>
+            <label className="text-xs text-gray-600 dark:text-slate-400 mb-1 block">{label}</label>
             <select
                 value={value}
                 onChange={onChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none text-sm focus:border-primary"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none text-sm focus:border-primary dark:focus:border-blue-500 bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-200 transition-colors"
             >
                 <option value="">Select date</option>
                 {options.map((option) => (
@@ -121,7 +121,7 @@ export default function ChooseDateRangeModal({
         return (
             <ModalContainer setModalOpen={setModalIsOpen}>
                 <div
-                    className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4"
+                    className="bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="w-2/4 skeleton h-8 rounded-md"></div>
@@ -143,18 +143,18 @@ export default function ChooseDateRangeModal({
     return (
         <ModalContainer setModalOpen={setModalIsOpen}>
             <div
-                className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4"
+                className="bg-white dark:bg-slate-800 rounded-lg shadow-xl p-6 max-w-md w-full flex flex-col gap-4 transition-colors"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-xl font-semibold text-gray-800">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-slate-200">
                     Select Time Range
                 </h2>
 
                 {/* Date Range Selection */}
                 <div>
                     <div className="flex items-center gap-2 mb-3">
-                        <Calendar className="w-5 h-5 text-gray-600" />
-                        <label className="text-sm font-semibold text-gray-700">
+                        <Calendar className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                        <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
                             DATE RANGE
                         </label>
                     </div>
@@ -178,12 +178,12 @@ export default function ChooseDateRangeModal({
                     </div>
 
                     {startDate && endDate && !isDateRangeValid && (
-                        <p className="text-xs text-red-500 mt-2">
+                        <p className="text-xs text-red-500 dark:text-red-400 mt-2">
                             Start date must be before or equal to end date
                         </p>
                     )}
 
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500 dark:text-slate-400 mt-2">
                         Select the same date for both to query a single day
                     </p>
                 </div>
@@ -192,8 +192,8 @@ export default function ChooseDateRangeModal({
                 {isDateRangeValid && (
                     <div className="animate-in fade-in duration-200">
                         <div className="flex items-center gap-2 mb-3">
-                            <Clock className="w-5 h-5 text-gray-600" />
-                            <label className="text-sm font-semibold text-gray-700">
+                            <Clock className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                            <label className="text-sm font-semibold text-gray-700 dark:text-slate-300">
                                 HOUR RANGE
                             </label>
                         </div>
@@ -231,7 +231,7 @@ export default function ChooseDateRangeModal({
                         </div>
 
                         {startDate === endDate && startHour >= endHour && (
-                            <p className="text-xs text-red-500 mt-2">
+                            <p className="text-xs text-red-500 dark:text-red-400 mt-2">
                                 For single day selection, start hour must be
                                 before end hour
                             </p>
@@ -241,11 +241,11 @@ export default function ChooseDateRangeModal({
 
                 {/* Selected Range Display */}
                 {isDateRangeValid && (
-                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p className="text-xs text-gray-600 mb-1 font-semibold">
+                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg transition-colors">
+                        <p className="text-xs text-gray-600 dark:text-slate-300 mb-1 font-semibold">
                             SELECTED RANGE
                         </p>
-                        <p className="text-sm font-medium text-blue-900">
+                        <p className="text-sm font-medium text-blue-900 dark:text-blue-300">
                             {getSelectedRangeText()}
                         </p>
                     </div>

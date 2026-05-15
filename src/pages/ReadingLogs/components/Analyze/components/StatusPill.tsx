@@ -14,17 +14,17 @@ export default function StatusPill({
     return (
         <>
             {isLoading && (
-                <span className="text-sky-700 animate-pulse text-xs">
+                <span className="text-sky-700 dark:text-sky-400 animate-pulse text-xs">
                     Analyzing data...
                 </span>
             )}
             {isStreaming && (
-                <span className="text-sky-700 animate-pulse text-xs">
+                <span className="text-sky-700 dark:text-sky-400 animate-pulse text-xs">
                     Generating insights...
                 </span>
             )}
             {isDone && (
-                <span className="text-emerald-700 text-xs">
+                <span className="text-emerald-700 dark:text-emerald-400 text-xs">
                     Analysis complete
                 </span>
             )}

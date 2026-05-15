@@ -55,18 +55,18 @@ export default function ResponderGroupCard({
     };
 
     return (
-        <div className="flex flex-col gap-2 rounded-md border border-gray-300 bg-gray-100 p-3">
-            <h3 className="font-medium">{responderGroup.group_name}</h3>
+        <div className="flex flex-col gap-2 rounded-md border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-700/30 p-3 transition-colors">
+            <h3 className="font-medium dark:text-slate-200">{responderGroup.group_name}</h3>
 
             <div className="flex items-center justify-between gap-2 text-sm">
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 dark:text-slate-400">
                     <Users className="h-4 w-4" />
                     <p>{responderGroup.member_ids.length} members</p>
                 </div>
                 <button
                     type="button"
                     onClick={() => setGroupDetailsModalIsOpen(true)}
-                    className="btn-custom rounded-md border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                    className="btn-custom rounded-md border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                 >
                     View Members
                 </button>

@@ -1,6 +1,6 @@
 /* Water Gauge Container */
 .water-gauge {
-    @apply relative w-[40px] h-[112px] md:w-[50px] md:h-[144px] rounded-[40px] border-[3px] border-solid border-gray-200 overflow-hidden shrink-0;
+    @apply relative w-[40px] h-[112px] md:w-[50px] md:h-[144px] rounded-[40px] border-[3px] border-solid border-gray-200 dark:border-slate-700 overflow-hidden shrink-0;
     box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
     background: linear-gradient(
         to bottom,

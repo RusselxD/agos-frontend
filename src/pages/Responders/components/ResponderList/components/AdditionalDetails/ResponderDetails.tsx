@@ -42,8 +42,8 @@ const ResponderName = ({
                 <span
                     className={`ml-auto shrink-0 rounded-full px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-wide ${
                         isPending
-                            ? "bg-amber-200/90 text-amber-900"
-                            : "bg-emerald-200/90 text-emerald-900"
+                            ? "bg-amber-200/90 dark:bg-amber-900/40 text-amber-900 dark:text-amber-100 ring-1 ring-amber-300 dark:ring-amber-500/50"
+                            : "bg-emerald-200/90 dark:bg-emerald-900/40 text-emerald-900 dark:text-emerald-100 ring-1 ring-emerald-300 dark:ring-emerald-500/50"
                     }`}
                 >
                     {status.toUpperCase()}
@@ -92,12 +92,12 @@ const MainDetails = ({ responder }: { responder: ResponderAllDetails }) => {
 
     return (
         <>
-            <div className="flex items-start justify-between border-b border-gray-200 pb-3">
+            <div className="flex items-start justify-between border-b border-gray-200 dark:border-slate-700/50 pb-3">
                 <div>
-                    <h2 className="font-semibold text-gray-800">
+                    <h2 className="font-semibold text-gray-800 dark:text-slate-200">
                         {isPending ? "APPLICATION REVIEW" : "RESPONDER DETAILS"}
                     </h2>
-                    <p className="mt-0.5 text-xs text-gray-500">
+                    <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-400">
                         {isPending
                             ? "Check responder data before approval."
                             : "Responder profile and activity metadata."}
@@ -105,7 +105,7 @@ const MainDetails = ({ responder }: { responder: ResponderAllDetails }) => {
                 </div>
 
                 <button
-                    className="rounded-md border border-gray-300 p-1.5 text-gray-600 hover:bg-gray-100"
+                    className="rounded-md border border-gray-300 dark:border-slate-600 p-1.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                     onClick={() => setSideDrawerOpen(false)}
                 >
                     <X className="w-4 h-4" />
@@ -169,7 +169,7 @@ export default function ResponderDetails() {
 
     return (
         <div
-            className={`h-full rounded-lg border border-gray-200 bg-white transition-[width] duration-300 ease-in-out overflow-hidden ${sideDrawerOpen ? "w-[22rem]" : "w-0 "}`}
+            className={`h-full rounded-lg border border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 transition-all duration-300 ease-in-out overflow-hidden ${sideDrawerOpen ? "w-[22rem]" : "w-0 border-transparent dark:border-transparent opacity-0"}`}
         >
             <div className="flex h-full flex-col gap-3 p-4">
                 {isFetching && <ResponderDetailsSkeleton />}

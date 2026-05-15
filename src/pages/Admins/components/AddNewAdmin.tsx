@@ -156,11 +156,11 @@ export default function AddNewAdmin() {
             onChange={() => handleFormFieldsChange()}
             ref={containerRef}
             id="new-admin-container"
-            className={`w-full bg-white rounded-lg overflow-hidden transition-all text-sm duration-200 ${
-                createNewAdminIsOpen ? "max-h-[600px] mb-3 p-6" : "max-h-0 p-0"
+            className={`w-full bg-white dark:bg-slate-800 rounded-lg overflow-hidden transition-all text-sm duration-200 ${
+                createNewAdminIsOpen ? "max-h-[600px] mb-3 p-6 shadow-md border border-gray-100 dark:border-slate-700/50" : "max-h-0 p-0"
             }`}
         >
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
                 Add New Admin
             </h2>
 
@@ -190,13 +190,13 @@ export default function AddNewAdmin() {
                 <div className="flex-1">
                     {/* Temporary Password */}
                     <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">
+                        <label className="block text-xs font-medium text-gray-700 dark:text-slate-400 mb-2">
                             TEMPORARY PASSWORD
                         </label>
                         <div className="flex items-center gap-3">
-                            <div className="flex-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 font-mono text-sm min-h-[42px] flex items-center">
+                            <div className="flex-1 px-4 py-2 bg-gray-50 dark:bg-slate-900/50 border border-gray-300 dark:border-slate-700 rounded-lg text-gray-800 dark:text-slate-200 font-mono text-sm min-h-[42px] flex items-center">
                                 {temporaryPassword || (
-                                    <span className="text-gray-400">
+                                    <span className="text-gray-400 dark:text-slate-500">
                                         Click generate to create password
                                     </span>
                                 )}
@@ -208,7 +208,7 @@ export default function AddNewAdmin() {
                                     className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
                                         copied
                                             ? "bg-green-600 text-white"
-                                            : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+                                            : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300"
                                     }`}
                                 >
                                     <Copy className="w-4 h-4" />
@@ -219,7 +219,7 @@ export default function AddNewAdmin() {
                         <button
                             type="button"
                             onClick={handleGeneratePassword}
-                            className="flex items-center gap-2 mt-2 text-purple-500 hover:text-purple-600 cursor-pointer"
+                            className="flex items-center gap-2 mt-2 text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 cursor-pointer transition-colors"
                         >
                             <Wand2 className="w-4 h-4" />
                             <span>Generate</span>
@@ -228,9 +228,9 @@ export default function AddNewAdmin() {
 
                     {/* Security Warning */}
                     {temporaryPassword && (
-                        <div className="mt-2 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-md p-3">
-                            <AlertCircle className="text-amber-600 flex-shrink-0" />
-                            <p className="text-sm leading-6 text-amber-800">
+                        <div className="mt-2 flex items-start gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-md p-3">
+                            <AlertCircle className="text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                            <p className="text-sm leading-6 text-amber-800 dark:text-amber-200">
                                 <span className="font-semibold">
                                     Important:
                                 </span>{" "}

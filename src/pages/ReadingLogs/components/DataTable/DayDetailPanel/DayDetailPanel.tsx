@@ -98,11 +98,11 @@ export default function DayDetailPanel({
     return (
         <>
             <div
-                className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300"
+                className="fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm z-40 transition-opacity duration-300"
                 onClick={onClose}
             />
 
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white shadow-2xl z-50 overflow-y-auto animate-slide-in-right">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800 border-l border-white/10 dark:border-slate-800 shadow-2xl z-50 overflow-y-auto animate-slide-in-right">
                 <Header
                     maxRiskLevel={maxRiskLevel}
                     summary={summary}

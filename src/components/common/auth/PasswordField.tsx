@@ -19,7 +19,7 @@ export default function PasswordField({
 
     return (
         <label className="flex flex-col">
-            <span className="text-sm text-gray-700 font-semibold">{label}</span>
+            <span className="text-sm text-gray-700 dark:text-slate-300 font-semibold">{label}</span>
             <div className="w-full relative">
                 <input
                     type={showPassword ? "text" : "password"}
@@ -30,9 +30,9 @@ export default function PasswordField({
                 />
                 <div
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute cursor-pointer right-3 top-2"
+                    className="absolute cursor-pointer right-3 top-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
                 >
-                    {showPassword ? <Eye /> : <EyeClosed />}
+                    {showPassword ? <Eye size={20} /> : <EyeClosed size={20} />}
                 </div>
             </div>
         </label>

@@ -18,10 +18,10 @@ const getData = () => {
     };
 
     const getTextColor = (score: number): string => {
-        if (score <= normalThreshold) return "text-emerald-600";
+        if (score <= normalThreshold) return "text-emerald-600 dark:text-emerald-400";
         if (score >= warningThresholdMin && score <= warningThresholdMax)
-            return "text-yellow-600";
-        return "text-red-600";
+            return "text-yellow-600 dark:text-yellow-400";
+        return "text-red-600 dark:text-red-400";
     };
 
     return { combined_risk_score, getBarColor, getTextColor };
@@ -32,7 +32,7 @@ const HeadLabels = () => {
 
     return (
         <div className="flex items-center justify-between">
-            <p className="font-medium text-sm md:text-base text-gray-800">Combined Risk Score</p>
+            <p className="font-medium text-sm md:text-base text-gray-800 dark:text-slate-300">Combined Risk Score</p>
             <p
                 className={`font-bold text-xl md:text-2xl ${getTextColor(
                     combined_risk_score
@@ -48,7 +48,7 @@ const ProgressBarSegment = () => {
     const { combined_risk_score, getBarColor } = getData();
 
     return (
-        <div className="relative bg-gray-300 rounded-full w-full h-4 md:h-5">
+        <div className="relative bg-gray-300 dark:bg-slate-700 rounded-full w-full h-4 md:h-5">
             <div
                 className={`absolute transition-[width] duration-500 ease-in-out top-0 left-0 rounded-full h-4 md:h-5 ${getBarColor(
                     combined_risk_score
@@ -64,18 +64,18 @@ const Labels = () => {
 
     return (
         <div className="flex items-center justify-between text-xs sm:text-sm mt-1 font-semibold flex-wrap gap-y-1">
-            <p className="text-gray-800">0</p>
-            <p className="text-emerald-600">{`Safe (0-${alertThresholds?.tier_1_max ?? "--"})`}</p>
-            <p className="text-yellow-600">{`Warning (${alertThresholds?.tier_2_min ?? "--"}-${alertThresholds?.tier_2_max ?? "--"})`}</p>
-            <p className="text-red-600">{`Critical (${alertThresholds?.tier_3_min ?? "--"}+)`}</p>
-            <p className="text-gray-800">100</p>
+            <p className="text-gray-800 dark:text-slate-400">0</p>
+            <p className="text-emerald-600 dark:text-emerald-500">{`Safe (0-${alertThresholds?.tier_1_max ?? "--"})`}</p>
+            <p className="text-yellow-600 dark:text-yellow-500">{`Warning (${alertThresholds?.tier_2_min ?? "--"}-${alertThresholds?.tier_2_max ?? "--"})`}</p>
+            <p className="text-red-600 dark:text-red-500">{`Critical (${alertThresholds?.tier_3_min ?? "--"}+)`}</p>
+            <p className="text-gray-800 dark:text-slate-400">100</p>
         </div>
     );
 };
 
 export default function RiskScore() {
     return (
-        <div className="rounded-lg bg-white flex flex-col gap-1">
+        <div className="rounded-lg bg-white dark:bg-slate-800 flex flex-col gap-1">
             <HeadLabels />
             <ProgressBarSegment />
             <Labels />

@@ -11,12 +11,12 @@ const StatCard = ({ title, data, desc }: StatCardProps) => {
 
     return (
         <div
-            className={`border w-full h-full flex flex-col justify-between rounded-md px-3 py-2 md:px-4 md:py-3 ${warning ? "bg-amber-100 border-amber-300" : "bg-slate-100 border-gray-300"}`}
+            className={`border w-full h-full flex flex-col justify-between rounded-md px-3 py-2 md:px-4 md:py-3 ${warning ? "bg-amber-100 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700/50" : "bg-slate-100 dark:bg-slate-800/80 border-gray-300 dark:border-slate-700"}`}
         >
-            <p className="text-xs md:text-sm font-medium text-gray-700">{title}</p>
+            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-slate-400">{title}</p>
             <p>
                 <span className="text-xl md:text-2xl font-semibold">{data}</span>
-                <span className="text-xs ml-1 text-gray-700">{desc}</span>
+                <span className="text-xs ml-1 text-gray-700 dark:text-slate-400">{desc}</span>
             </p>
         </div>
     );

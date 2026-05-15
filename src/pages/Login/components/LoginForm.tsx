@@ -63,7 +63,7 @@ export default function LoginForm() {
             className="w-full flex flex-col gap-10"
         >
             {errorMessage && (
-                <div className="border border-red-500 bg-red-100 -mb-5 px-3 py-2 rounded-md text-sm text-red-800">
+                <div className="border border-red-500 dark:border-red-800 bg-red-100 dark:bg-red-900/20 -mb-5 px-3 py-2 rounded-md text-sm text-red-800 dark:text-red-400">
                     {errorMessage}
                 </div>
             )}
@@ -83,7 +83,7 @@ export default function LoginForm() {
                     normalizedPhoneNumber.length <= 12 || !password || isLoading
                 }
                 type="submit"
-                className="bg-primary flex items-center justify-center gap-5 rounded-xl hover:bg-primary/90 transition-colors py-3 px-8 text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
+                className="bg-primary dark:bg-blue-600 flex items-center justify-center gap-5 rounded-xl hover:bg-primary/90 dark:hover:bg-blue-700 transition-colors py-3 px-8 text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary dark:disabled:hover:bg-blue-600"
             >
                 {isLoading && <div className="spinner w-5 h-5"></div>}
                 <span>LOGIN</span>

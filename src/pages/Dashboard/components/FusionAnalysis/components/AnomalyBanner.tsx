@@ -41,12 +41,12 @@ export default function AnomalyBanner() {
                 return (
                     <div
                         key={type}
-                        className="flex items-start gap-3 p-4 bg-amber-50 border-2 border-amber-300 rounded-lg text-amber-800 animate-pulse-subtle"
+                        className="flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700 rounded-lg text-amber-800 dark:text-amber-400 animate-pulse-subtle"
                     >
                         <AlertTriangle className="w-6 h-6 flex-shrink-0 mt-0.5" />
                         <div>
                             <h4 className="font-bold text-sm md:text-base">{info.title}</h4>
-                            <p className="text-xs md:text-sm text-amber-700 opacity-90">
+                            <p className="text-xs md:text-sm text-amber-700 dark:text-amber-500 opacity-90">
                                 {info.description}
                             </p>
                         </div>

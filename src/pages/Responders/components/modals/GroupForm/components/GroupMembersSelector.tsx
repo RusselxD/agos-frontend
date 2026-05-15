@@ -27,10 +27,10 @@ export default function GroupMembersSelector({
 }: GroupMembersSelectorProps) {
     return (
         <div className="space-y-1">
-            <span className="text-sm font-semibold text-gray-700">
+            <span className="text-sm font-semibold text-gray-700 dark:text-slate-300">
                 SELECT ACTIVE MEMBERS
             </span>
-            <div className="flex max-h-40 flex-col overflow-auto rounded-lg border border-gray-400 p-3">
+            <div className="flex max-h-40 flex-col overflow-auto rounded-lg border border-gray-400 dark:border-slate-600 p-3 transition-colors">
                 {isFetching && <MembersSkeleton />}
 
                 {responders.map((responder) => (
@@ -41,14 +41,14 @@ export default function GroupMembersSelector({
                             checked={selectedMemberIds.includes(responder.id)}
                             onChange={() => onToggleMember(responder.id)}
                         />
-                        <span className="ml-2 text-[0.900rem] text-gray-800">
+                        <span className="ml-2 text-[0.900rem] text-gray-800 dark:text-slate-200">
                             {`${responder.first_name} ${responder.last_name} (${formatPHNumber(responder.phone_number)})`}
                         </span>
                     </label>
                 ))}
                 
                 {responders.length === 0 && !isFetching && (
-                    <div className="text-sm text-gray-500 py-4 text-center">
+                    <div className="text-sm text-gray-500 dark:text-slate-400 py-4 text-center">
                         No active responders available.
                     </div>
                 )}

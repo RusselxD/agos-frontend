@@ -83,10 +83,10 @@ export default function BlockageSeverityChart() {
                         <Doughnut data={data} options={options} />
                         {/* Center text */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <p className="text-2xl font-bold text-neutral">
+                            <p className="text-2xl font-bold text-neutral dark:text-slate-200 transition-colors">
                                 {total}
                             </p>
-                            <p className="text-xs text-gray-500">Total Days</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400 transition-colors">Total Days</p>
                         </div>
                     </div>
                 </div>
@@ -94,19 +94,19 @@ export default function BlockageSeverityChart() {
                 <div className="flex flex-col justify-center gap-6 text-sm font-semibold">
                     <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-clear"></span>
-                        <span className="text-gray-600">
+                        <span className="text-gray-600 dark:text-slate-300 transition-colors">
                             Clear ({chartData.clear})
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-partial"></span>
-                        <span className="text-gray-600">
+                        <span className="text-gray-600 dark:text-slate-300 transition-colors">
                             Partial ({chartData.partial})
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-blocked"></span>
-                        <span className="text-gray-600">
+                        <span className="text-gray-600 dark:text-slate-300 transition-colors">
                             Blocked ({chartData.blocked})
                         </span>
                     </div>

@@ -12,19 +12,19 @@ import type { DailySummary } from "../../../../types/readingLogs";
 const TableHeader = () => (
     <thead className="sticky top-0 z-10">
         <tr>
-            <th className="px-5 py-4 font-medium text-left bg-background rounded-tl-md text-xs uppercase tracking-wide text-gray-600">
+            <th className="px-5 py-4 font-medium text-left bg-background dark:bg-slate-800 rounded-tl-md text-xs uppercase tracking-wide text-gray-600 dark:text-slate-400">
                 Date
             </th>
-            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+            <th className="px-5 py-4 font-medium text-left bg-background dark:bg-slate-800 text-xs uppercase tracking-wide text-gray-600 dark:text-slate-400">
                 Risk Score
             </th>
-            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+            <th className="px-5 py-4 font-medium text-left bg-background dark:bg-slate-800 text-xs uppercase tracking-wide text-gray-600 dark:text-slate-400">
                 Water Level
             </th>
-            <th className="px-5 py-4 font-medium text-left bg-background text-xs uppercase tracking-wide text-gray-600">
+            <th className="px-5 py-4 font-medium text-left bg-background dark:bg-slate-800 text-xs uppercase tracking-wide text-gray-600 dark:text-slate-400">
                 Precipitation
             </th>
-            <th className="px-5 py-4 font-medium text-left bg-background rounded-tr-md text-xs uppercase tracking-wide text-gray-600">
+            <th className="px-5 py-4 font-medium text-left bg-background dark:bg-slate-800 rounded-tr-md text-xs uppercase tracking-wide text-gray-600 dark:text-slate-400">
                 Blockage
             </th>
         </tr>
@@ -47,7 +47,7 @@ export default function DataTableContainer() {
             headerTitle="DAILY SUMMARIES"
             className="flex-1 flex flex-col min-h-[400px] relative"
         >
-            <div className="flex-1 overflow-auto rounded-md border border-gray-200 max-h-[500px]">
+            <div className="flex-1 overflow-auto rounded-md border border-gray-200 dark:border-slate-700 max-h-[500px]">
                 {summaries.length > 0 ? (
                     <>
                         <table className="w-full text-left border-collapse text-sm whitespace-nowrap">

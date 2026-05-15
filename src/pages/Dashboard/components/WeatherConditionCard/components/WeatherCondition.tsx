@@ -8,7 +8,7 @@ export default function WeatherCondition({ weather }: WeatherProps) {
                 <h2 className={`font-semibold text-xl md:text-2xl truncate ${weather.color}`}>
                     {weather.condition}
                 </h2>
-                <p className="text-xs md:text-sm text-gray-600 truncate">{weather.description}</p>
+                <p className="text-xs md:text-sm text-gray-600 dark:text-slate-400 truncate">{weather.description}</p>
             </div>
         </div>
     );

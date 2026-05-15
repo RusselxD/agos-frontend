@@ -47,8 +47,8 @@ export default function Weather() {
 
     if (error || !weatherData) {
         return (
-            <div className="bg-white rounded-xl p-8 text-center">
-                <p className="text-gray-500">{error ?? "No data available."}</p>
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-gray-100 dark:border-slate-700">
+                <p className="text-gray-500 dark:text-slate-400">{error ?? "No data available."}</p>
             </div>
         );
     }

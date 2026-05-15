@@ -9,22 +9,22 @@ const STATUS_CONFIG = {
     clear: {
         icon: CircleCheck,
         label: "Clear",
-        badge: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-        accent: "text-emerald-600",
+        badge: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-emerald-200 dark:ring-emerald-800/50",
+        accent: "text-emerald-600 dark:text-emerald-400",
         bg: "bg-emerald-500",
     },
     partial: {
         icon: TriangleAlert,
         label: "Partial Blockage",
-        badge: "bg-amber-50 text-amber-700 ring-amber-200",
-        accent: "text-amber-600",
+        badge: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-amber-200 dark:ring-amber-800/50",
+        accent: "text-amber-600 dark:text-amber-400",
         bg: "bg-amber-500",
     },
     blocked: {
         icon: CircleAlert,
         label: "Blocked",
-        badge: "bg-red-50 text-red-700 ring-red-200",
-        accent: "text-red-600",
+        badge: "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-red-200 dark:ring-red-800/50",
+        accent: "text-red-600 dark:text-red-400",
         bg: "bg-red-500",
     },
 };
@@ -66,19 +66,19 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
 
     return createPortal(
         <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-colors"
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto"
+                className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] overflow-y-auto border border-white/10 dark:border-slate-800 transition-colors"
                 onClick={(e) => e.stopPropagation()}
             >
                 {isFetching ? (
                     <ModalSkeleton onClose={onClose} />
                 ) : !detail ? (
                     <div className="p-8 text-center">
-                        <p className="text-sm text-gray-500">Failed to load detection detail.</p>
-                        <button onClick={onClose} className="mt-4 text-sm text-primary hover:underline">
+                        <p className="text-sm text-gray-500 dark:text-slate-400">Failed to load detection detail.</p>
+                        <button onClick={onClose} className="mt-4 text-sm text-primary dark:text-blue-400 hover:underline">
                             Close
                         </button>
                     </div>
@@ -91,13 +91,13 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                                     <StatusIcon className="w-3.5 h-3.5" />
                                     {config.label}
                                 </span>
-                                <span className="text-sm font-medium text-gray-500">
+                                <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
                                     Detection #{detail.id}
                                 </span>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="shrink-0 p-1.5 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                                className="shrink-0 p-1.5 rounded-full text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-700 dark:hover:text-slate-200 transition-colors"
                                 aria-label="Close detection detail"
                             >
                                 <X className="w-4 h-4" />
@@ -107,12 +107,12 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                         {/* Image section */}
                         <div className="px-5 pt-4">
                             {imageError ? (
-                                <div className="w-full min-h-72 bg-gray-100 flex flex-col items-center justify-center text-gray-400">
+                                <div className="w-full min-h-72 bg-gray-100 dark:bg-slate-950 flex flex-col items-center justify-center text-gray-400 dark:text-slate-600 transition-colors">
                                     <ImageOff className="w-10 h-10 mb-2" />
                                     <span className="text-sm">Image unavailable</span>
                                 </div>
                             ) : (
-                                <div className="w-full bg-gray-100 flex items-center justify-center overflow-auto">
+                                <div className="w-full bg-gray-100 dark:bg-slate-950 flex items-center justify-center overflow-auto rounded-lg border border-gray-200 dark:border-slate-800 transition-colors">
                                     <img
                                         src={detail.image_path}
                                         alt={`Detection #${detail.id}`}
@@ -135,7 +135,7 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                                 <MetricCard
                                     label="Camera"
                                     value={`Device ${detail.camera_device_id}`}
-                                    icon={<Camera className="w-5 h-5 text-gray-500" />}
+                                    icon={<Camera className="w-5 h-5 text-gray-500 dark:text-slate-400" />}
                                 />
                             </div>
 
@@ -163,29 +163,29 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
 
 function MetricCard({ label, value, icon, subtitle }: { label: string; value: string; icon: React.ReactNode; subtitle?: string }) {
     return (
-        <div className="bg-gray-50 rounded-xl p-3.5 flex flex-col gap-2">
+        <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-3.5 flex flex-col gap-2 border border-transparent dark:border-slate-700/50">
             <div className="flex items-center justify-between">
-                <span className="text-[0.68rem] font-medium text-gray-400 uppercase tracking-wide">{label}</span>
+                <span className="text-[0.68rem] font-medium text-gray-400 dark:text-slate-500 uppercase tracking-wide">{label}</span>
                 {icon}
             </div>
-            <span className="text-xl font-bold text-gray-800">{value}</span>
-            {subtitle && <span className="text-[0.68rem] text-gray-400 -mt-1">{subtitle}</span>}
+            <span className="text-xl font-bold text-gray-800 dark:text-slate-200">{value}</span>
+            {subtitle && <span className="text-[0.68rem] text-gray-400 dark:text-slate-500 -mt-1">{subtitle}</span>}
         </div>
     );
 }
 
 function TimestampCard({ label, timestamp, icon }: { label: string; timestamp: string; icon: React.ReactNode }) {
     return (
-        <div className="flex-1 bg-gray-50 rounded-xl px-3.5 py-3 flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200/70 text-gray-500">
+        <div className="flex-1 bg-gray-50 dark:bg-slate-800/50 rounded-xl px-3.5 py-3 flex items-center gap-3 border border-transparent dark:border-slate-700/50">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200/70 dark:bg-slate-700 text-gray-500 dark:text-slate-400">
                 {icon}
             </div>
             <div>
-                <p className="text-[0.68rem] font-medium text-gray-400 uppercase tracking-wide">{label}</p>
-                <p className="text-sm font-semibold text-gray-700">
+                <p className="text-[0.68rem] font-medium text-gray-400 dark:text-slate-500 uppercase tracking-wide">{label}</p>
+                <p className="text-sm font-semibold text-gray-700 dark:text-slate-300">
                     {format(new Date(timestamp), "MMM d, yyyy")}
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 dark:text-slate-500">
                     {format(new Date(timestamp), "h:mm:ss a")}
                 </p>
             </div>
@@ -200,7 +200,7 @@ function ProgressRing({ percentage, color }: { percentage: number; color: string
 
     return (
         <svg width="28" height="28" viewBox="0 0 32 32">
-            <circle cx="16" cy="16" r="14" fill="none" stroke="#e5e7eb" strokeWidth="3" />
+            <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="3" className="text-gray-100 dark:text-slate-700" />
             <circle
                 cx="16" cy="16" r="14"
                 fill="none"
@@ -223,7 +223,7 @@ function ModalSkeleton({ onClose }: { onClose: () => void }) {
                 <div className="skeleton h-8 w-44 rounded-full" />
                 <button
                     onClick={onClose}
-                    className="shrink-0 p-1.5 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                    className="shrink-0 p-1.5 rounded-full text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-700 dark:hover:text-slate-200 transition-colors"
                     aria-label="Close detection detail"
                 >
                     <X className="w-4 h-4" />

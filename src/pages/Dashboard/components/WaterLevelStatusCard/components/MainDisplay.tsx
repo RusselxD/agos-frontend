@@ -29,8 +29,8 @@ const AlertCategory = () => {
                 };
             default:
                 return {
-                    circle: "bg-gray-600",
-                    text: "text-gray-700",
+                    circle: "bg-gray-600 dark:bg-slate-500",
+                    text: "text-gray-700 dark:text-slate-400",
                 };
         }
     };
@@ -153,7 +153,7 @@ export default function MainDisplay() {
                 <AlertCategory />
                 <LevelInfo />
             </div>
-            <span className="absolute left-0 bottom-0 text-[0.7rem] md:text-[0.800rem] text-gray-900">
+            <span className="absolute left-0 bottom-0 text-[0.7rem] md:text-[0.800rem] text-gray-900 dark:text-slate-400">
                 {sensorData?.timestamp ? `Updated ${getTimeAgo(sensorData.timestamp)}` : "No data"}
             </span>
         </div>

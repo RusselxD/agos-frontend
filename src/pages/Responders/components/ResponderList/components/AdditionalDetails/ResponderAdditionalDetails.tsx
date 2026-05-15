@@ -16,15 +16,15 @@ interface DetailCardProps {
 const DetailCard = ({ title, icon, value, tone = "default" }: DetailCardProps) => {
     const valueColor =
         tone === "active"
-            ? "text-emerald-700"
+            ? "text-emerald-700 dark:text-emerald-400"
             : tone === "pending"
-              ? "text-amber-700"
-              : "text-gray-800";
+              ? "text-amber-700 dark:text-amber-400"
+              : "text-gray-800 dark:text-slate-200";
 
     return (
-        <div className="w-full rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
-            <div className="mb-2 flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-gray-500">
-                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-100 text-gray-600">
+        <div className="w-full rounded-xl border border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 p-3 shadow-sm transition-colors">
+            <div className="mb-2 flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.08em] text-gray-500 dark:text-slate-400">
+                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300">
                     {icon}
                 </div>
                 <span>{title}</span>

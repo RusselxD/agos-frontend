@@ -7,7 +7,7 @@ export default function LastUpdatedContainer({ value }: CardProps) {
     return (
         <StatusCard
             icon={
-                <Clock className="p-2 rounded-md bg-blue-100 text-blue-600 w-8 h-8" />
+                <Clock className="p-2 rounded-md bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 w-8 h-8 transition-colors" />
             }
             title="Last Updated"
         >

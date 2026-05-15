@@ -83,23 +83,23 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
 
     return (
         <div
-            className={`absolute md:relative right-0 z-20 h-full rounded-lg border border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden custom-shadow md:shadow-none ${
+            className={`absolute md:relative right-0 z-20 h-full rounded-lg border border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 transition-all duration-300 ease-in-out overflow-hidden custom-shadow md:shadow-none ${
                 isOpen ? "w-full md:w-[24rem]" : "w-0"
             }`}
         >
             <div className="flex h-full flex-col w-[100vw] md:w-[24rem]">
                 {/* Header */}
-                <div className="flex items-start justify-between p-4 border-b border-gray-200">
+                <div className="flex items-start justify-between p-4 border-b border-gray-200 dark:border-slate-700/50">
                     <div>
-                        <h2 className="font-semibold text-gray-800 text-sm">
+                        <h2 className="font-semibold text-gray-800 dark:text-slate-200 text-sm">
                             DELIVERY HISTORY
                         </h2>
-                        <p className="text-xs text-gray-500 mt-0.5">
+                        <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
                             {fullName} &middot; {responder?.phone_number}
                         </p>
                     </div>
                     <button
-                        className="rounded-md border border-gray-300 p-1.5 text-gray-600 hover:bg-gray-100"
+                        className="rounded-md border border-gray-300 dark:border-slate-600 p-1.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                         onClick={onClose}
                     >
                         <X className="w-4 h-4" />
@@ -107,15 +107,15 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                 </div>
 
                 {/* Type filter chips */}
-                <div className="flex gap-1.5 px-4 py-3 border-b border-gray-100 overflow-x-auto">
+                <div className="flex gap-1.5 px-4 py-3 border-b border-gray-100 dark:border-slate-700/50 overflow-x-auto">
                     {TYPE_FILTERS.map((f) => (
                         <button
                             key={f.value}
                             onClick={() => setTypeFilter(f.value)}
                             className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
                                 typeFilter === f.value
-                                    ? "bg-primary text-white"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                    ? "bg-primary dark:bg-blue-600 text-white shadow-sm"
+                                    : "bg-gray-100 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-700"
                             }`}
                         >
                             {f.label}
@@ -132,7 +132,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                             ))}
                         </div>
                     ) : deliveries.length === 0 ? (
-                        <div className="text-sm text-gray-500 text-center py-8">
+                        <div className="text-sm text-gray-500 dark:text-slate-400 text-center py-8">
                             No notifications found.
                         </div>
                     ) : (
@@ -145,7 +145,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
                                 <button
                                     onClick={loadMore}
                                     disabled={isLoadingMore}
-                                    className="w-full py-2 text-sm text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors disabled:opacity-50"
+                                    className="w-full py-2 text-sm text-primary dark:text-blue-400 font-medium hover:bg-primary/5 dark:hover:bg-blue-500/10 rounded-lg transition-colors disabled:opacity-50"
                                 >
                                     {isLoadingMore ? "Loading..." : "Load more"}
                                 </button>

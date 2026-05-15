@@ -15,13 +15,13 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
         <table className="w-full text-left border-collapse text-sm">
             <thead className="sticky top-0 z-10">
                 <tr className="rounded-t-md">
-                    <th className="px-4 py-3 font-medium text-left bg-background rounded-tl-md">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark rounded-tl-md">
                         Admin
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark">
                         Details
                     </th>
-                    <th className="px-4 py-3 font-medium text-left bg-background">
+                    <th className="px-4 py-3 font-medium text-left bg-background dark:bg-background-dark">
                         Timestamp
                     </th>
                 </tr>
@@ -30,7 +30,7 @@ const Table = ({ logs }: { logs: AdminUserLogs[] }) => {
                 {logs.map((log, index) => (
                     <tr
                         key={index}
-                        className={index % 2 !== 0 ? "bg-gray-100" : "bg-white"}
+                        className={index % 2 !== 0 ? "bg-gray-100 dark:bg-slate-800/50" : "bg-white dark:bg-slate-900"}
                     >
                         <td className="px-4 py-3 text-left">
                             {log.admin_name}
@@ -171,14 +171,14 @@ export default function LogsContainer() {
                 {hasMore && <div ref={observerTarget} className="h-4"></div>}
 
                 {!hasMore && logs.length > 0 && (
-                    <p className="text-center text-sm text-gray-500 py-4">
+                    <p className="text-center text-sm text-gray-500 dark:text-slate-400 py-4">
                         No more logs
                     </p>
                 )}
             </div>
 
             {logs.length === 0 && (
-                <p className="text-center text-sm text-gray-500 py-4">
+                <p className="text-center text-sm text-gray-500 dark:text-slate-400 py-4">
                     No logs available
                 </p>
             )}

@@ -47,7 +47,7 @@ export default function NotificationTemplates() {
             className="flex-1 relative"
             headerTitle="NOTIFICATION TEMPLATES"
         >
-            <p className="text-gray-700 text-sm absolute top-5 right-5">
+            <p className="text-gray-700 dark:text-slate-400 text-sm absolute top-5 right-5">
                 {cache.templates?.length ?? 0} templates
             </p>
 

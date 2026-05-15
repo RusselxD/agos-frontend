@@ -10,10 +10,10 @@ import { useToast } from "../../../context/ToastContext";
 const AccountStatusBadge = ({ isEnabled }: { isEnabled: boolean }) => {
     return (
         <div className="flex items-center gap-2 text-sm mt-0.5">
-            <span className="text-gray-600">Status:</span>
+            <span className="text-gray-600 dark:text-slate-400">Status:</span>
             <span
                 className={`font-semibold ${
-                    isEnabled ? "text-green-600" : "text-gray-400"
+                    isEnabled ? "text-green-600 dark:text-emerald-400" : "text-gray-400 dark:text-slate-500"
                 }`}
             >
                 {isEnabled ? "Enabled" : "Deactivated"}
@@ -31,7 +31,7 @@ interface DetailsProps {
 const Details = ({ label, value, customValue }: DetailsProps) => {
     return (
         <div className="flex flex-col min-w-0">
-            <p className="text-gray-500 text-xs">{label}</p>
+            <p className="text-gray-500 dark:text-slate-400 text-xs">{label}</p>
             {customValue ? (
                 <div className="truncate">{customValue}</div>
             ) : (
@@ -116,8 +116,8 @@ export default function UserCard({
     return (
         <>
             <div
-                className={`bg-white w-full h-fit p-5 rounded-lg border-b-4 ${
-                    user.is_enabled ? "border-green-500" : "border-gray-300"
+                className={`bg-white dark:bg-slate-800 w-full h-fit p-5 rounded-lg border-b-4 transition-colors ${
+                    user.is_enabled ? "border-green-500 dark:border-emerald-500" : "border-gray-300 dark:border-slate-700"
                 }`}
             >
                 <div className="flex justify-between items-start">
@@ -128,20 +128,20 @@ export default function UserCard({
                     {isSuperuser && !isSelf && (
                         <div className="relative" ref={menuRef}>
                             <div
-                                className="rounded-xl p-1 cursor-pointer hover:bg-gray-100 flex items-center justify-center"
+                                className="rounded-xl p-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-400"
                                 onClick={() => setMenuOpen(!menuOpen)}
                             >
                                 <EllipsisVertical size={20} />
                             </div>
                             {menuOpen && (
-                                <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[160px] animate-dropdown-in">
+                                <div className="absolute right-0 top-8 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg shadow-lg z-10 min-w-[160px] animate-dropdown-in overflow-hidden">
                                     {user.is_enabled ? (
                                         <button
                                             onClick={() => {
                                                 setMenuOpen(false);
                                                 setShowDeactivateModal(true);
                                             }}
-                                            className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                                            className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10"
                                         >
                                             <ShieldOff size={16} />
                                             Deactivate
@@ -152,7 +152,7 @@ export default function UserCard({
                                                 setMenuOpen(false);
                                                 setShowReactivateModal(true);
                                             }}
-                                            className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-green-600 hover:bg-green-50 rounded-lg"
+                                            className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-green-600 dark:text-emerald-400 hover:bg-green-50 dark:hover:bg-emerald-900/10"
                                         >
                                             <ShieldCheck size={16} />
                                             Reactivate
@@ -164,11 +164,11 @@ export default function UserCard({
                     )}
                     {(!isSuperuser || isSelf) && (
                         <div className="rounded-xl p-1 flex items-center justify-center">
-                            <EllipsisVertical size={20} className="text-gray-300" />
+                            <EllipsisVertical size={20} className="text-gray-300 dark:text-slate-600" />
                         </div>
                     )}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 rounded-lg relative text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-3 py-4 px-4 border border-gray-300 dark:border-slate-700 rounded-lg relative text-sm">
                     <Details
                         label="Phone Number"
                         value={formatPHNumber(user.phone_number)}
@@ -194,24 +194,24 @@ export default function UserCard({
 
             {/* Deactivate Confirmation Modal */}
             {showDeactivateModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setShowDeactivateModal(false)}>
-                    <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-1">Deactivate Admin</h3>
-                        <p className="text-sm text-gray-500 mb-4">
-                            This will disable <span className="font-medium">{user.first_name} {user.last_name}</span>'s access and invalidate their sessions.
+                <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowDeactivateModal(false)}>
+                    <div className="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-md mx-4 shadow-xl border border-gray-100 dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">Deactivate Admin</h3>
+                        <p className="text-sm text-gray-500 dark:text-slate-400 mb-4">
+                            This will disable <span className="font-medium text-gray-900 dark:text-white">{user.first_name} {user.last_name}</span>'s access and invalidate their sessions.
                         </p>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Reason</label>
                         <textarea
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
                             placeholder="Enter reason for deactivation..."
-                            className="w-full border border-gray-300 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
+                            className="w-full border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
                             rows={3}
                         />
                         <div className="flex gap-3 mt-4 justify-end">
                             <button
                                 onClick={() => { setShowDeactivateModal(false); setReason(""); }}
-                                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+                                className="px-4 py-2 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                             >
                                 Cancel
                             </button>
@@ -229,16 +229,16 @@ export default function UserCard({
 
             {/* Reactivate Confirmation Modal */}
             {showReactivateModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setShowReactivateModal(false)}>
-                    <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-1">Reactivate Admin</h3>
-                        <p className="text-sm text-gray-500 mb-4">
-                            This will re-enable <span className="font-medium">{user.first_name} {user.last_name}</span>'s access to the admin dashboard.
+                <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowReactivateModal(false)}>
+                    <div className="bg-white dark:bg-slate-900 rounded-xl p-6 w-full max-w-md mx-4 shadow-xl border border-gray-100 dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">Reactivate Admin</h3>
+                        <p className="text-sm text-gray-500 dark:text-slate-400 mb-4">
+                            This will re-enable <span className="font-medium text-gray-900 dark:text-white">{user.first_name} {user.last_name}</span>'s access to the admin dashboard.
                         </p>
                         <div className="flex gap-3 mt-4 justify-end">
                             <button
                                 onClick={() => setShowReactivateModal(false)}
-                                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+                                className="px-4 py-2 text-sm text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                             >
                                 Cancel
                             </button>

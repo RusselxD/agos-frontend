@@ -50,13 +50,13 @@ export default function Responders() {
     return (
         <RespondersPageProvider>
             <div className="space-y-2 flex flex-col flex-1 h-full">
-                <div className="bg-white rounded-lg py-2 px-3 text-sm flex items-center justify-between gap-3 custom-shadow">
+                <div className="bg-white dark:bg-slate-800 rounded-lg py-2 px-3 text-sm flex items-center justify-between gap-3 custom-shadow border border-gray-100 dark:border-slate-700/50 transition-colors">
                     {/* Mobile Dropdown */}
                     <div className="lg:hidden flex-1 min-w-0">
                         <select
                             value={chosenTab}
                             onChange={(e) => setChosenTab(e.target.value)}
-                            className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm font-medium rounded-lg focus:ring-primary focus:border-primary block p-2.5 outline-none cursor-pointer truncate"
+                            className="w-full bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-slate-200 text-sm font-medium rounded-lg focus:ring-primary focus:border-primary block p-2.5 outline-none cursor-pointer truncate transition-colors"
                         >
                             {TABS.map((tab) => (
                                 <option key={tab.value} value={tab.value}>
@@ -73,7 +73,7 @@ export default function Responders() {
                                 <button
                                     key={tab.value}
                                     onClick={() => setChosenTab(tab.value)}
-                                    className={`btn-custom py-2.5 px-4 rounded-lg ${chosenTab === tab.value ? "bg-primary font-medium text-white" : "text-gray-700 border-transparent hover:text-black"}`}
+                                    className={`btn-custom py-2.5 px-4 rounded-lg transition-colors ${chosenTab === tab.value ? "bg-primary dark:bg-blue-600 font-medium text-white shadow-sm" : "text-gray-700 dark:text-slate-300 border-transparent hover:text-black dark:hover:text-white dark:hover:bg-slate-700/50"}`}
                                 >
                                     {tab.name}
                                 </button>
@@ -93,13 +93,13 @@ export default function Responders() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                            <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 py-1 z-50">
                                 <button
                                     onClick={() => {
                                         setGroupFormModalIsOpen(true);
                                         setDropdownOpen(false);
                                     }}
-                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors"
                                 >
                                     <Users className="w-4 h-4" />
                                     <span>Group</span>
@@ -109,7 +109,7 @@ export default function Responders() {
                                         setMessageTemplateFormModalIsOpen(true);
                                         setDropdownOpen(false);
                                     }}
-                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors"
                                 >
                                     <Bell className="w-4 h-4" />
                                     <span>Notification</span>

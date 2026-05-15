@@ -22,7 +22,7 @@ export default function Overview() {
     }
     
     if (admins.length === 0) {
-        return <div className="rounded-xl h-full aspect-square bg-red-50 border border-red-400"></div>;
+        return <div className="rounded-xl h-full aspect-square bg-red-50 dark:bg-red-900/10 border border-red-400 dark:border-red-800/50 transition-colors"></div>;
     }
 
     return (
