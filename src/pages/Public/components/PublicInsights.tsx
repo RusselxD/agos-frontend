@@ -84,7 +84,7 @@ export default function PublicInsights() {
         "Continue routine activities but remain aware of weather updates."
     ];
     let adviceColor = "text-blue-500";
-    let adviceBg = "bg-blue-50 dark:bg-slate-800/50";
+    let adviceBg = "border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.05)]";
     
     if (riskScore >= 76) {
         adviceTitle = "Evacuation Warning";
@@ -93,7 +93,7 @@ export default function PublicInsights() {
             "Follow all instructions from local emergency authorities."
         ];
         adviceColor = "text-red-500";
-        adviceBg = "bg-red-50 dark:bg-red-900/10 border border-red-500/20";
+        adviceBg = "!border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.15)]";
     } else if (riskScore >= 45) {
         adviceTitle = "Advice for Residents";
         adviceLines = [
@@ -101,7 +101,7 @@ export default function PublicInsights() {
             "Avoid going near waterways when it is raining."
         ];
         adviceColor = "text-indigo-500";
-        adviceBg = "bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-500/20";
+        adviceBg = "!border-indigo-500/40 shadow-[0_0_25px_rgba(99,102,241,0.1)]";
     }
 
     return (
@@ -115,7 +115,7 @@ export default function PublicInsights() {
                     <h3 className="text-sm font-bold text-gray-700 dark:text-slate-300 uppercase tracking-wide">What This Means</h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-slate-800 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-white/10 pt-2">
                     {/* Waterway */}
                     <div className="flex items-start gap-3 pt-3 md:pt-0 md:px-3 first:pl-0">
                         <div className={`shrink-0 p-2.5 rounded-xl ${waterwayBg} ${waterwayColor}`}>
@@ -152,25 +152,25 @@ export default function PublicInsights() {
             </Container>
 
             {/* Advice for Residents Card */}
-            <div className={`rounded-2xl p-5 flex items-center justify-between gap-4 transition-colors ${adviceBg}`}>
+            <Container className={`flex items-center justify-between gap-4 transition-all duration-300 h-full ${adviceBg}`}>
                 <div className="flex items-start gap-4 flex-1">
-                    <div className={`shrink-0 p-3 rounded-2xl bg-white dark:bg-slate-900 shadow-sm ${adviceColor}`}>
+                    <div className={`shrink-0 p-3.5 rounded-2xl bg-white dark:bg-slate-800/80 shadow-md ${adviceColor}`}>
                         {riskScore >= 76 ? <ShieldAlert className="w-8 h-8" /> : <Home className="w-8 h-8" />}
                     </div>
-                    <div>
-                        <h3 className={`text-sm font-bold uppercase tracking-wide mb-2 ${adviceColor}`}>
+                    <div className="flex flex-col justify-center">
+                        <h3 className={`text-sm font-bold uppercase tracking-widest mb-1.5 ${adviceColor}`}>
                             {adviceTitle}
                         </h3>
-                        <div className="space-y-1.5">
+                        <div className="space-y-1">
                             {adviceLines.map((line, i) => (
-                                <p key={i} className="text-sm text-gray-700 dark:text-slate-300 font-medium">
+                                <p key={i} className="text-[0.8rem] md:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                                     {line}
                                 </p>
                             ))}
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         </div>
     );
 }

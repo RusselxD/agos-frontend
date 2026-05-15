@@ -9,10 +9,10 @@ export default function PrecipitationInfo({
 
     return (
         <div
-            className={`rounded-lg p-2 md:p-2.5 border ${warning ? "bg-amber-100 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700/50" : "bg-slate-100 dark:bg-slate-800/80 border-gray-300 dark:border-slate-700"}`}
+            className={`flex flex-col justify-center gap-0.5 rounded-xl p-2.5 md:p-3 border transition-colors ${warning ? "bg-amber-100/50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/30 backdrop-blur-sm" : "bg-white/40 dark:bg-slate-800/30 border-gray-200/50 dark:border-white/5 backdrop-blur-sm shadow-sm"}`}
         >
-            <p className="text-xs md:text-sm text-gray-500 dark:text-slate-400">Precipitation</p>
-            <p className="text-xs md:text-sm">
+            <p className="text-[0.7rem] md:text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-400">Precipitation</p>
+            <p className="text-sm md:text-base font-semibold">
                 <span>{`${precipitation_mm.toFixed(1)} mm/h`}</span>
             </p>
         </div>

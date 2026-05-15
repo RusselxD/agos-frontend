@@ -30,14 +30,13 @@ export default function Card({ children, className, warning }: CardProps) {
                 className || ""
             }`}
         >
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent"></div>
             {warning && (
                 <div className="absolute transition-all duration-300 hidden group-hover:block bottom-full mb-1 left-0 bg-amber-100 dark:bg-amber-900/80 border border-amber-400 dark:border-amber-600 shadow-xl backdrop-blur-md text-xs font-semibold tracking-wide uppercase text-amber-800 dark:text-amber-200 px-3 py-2 rounded-t-lg z-20">
                     {warning}
                 </div>
             )}
-
-            <div className="relative z-10 flex flex-col h-full">{children}</div>
+            {children}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent pointer-events-none !mt-0"></div>
         </div>
     );
 }

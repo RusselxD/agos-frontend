@@ -11,12 +11,12 @@ const StatCard = ({ title, data, desc }: StatCardProps) => {
 
     return (
         <div
-            className={`border w-full h-full flex flex-col justify-between rounded-md px-3 py-2 md:px-4 md:py-3 ${warning ? "bg-amber-100 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700/50" : "bg-slate-100 dark:bg-slate-800/80 border-gray-300 dark:border-slate-700"}`}
+            className={`border w-full h-full flex flex-col justify-center gap-1 md:gap-2 rounded-xl px-3 py-3 md:px-4 md:py-4 transition-colors ${warning ? "bg-amber-100/50 dark:bg-amber-900/20 border-amber-300/50 dark:border-amber-700/30 backdrop-blur-sm" : "bg-white/40 dark:bg-slate-800/30 border-gray-200/50 dark:border-white/5 backdrop-blur-sm shadow-sm"}`}
         >
-            <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-slate-400">{title}</p>
-            <p>
-                <span className="text-xl md:text-2xl font-semibold">{data}</span>
-                <span className="text-xs ml-1 text-gray-700 dark:text-slate-400">{desc}</span>
+            <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider">{title}</p>
+            <p className="flex items-baseline gap-1">
+                <span className="text-xl md:text-2xl font-bold">{data}</span>
+                <span className="text-[0.7rem] md:text-xs text-gray-500 dark:text-slate-400 font-medium">{desc}</span>
             </p>
         </div>
     );

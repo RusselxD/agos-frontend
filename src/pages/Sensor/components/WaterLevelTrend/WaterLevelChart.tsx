@@ -42,10 +42,11 @@ export default function WaterLevelChart({
 }: WaterLevelChartProps) {
     const { labels, levels } = trendData;
 
-    // Calculate min and max for y-axis with padding
-    const minLevel = levels.length > 0 ? Math.min(...levels) : 0;
-    const maxLevel = levels.length > 0 ? Math.max(...levels) : 100;
-    const range = maxLevel - minLevel;
+    // Calculate min and max for y-axis with padding safely
+    const validLevels = levels.filter((l) => typeof l === "number" && !isNaN(l));
+    const minLevel = validLevels.length > 0 ? Math.min(...validLevels) : 0;
+    const maxLevel = validLevels.length > 0 ? Math.max(...validLevels) : 100;
+    const range = maxLevel - minLevel || 10; // Fallback range if all values are the same
     const yMin = Math.max(0, Math.floor(minLevel - range * 0.1)); // 10% padding below
     const yMax = Math.ceil(maxLevel + range * 0.1); // 10% padding above
 

@@ -139,7 +139,7 @@ export default function MainDisplay() {
     const { sensorData } = useWaterLevel();
 
     return (
-        <div className="flex relative items-center gap-2 -mt-2 md:-mt-4">
+        <div className="flex relative items-center gap-2 -mt-2 md:-mt-4 pb-6">
             <GaugeDisplay />
             <div className="space-y-1 md:space-y-2">
                 <p>

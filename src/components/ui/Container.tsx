@@ -24,10 +24,10 @@ export default function Container({
 }: ContainerProps) {
     return (
         <div className={`relative overflow-hidden bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl border border-white/40 dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-black/50 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:dark:border-white/10 ${className}`}>
-            {/* Subtle inner top highlight */}
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent"></div>
             {headerTitle && <ContainerHeader title={headerTitle} />}
-            <div className="relative z-10">{children}</div>
+            {children}
+            {/* Subtle inner top highlight */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 dark:via-white/10 to-transparent pointer-events-none !mt-0"></div>
         </div>
     );
 }
