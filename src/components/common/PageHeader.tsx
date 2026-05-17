@@ -1,8 +1,8 @@
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
-import { formatDate } from "../../../lib/utils/formatter";
-import { useWebSocket } from "../../../context/WebSocketContext";
-import { useCoreHook } from "../../../context/CoreContext";
+import { formatDate } from "../../lib/utils/formatter";
+import { useWebSocket } from "../../context/WebSocketContext";
+import { useCoreHook } from "../../context/CoreContext";
 
 const MapPinFilled = ({ className }: { className?: string }) => (
     <svg
@@ -95,11 +95,11 @@ const Status = () => {
     );
 };
 
-export default function Header() {
+export default function PageHeader() {
     const { isConnected } = useWebSocket();
 
     return (
-        <div className="bg-white dark:bg-slate-800 custom-shadow rounded-xl px-3 md:pl-5 md:pr-3 py-2 flex items-center justify-between gap-2">
+        <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-xl rounded-2xl px-3 md:pl-5 md:pr-3 py-2 flex items-center justify-between gap-2 transition-all duration-300">
             <div className="flex items-center min-w-0">
                 <Location />
                 {isConnected ? <Status /> : <ConnectingStatus />}

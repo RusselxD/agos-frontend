@@ -162,11 +162,6 @@ export default function UserCard({
                             )}
                         </div>
                     )}
-                    {(!isSuperuser || isSelf) && (
-                        <div className="rounded-xl p-1 flex items-center justify-center">
-                            <EllipsisVertical size={20} className="text-gray-300 dark:text-slate-600" />
-                        </div>
-                    )}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-4 py-5 px-5 border border-white/50 dark:border-white/10 bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm rounded-xl relative text-sm shadow-inner transition-all duration-300">
                     <Details

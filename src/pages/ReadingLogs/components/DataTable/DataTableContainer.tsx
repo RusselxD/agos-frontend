@@ -9,19 +9,19 @@ import { FileText } from "lucide-react";
 const TableHeader = () => (
     <thead className="sticky top-0 z-10">
         <tr>
-            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800/90 rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
+            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
                 Date
             </th>
-            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800/90 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
+            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
                 Risk Score
             </th>
-            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800/90 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
+            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
                 Water Level
             </th>
-            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800/90 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
+            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
                 Precipitation
             </th>
-            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800/90 rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
+            <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
                 Blockage
             </th>
         </tr>

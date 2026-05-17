@@ -23,16 +23,16 @@ export default function Table({
         <table className="w-full text-left border-collapse text-sm whitespace-nowrap">
             <thead className="sticky top-0 z-10 text-gray-700 dark:text-slate-200">
                 <tr>
-                    <th className="px-4 py-4 font-bold text-center bg-gray-100/80 dark:bg-white/[0.05] rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-center bg-gray-100 dark:bg-slate-800 rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Water Level (cm)
                     </th>
-                    <th className="px-4 py-4 font-bold text-center bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-center bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Change Rate (cm)
                     </th>
-                    <th className="px-4 py-4 font-bold text-center bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-center bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Status
                     </th>
-                    <th className="px-4 py-4 font-bold text-center bg-gray-100/80 dark:bg-white/[0.05] rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-center bg-gray-100 dark:bg-slate-800 rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Timestamp
                     </th>
                 </tr>

@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+import PageHeader from "../../components/common/PageHeader";
 import VideoContainer from "./components/VideoContainer";
 import BlockageStatusCard from "./components/BlockageStatusCard";
 import WeatherConditionCard from "./components/WeatherConditionCard";
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col gap-2">
-            <Header />
+            <PageHeader />
             <div className="flex flex-col xl:flex-row w-full gap-2">
                 <VideoContainer />
                 <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 xl:grid-rows-[0.5fr_1fr_1.3fr] xl:w-2/6">

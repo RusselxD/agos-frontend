@@ -53,6 +53,7 @@ body {
 
     .gemini-btn {
         @apply flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm cursor-pointer overflow-hidden;
+        @apply shrink-0 whitespace-nowrap;
         @apply transition-all duration-300 ease-out;
         @apply shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98];
         background: linear-gradient(
@@ -95,7 +96,7 @@ body {
     }
 
     .gemini-btn .gemini-btn-icon {
-        @apply relative z-10;
+        @apply relative z-10 shrink-0;
         filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
     }
 

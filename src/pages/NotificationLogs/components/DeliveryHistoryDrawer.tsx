@@ -83,7 +83,7 @@ export default function DeliveryHistoryDrawer({ responder, onClose }: Props) {
 
     return (
         <div
-            className={`absolute md:relative right-0 z-20 h-full rounded-lg border border-gray-200 dark:border-slate-700/50 bg-white dark:bg-slate-800 transition-all duration-300 ease-in-out overflow-hidden custom-shadow md:shadow-none ${
+            className={`absolute md:relative right-0 z-20 h-full rounded-lg border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl transition-all duration-300 ease-in-out overflow-hidden custom-shadow md:shadow-none ${
                 isOpen ? "w-full md:w-[24rem]" : "w-0"
             }`}
         >

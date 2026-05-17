@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useState } from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { formatDate } from "../../../../lib/utils/formatter";
+import Popover from "../../../../components/ui/Popover";
 
 interface DateDropdownProps {
     value: string;
@@ -16,35 +17,7 @@ export default function DateDropdown({
     label,
 }: DateDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    // Close on escape key
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener("keydown", handleEscape);
-        return () => document.removeEventListener("keydown", handleEscape);
-    }, []);
+    const triggerRef = useRef<HTMLButtonElement>(null);
 
     const handleSelect = (selectedValue: string) => {
         onChange(selectedValue);
@@ -52,7 +25,7 @@ export default function DateDropdown({
     };
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div>
             {/* Label */}
             {label && (
                 <span className="text-[10px] text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-1 block">
@@ -62,8 +35,9 @@ export default function DateDropdown({
 
             {/* Trigger Button */}
             <button
+                ref={triggerRef}
                 type="button"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsOpen((prev) => !prev)}
                 className={`
                     flex items-center justify-between gap-2 min-w-[140px]
                     bg-white dark:bg-slate-900 border rounded-lg px-3 py-2
@@ -82,11 +56,18 @@ export default function DateDropdown({
                 />
             </button>
 
-            {/* Dropdown Panel */}
-            {isOpen && (
+            {/* Dropdown Panel (portaled above page content) */}
+            <Popover
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                anchorRef={triggerRef}
+                align="right"
+                gap={4}
+                matchAnchorWidth
+            >
                 <div
                     className="
-                        absolute right-0 z-50 mt-1 w-full min-w-[180px]
+                        min-w-[180px]
                         bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg
                         overflow-hidden animate-dropdown-in
                     "
@@ -99,7 +80,7 @@ export default function DateDropdown({
                     </div>
 
                     {/* Options List */}
-                    <div className="max-h-[240px] overflow-y-auto">
+                    <div className="max-h-[240px] overflow-y-auto custom-scrollbar">
                         {options.map((option) => {
                             const isSelected = option === value;
                             return (
@@ -127,7 +108,7 @@ export default function DateDropdown({
                         })}
                     </div>
                 </div>
-            )}
+            </Popover>
         </div>
     );
 }

@@ -5,6 +5,7 @@ import WeatherSkeleton from "./components/WeatherSkeleton";
 import MainDisplay from "./components/MainDisplay";
 import DetailsGrid from "./components/DetailsGrid";
 import StatusRow from "./components/StatusRow";
+import PageHeader from "../../components/common/PageHeader";
 import { useCoreHook } from "../../context/CoreContext";
 
 export default function Weather() {
@@ -55,6 +56,8 @@ export default function Weather() {
 
     return (
         <div className="space-y-4">
+            <PageHeader />
+
             <MainDisplay
                 weatherData={weatherData}
                 locationName={locationDetails.location_name}

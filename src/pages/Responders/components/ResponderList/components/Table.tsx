@@ -90,16 +90,16 @@ export default function Table({
             </colgroup>
             <thead className="sticky top-0 z-10">
                 <tr className="rounded-t-md text-gray-700 dark:text-slate-200">
-                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 rounded-tl-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         First Name
                     </th>
-                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Last Name
                     </th>
-                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         Phone Number
                     </th>
-                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() =>
@@ -145,7 +145,7 @@ export default function Table({
                             </div>
                         </div>
                     </th>
-                    <th className="px-4 py-4 font-bold text-left bg-gray-100/80 dark:bg-white/[0.05] rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
+                    <th className="px-4 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs">
                         <span className="sr-only">Actions</span>
                     </th>
                 </tr>

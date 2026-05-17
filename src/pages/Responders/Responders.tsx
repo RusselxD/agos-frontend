@@ -8,6 +8,7 @@ import { Bell, ChevronDown, Plus, Users } from "lucide-react";
 import GroupForm from "./components/modals/GroupForm";
 import NotificationTemplates from "./components/NotificationTemplates/NotificationTemplates";
 import NotificationTemplateForm from "./components/modals/NotificationTemplateForm";
+import Popover from "../../components/ui/Popover";
 
 const TABS = [
     { name: "Notification Templates", value: "notif_templates" },
@@ -27,25 +28,11 @@ export default function Responders() {
 
     const [chosenTab, setChosenTab] = useState("notif_templates");
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
 
     const [messageTemplateFormModalIsOpen, setMessageTemplateFormModalIsOpen] =
         useState(false);
     const [groupFormModalIsOpen, setGroupFormModalIsOpen] = useState(false);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setDropdownOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
     return (
         <RespondersPageProvider>
@@ -80,8 +67,9 @@ export default function Responders() {
                             );
                         })}
                     </div>
-                    <div className="relative shrink-0" ref={dropdownRef}>
+                    <div className="shrink-0">
                         <button
+                            ref={triggerRef}
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                             className="btn-custom bg-blue-600 hover:bg-blue-700 text-white font-medium"
                         >
@@ -92,8 +80,15 @@ export default function Responders() {
                             />
                         </button>
 
-                        {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 py-1.5 z-50 animate-dropdown-in">
+                        {/* Dropdown Panel (portaled above page content) */}
+                        <Popover
+                            open={dropdownOpen}
+                            onClose={() => setDropdownOpen(false)}
+                            anchorRef={triggerRef}
+                            align="right"
+                            gap={8}
+                        >
+                            <div className="w-48 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 py-1.5 animate-dropdown-in">
                                 <button
                                     onClick={() => {
                                         setGroupFormModalIsOpen(true);
@@ -115,7 +110,7 @@ export default function Responders() {
                                     <span>Notification</span>
                                 </button>
                             </div>
-                        )}
+                        </Popover>
                     </div>
                 </div>
 

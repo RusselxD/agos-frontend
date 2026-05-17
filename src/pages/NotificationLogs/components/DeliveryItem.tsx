@@ -24,7 +24,7 @@ export default function DeliveryItemCard({ delivery }: Props) {
     const StatusIcon = statusConfig.icon;
 
     return (
-        <div className="border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg p-3 text-sm transition-colors">
+        <div className="border border-gray-200/50 dark:border-white/5 bg-white/40 dark:bg-white/[0.02] rounded-lg p-3 text-sm transition-colors">
             {/* Top row: type badge + status */}
             <div className="flex items-center justify-between mb-2">
                 <span className={`text-[0.65rem] font-semibold uppercase px-2 py-0.5 rounded-full ${TYPE_STYLES[delivery.type] ?? "bg-gray-100 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 ring-1 ring-gray-200 dark:ring-slate-700"}`}>

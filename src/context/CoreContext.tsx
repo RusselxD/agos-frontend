@@ -212,14 +212,14 @@ export function CoreProvider({ children }: { children: React.ReactNode }) {
 
             {/* Toast for Excel export progress */}
             {exportingToExcelInProgress.mainMessage && (
-                <div className="fixed right-10 bottom-10 pl-5 py-4 pr-16 bg-white border-2 border-gray-200 custom-shadow rounded-lg z-[50] flex items-center gap-5">
-                    <div className="spinner w-5 h-5 "></div>
+                <div className="fixed right-10 bottom-10 pl-5 py-4 pr-16 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-2 border-gray-200 dark:border-white/10 custom-shadow dark:shadow-black/50 rounded-lg z-[50] flex items-center gap-5 text-slate-900 dark:text-slate-100">
+                    <div className="spinner w-5 h-5 text-emerald-600 dark:text-emerald-400"></div>
                     <div className="flex flex-col gap-1">
                         <p className="font-medium text-sm">
                             {exportingToExcelInProgress.mainMessage}
                         </p>
                         {exportingToExcelInProgress.subMessage && (
-                            <p className="text-gray-600 text-xs">
+                            <p className="text-gray-600 dark:text-slate-400 text-xs">
                                 {exportingToExcelInProgress.subMessage}
                             </p>
                         )}
