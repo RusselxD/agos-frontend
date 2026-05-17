@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../lib/api/auth";
-import { resetRefreshState } from "../lib/api/axiosConfig";
+import { resetRefreshState, clearAuthTokens } from "../lib/api/axiosConfig";
 import type { LoginCredentials, TokenResponse } from "../types/auth";
 import axios from "axios";
 
@@ -91,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const doRefresh = async () => {
             const refreshToken = localStorage.getItem("refreshToken");
             if (!refreshToken) {
-                localStorage.clear();
+                clearAuthTokens();
                 setIsAuthChecking(false);
                 return;
             }
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(claims);
                 setIsAuthenticated(true);
             } catch {
-                localStorage.clear();
+                clearAuthTokens();
                 setIsAuthenticated(false);
                 setUser(null);
             } finally {

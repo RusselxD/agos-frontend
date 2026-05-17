@@ -57,22 +57,38 @@ export default function SensorReadings() {
         };
     }, [hasMore, isFetchingMore, isFetching]);
 
+    const deviceId = sensorDeviceDetails.sensor_device_id;
+    const prevDeviceIdRef = useRef(deviceId);
+
     useEffect(() => {
+        const deviceChanged = prevDeviceIdRef.current !== deviceId;
+
+        // When the selected device changes while paginated, reset to page 1.
+        // The effect re-runs with page=1 and fetches fresh data for the new device.
+        if (deviceChanged && page !== 1) {
+            prevDeviceIdRef.current = deviceId;
+            setSensorReadings([]);
+            setHasMore(true);
+            setPage(1);
+            return;
+        }
+        prevDeviceIdRef.current = deviceId;
+
         const fetchSensorReadings = async () => {
             try {
-                if (page == 1) {
+                if (page === 1) {
                     setIsFetching(true);
                 } else {
                     setIsFetchingMore(true);
                 }
 
                 const res: SensorReadingResponse =
-                    await sensorAPI.getLatestSensorReadings(
-                        page,
-                        10,
-                        sensorDeviceDetails.sensor_device_id,
-                    );
-                setSensorReadings((prev) => [...prev, ...res.items]);
+                    await sensorAPI.getLatestSensorReadings(page, 10, deviceId);
+                // Replace on the first page (initial load or device switch),
+                // append on subsequent pages.
+                setSensorReadings((prev) =>
+                    page === 1 ? res.items : [...prev, ...res.items],
+                );
                 setHasMore(res.has_more);
             } catch (error) {
                 console.log("Error fetching sensor readings:", error);
@@ -84,10 +100,8 @@ export default function SensorReadings() {
             }
         };
 
-        if (hasMore) {
-            fetchSensorReadings();
-        }
-    }, [page]);
+        fetchSensorReadings();
+    }, [page, deviceId]);
 
     if (isFetching) {
         return <TableSkeleton title="SENSOR READINGS" rows={7} />;

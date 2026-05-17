@@ -3,6 +3,15 @@ import axios, { type InternalAxiosRequestConfig } from "axios";
 let refreshPromise: Promise<{ accessToken: string; refreshToken: string } | null> | null = null;
 let refreshFailed = false;
 
+/**
+ * Remove only the auth tokens. Avoid localStorage.clear() so unrelated app
+ * state (theme, cached core location/device IDs) survives a session expiry.
+ */
+export function clearAuthTokens() {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+}
+
 const apiClient = axios.create({
     baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
     timeout: 10000, // 10 seconds timeout
@@ -35,7 +44,7 @@ apiClient.interceptors.response.use(
             original._retry = true;
 
             if (refreshFailed) {
-                localStorage.clear();
+                clearAuthTokens();
                 if (!window.location.pathname.includes("/auth/login")) {
                     window.location.href = "/auth/login";
                 }
@@ -44,7 +53,7 @@ apiClient.interceptors.response.use(
 
             const refreshToken = localStorage.getItem("refreshToken");
             if (!refreshToken) {
-                localStorage.clear();
+                clearAuthTokens();
                 if (!window.location.pathname.includes("/auth/login")) {
                     window.location.href = "/auth/login";
                 }
@@ -79,7 +88,7 @@ apiClient.interceptors.response.use(
                 }
             } catch {
                 refreshFailed = true;
-                localStorage.clear();
+                clearAuthTokens();
                 if (!window.location.pathname.includes("/auth/login")) {
                     window.location.href = "/auth/login";
                 }

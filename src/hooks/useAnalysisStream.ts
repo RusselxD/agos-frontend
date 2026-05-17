@@ -50,21 +50,30 @@ export function useAnalysisStream() {
             );
 
             if (!res.ok) throw new Error("Failed");
+            if (!res.body) throw new Error("No response body");
 
-            const reader = res.body!.getReader();
+            const reader = res.body.getReader();
             const decoder = new TextDecoder();
             if (isMountedRef.current) setStatus("streaming");
+
+            // Buffer carried across reads: SSE frames can be split across
+            // chunk boundaries, so only complete lines (terminated by "\n")
+            // are parsed; the trailing partial stays in the buffer.
+            let buffer = "";
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
 
-                const lines = decoder
-                    .decode(value)
-                    .split("\n")
-                    .filter((l) => l.startsWith("data: "));
+                buffer += decoder.decode(value, { stream: true });
 
-                for (const line of lines) {
+                let newlineIndex: number;
+                while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+                    const line = buffer.slice(0, newlineIndex);
+                    buffer = buffer.slice(newlineIndex + 1);
+
+                    if (!line.startsWith("data: ")) continue;
+
                     const parsed = JSON.parse(
                         line.replace("data: ", "").trim(),
                     );
