@@ -72,32 +72,32 @@ export default function SummaryCardsContainer() {
                 label="Highest Risk Score"
                 value={stats.highestRisk.value}
                 subValue={formatDate(stats.highestRisk.date)}
-                colorClass="text-blocked"
-                bgColorClass="bg-blocked/10"
+                colorClass="text-blocked dark:text-red-400"
+                bgColorClass="bg-blocked/10 dark:bg-red-950/20"
             />
             <StatCard
                 icon={Waves}
                 label="Peak Water Level"
                 value={`${stats.peakWaterLevel.value} cm`}
                 subValue={formatDate(stats.peakWaterLevel.date)}
-                colorClass="text-blue-600"
-                bgColorClass="bg-blue-100"
+                colorClass="text-blue-600 dark:text-indigo-400"
+                bgColorClass="bg-blue-100 dark:bg-indigo-950/30"
             />
             <StatCard
                 icon={CloudRain}
                 label="Avg Precipitation"
                 value={`${stats.avgPrecipitation.toFixed(1)} mm/h`}
                 subValue="Across loaded days"
-                colorClass="text-primary"
-                bgColorClass="bg-primary/10"
+                colorClass="text-primary dark:text-sky-400"
+                bgColorClass="bg-primary/10 dark:bg-sky-950/30"
             />
             <StatCard
                 icon={ShieldAlert}
                 label="Blockage Incidents"
                 value={stats.worstBlockageCount}
                 subValue={`of ${summaries.length} days`}
-                colorClass="text-partial"
-                bgColorClass="bg-partial/10"
+                colorClass="text-partial dark:text-amber-400"
+                bgColorClass="bg-partial/10 dark:bg-amber-950/20"
             />
         </div>
     );

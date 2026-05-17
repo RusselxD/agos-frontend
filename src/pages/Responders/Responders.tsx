@@ -50,7 +50,7 @@ export default function Responders() {
     return (
         <RespondersPageProvider>
             <div className="space-y-3 flex flex-col flex-1 h-full">
-                <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl py-3 px-4 text-sm flex items-center justify-between gap-3 shadow-xl border border-white/50 dark:border-white/10 transition-all duration-300 hover:shadow-2xl">
+                <div className="relative z-20 bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl py-3 px-4 text-sm flex items-center justify-between gap-3 shadow-xl border border-white/50 dark:border-white/10 transition-all duration-300 hover:shadow-2xl">
                     {/* Mobile Dropdown */}
                     <div className="lg:hidden flex-1 min-w-0">
                         <select
@@ -93,7 +93,7 @@ export default function Responders() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                            <div className="absolute right-0 mt-2 w-48 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 dark:border-white/10 py-1.5 z-50 animate-dropdown-in">
                                 <button
                                     onClick={() => {
                                         setGroupFormModalIsOpen(true);
