@@ -14,15 +14,24 @@ export default function Navbar() {
     const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault();
         const element = document.getElementById(id);
-        if (element) {
-            const navbarHeight = 64; // h-16 = 64px
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - navbarHeight;
+        if (!element) return;
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
+        const navbarHeight = 64; // h-16 = 64px
+        // The landing page scrolls inside the .custom-scrollbar container,
+        // not the window, so scroll that ancestor when present.
+        const container = element.closest<HTMLElement>(".custom-scrollbar");
+
+        if (container) {
+            const offsetPosition =
+                element.getBoundingClientRect().top -
+                container.getBoundingClientRect().top +
+                container.scrollTop -
+                navbarHeight;
+            container.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        } else {
+            const offsetPosition =
+                element.getBoundingClientRect().top + window.scrollY - navbarHeight;
+            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
         }
     };
 
