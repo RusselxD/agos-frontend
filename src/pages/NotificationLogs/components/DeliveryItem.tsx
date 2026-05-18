@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, MessageSquare } from "lucide-react";
 import type { DeliveryLogItem } from "../../../types/notificationLog";
 import { format } from "date-fns";
 
@@ -68,6 +68,19 @@ export default function DeliveryItemCard({ delivery }: Props) {
                     </span>
                 ) : null}
             </div>
+
+            {/* Responder note left on acknowledgement */}
+            {delivery.acknowledge_message && (
+                <div className="mt-2 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30 px-2 py-1.5 rounded">
+                    <span className="flex items-center gap-1 text-[0.62rem] font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+                        <MessageSquare className="w-3 h-3" />
+                        Responder note
+                    </span>
+                    <p className="text-xs text-gray-600 dark:text-slate-300 mt-0.5">
+                        {delivery.acknowledge_message}
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
