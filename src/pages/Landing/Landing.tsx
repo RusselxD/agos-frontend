@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 
 export default function Landing() {
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-background-dark relative text-slate-800 dark:text-slate-200 font-sans selection:bg-blue-100 dark:selection:bg-blue-900/50">
+        <div className="h-screen overflow-y-auto custom-scrollbar bg-slate-50 dark:bg-background-dark relative text-slate-800 dark:text-slate-200 font-sans selection:bg-blue-100 dark:selection:bg-blue-900/50">
             <Background />
             <Navbar />
 
