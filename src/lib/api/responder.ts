@@ -1,5 +1,6 @@
 import type {
     ResponderCreateRequest,
+    ResponderUpdateRequest,
     ResponderAdditionalDetails,
     ResponderListItem,
 } from "../../types/responder";
@@ -39,6 +40,17 @@ export const responderAPI = {
         } catch (error) {
             throw error;
         }
+    },
+
+    updateResponder: async (
+        responderId: string,
+        payload: ResponderUpdateRequest,
+    ): Promise<ResponderListItem> => {
+        const res = await apiClient.patch(
+            `/responders/${responderId}`,
+            payload,
+        );
+        return res.data as ResponderListItem;
     },
 
     downloadTemplate: async (): Promise<void> => {

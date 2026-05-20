@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import type { ResponderAllDetails } from "../../../../../../types/responder";
 import { useResponderList } from "../../context/ResponderListContext";
 import { responderAPI } from "../../../../../../lib/api/responder";
-import { X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 
 import ResponderAdditionalDetails from "./ResponderAdditionalDetails";
+import EditResponderForm from "./EditResponderForm";
 
 import PendingDetails from "./PendingDetails";
 import ResponderDetailsSkeleton from "./ResponderDetailsSkeleton";
@@ -88,6 +89,7 @@ const PendingResponderDetails = ({
 
 const MainDetails = ({ responder }: { responder: ResponderAllDetails }) => {
     const { setSideDrawerOpen } = useResponderList();
+    const [isEditing, setIsEditing] = useState(false);
     const isPending = responder.status.toLowerCase() === "pending";
 
     return (
@@ -95,25 +97,53 @@ const MainDetails = ({ responder }: { responder: ResponderAllDetails }) => {
             <div className="flex items-start justify-between border-b border-gray-200 dark:border-slate-700/50 pb-3">
                 <div>
                     <h2 className="font-semibold text-gray-800 dark:text-slate-200">
-                        {isPending ? "APPLICATION REVIEW" : "RESPONDER DETAILS"}
+                        {isEditing
+                            ? "EDIT RESPONDER"
+                            : isPending
+                              ? "APPLICATION REVIEW"
+                              : "RESPONDER DETAILS"}
                     </h2>
                     <p className="mt-0.5 text-xs text-gray-500 dark:text-slate-400">
-                        {isPending
-                            ? "Check responder data before approval."
-                            : "Responder profile and activity metadata."}
+                        {isEditing
+                            ? "Update name or phone number."
+                            : isPending
+                              ? "Check responder data before approval."
+                              : "Responder profile and activity metadata."}
                     </p>
                 </div>
 
-                <button
-                    className="rounded-md border border-gray-300 dark:border-slate-600 p-1.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                    onClick={() => setSideDrawerOpen(false)}
-                >
-                    <X className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-1.5">
+                    {!isEditing && (
+                        <button
+                            className="rounded-md border border-gray-300 dark:border-slate-600 p-1.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                            onClick={() => setIsEditing(true)}
+                            aria-label="Edit responder"
+                        >
+                            <Pencil className="w-4 h-4" />
+                        </button>
+                    )}
+                    <button
+                        className="rounded-md border border-gray-300 dark:border-slate-600 p-1.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                        onClick={() => setSideDrawerOpen(false)}
+                        aria-label="Close drawer"
+                    >
+                        <X className="w-4 h-4" />
+                    </button>
+                </div>
             </div>
 
-            {isPending && <PendingResponderDetails responder={responder} />}
-            {!isPending && <ActiveResponderDetails responder={responder} />}
+            {isEditing ? (
+                <EditResponderForm
+                    responder={responder}
+                    onCancel={() => setIsEditing(false)}
+                    onSaved={() => setIsEditing(false)}
+                />
+            ) : (
+                <>
+                    {isPending && <PendingResponderDetails responder={responder} />}
+                    {!isPending && <ActiveResponderDetails responder={responder} />}
+                </>
+            )}
         </>
     );
 };

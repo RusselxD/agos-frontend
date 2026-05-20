@@ -4,6 +4,12 @@ export interface ResponderCreateRequest {
     phone_number: string;
 }
 
+export interface ResponderUpdateRequest {
+    first_name?: string;
+    last_name?: string;
+    phone_number?: string;
+}
+
 export interface ResponderListItem {
     id: string;
     first_name: string;
