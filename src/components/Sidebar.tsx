@@ -13,7 +13,7 @@ import {
     ScanEye,
 } from "lucide-react";
 import type { LucideProps } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 interface Tab {
     name: string;
@@ -86,13 +86,18 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                 {/* Header - toggle button fixed at top-right */}
                 <div className="w-full flex items-center justify-between py-2 mt-1">
                     {!isCollapsed && (
-                        <img
-                            src="/agos.svg"
-                            alt="AGOS"
-                            className="w-7"
-                            aria-label="AGOS Logo"
-                            title="AGOS Logo"
-                        />
+                        <Link
+                            to="/"
+                            aria-label="Go to landing page"
+                            title="Go to landing page"
+                            className="rounded-md hover:opacity-80 transition-opacity"
+                        >
+                            <img
+                                src="/agos.svg"
+                                alt="AGOS"
+                                className="w-7"
+                            />
+                        </Link>
                     )}
 
                     <button
