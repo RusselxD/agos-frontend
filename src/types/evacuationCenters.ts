@@ -4,6 +4,7 @@ export interface EvacuationCenter {
     id: number;
     location_id: number;
     name: string;
+    address: string | null;
     latitude: number;
     longitude: number;
     capacity: number | null;
@@ -16,6 +17,7 @@ export interface EvacuationCenter {
 export interface EvacuationCenterCreateRequest {
     location_id: number;
     name: string;
+    address: string | null;
     latitude: number;
     longitude: number;
     capacity: number | null;

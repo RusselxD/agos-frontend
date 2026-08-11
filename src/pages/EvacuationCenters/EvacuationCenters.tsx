@@ -144,8 +144,15 @@ export default function EvacuationCenters() {
                                         key={center.id}
                                         className="border-b border-slate-100 dark:border-slate-800 last:border-0"
                                     >
-                                        <td className="py-3 pr-4 font-medium text-slate-900 dark:text-slate-100">
-                                            {center.name}
+                                        <td className="py-3 pr-4">
+                                            <div className="font-medium text-slate-900 dark:text-slate-100">
+                                                {center.name}
+                                            </div>
+                                            {center.address && (
+                                                <div className="text-xs text-slate-500 dark:text-slate-400 max-w-[16rem] truncate">
+                                                    {center.address}
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="py-3 pr-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">
                                             {center.latitude.toFixed(5)},{" "}

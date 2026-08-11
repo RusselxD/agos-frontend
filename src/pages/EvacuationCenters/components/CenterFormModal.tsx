@@ -8,6 +8,7 @@ import type {
     EvacuationCenter,
     EvacuationCenterStatus,
 } from "../../../types/evacuationCenters";
+import LocationPicker, { type PickedLocation } from "./LocationPicker";
 
 interface CenterFormModalProps {
     locationId: number;
@@ -28,9 +29,12 @@ export default function CenterFormModal({
     const { toastSuccess, toastError } = useToast();
 
     const [name, setName] = useState(center?.name ?? "");
-    const [latitude, setLatitude] = useState(center?.latitude?.toString() ?? "");
-    const [longitude, setLongitude] = useState(
-        center?.longitude?.toString() ?? "",
+    const [address, setAddress] = useState(center?.address ?? "");
+    const [latitude, setLatitude] = useState<number | null>(
+        center?.latitude ?? null,
+    );
+    const [longitude, setLongitude] = useState<number | null>(
+        center?.longitude ?? null,
     );
     const [capacity, setCapacity] = useState(
         center?.capacity != null ? center.capacity.toString() : "",
@@ -41,16 +45,20 @@ export default function CenterFormModal({
     );
     const [isSaving, setIsSaving] = useState(false);
 
+    const handlePickLocation = (next: PickedLocation) => {
+        setLatitude(next.latitude);
+        setLongitude(next.longitude);
+        // Only overwrite the address when the picker supplies one (reverse
+        // geocode / search); a plain map tap leaves the admin's edits intact.
+        if (next.address) setAddress(next.address);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const lat = Number(latitude);
-        const lng = Number(longitude);
         if (!name.trim()) return toastError("Name is required");
-        if (Number.isNaN(lat) || lat < -90 || lat > 90)
-            return toastError("Latitude must be between -90 and 90");
-        if (Number.isNaN(lng) || lng < -180 || lng > 180)
-            return toastError("Longitude must be between -180 and 180");
+        if (latitude == null || longitude == null)
+            return toastError("Pick the center's location on the map");
 
         const capacityValue = capacity.trim() === "" ? null : Number(capacity);
         if (capacityValue !== null && (Number.isNaN(capacityValue) || capacityValue < 0))
@@ -62,8 +70,9 @@ export default function CenterFormModal({
             if (isEdit) {
                 saved = await evacuationCentersAPI.update(center!.id, {
                     name: name.trim(),
-                    latitude: lat,
-                    longitude: lng,
+                    address: address.trim() || null,
+                    latitude,
+                    longitude,
                     capacity: capacityValue,
                     contact: contact.trim() || null,
                     status,
@@ -72,8 +81,9 @@ export default function CenterFormModal({
                 saved = await evacuationCentersAPI.create({
                     location_id: locationId,
                     name: name.trim(),
-                    latitude: lat,
-                    longitude: lng,
+                    address: address.trim() || null,
+                    latitude,
+                    longitude,
                     capacity: capacityValue,
                     contact: contact.trim() || null,
                     status,
@@ -127,27 +137,24 @@ export default function CenterFormModal({
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                        <div>
-                            <label className={labelClass}>Latitude</label>
-                            <input
-                                className={inputClass}
-                                value={latitude}
-                                onChange={(e) => setLatitude(e.target.value)}
-                                placeholder="14.5995"
-                                inputMode="decimal"
-                            />
-                        </div>
-                        <div>
-                            <label className={labelClass}>Longitude</label>
-                            <input
-                                className={inputClass}
-                                value={longitude}
-                                onChange={(e) => setLongitude(e.target.value)}
-                                placeholder="120.9842"
-                                inputMode="decimal"
-                            />
-                        </div>
+                    <div>
+                        <label className={labelClass}>Location</label>
+                        <LocationPicker
+                            latitude={latitude}
+                            longitude={longitude}
+                            onChange={handlePickLocation}
+                        />
+                    </div>
+
+                    <div>
+                        <label className={labelClass}>Address (optional)</label>
+                        <input
+                            className={inputClass}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Auto-filled from the map — edit if needed"
+                            maxLength={255}
+                        />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
