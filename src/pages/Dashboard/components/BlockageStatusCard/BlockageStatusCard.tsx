@@ -3,6 +3,7 @@ import Card from "../ui/Card";
 import type { Status } from "../../../../types/blockage";
 import ProgressBar from "./components/ProgressBar";
 import StatusText from "./components/StatusText";
+import ConfidencePill from "./components/ConfidencePill";
 import { useWaterwayContext } from "../../../../context/BlockageContext";
 import BlockageStatusCardSkeleton from "./components/BlockageStatusCardSkeleton";
 import { useFusionAnalysis } from "../../../../context/FusionAnalysisContext";
@@ -40,7 +41,10 @@ export default function BlockageStatusCard() {
 
     return (
         <Card warning={anomalyWarning || contextWarning} className="min-h-[180px]">
-            <CardHeaderText label="BLOCKAGE STATUS" />
+            <div className="flex items-start justify-between gap-2">
+                <CardHeaderText label="BLOCKAGE STATUS" />
+                <ConfidencePill />
+            </div>
             <div className="flex flex-col justify-between h-full py-1">
                 <StatusText />
                 <ProgressBar />

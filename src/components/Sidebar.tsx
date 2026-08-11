@@ -11,6 +11,8 @@ import {
     CloudSunRain,
     BellRing,
     ScanEye,
+    MapPinned,
+    Siren,
 } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
@@ -61,6 +63,16 @@ const tabs = [
         name: "Detection Logs",
         path: "/admin/detection-logs",
         icon: ScanEye,
+    },
+    {
+        name: "Evac Centers",
+        path: "/admin/evacuation-centers",
+        icon: MapPinned,
+    },
+    {
+        name: "Evac Control",
+        path: "/admin/evacuation-control",
+        icon: Siren,
     },
     {
         name: "Admins",

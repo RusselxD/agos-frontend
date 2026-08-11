@@ -21,12 +21,15 @@ import { BlockageProvider } from "./context/BlockageContext";
 import { FusionAnalysisProvider } from "./context/FusionAnalysisContext";
 import { VideoProvider } from "./context/VideoContext";
 import { WebSocketProvider } from "./context/WebSocketContext";
+import { EvacuationProvider } from "./context/EvacuationContext";
 import { AdminsPageProvider } from "./pages/Admins/context/AdminsPageContext";
 import { CoreProvider } from "./context/CoreContext";
 import Weather from "./pages/Weather/Weather";
 import ReadingLogs from "./pages/ReadingLogs";
 import NotificationLogs from "./pages/NotificationLogs";
 import DetectionLogs from "./pages/DetectionLogs";
+import EvacuationCenters from "./pages/EvacuationCenters";
+import EvacuationControl from "./pages/EvacuationControl";
 
 export const router = createBrowserRouter([
   {
@@ -66,7 +69,9 @@ export const router = createBrowserRouter([
                 <WeatherProvider>
                   <WaterLevelProvider>
                     <FusionAnalysisProvider>
-                      <MainLayout />
+                      <EvacuationProvider>
+                        <MainLayout />
+                      </EvacuationProvider>
                     </FusionAnalysisProvider>
                   </WaterLevelProvider>
                 </WeatherProvider>
@@ -108,6 +113,14 @@ export const router = createBrowserRouter([
       {
         path: "detection-logs",
         element: <ErrorBoundary><DetectionLogs /></ErrorBoundary>,
+      },
+      {
+        path: "evacuation-centers",
+        element: <ErrorBoundary><EvacuationCenters /></ErrorBoundary>,
+      },
+      {
+        path: "evacuation-control",
+        element: <ErrorBoundary><EvacuationControl /></ErrorBoundary>,
       },
       {
         path: "admins",
