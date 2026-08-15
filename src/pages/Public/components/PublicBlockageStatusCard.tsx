@@ -28,13 +28,13 @@ export default function PublicBlockageStatusCard() {
     const currentLevel = getLevelCount(status);
     const stages = [
         { label: "Clear", icon: ShieldCheck, color: "text-clear", bg: "bg-clear/10", border: "border-clear/30", glow: "shadow-clear/20" },
-        { label: "Partial", icon: AlertTriangle, color: "text-partial", bg: "bg-partial/10", border: "border-partial/30", glow: "shadow-partial/20" },
-        { label: "Blocked", icon: XCircle, color: "text-blocked", bg: "bg-blocked/10", border: "border-blocked/30", glow: "shadow-blocked/20" },
+        { label: "Possible", icon: AlertTriangle, color: "text-partial", bg: "bg-partial/10", border: "border-partial/30", glow: "shadow-partial/20" },
+        { label: "Potential", icon: XCircle, color: "text-blocked", bg: "bg-blocked/10", border: "border-blocked/30", glow: "shadow-blocked/20" },
     ];
 
     return (
         <Card warning={anomalyWarning || contextWarning} className="min-h-[200px]">
-            <CardHeaderText label="BLOCKAGE STATUS" />
+            <CardHeaderText label="POTENTIAL SURFACE OBSTRUCTION" />
             
             <StatusText />
 

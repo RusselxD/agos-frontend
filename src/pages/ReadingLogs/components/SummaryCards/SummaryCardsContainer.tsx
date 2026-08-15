@@ -93,7 +93,7 @@ export default function SummaryCardsContainer() {
             />
             <StatCard
                 icon={ShieldAlert}
-                label="Blockage Incidents"
+                label="Potential Obstruction Incidents"
                 value={stats.worstBlockageCount}
                 subValue={`of ${summaries.length} days`}
                 colorClass="text-partial dark:text-amber-400"

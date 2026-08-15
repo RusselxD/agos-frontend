@@ -5,11 +5,11 @@ import { AnomalyType } from "../../../../../types/fusionAnalysis";
 const anomalyMessages: Record<AnomalyType, { title: string; description: string }> = {
     [AnomalyType.OBSTRUCTED_SENSOR]: {
         title: "Suspected Sensor Obstruction",
-        description: "Water level reads critical, but blockage and weather are clear. The sensor might be physically blocked.",
+        description: "Water level reads critical, but surface-obstruction and weather signals are clear. The sensor may be physically obstructed.",
     },
     [AnomalyType.BLIND_CAMERA]: {
         title: "Suspected Camera Blindness",
-        description: "Severe blockage detected but water level is stable despite heavy rain. Camera lens might be obscured.",
+        description: "Strong surface-obstruction evidence conflicts with stable water levels during heavy rain. The camera lens might be obscured.",
     },
     [AnomalyType.STALE_SENSOR]: {
         title: "Stale Sensor Reading",
@@ -17,7 +17,7 @@ const anomalyMessages: Record<AnomalyType, { title: string; description: string 
     },
     [AnomalyType.GHOST_FLOOD]: {
         title: "Unexpected Water Rise",
-        description: "Rapid water rise detected without local rain or blockage. Monitor for localized flash flood or upstream discharge.",
+        description: "Rapid water rise detected without local rain or visible surface obstruction. Monitor for localized flash flood or upstream discharge.",
     },
     [AnomalyType.CONFIDENCE_THRASHING]: {
         title: "High Data Volatility",

@@ -9,6 +9,13 @@ const TYPE_STYLES: Record<string, string> = {
     announcement: "bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 ring-1 ring-blue-200 dark:ring-blue-800/50",
 };
 
+const TYPE_LABELS: Record<string, string> = {
+    critical: "Critical",
+    warning: "Warning",
+    blockage: "Surface Obstruction",
+    announcement: "Announcement",
+};
+
 const STATUS_CONFIG: Record<string, { icon: typeof CheckCircle2; className: string; label: string }> = {
     sent: { icon: CheckCircle2, className: "text-emerald-600 dark:text-emerald-400", label: "Sent" },
     failed: { icon: XCircle, className: "text-red-500 dark:text-red-400", label: "Failed" },
@@ -28,7 +35,7 @@ export default function DeliveryItemCard({ delivery }: Props) {
             {/* Top row: type badge + status */}
             <div className="flex items-center justify-between mb-2">
                 <span className={`text-[0.65rem] font-semibold uppercase px-2 py-0.5 rounded-full ${TYPE_STYLES[delivery.type] ?? "bg-gray-100 dark:bg-slate-700/50 text-gray-600 dark:text-slate-400 ring-1 ring-gray-200 dark:ring-slate-700"}`}>
-                    {delivery.type}
+                    {TYPE_LABELS[delivery.type] ?? delivery.type}
                 </span>
                 <span className={`flex items-center gap-1 text-xs font-medium ${statusConfig.className}`}>
                     <StatusIcon className="w-3.5 h-3.5" />

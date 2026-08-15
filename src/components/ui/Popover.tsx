@@ -89,14 +89,21 @@ export default function Popover({
             onClose();
         };
         const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") onClose();
+            if (event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                onClose();
+                anchorRef.current?.focus({ preventScroll: true });
+            }
         };
 
         document.addEventListener("mousedown", handlePointerDown);
-        document.addEventListener("keydown", handleEscape);
+        // Capture Escape before a parent modal handles it. Closing a dropdown
+        // should not also dismiss the modal containing it.
+        document.addEventListener("keydown", handleEscape, true);
         return () => {
             document.removeEventListener("mousedown", handlePointerDown);
-            document.removeEventListener("keydown", handleEscape);
+            document.removeEventListener("keydown", handleEscape, true);
         };
     }, [open, onClose, anchorRef]);
 

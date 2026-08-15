@@ -21,7 +21,7 @@ export default function ProgressBar() {
             })}
             <div className="absolute bottom-0 flex items-center justify-between text-gray-500 dark:text-slate-400 text-xs md:text-sm w-full">
                 <span>Clear</span>
-                <span>Blocked</span>
+                <span>Potential</span>
             </div>
         </div>
     );

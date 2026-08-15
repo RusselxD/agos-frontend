@@ -10,7 +10,7 @@ const TYPE_FILTERS: { label: string; value: NotificationType | "all" }[] = [
     { label: "All", value: "all" },
     { label: "Critical", value: "critical" },
     { label: "Warning", value: "warning" },
-    { label: "Blockage", value: "blockage" },
+    { label: "Surface Obstruction", value: "blockage" },
     { label: "Announcement", value: "announcement" },
 ];
 

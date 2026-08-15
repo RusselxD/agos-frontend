@@ -117,7 +117,7 @@ export default function Hero() {
                                     <div className="bg-white dark:bg-slate-800/80 rounded-xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm">
                                         <div className="flex items-center gap-2 mb-3 text-slate-500 dark:text-slate-400">
                                             <ShieldCheck className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                                            <span className="text-xs font-semibold uppercase tracking-wider">Blockage AI</span>
+                                            <span className="text-xs font-semibold uppercase tracking-wider">Surface-Obstruction AI</span>
                                         </div>
                                         <div className="flex items-center gap-2 mb-1">
                                             <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">CLEAR</span>
@@ -136,7 +136,7 @@ export default function Hero() {
                                     </div>
                                     <div>
                                         <p className="text-xs font-bold text-slate-900 dark:text-white">Fusion Engine Alert</p>
-                                        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Risk tier escalated to CRITICAL. Water level rising rapidly combined with 98% blockage detected.</p>
+                                        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Risk tier escalated to CRITICAL. Water level rising rapidly combined with strong surface-obstruction evidence.</p>
                                     </div>
                                 </div>
                             </div>

@@ -16,6 +16,15 @@ export interface ResponderNotificationSummary {
     last_notified_at: string | null;
 }
 
+export interface ResponderNotificationSummaryPaginatedResponse {
+    items: ResponderNotificationSummary[];
+    page: number;
+    page_size: number;
+    total: number;
+    total_pages: number;
+    has_more: boolean;
+}
+
 export interface DeliveryLogItem {
     id: string;
     status: DeliveryStatus;

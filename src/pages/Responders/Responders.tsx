@@ -60,7 +60,7 @@ export default function Responders() {
                                 <button
                                     key={tab.value}
                                     onClick={() => setChosenTab(tab.value)}
-                                    className={`py-2.5 px-5 rounded-xl transition-all duration-200 ${chosenTab === tab.value ? "bg-primary dark:bg-blue-600 font-bold text-white shadow-lg scale-105" : "text-gray-600 dark:text-slate-400 font-medium hover:text-black dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5"}`}
+                                    className={`rounded-xl px-5 py-2.5 font-medium transition-colors duration-200 ${chosenTab === tab.value ? "bg-primary text-white dark:bg-blue-600" : "text-gray-600 hover:bg-white/50 hover:text-black dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"}`}
                                 >
                                     {tab.name}
                                 </button>

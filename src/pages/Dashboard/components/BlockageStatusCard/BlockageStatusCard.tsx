@@ -42,7 +42,7 @@ export default function BlockageStatusCard() {
     return (
         <Card warning={anomalyWarning || contextWarning} className="min-h-[180px]">
             <div className="flex items-start justify-between gap-2">
-                <CardHeaderText label="BLOCKAGE STATUS" />
+                <CardHeaderText label="POTENTIAL SURFACE OBSTRUCTION" />
                 <ConfidencePill />
             </div>
             <div className="flex flex-col justify-between h-full py-1">

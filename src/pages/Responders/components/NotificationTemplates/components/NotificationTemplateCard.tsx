@@ -93,7 +93,7 @@ export default function NotificationTemplateCard({
             )}
             {notificationTemplate.type === "blockage" && (
                 <p className="absolute right-0 top-0 text-xs text-white bg-gray-700 px-2 py-1 rounded-bl-md">
-                    Blockage Alert
+                    Surface Obstruction Alert
                 </p>
             )}
             {notificationTemplate.type === "announcement" && (

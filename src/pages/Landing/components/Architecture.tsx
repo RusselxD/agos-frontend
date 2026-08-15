@@ -85,7 +85,7 @@ export default function Architecture() {
                             <div className="bg-gray-50 dark:bg-slate-700/50 p-3 rounded-xl border border-gray-100 dark:border-slate-600 flex items-center gap-3">
                                 <Zap className="w-5 h-5 text-cyan-500 dark:text-cyan-400 shrink-0" />
                                 <span className="text-slate-700 dark:text-slate-200 text-xs sm:text-sm font-medium">
-                                    ML Blockage Inference
+                                    ML Surface-Obstruction Inference
                                 </span>
                             </div>
                             <div className="bg-gray-50 dark:bg-slate-700/50 p-3 rounded-xl border border-gray-100 dark:border-slate-600 flex items-center gap-3">

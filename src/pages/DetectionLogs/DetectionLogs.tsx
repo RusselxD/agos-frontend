@@ -8,8 +8,8 @@ import { useCoreHook } from "../../context/CoreContext";
 const STATUS_FILTERS: { label: string; value: BlockageStatus | "all" }[] = [
     { label: "All", value: "all" },
     { label: "Clear", value: "clear" },
-    { label: "Partial", value: "partial" },
-    { label: "Blocked", value: "blocked" },
+    { label: "Possible", value: "partial" },
+    { label: "Potential", value: "blocked" },
 ];
 
 export default function DetectionLogs() {

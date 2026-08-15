@@ -2,18 +2,28 @@ import type { NotificationType } from "../../types/responder";
 import type {
     DeliveryLogPaginatedResponse,
     NotificationAnalyticsResponse,
-    ResponderNotificationSummary,
+    ResponderNotificationSummaryPaginatedResponse,
 } from "../../types/notificationLog";
 import apiClient from "./axiosConfig";
 
 export const notificationLogAPI = {
-    getRespondersSummary: async (): Promise<ResponderNotificationSummary[]> => {
-        try {
-            const res = await apiClient.get("/notification-logs/responders-summary");
-            return res.data as ResponderNotificationSummary[];
-        } catch (error) {
-            throw error;
-        }
+    getRespondersSummary: async (
+        page: number = 1,
+        pageSize: number = 20,
+        search?: string,
+        signal?: AbortSignal,
+    ): Promise<ResponderNotificationSummaryPaginatedResponse> => {
+        const params: Record<string, string | number> = {
+            page,
+            page_size: pageSize,
+        };
+        if (search) params.search = search;
+
+        const res = await apiClient.get("/notification-logs/responders-summary", {
+            params,
+            signal,
+        });
+        return res.data as ResponderNotificationSummaryPaginatedResponse;
     },
 
     getResponderDeliveries: async (
@@ -22,19 +32,18 @@ export const notificationLogAPI = {
         pageSize: number = 10,
         type?: NotificationType,
     ): Promise<DeliveryLogPaginatedResponse> => {
-        try {
-            const params: Record<string, string | number> = { page, page_size: pageSize };
-            if (type) {
-                params.type = type;
-            }
-            const res = await apiClient.get(
-                `/notification-logs/responder/${responderId}/deliveries`,
-                { params },
-            );
-            return res.data as DeliveryLogPaginatedResponse;
-        } catch (error) {
-            throw error;
+        const params: Record<string, string | number> = {
+            page,
+            page_size: pageSize,
+        };
+        if (type) {
+            params.type = type;
         }
+        const res = await apiClient.get(
+            `/notification-logs/responder/${responderId}/deliveries`,
+            { params },
+        );
+        return res.data as DeliveryLogPaginatedResponse;
     },
 
     getAnalytics: async (

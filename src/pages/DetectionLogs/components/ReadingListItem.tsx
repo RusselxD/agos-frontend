@@ -4,8 +4,8 @@ import { format } from "date-fns";
 
 const STATUS_CONFIG: Record<string, { icon: typeof CircleCheck; className: string; label: string; badge: string }> = {
     clear: { icon: CircleCheck, className: "text-emerald-600 dark:text-emerald-400", label: "Clear", badge: "bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800/50" },
-    partial: { icon: TriangleAlert, className: "text-amber-500 dark:text-amber-400", label: "Partial", badge: "bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-800/50" },
-    blocked: { icon: CircleAlert, className: "text-red-500 dark:text-red-400", label: "Blocked", badge: "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-800/50" },
+    partial: { icon: TriangleAlert, className: "text-amber-500 dark:text-amber-400", label: "Possible Surface Obstruction", badge: "bg-amber-100 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-800/50" },
+    blocked: { icon: CircleAlert, className: "text-red-500 dark:text-red-400", label: "Potential Surface Obstruction", badge: "bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-800/50" },
 };
 
 interface Props {

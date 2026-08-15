@@ -45,15 +45,22 @@ export interface PickedLocation {
 }
 
 interface LocationPickerProps {
+    searchInputId?: string;
     latitude: number | null;
     longitude: number | null;
     onChange: (next: PickedLocation) => void;
+    disabled?: boolean;
 }
 
-async function reverseGeocode(lat: number, lon: number): Promise<string | undefined> {
+async function reverseGeocode(
+    lat: number,
+    lon: number,
+    signal: AbortSignal,
+): Promise<string | undefined> {
     try {
         const res = await fetch(
             `${NOMINATIM}/reverse?format=jsonv2&lat=${lat}&lon=${lon}&addressdetails=0`,
+            { signal },
         );
         if (!res.ok) return undefined;
         const data = (await res.json()) as { display_name?: string };
@@ -64,22 +71,36 @@ async function reverseGeocode(lat: number, lon: number): Promise<string | undefi
 }
 
 export default function LocationPicker({
+    searchInputId,
     latitude,
     longitude,
     onChange,
+    disabled = false,
 }: LocationPickerProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<MapLibreMap | null>(null);
     const markerRef = useRef<Marker | null>(null);
+    const reverseAbortRef = useRef<AbortController | null>(null);
+    const reverseRequestRef = useRef(0);
+    const searchAbortRef = useRef<AbortController | null>(null);
+    const searchRequestRef = useRef(0);
+    const disabledRef = useRef(disabled);
     // Latest onChange without forcing the map-init effect to re-run.
     const onChangeRef = useRef(onChange);
     useEffect(() => {
         onChangeRef.current = onChange;
     }, [onChange]);
+    useEffect(() => {
+        disabledRef.current = disabled;
+    }, [disabled]);
 
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [searchFeedback, setSearchFeedback] = useState<string | null>(null);
+    const searchFeedbackId = searchInputId
+        ? `${searchInputId}-feedback`
+        : undefined;
 
     const placeMarker = (lng: number, lat: number) => {
         const map = mapRef.current;
@@ -92,6 +113,7 @@ export default function LocationPicker({
                 .setLngLat([lng, lat])
                 .addTo(map);
             markerRef.current.on("dragend", () => {
+                if (disabledRef.current) return;
                 const pos = markerRef.current!.getLngLat();
                 void emitChange(pos.lng, pos.lat);
             });
@@ -101,9 +123,20 @@ export default function LocationPicker({
     };
 
     const emitChange = async (lng: number, lat: number) => {
+        if (disabledRef.current) return;
+
+        reverseAbortRef.current?.abort();
+        const controller = new AbortController();
+        reverseAbortRef.current = controller;
+        const requestId = ++reverseRequestRef.current;
+
         onChangeRef.current({ latitude: lat, longitude: lng });
-        const address = await reverseGeocode(lat, lng);
-        if (address) {
+        const address = await reverseGeocode(lat, lng, controller.signal);
+        if (
+            address &&
+            !controller.signal.aborted &&
+            requestId === reverseRequestRef.current
+        ) {
             onChangeRef.current({ latitude: lat, longitude: lng, address });
         }
     };
@@ -132,6 +165,7 @@ export default function LocationPicker({
 
         // Tap-to-place: drop/move the pin wherever the admin clicks.
         map.on("click", (event) => {
+            if (disabledRef.current) return;
             placeMarker(event.lngLat.lng, event.lngLat.lat);
             void emitChange(event.lngLat.lng, event.lngLat.lat);
         });
@@ -142,6 +176,10 @@ export default function LocationPicker({
         requestAnimationFrame(resize);
 
         return () => {
+            reverseRequestRef.current += 1;
+            reverseAbortRef.current?.abort();
+            searchRequestRef.current += 1;
+            searchAbortRef.current?.abort();
             observer.disconnect();
             map.remove();
             mapRef.current = null;
@@ -161,28 +199,60 @@ export default function LocationPicker({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [latitude, longitude]);
 
-    const runSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const runSearch = async () => {
+        if (disabled) return;
+
         const term = query.trim();
-        if (!term) return;
+        if (!term) {
+            setResults([]);
+            setSearchFeedback("Enter an address or place to search.");
+            return;
+        }
+
+        searchAbortRef.current?.abort();
+        const controller = new AbortController();
+        searchAbortRef.current = controller;
+        const requestId = ++searchRequestRef.current;
         setIsSearching(true);
+        setResults([]);
+        setSearchFeedback(null);
         try {
             const res = await fetch(
                 `${NOMINATIM}/search?format=jsonv2&q=${encodeURIComponent(term)}&limit=5&countrycodes=ph`,
+                { signal: controller.signal },
             );
-            const data = res.ok ? ((await res.json()) as SearchResult[]) : [];
+            if (!res.ok) throw new Error("Location search failed");
+
+            const data = (await res.json()) as SearchResult[];
+            if (requestId !== searchRequestRef.current) return;
             setResults(data);
-            if (data.length === 1) selectResult(data[0]);
+            if (data.length === 0) {
+                setSearchFeedback(`No places found for “${term}”.`);
+            } else if (data.length === 1) {
+                selectResult(data[0]);
+            }
         } catch {
+            if (controller.signal.aborted) return;
+            if (requestId !== searchRequestRef.current) return;
             setResults([]);
+            setSearchFeedback("Location search is unavailable. Please try again.");
         } finally {
-            setIsSearching(false);
+            if (requestId === searchRequestRef.current) {
+                setIsSearching(false);
+            }
         }
     };
 
     const selectResult = (result: SearchResult) => {
         const lat = Number(result.lat);
         const lng = Number(result.lon);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+            setSearchFeedback("That search result has invalid coordinates.");
+            return;
+        }
+
+        reverseRequestRef.current += 1;
+        reverseAbortRef.current?.abort();
         const map = mapRef.current;
         if (map) {
             map.easeTo({ center: [lng, lat], zoom: 16, duration: 400 });
@@ -194,6 +264,7 @@ export default function LocationPicker({
             address: result.display_name,
         });
         setResults([]);
+        setSearchFeedback(null);
         setQuery(result.display_name);
     };
 
@@ -202,20 +273,37 @@ export default function LocationPicker({
 
     return (
         <div className="space-y-2">
-            <form onSubmit={runSearch} className="relative">
+            <div className="relative">
                 <div className="flex gap-2">
                     <div className="relative flex-1">
                         <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                         <input
+                            id={searchInputId}
                             className={`${inputClass} pl-8`}
                             value={query}
-                            onChange={(e) => setQuery(e.target.value)}
+                            disabled={disabled}
+                            aria-describedby={searchFeedbackId}
+                            onChange={(e) => {
+                                searchRequestRef.current += 1;
+                                searchAbortRef.current?.abort();
+                                setIsSearching(false);
+                                setQuery(e.target.value);
+                                setResults([]);
+                                setSearchFeedback(null);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    void runSearch();
+                                }
+                            }}
                             placeholder="Search an address or place…"
                         />
                     </div>
                     <button
-                        type="submit"
-                        disabled={isSearching}
+                        type="button"
+                        onClick={() => void runSearch()}
+                        disabled={disabled || isSearching}
                         className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
                     >
                         {isSearching ? (
@@ -228,12 +316,19 @@ export default function LocationPicker({
                 </div>
 
                 {results.length > 0 && (
-                    <ul className="absolute z-20 mt-1 max-h-52 w-full overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                    <ul
+                        role="listbox"
+                        aria-label="Location search results"
+                        className="custom-scrollbar absolute z-20 mt-1 max-h-52 w-full overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+                    >
                         {results.map((result) => (
                             <li key={`${result.lat}-${result.lon}`}>
                                 <button
                                     type="button"
+                                    role="option"
+                                    aria-selected="false"
                                     onClick={() => selectResult(result)}
+                                    disabled={disabled}
                                     className="flex w-full items-start gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-700"
                                 >
                                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary dark:text-accent" />
@@ -245,7 +340,17 @@ export default function LocationPicker({
                         ))}
                     </ul>
                 )}
-            </form>
+
+                {searchFeedback && (
+                    <p
+                        id={searchFeedbackId}
+                        role="status"
+                        className="mt-1.5 text-xs text-slate-500 dark:text-slate-400"
+                    >
+                        {searchFeedback}
+                    </p>
+                )}
+            </div>
 
             <div
                 ref={containerRef}

@@ -11,16 +11,17 @@ import {
     CloudSunRain,
     BellRing,
     ScanEye,
-    MapPinned,
     Siren,
 } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import { useEvacuation } from "../context/EvacuationContext";
 
 interface Tab {
     name: string;
     path: string;
     icon: FC<LucideProps>;
+    end?: boolean;
 }
 
 interface SidebarProps {
@@ -65,14 +66,10 @@ const tabs = [
         icon: ScanEye,
     },
     {
-        name: "Evac Centers",
-        path: "/admin/evacuation-centers",
-        icon: MapPinned,
-    },
-    {
-        name: "Evac Control",
-        path: "/admin/evacuation-control",
+        name: "Evacuation",
+        path: "/admin/evacuation",
         icon: Siren,
+        end: false,
     },
     {
         name: "Admins",
@@ -87,6 +84,8 @@ const tabs = [
 ];
 
 export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+    const { recommendation } = useEvacuation();
+
     return (
         <>
             {/* Desktop sidebar (lg and up) */}
@@ -132,7 +131,9 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                             <li key={index}>
                                 <NavLink
                                     to={tab.path}
-                                    end
+                                    end={tab.end ?? true}
+                                    aria-label={tab.name}
+                                    title={tab.name}
                                     className={({ isActive }) =>
                                         `flex items-center justify-center rounded-xl p-3 ${
                                             isActive
@@ -141,7 +142,21 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                         }`
                                     }
                                 >
-                                    <tab.icon className="w-5 h-5" />
+                                    <span className="relative">
+                                        <tab.icon className="w-5 h-5" />
+                                        {tab.name === "Evacuation" &&
+                                            recommendation && (
+                                                <span
+                                                    className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose-500 dark:border-slate-800"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                    </span>
+                                    {tab.name === "Evacuation" && recommendation && (
+                                        <span className="sr-only">
+                                            Active evacuation recommendation
+                                        </span>
+                                    )}
                                 </NavLink>
                             </li>
                         ))}
@@ -152,7 +167,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                             <li key={index}>
                                 <NavLink
                                     to={tab.path}
-                                    end
+                                    end={tab.end ?? true}
                                     className={({ isActive }) =>
                                         `flex gap-2 rounded-xl py-3.5 px-3 ${
                                             isActive
@@ -161,10 +176,24 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                         }`
                                     }
                                 >
-                                    <tab.icon className="w-5 h-5" />
+                                    <span className="relative">
+                                        <tab.icon className="w-5 h-5" />
+                                        {tab.name === "Evacuation" &&
+                                            recommendation && (
+                                                <span
+                                                    className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose-500 dark:border-slate-800"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                    </span>
                                     <span className="text-[0.9rem]">
                                         {tab.name}
                                     </span>
+                                    {tab.name === "Evacuation" && recommendation && (
+                                        <span className="ml-auto rounded-full bg-rose-100 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-rose-600 dark:bg-rose-900/30 dark:text-rose-400">
+                                            Alert
+                                        </span>
+                                    )}
                                 </NavLink>
                             </li>
                         ))}
@@ -179,7 +208,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                         <li key={index} className="flex-shrink-0">
                             <NavLink
                                 to={tab.path}
-                                end
+                                end={tab.end ?? true}
+                                aria-label={tab.name}
                                 className={({ isActive }) =>
                                     `flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg text-[0.6rem] ${
                                         isActive
@@ -188,8 +218,21 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     }`
                                 }
                             >
-                                <tab.icon className="w-5 h-5" />
+                                <span className="relative">
+                                    <tab.icon className="w-5 h-5" />
+                                    {tab.name === "Evacuation" && recommendation && (
+                                        <span
+                                            className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose-500 dark:border-slate-800"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                </span>
                                 <span className="hidden sm:block whitespace-nowrap">{tab.name}</span>
+                                {tab.name === "Evacuation" && recommendation && (
+                                    <span className="sr-only">
+                                        Active evacuation recommendation
+                                    </span>
+                                )}
                             </NavLink>
                         </li>
                     ))}

@@ -1,4 +1,5 @@
 import { ArrowRight, ShieldAlert } from "lucide-react";
+import { getSurfaceObstructionLabel } from "../../../../../../lib/utils/obstruction";
 
 const getBlockageConfig = (status: string | null) => {
     if (!status) return { textClass: "text-gray-500 dark:text-slate-400", bg: "bg-gray-50 dark:bg-slate-800/50", border: "border-gray-200 dark:border-slate-700/50" };
@@ -39,7 +40,7 @@ export default function BlockageCard({
                     <ShieldAlert className="w-4 h-4 text-white dark:text-amber-500" />
                 </div>
                 <span className="text-sm font-medium text-neutral dark:text-slate-200">
-                    Blockage Status
+                    Surface Obstruction Status
                 </span>
             </div>
 
@@ -51,8 +52,7 @@ export default function BlockageCard({
                         Least Severe
                     </p>
                     <p className={`text-sm font-bold ${leastConfig.textClass}`}>
-                        {leastSevere ? leastSevere.charAt(0).toUpperCase() +
-                            leastSevere.slice(1) : "N/A"}
+                        {getSurfaceObstructionLabel(leastSevere)}
                     </p>
                 </div>
 
@@ -65,8 +65,7 @@ export default function BlockageCard({
                         Most Severe
                     </p>
                     <p className={`text-sm font-bold ${mostConfig.textClass}`}>
-                        {mostSevere ? mostSevere.charAt(0).toUpperCase() +
-                            mostSevere.slice(1) : "N/A"}
+                        {getSurfaceObstructionLabel(mostSevere)}
                     </p>
                 </div>
             </div>

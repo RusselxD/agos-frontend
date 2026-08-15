@@ -28,6 +28,7 @@ import Weather from "./pages/Weather/Weather";
 import ReadingLogs from "./pages/ReadingLogs";
 import NotificationLogs from "./pages/NotificationLogs";
 import DetectionLogs from "./pages/DetectionLogs";
+import Evacuation from "./pages/Evacuation";
 import EvacuationCenters from "./pages/EvacuationCenters";
 import EvacuationControl from "./pages/EvacuationControl";
 
@@ -115,12 +116,30 @@ export const router = createBrowserRouter([
         element: <ErrorBoundary><DetectionLogs /></ErrorBoundary>,
       },
       {
+        path: "evacuation",
+        element: <ErrorBoundary><Evacuation /></ErrorBoundary>,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="control" replace />,
+          },
+          {
+            path: "control",
+            element: <EvacuationControl />,
+          },
+          {
+            path: "centers",
+            element: <EvacuationCenters />,
+          },
+        ],
+      },
+      {
         path: "evacuation-centers",
-        element: <ErrorBoundary><EvacuationCenters /></ErrorBoundary>,
+        element: <Navigate to="/admin/evacuation/centers" replace />,
       },
       {
         path: "evacuation-control",
-        element: <ErrorBoundary><EvacuationControl /></ErrorBoundary>,
+        element: <Navigate to="/admin/evacuation/control" replace />,
       },
       {
         path: "admins",

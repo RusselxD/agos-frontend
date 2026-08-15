@@ -22,7 +22,7 @@ const TableHeader = () => (
                 Precipitation
             </th>
             <th className="px-5 py-4 font-bold text-left bg-gray-100 dark:bg-slate-800 rounded-tr-xl transition-colors uppercase tracking-wider text-[0.65rem] md:text-xs text-gray-600 dark:text-slate-400">
-                Blockage
+                Surface Obstruction
             </th>
         </tr>
     </thead>

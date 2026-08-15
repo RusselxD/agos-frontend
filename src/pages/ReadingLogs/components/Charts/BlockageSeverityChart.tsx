@@ -57,7 +57,7 @@ export default function BlockageSeverityChart() {
     );
 
     const data = {
-        labels: ["Clear", "Partial", "Blocked"],
+        labels: ["Clear", "Possible", "Potential Surface Obstruction"],
         datasets: [
             {
                 data: [chartData.clear, chartData.partial, chartData.blocked],
@@ -76,7 +76,7 @@ export default function BlockageSeverityChart() {
     const total = chartData.clear + chartData.partial + chartData.blocked;
 
     return (
-        <Container headerTitle="BLOCKAGE DISTRIBUTION" className="h-80">
+        <Container headerTitle="SURFACE OBSTRUCTION DISTRIBUTION" className="h-80">
             <div className="flex flex-1 items-center justify-center gap-10">
                 <div className="h-44 flex items-center justify-center mt-5">
                     <div className="relative w-44 h-44">
@@ -101,13 +101,13 @@ export default function BlockageSeverityChart() {
                     <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-partial"></span>
                         <span className="text-gray-600 dark:text-slate-300 transition-colors">
-                            Partial ({chartData.partial})
+                            Possible ({chartData.partial})
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-blocked"></span>
                         <span className="text-gray-600 dark:text-slate-300 transition-colors">
-                            Blocked ({chartData.blocked})
+                            Potential ({chartData.blocked})
                         </span>
                     </div>
                 </div>

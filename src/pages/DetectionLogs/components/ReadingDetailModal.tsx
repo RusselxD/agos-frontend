@@ -15,14 +15,14 @@ const STATUS_CONFIG = {
     },
     partial: {
         icon: TriangleAlert,
-        label: "Partial Blockage",
+        label: "Possible Surface Obstruction",
         badge: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-amber-200 dark:ring-amber-800/50",
         accent: "text-amber-600 dark:text-amber-400",
         bg: "bg-amber-500",
     },
     blocked: {
         icon: CircleAlert,
-        label: "Blocked",
+        label: "Potential Surface Obstruction",
         badge: "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-red-200 dark:ring-red-800/50",
         accent: "text-red-600 dark:text-red-400",
         bg: "bg-red-500",
@@ -128,7 +128,7 @@ export default function ReadingDetailModal({ reading, onClose }: Props) {
                             {/* Metrics grid */}
                             <div className="grid grid-cols-2 gap-3">
                                 <MetricCard
-                                    label="Blockage Level"
+                                    label="Visible Surface Coverage"
                                     value={`${detail.blockage_percentage.toFixed(1)}%`}
                                     icon={<ProgressRing percentage={detail.blockage_percentage} color={config.bg} />}
                                 />

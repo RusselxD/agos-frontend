@@ -1,5 +1,6 @@
 import { formatDate } from "../../../../lib/utils/formatter";
 import type { DailySummary } from "../../../../types/readingLogs";
+import { getSurfaceObstructionLabel } from "../../../../lib/utils/obstruction";
 
 interface TableRowProps {
     summary: DailySummary;
@@ -24,7 +25,7 @@ const BlockageBadge = ({ status }: { status: string | null }) => {
         <span
             className={`px-2 py-1 rounded-full text-xs font-medium ${bgColor}`}
         >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+            {getSurfaceObstructionLabel(status)}
         </span>
     );
 };

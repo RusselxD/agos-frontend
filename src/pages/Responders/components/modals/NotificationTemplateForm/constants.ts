@@ -17,7 +17,7 @@ export const NOTIF_TYPES: {
     },
     {
         value: "blockage",
-        label: "This will be sent when a blockage is detected.",
+        label: "This will be sent when a potential surface obstruction is detected.",
     },
     {
         value: "announcement",

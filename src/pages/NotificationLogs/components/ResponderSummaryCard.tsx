@@ -24,9 +24,9 @@ export default function ResponderSummaryCard({ responder, isSelected, onClick }:
     return (
         <button
             onClick={onClick}
-            className={`w-full text-left p-4 rounded-xl border transition-all duration-300 ${
+            className={`w-full text-left p-4 rounded-xl border transition-colors duration-300 ${
                 isSelected
-                    ? "border-primary dark:border-blue-500 bg-primary/10 dark:bg-blue-500/10 ring-1 ring-primary/20 dark:ring-blue-500/20 shadow-lg scale-[1.02]"
+                    ? "border-primary dark:border-blue-500 bg-primary/10 dark:bg-blue-500/10"
                     : "border-gray-200/50 dark:border-white/5 bg-white/40 dark:bg-white/[0.02] hover:border-gray-300 dark:hover:border-white/20 hover:bg-white/60 dark:hover:bg-white/[0.05] hover:shadow-md"
             }`}
         >

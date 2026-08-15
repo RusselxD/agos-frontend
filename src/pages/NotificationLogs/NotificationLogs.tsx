@@ -3,15 +3,30 @@ import { notificationLogAPI } from "../../lib/api/notificationLog";
 import type { NotificationAnalyticsResponse, ResponderNotificationSummary } from "../../types/notificationLog";
 import ResponderSummaryCard from "./components/ResponderSummaryCard";
 import DeliveryHistoryDrawer from "./components/DeliveryHistoryDrawer";
-import { Search, Download, BarChart3 } from "lucide-react";
+import {
+    Search,
+    Download,
+    BarChart3,
+    ChevronLeft,
+    ChevronRight,
+    Loader2,
+} from "lucide-react";
 import { exportToExcel, downloadExcelFile } from "../../lib/utils/export";
 import { useToast } from "../../context/ToastContext";
+
+const PAGE_SIZE = 20;
+const SEARCH_DEBOUNCE_MS = 350;
 
 export default function NotificationLogs() {
     const [responders, setResponders] = useState<ResponderNotificationSummary[]>([]);
     const [isFetching, setIsFetching] = useState(true);
     const [selectedResponder, setSelectedResponder] = useState<ResponderNotificationSummary | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [hasMore, setHasMore] = useState(false);
     const [analytics, setAnalytics] = useState<NotificationAnalyticsResponse | null>(null);
     const [isExporting, setIsExporting] = useState(false);
     const { toastSuccess, toastError } = useToast();
@@ -22,22 +37,63 @@ export default function NotificationLogs() {
     }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const timeoutId = window.setTimeout(() => {
+            setPage(1);
+            setDebouncedSearch(searchQuery.trim());
+        }, SEARCH_DEBOUNCE_MS);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [searchQuery]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchResponders = async () => {
             setIsFetching(true);
             try {
-                const [summaryData, analyticsData] = await Promise.all([
-                    notificationLogAPI.getRespondersSummary(),
-                    notificationLogAPI.getAnalytics(),
-                ]);
-                setResponders(summaryData);
-                setAnalytics(analyticsData);
-            } catch (error) {
-                console.error(error);
+                const data = await notificationLogAPI.getRespondersSummary(
+                    page,
+                    PAGE_SIZE,
+                    debouncedSearch || undefined,
+                    controller.signal,
+                );
+                if (controller.signal.aborted) return;
+
+                if (data.total_pages > 0 && page > data.total_pages) {
+                    setPage(data.total_pages);
+                    return;
+                }
+
+                setResponders(data.items);
+                setTotal(data.total);
+                setTotalPages(data.total_pages);
+                setHasMore(data.has_more);
+            } catch {
+                if (controller.signal.aborted) return;
+                setResponders([]);
+                setTotal(0);
+                setTotalPages(0);
+                setHasMore(false);
+                toastError("Failed to load notification logs.");
             } finally {
-                setIsFetching(false);
+                if (!controller.signal.aborted) setIsFetching(false);
             }
         };
-        fetchData();
+
+        void fetchResponders();
+        return () => controller.abort();
+    }, [page, debouncedSearch, toastError]);
+
+    useEffect(() => {
+        const fetchAnalytics = async () => {
+            try {
+                setAnalytics(await notificationLogAPI.getAnalytics());
+            } catch (error) {
+                console.error("Failed to load notification analytics", error);
+            }
+        };
+
+        void fetchAnalytics();
     }, []);
 
     const handleExport = async () => {
@@ -62,21 +118,16 @@ export default function NotificationLogs() {
         }
     };
 
-    const filtered = responders.filter((r) => {
-        const q = searchQuery.toLowerCase();
-        return (
-            r.first_name.toLowerCase().includes(q) ||
-            r.last_name.toLowerCase().includes(q) ||
-            r.phone_number.includes(q)
-        );
-    });
-
     const formatTime = (seconds: number | null) => {
         if (seconds === null) return "N/A";
         if (seconds < 60) return `${Math.round(seconds)}s`;
         if (seconds < 3600) return `${Math.round(seconds / 60)}m`;
         return `${(seconds / 3600).toFixed(1)}h`;
     };
+
+    const firstResult = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+    const lastResult = Math.min(page * PAGE_SIZE, total);
+    const isSearchPending = searchQuery.trim() !== debouncedSearch;
 
     return (
         <div className="flex flex-col flex-1 h-full overflow-hidden gap-2">
@@ -115,7 +166,7 @@ export default function NotificationLogs() {
 
             <div className="relative flex flex-1 overflow-hidden gap-2">
                 {/* Left panel - Responder list */}
-                <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl p-6 flex-1 h-full overflow-auto min-w-0 flex flex-col border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300">
+                <div className="bg-white/60 dark:bg-white/[0.03] backdrop-blur-xl rounded-2xl p-6 flex-1 h-full overflow-hidden min-w-0 flex flex-col border border-white/50 dark:border-white/10 shadow-xl transition-all duration-300">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="pl-2 border-l-4 font-semibold text-gray-600 dark:text-slate-300 border-primary dark:border-blue-500">
                             NOTIFICATION LOGS
@@ -132,10 +183,16 @@ export default function NotificationLogs() {
 
                     {/* Search */}
                     <div className="relative mb-4">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-500" />
+                        {isSearchPending || (isFetching && debouncedSearch) ? (
+                            <Loader2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-primary dark:text-blue-400" />
+                        ) : (
+                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-slate-500" />
+                        )}
                         <input
                             type="text"
+                            aria-label="Search notification logs by responder"
                             placeholder="Search by name or phone number..."
+                            maxLength={120}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-10 pr-4 py-3 text-sm bg-white/40 dark:bg-white/[0.02] text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200/50 dark:border-white/5 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:ring-blue-500/20 focus:border-primary dark:focus:border-blue-500 transition-all duration-300"
@@ -144,18 +201,20 @@ export default function NotificationLogs() {
 
                     {/* List */}
                     {isFetching ? (
-                        <div className="space-y-3">
+                        <div className="flex-1 space-y-3 overflow-hidden">
                             {[...Array(5)].map((_, i) => (
                                 <div key={i} className="skeleton w-full h-24 rounded-lg" />
                             ))}
                         </div>
-                    ) : filtered.length === 0 ? (
-                        <div className="text-sm text-gray-500 dark:text-slate-400 text-center py-8">
-                            {searchQuery ? "No responders match your search." : "No responders found."}
+                    ) : responders.length === 0 ? (
+                        <div className="flex flex-1 items-center justify-center py-8 text-center text-sm text-gray-500 dark:text-slate-400">
+                            {debouncedSearch
+                                ? "No responders match your search."
+                                : "No responders found."}
                         </div>
                     ) : (
-                        <div className="space-y-2 overflow-auto flex-1">
-                            {filtered.map((responder) => (
+                        <div className="custom-scrollbar space-y-2 overflow-auto flex-1 pr-1">
+                            {responders.map((responder) => (
                                 <ResponderSummaryCard
                                     key={responder.id}
                                     responder={responder}
@@ -163,6 +222,39 @@ export default function NotificationLogs() {
                                     onClick={() => setSelectedResponder(responder)}
                                 />
                             ))}
+                        </div>
+                    )}
+
+                    {!isFetching && total > 0 && (
+                        <div className="mt-3 flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-gray-200/60 pt-3 text-xs text-gray-500 dark:border-white/10 dark:text-slate-400">
+                            <p>
+                                Showing {firstResult}–{lastResult} of {total}
+                            </p>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setPage((current) => current - 1)}
+                                    disabled={page === 1 || isSearchPending}
+                                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700"
+                                    aria-label="Previous responder page"
+                                >
+                                    <ChevronLeft className="h-3.5 w-3.5" />
+                                    Previous
+                                </button>
+                                <span className="min-w-16 text-center font-medium text-gray-700 dark:text-slate-300">
+                                    Page {page} of {totalPages}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => setPage((current) => current + 1)}
+                                    disabled={!hasMore || isSearchPending}
+                                    className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1.5 font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700"
+                                    aria-label="Next responder page"
+                                >
+                                    Next
+                                    <ChevronRight className="h-3.5 w-3.5" />
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

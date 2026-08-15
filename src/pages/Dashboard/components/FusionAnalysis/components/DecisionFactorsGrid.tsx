@@ -3,10 +3,8 @@ import { useFusionAnalysis } from "../../../../../context/FusionAnalysisContext"
 import { Minus, TrendingDown, TrendingUp, type LucideIcon } from "lucide-react";
 import { useWaterLevel } from "../../../../../context/WaterLevelContext";
 import type { SensorConfig } from "../../../../../types/sensor";
-import {
-    capitalizeFirstLetter,
-    getTimeAgo,
-} from "../../../../../lib/utils/formatter";
+import { getTimeAgo } from "../../../../../lib/utils/formatter";
+import { getSurfaceObstructionLabel } from "../../../../../lib/utils/obstruction";
 
 const getWaterLevelTrendIcon = (trend: string): LucideIcon => {
     switch (trend) {
@@ -139,7 +137,7 @@ export default function DecisionFactorsGrid() {
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2 lg:w-1/3">
             <StatCard
                 title="Visual Status"
-                value={capitalizeFirstLetter(blockageStatus)}
+                value={getSurfaceObstructionLabel(blockageStatus, true)}
                 className={getBlockageColors(blockageStatus)}
                 timestamp={fusionAnalysis?.blockage_status?.timestamp}
             />

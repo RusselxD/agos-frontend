@@ -1,6 +1,7 @@
 import { useWaterwayContext } from "../../../../../context/BlockageContext";
 import type { Status } from "../../../../../types/blockage";
 import { barColors, getLevelCount } from "../BlockageStatusCard";
+import { getSurfaceObstructionLabel } from "../../../../../lib/utils/obstruction";
 
 export default function StatusText() {
     const { status } = useWaterwayContext();
@@ -28,7 +29,7 @@ export default function StatusText() {
                 }`}
             ></span>
             <span className={`font-bold text-2xl md:text-3xl ${getStatusColor(status)}`}>
-                {status}
+                {status ? getSurfaceObstructionLabel(status, true) : "N/A"}
             </span>
         </div>
     );

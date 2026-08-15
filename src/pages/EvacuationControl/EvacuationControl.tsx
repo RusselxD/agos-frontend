@@ -31,7 +31,11 @@ export default function EvacuationControl() {
     const [modalKind, setModalKind] = useState<EvacuationKind | null>(null);
 
     const loadEvents = useCallback(async () => {
-        if (!locationId) return;
+        if (!locationId) {
+            setEvents([]);
+            setIsLoading(false);
+            return;
+        }
         setIsLoading(true);
         try {
             setEvents(await evacuationAPI.getEvents(locationId));
@@ -73,13 +77,6 @@ export default function EvacuationControl() {
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
-                <Siren className="w-6 h-6 text-rose-500" />
-                <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                    Evacuation Control
-                </h1>
-            </div>
-
             {/* Active recommendation (advisory only) */}
             {recommendation ? (
                 <div className="rounded-2xl border-2 border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-900/20 p-5">

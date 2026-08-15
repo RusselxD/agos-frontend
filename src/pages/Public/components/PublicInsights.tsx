@@ -21,14 +21,14 @@ export default function PublicInsights() {
     let waterwayBg = "bg-emerald-500/10";
     
     if (waterwayStatus === "Blocked") {
-        waterwayHeader = "The waterway is BLOCKED.";
-        waterwayDesc = "Water flow is severely restricted.";
+        waterwayHeader = "A potential surface obstruction is visible.";
+        waterwayDesc = "Inspect the waterway; the camera cannot confirm conditions below the surface.";
         WaterwayIcon = AlertTriangle;
         waterwayColor = "text-red-500";
         waterwayBg = "bg-red-500/10";
     } else if (waterwayStatus === "Partial") {
-        waterwayHeader = "The waterway is PARTIALLY BLOCKED.";
-        waterwayDesc = "Water flow is restricted.";
+        waterwayHeader = "A possible surface obstruction is visible.";
+        waterwayDesc = "Continue monitoring the camera feed for sustained evidence.";
         WaterwayIcon = AlertTriangle;
         waterwayColor = "text-amber-500";
         waterwayBg = "bg-amber-500/10";
