@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, Dispatch, SetStateAction } from "react";
+import axios from "axios";
 import { Download, FileSpreadsheet, Plus } from "lucide-react";
 import { useResponderList } from "../../context/ResponderListContext";
-import { normalizeNumberInput } from "../../../../../../lib/utils/formatter";
+import {
+    isValidPHMobileNumber,
+    normalizeNumberInput,
+} from "../../../../../../lib/utils/formatter";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { type ResponderEntry, createEmptyResponder } from "./types";
@@ -11,6 +15,55 @@ import ResponderEntryRow from "./ResponderEntryRow";
 import { useToast } from "../../../../../../context/ToastContext";
 import { useResponders } from "../../../../context/RespondersPageContext";
 import { responderAPI } from "../../../../../../lib/api/responder";
+
+interface FastAPIValidationIssue {
+    loc?: Array<string | number>;
+    msg?: string;
+}
+
+const RESPONDER_FIELD_LABELS: Record<string, string> = {
+    first_name: "First name",
+    last_name: "Last name",
+    phone_number: "Phone number",
+};
+
+const getSubmitErrorMessage = (error: unknown): string => {
+    const fallback = "Failed to add responders. Please try again.";
+    if (!axios.isAxiosError(error)) return fallback;
+
+    const detail: unknown = error.response?.data?.detail;
+    if (typeof detail === "string" && detail.trim()) return detail;
+    if (!Array.isArray(detail)) return fallback;
+
+    const messages = detail
+        .map((issue: FastAPIValidationIssue) => {
+            if (typeof issue?.msg !== "string") return null;
+
+            const location = Array.isArray(issue.loc) ? issue.loc : [];
+            const responderIndex = location.find(
+                (part): part is number => typeof part === "number",
+            );
+            const field = location.at(-1);
+            const fieldLabel =
+                typeof field === "string"
+                    ? RESPONDER_FIELD_LABELS[field]
+                    : undefined;
+            const prefix = [
+                responderIndex !== undefined
+                    ? `Responder ${responderIndex + 1}`
+                    : null,
+                fieldLabel,
+            ]
+                .filter(Boolean)
+                .join(" — ");
+            const message = issue.msg.replace(/^Value error,\s*/i, "");
+
+            return prefix ? `${prefix}: ${message}` : message;
+        })
+        .filter((message): message is string => Boolean(message));
+
+    return messages.length > 0 ? messages.join(" ") : fallback;
+};
 
 export default function AddResponderForm() {
     const { addResponderFormOpen, setAddResponderFormOpen } =
@@ -80,7 +133,7 @@ export default function AddResponderForm() {
         (r) =>
             r.firstName.trim() &&
             r.lastName.trim() &&
-            r.normalizedPhoneNumber.length >= 13,
+            isValidPHMobileNumber(r.normalizedPhoneNumber),
     );
 
     const handleCancel = () => {
@@ -109,7 +162,7 @@ export default function AddResponderForm() {
             setAddResponderFormOpen(false);
         } catch (error) {
             console.error("Failed to add responders:", error);
-            toastError("Failed to add responders. Please try again.");
+            toastError(getSubmitErrorMessage(error));
         } finally {
             setIsLoading(false);
         }

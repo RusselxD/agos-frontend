@@ -72,6 +72,9 @@ export const normalizePhoneNumber = (input: string): string => {
     }
 };
 
+export const isValidPHMobileNumber = (input: string): boolean =>
+    /^\+639\d{9}$/.test(normalizePhoneNumber(input));
+
 export const removeNonDigits = (input: string): string => {
     return input.replace(/\D/g, "");
 };
@@ -99,7 +102,7 @@ export const normalizeNumberInput = (
     const digitsOnly = removeNonDigits(input);
 
     // Determine max length based on what user is typing
-    let maxLength = determinePhoneMaxLength(digitsOnly);
+    const maxLength = determinePhoneMaxLength(digitsOnly);
 
     // Only update if within limit
     if (digitsOnly.length <= maxLength) {

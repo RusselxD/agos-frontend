@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import TextInputField from "../../../../../../components/common/auth/TextInputField";
 import PhoneNumberInput from "../../../../../../components/common/auth/PhoneNumberInput";
 import type { Dispatch, SetStateAction } from "react";
+import { isValidPHMobileNumber } from "../../../../../../lib/utils/formatter";
 
 interface ResponderEntryRowProps {
     firstName: string;
@@ -26,6 +27,10 @@ export default function ResponderEntryRow({
     onRemove,
     canRemove,
 }: ResponderEntryRowProps) {
+    const hasCompleteInvalidPhoneNumber =
+        normalizedPhoneNumber.length >= 13 &&
+        !isValidPHMobileNumber(normalizedPhoneNumber);
+
     return (
         <div className="bg-white dark:bg-slate-700/30 p-3 rounded-lg border border-gray-100 dark:border-slate-600 space-y-3 transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -51,6 +56,12 @@ export default function ResponderEntryRow({
                         handleInputNumber={handlePhoneNumberChange}
                         normalizedPhoneNumber={normalizedPhoneNumber}
                     />
+                    {hasCompleteInvalidPhoneNumber && (
+                        <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                            Enter a valid Philippine mobile number beginning with
+                            9.
+                        </p>
+                    )}
                 </div>
 
                 {canRemove && (
